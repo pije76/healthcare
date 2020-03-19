@@ -1,0 +1,12 @@
+*.pyc
+*.pyo
+*.db
+.DS_Store
+.coverage
+local_settings.py
+media/uploads/
+.vscode
+locale/**/LC_MESSAGES/*.mo
+.sass-cache/
+*.log
+db.sqlite3

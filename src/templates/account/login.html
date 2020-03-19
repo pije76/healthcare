@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block content %}
+
+<div class="container">
+
+	<div class="row navigation">
+		<div id="logo" class="" alt="image">
+			<a href="/" title="eDapt">
+				<img src="{% static "images/logo.png" %}" alt="Logo"/>
+			</a>
+		</div>
+
+		<div id="slogan_title" class="">
+			<span id="rtr-slogan_title_0">Learning</span>
+		</div>
+	</div>
+
+	<div class="row isi">
+		<div class="col-sm-2 col-md-2 col-lg-2">
+		</div>
+
+		<div class="col-sm-8 col-md-8 col-lg-8">
+			<div id="s-fieldSet" class="">
+				<div id="s-Rectangle_1" class="">
+					<span id="rtr-s-Rectangle_1_0"></span>
+				</div>
+
+				<div id="login_box" class="" alt="image">
+					<img src="{% static "images/loginbox.png" %}" alt="Login"/>
+				</div>
+
+				<div id="fieldset_title" class="">
+					<span id="rtr-fieldset_title_0">Field Set / Group</span>
+				</div>
+			</div>
+
+			<div id="title_login" class="">
+				<span id="rtr-title_login_0">Login ID</span>
+			</div>
+
+			<div id="title_password" class="">
+				<span id="rtr-title_password_0">Password</span>
+			</div>
+
+
+			<form class="login" method="POST" action="{% url 'account_login' %}">
+				{% csrf_token %}
+				{{ form.as_p }}
+				{% if redirect_field_value %}
+				<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+				{% endif %}
+				<div id="title_forgetpassword" class="">
+					<span id="rtr-title_forgetpassword_0"><a href="{% url 'account_reset_password' %}">{% trans "Forgot password" %}</a></span>
+				</div>
+				<button id="s-Button_2" class="primaryAction" type="submit">{% trans "Sign In" %}</button>
+			</form>
+
+		</div>
+
+		<div class="col-sm-2 col-md-2 col-lg-2">
+		</div>
+	</div>
+
+	<div class="row footer">
+		<div class="col-sm-4 col-md-4 col-lg-4">
+			<div id="s-Title_1">
+				<span id="rtr-s-Title_1_0">PRODUCT</span>
+			</div>
+
+			<div id="s-Paragraph_1" class="">
+				<span id="rtr-s-Paragraph_1_0">Features</span>
+			</div>
+		</div>
+
+		<div class="col-sm-4 col-md-4 col-lg-4">
+			<div id="s-Title_2">
+				<span id="rtr-s-Title_2_0">CONTACT</span>
+			</div>
+
+			<div id="s-Paragraph_2" class="">
+				<span id="rtr-s-Paragraph_2_0">Tel: 12345678</span>
+				<span id="rtr-s-Paragraph_2_1"><br>Email: contact@gmail.com</span>
+			</div>
+		</div>
+
+		<div class="col-sm-4 col-md-4 col-lg-4">
+			<div id="s-Title_3">
+				<span id="rtr-s-Title_3_0">TRIAL</span>
+				<span id="rtr-s-Title_3_1">SIGN UP</span>
+			</div>
+
+			<div id="s-Paragraph_3" class="">
+				<span id="rtr-s-Paragraph_3_0">School</span>
+				<span id="rtr-s-Paragraph_3_1"><br>Individual</span>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
