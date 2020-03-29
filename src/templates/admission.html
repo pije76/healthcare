@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% block styles %}
+	<link href="{% static 'css/admission.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+<div class="container">
+
+	{% block navmenu %}
+		{% include "navmenu.html" %}
+	{% endblock %}
+
+	<div class="row isi">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+			<form method="post">
+				{% csrf_token %}
+				<table class="table table-bordered">
+					<tbody>
+						<tr>
+							<td>Date & Time of admission:</td>
+							<td colspan="2">{{ form.date|as_crispy_field }}</td>
+							<td>{{ form.time|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Mode of admission:</td>
+							<td colspan="3">{{ form.mode|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Full name  (as per IC):</td>
+							<td colspan="3">{{ form.full_name|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>IC No:</td>
+							<td colspan="3">{{ form.ic_number|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Date of birth:</td>
+							<td colspan="3">{{ form.birth_date|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Age:</td>
+							<td colspan="3">{{ form.age|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Sex / Gender:</td>
+							<td colspan="3">{{ form.gender|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Marital Status:</td>
+							<td colspan="3">{{ form.marital_status|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Address:</td>
+							<td colspan="3">{{ form.address|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Tel No:</td>
+							<td colspan="3">{{ form.phone|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Religion:</td>
+							<td colspan="3">{{ form.religion|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Occupation:</td>
+							<td colspan="3">{{ form.occupation|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Emergency contact:</td>
+							<td colspan="3">{{ form.ec_name|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td colspan="3">{{ form.ec_ic_number|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td colspan="3">{{ form.ec_relationship|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td colspan="3">{{ form.ec_phone|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td colspan="3">{{ form.ec_address|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>General condition:</td>
+							<td colspan="3">{{ form.general_condition|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Vital sign:</td>
+							<td colspan="3">{{ form.temperature|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td colspan="3">{{ form.pulse|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td colspan="3">{{ form.BP|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td colspan="3">{{ form.resp|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td colspan="3">{{ form.spo2|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Allergy:</td>
+							<td>{{ form.medication|as_crispy_field }}</td>
+							<td>{{ form.food|as_crispy_field }}</td>
+							<td>{{ form.others|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Biohazard/ infectious disease:</td>
+							<td colspan="3">{{ form.biohazard_infectious_disease|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Medical history:</td>
+							<td colspan="3">{{ form.medical_history|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Surgical history:</td>
+							<td colspan="3">{{ form.surgical_history|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Diagnosis:</td>
+							<td colspan="3">{{ form.diagnosis|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Own medication:</td>
+							<td colspan="3">{{ form.own_medication|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Denture:</td>
+							<td colspan="3">{{ form.denture|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Admission done by:</td>
+							<td colspan="3">{{ form.admission_by|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Date of discharge:</td>
+							<td colspan="3">{{ form.date_discharge|as_crispy_field }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<button type="submit" class="btn btn-primary">Sign in</button>
+			</form>
+
+		</div>
+
+	</div>
+</div>
+{% endblock %}
