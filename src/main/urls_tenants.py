@@ -6,15 +6,16 @@ from django.conf.urls import include
 from django.views.generic import RedirectView
 
 from accounts.views import *
+from customers.views import *
 
 urlpatterns = [
-	path('', RedirectView.as_view(url='accounts/login/', permanent=False), name='index'),
-	#path('practise/', practise, name='practise'),
-	#path('etext/', etext, name='etext'),
-	#path('progress/', progress, name='progress'),
-        path('admin/', admin.site.urls),
-        path(r'accounts/', include('allauth.urls')),
-	path(r'account/', include('accounts.urls')),
+    path('', RedirectView.as_view(url='accounts/login/', permanent=False), name='index'),
+    path('admission/', admission, name='admission'),
+    path('etext/', etext, name='etext'),
+    path('progress/', progress, name='progress'),
+    path('admin/', admin.site.urls),
+    path(r'accounts/', include('allauth.urls')),
+    path(r'account/', include('accounts.urls')),
 ]
 
 
