@@ -47,6 +47,7 @@ SHARED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
     'django.contrib.staticfiles',
+    'debug_toolbar',
 )
 
 TENANT_APPS = (
@@ -64,10 +65,12 @@ TENANT_APPS = (
     'allauth.socialaccount',
     'post_office',
     'accounts',
-
+    'patient',
+    'jquery',
+    'bootstrap_themes',
+    'bootstrap_submenu',
     'crispy_forms',
-
-
+    'debug_toolbar',
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + \
@@ -80,6 +83,7 @@ TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
 
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django_tenants.middleware.main.TenantMainMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -133,6 +137,10 @@ TEMPLATES = [
             ],
         },
     },
+    {
+        'BACKEND': 'patient.pdf.PdftkEngine',
+        'APP_DIRS': True,
+    },
 ]
 
 
@@ -185,15 +193,15 @@ USE_L10N = True
 
 USE_TZ = True
 
+SITE_ID = 1
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
-
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
+STATIC_ROOT = os.path.join(BASE_DIR, "assets")
 
 MEDIA_URL = '/media/'
 
@@ -223,6 +231,8 @@ LOGGING = {
 # crispy form
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+DATE_INPUT_FORMATS = 'd/m/Y'
+DATE_FORMAT = 'd/m/Y'
 
 
 # Post office email

@@ -10,6 +10,65 @@
 	<link href="{% static 'css/admission.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
+<script type="text/javascript">
+$(document).ready(function()
+{
+	$('input[id^="id_mode_"]').click(function()
+	{
+		var $this = $(this);
+		if ($this.is("#id_mode_1"))
+		{
+			if ($("#id_mode_1:checked").length > 0)
+			{
+				$("#id_mode_2").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_mode_2").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_mode_2"))
+		{
+			if ($("#id_mode_2:checked").length > 0)
+			{
+				$("#id_mode_1").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_mode_1").prop("disabled", false);
+			}
+		}
+	});
+
+	$('input[id^="id_gender_"]').click(function()
+	{
+		var $this = $(this);
+		if ($this.is("#id_gender_1"))
+		{
+			if ($("#id_gender_1:checked").length > 0)
+			{
+				$("#id_gender_2").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_gender_2").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_gender_2"))
+		{
+			if ($("#id_gender_2:checked").length > 0)
+			{
+				$("#id_gender_1").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_gender_1").prop("disabled", false);
+			}
+		}
+	});
+});
+</script>
+
 <div class="container">
 
 	{% block navmenu %}
@@ -26,7 +85,7 @@
 						<tr>
 							<td>Date & Time of admission:</td>
 							<td colspan="2">{{ form.date|as_crispy_field }}</td>
-							<td>{{ form.time|as_crispy_field }}</td>
+							<td style="padding-left: 15px; display: inline-flex;">{{ form.time|as_crispy_field }} hours</td>
 						</tr>
 						<tr>
 							<td>Mode of admission:</td>
@@ -46,7 +105,7 @@
 						</tr>
 						<tr>
 							<td>Age:</td>
-							<td colspan="3">{{ form.age|as_crispy_field }}</td>
+							<td colspan="3">{{ form.age|as_crispy_field }} YEARS OLD</td>
 						</tr>
 						<tr>
 							<td>Sex / Gender:</td>
@@ -98,23 +157,32 @@
 						</tr>
 						<tr>
 							<td>Vital sign:</td>
-							<td colspan="3">{{ form.temperature|as_crispy_field }}</td>
-						</tr>
-						<tr>
-							<td></td>
-							<td colspan="3">{{ form.pulse|as_crispy_field }}</td>
-						</tr>
-						<tr>
-							<td></td>
-							<td colspan="3">{{ form.BP|as_crispy_field }}</td>
-						</tr>
-						<tr>
-							<td></td>
-							<td colspan="3">{{ form.resp|as_crispy_field }}</td>
-						</tr>
-						<tr>
-							<td></td>
-							<td colspan="3">{{ form.spo2|as_crispy_field }}</td>
+							<td colspan="3">
+							<table style="width: -webkit-fill-available;">
+								<tbody>
+									<tr>
+										<td>Temp (ºc):</td>
+										<td>{{ form.temperature|as_crispy_field }}</td>
+									</tr>
+									<tr>
+										<td>Pulse (bpm):</td>
+										<td>{{ form.pulse|as_crispy_field }}</td>
+									</tr>
+									<tr>
+										<td>BP (mmHg):</td>
+										<td>{{ form.BP|as_crispy_field }}</td>
+									</tr>
+									<tr>
+										<td>Resp (min):</td>
+										<td>{{ form.resp|as_crispy_field }}</td>
+									</tr>
+									<tr>
+										<td>SPO2 (%):</td>
+										<td>{{ form.spo2|as_crispy_field }}</td>
+									</tr>
+								</tbody>
+							</table>
+							</td>
 						</tr>
 						<tr>
 							<td>Allergy:</td>

@@ -9,4 +9,3 @@ from customers.models import *
 class ClientAdmin(TenantAdminMixin, admin.ModelAdmin):
     list_display = ('name',)
 
-admin.site.register(Admission)
