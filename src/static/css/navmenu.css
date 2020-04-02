@@ -150,6 +150,18 @@
   text-decoration: none;
 }
 
+#rtr-menu_practise_0 > button {
+  padding: 5px;
+  margin: -40px;
+}
+
+#dropdownMenuLink {
+  padding: 5px;
+  margin: -8px 0px 0px -35px;
+  background: transparent;
+  color: inherit;
+  border: none;
+}
 
 #menu_etext {
   -moz-transform: rotate(0deg);
@@ -170,6 +182,7 @@
   transform: rotate(0deg);
   vertical-align: middle;
   width: auto;
+  z-index: 1;
 }
 
 #menu_etext span {
@@ -384,7 +397,7 @@
 
 #logo_nav > img, #logo_nav > svg {
   height: 127px;
-  width: 174px;
+  width: 127px;
   box-shadow: none;
 }
 
@@ -396,12 +409,13 @@
   margin-left: 0px;
   margin-top: 128px;
   position: absolute;
-  width: 986px;
+  width: 1140px;
   height: 2px;
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
   transform: rotate(0deg);
   padding: 0px 0px;
+  border: 1px solid #DDDDE1;
 }
 
 #s-Line_1 {

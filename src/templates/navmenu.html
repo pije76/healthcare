@@ -1,4 +1,7 @@
 {% load static %}
+{% load bootstrap_submenu%}
+{% bootstrap_submenu_css%}
+{% bootstrap_submenu_js%}
 
 <div class="row navigation">
 		<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -18,10 +21,36 @@
 						<img src="{% static "images/navbar.png" %}" alt="Navbar"/>
 					</div>
 				<div id="menu_practise" class="">
-					<span id="rtr-menu_practise_0"><a href="/admission/" class="{% if navbar == 'admission' %}active{% else %}inactive{% endif %}">Admission</a></span>
+					<span id="rtr-menu_practise_0">
+						<a href="/" class="{% if navbar == 'home' %}active{% else %}inactive{% endif %}">Home</a>
+					</span>
 				</div>
 				<div id="menu_etext" class="">
-					<span id="rtr-menu_etext_0"><a href="/etext/" class="{% if navbar == 'etext' %}active{% else %}inactive{% endif %}">Homecare</a></span>
+					<div class="dropdown show">
+						<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Patient Form</a>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<a class="dropdown-item" href="/admission/">Admission</a>
+							<a class="dropdown-item" href="/application-homecare-homeleave/">Application For Homecare/Homeleave</a>
+							<a class="dropdown-item" href="/appointment-form/">Appointment Form</a>
+							<a class="dropdown-item" href="/cannulation-chart/">Cannulation Chart</a>
+							<a class="dropdown-item" href="/charges-sheet/">Charges Sheet</a>
+							<a class="dropdown-item" href="/dressing-chart/">Dressing Chart</a>
+							<a class="dropdown-item" href="/enteral-feeding-regine/">Enteral Feeding Regine</a>
+							<a class="dropdown-item" href="/hgt-chart/">HGT Chart</a>
+							<a class="dropdown-item" href="/intake-output-chart/">Intake Output Chart</a>
+							<a class="dropdown-item" href="/maintainance-form/">Maintainance Form</a>
+							<a class="dropdown-item" href="/medication-administration-record/">Medication Administration Record</a>
+							<a class="dropdown-item" href="/medication-record/">Medication Records</a>
+							<a class="dropdown-item" href="/nursing-report/">Nursing Report</a>
+							<a class="dropdown-item" href="/physio-progress-note-back-sheet/">Physio Progress Note-Back Sheet</a>
+							<a class="dropdown-item" href="/physio-progress-note-front-sheet/">Physio Progress Note-Front Sheet</a>
+							<a class="dropdown-item" href="/physiotherapy-general-assessment-form/">Physiotherapy-General Assessment Form</a>
+							<a class="dropdown-item" href="/stool-chart/">Stool Chart</a>
+							<a class="dropdown-item" href="/vital-sign-flow-sheet/">Vital Sign Flow Sheet</a>
+						</div>
+					</div>
+
 				</div>
 				<div id="menu_progress" class="">
 					<span id="rtr-menu_progress_0"><a href="/progress/" class="{% if navbar == 'progress' %}active{% else %}inactive{% endif %}">Appointment</a></span>

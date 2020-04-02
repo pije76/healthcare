@@ -1,0 +1,533 @@
+.navigation {
+  height: 205px;
+}
+
+.isi {
+  height: 640px;
+}
+
+.footer {
+  height: 151px;
+}
+
+#s-Group_5 {
+  height: 603px;
+  margin-left: 141px;
+  margin-top: 0px;
+  position: absolute;
+  width: 774px;
+}
+
+#s-Text_2 {
+  -moz-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  background-color: #F5F5F5;
+  background-image: none;
+  border: 1px solid #DDDDDD;
+  box-shadow: none; 
+  font-family: 'Arial',Arial;
+  font-size: 18.0pt;
+  height: 38px;
+  margin-left: -7px;
+  margin-top: 0px;
+  padding: 1px 1px 0px 15px;
+  position: absolute;
+  text-align: center;
+  text-shadow: none;
+  transform: rotate(0deg);
+  vertical-align: middle;
+  width: 774px;
+  }
+
+#s-Text_2 span {
+  color: #650205;
+  font-family: 'Arial',Arial;
+  font-size: 18.0pt;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  text-decoration: none;
+}
+
+#s-Text_2 span#rtr-s-Text_2_0 {
+  color: #650205;
+  font-family: 'Arial',Arial;
+  font-size: 18.0pt;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 0px;
+  text-align: center;
+  text-decoration: none;
+  }
+
+#s-Dynamic_Panel_2 {
+  height: 566px;
+  margin-left: -7px;
+  margin-top: 37px;
+  position: absolute;
+  width: 774px;
+}
+
+#s-Panel_2 {
+  background-color: #FFFFFF;
+  background-image: none;
+  border: 1px solid #DDDDDD;
+  box-shadow: none;
+  height: 576px;
+  padding: 0px 0px;
+  vertical-align: top;
+  width: 774px;
+}
+
+#s-Panel_2 td.layout {
+  padding: 0px 0px 0px 0px;
+}
+
+#s-Panel_2 > .layoutWrapper {
+  height: 566px;
+  left: 1px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  top: 1px;
+  width: 774px;
+}
+
+#s-Image_2 {
+  -moz-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  height: 947px;
+  margin-left: 42px;
+  margin-top: 10px;
+  padding: 0px 0px;
+  position: inherit;
+  transform: rotate(0deg);
+  width: 675px;
+}
+
+#s-Image_2 > img, #s-Image_2 > svg {
+  box-shadow: none;
+  height: 947px;
+  width: 675px;
+}
+
+#s-Image_5 {
+  -moz-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  height: 27px;
+  margin-left: -14px;
+  margin-top: 0px;
+  padding: 0px 0px;
+  position: absolute;
+  transform: rotate(0deg);
+  width: 15px;
+}
+
+#s-Image_5 > img, #s-Image_5 > svg {
+  box-shadow: none;
+  height: 27px;
+  width: 15px;
+}
+
+#s-Accordion {
+  height: 609px;
+  margin-left: -17px;
+  margin-top: 27px;
+  position: absolute;
+  width: 224px;
+}
+
+#s-Rectangle_2 {
+  -moz-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  background-color: #FFFFFF;
+  background-image: none;
+  box-shadow: none;
+  font-family: 'Arial',Arial;
+  font-size: 10.0pt;
+  height: 607px;
+  line-height: 18px;
+  margin-left: 0px;
+  margin-top: 0px;
+  padding: 0px 0px;
+  position: absolute;
+  text-align: center;
+  text-shadow: none;
+  transform: rotate(0deg);
+  vertical-align: middle;
+  width: 223px;
+}
+
+#s-Rectangle_2 span {
+  color: #333333;
+  font-family: 'Arial',Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  text-decoration: none;
+}
+
+#s-Rectangle_2 span#rtr-s-Rectangle_2_0 {
+  color: #333333;
+  font-family: 'Arial',Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 0px;
+  text-align: center;
+  text-decoration: none;
+}
+
+#s-Image_97 {
+  -moz-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  height: 609px;
+  margin-left: 0px;
+  margin-top: 0px;
+  padding: 0px 0px;
+  position: absolute;
+  transform: rotate(0deg);
+  width: 224px;
+}
+
+#s-Image_97 > img, #s-Image_97 > svg {
+  box-shadow: none;
+  height: 609px;
+  width: 224px;
+}
+
+#s-Group_25 {
+  height: 41px;
+  margin-left: 1px;
+  margin-top: 568px;
+  position: absolute;
+  width: 222px;
+}
+
+#s-Image_39 {
+  -moz-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  height: 40px;
+  margin-left: 0px;
+  margin-top: 0px;
+  padding: 0px 0px;
+  position: absolute;
+  transform: rotate(0deg);
+  width: 222px;
+}
+
+#s-Image_39 > img, #s-Image_39 > svg {
+  box-shadow: none;
+  height: 40px;
+  width: 222px;
+}
+
+#s-Rectangle_25 {
+  -moz-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  background-color: transparent;
+  background-image: none;
+  box-shadow: none;
+  font-family: 'Comic Sans MS',Arial;
+  font-size: 10.0pt;
+  height: 40px;
+  line-height: 19px;
+  margin-left: 1px;
+  margin-top: 1px;
+  padding: 0px 0px 0px 10px;
+  position: absolute;
+  text-align: left;
+  text-shadow: none;
+  transform: rotate(0deg);
+  vertical-align: middle;
+  width: 221px;
+}
+
+#s-Rectangle_25 span {
+  color: #333333;
+  font-family: 'Comic Sans MS',Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-weight: 700;
+  text-align: left;
+  text-decoration: none;
+}
+
+#s-Rectangle_25 span#rtr-s-Rectangle_25_0 {
+  color: #333333;
+  font-family: 'Comic Sans MS',Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 0px;
+  text-align: left;
+  text-decoration: none;
+}
+
+#s-Group_18 {
+  height: 41px;
+  margin-left: 1px;
+  margin-top: 489px;
+  position: absolute;
+  width: 222px;
+}
+
+#s-Image_32 {
+  -moz-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  height: 40px;
+  margin-left: 0px;
+  margin-top: 0px;
+  padding: 0px 0px;
+  position: absolute;
+  transform: rotate(0deg);
+  width: 222px;
+}
+
+#s-Image_32 > img, #s-Image_32 > svg {
+  box-shadow: none;
+  height: 40px;
+  width: 222px;
+}
+
+#s-Rectangle_18 {
+  -moz-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  background-color: transparent;
+  background-image: none;
+  box-shadow: none;
+  font-family: 'Comic Sans MS',Arial;
+  font-size: 10.0pt;
+  height: 40px;
+  line-height: 19px;
+  margin-left: 1px;
+  margin-top: 1px;
+  padding: 0px 0px 0px 10px;
+  position: absolute;
+  text-align: left;
+  text-shadow: none;
+  transform: rotate(0deg);
+  vertical-align: middle;
+  width: 221px;
+}
+
+#s-Rectangle_18 span {
+  color: #333333;
+  font-family: 'Comic Sans MS',Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-weight: 700;
+  text-align: left;
+  text-decoration: none;
+}
+
+#s-Rectangle_18 span#rtr-s-Rectangle_18_0 {
+  color: #333333;
+  font-family: 'Comic Sans MS',Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 0px;
+  text-align: left;
+  text-decoration: none;
+}
+
+#s-Group_17 {
+  height: 41px;
+  margin-left: 1px;
+  margin-top: 410px;
+  position: absolute;
+  width: 222px;
+}
+
+#s-Image_31 {
+  -moz-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  height: 40px;
+  margin-left: 0px;
+  margin-top: 0px;
+  padding: 0px 0px;
+  position: absolute;
+  transform: rotate(0deg);
+  width: 222px;
+}
+
+#s-Image_31 > img, #s-Image_31 > svg {
+  height: 40px;
+  width: 222px;
+  box-shadow: none;
+}
+
+#s-Rectangle_17 {
+  -moz-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  background-color: transparent;
+  background-image: none;
+  box-shadow: none;
+  font-family: 'Comic Sans MS',Arial;
+  font-size: 10.0pt;
+  height: 40px;
+  line-height: 19px;
+  margin-left: 1px;
+  margin-top: 1px;
+  padding: 0px 0px 0px 10px;
+  position: absolute;
+  text-align: left;
+  text-shadow: none;
+  transform: rotate(0deg);
+  vertical-align: middle;
+  width: 221px;
+}
+
+#s-Rectangle_17 span {
+  color: #333333;
+  font-family: 'Comic Sans MS',Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-weight: 700;
+  text-align: left;
+  text-decoration: none;
+}
+
+#s-Rectangle_17 span#rtr-s-Rectangle_17_0 {
+  color: #333333;
+  font-family: 'Comic Sans MS',Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 0px;
+  text-align: left;
+  text-decoration: none;
+}
+
+#s-Paragraph_3 {
+  -moz-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  background-color: transparent;
+  background-image: none;
+  box-shadow: none;
+  font-family: 'Comic Sans MS',Arial;
+  font-size: 10.0pt;
+  height: 314px;
+  line-height: 18px;
+  margin-left: 1px;
+  margin-top: 41px;
+  padding: 5px 5px;
+  position: absolute;
+  text-align: left;
+  text-shadow: none;
+  transform: rotate(0deg);
+  vertical-align: top;
+  width: 223px;
+}
+
+#s-Paragraph_3 span {
+  color: #333333;
+  font-family: 'Comic Sans MS',Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-weight: 400;
+  text-align: left;
+  text-decoration: none;
+}
+
+#s-Paragraph_3 span#rtr-s-Paragraph_3_0 {
+  color: #333333;
+  font-family: 'Comic Sans MS',Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 0px;
+  text-align: left;
+  text-decoration: none;
+}
+
+#s-Group_16 {
+  height: 40px;
+  margin-left: 1px;
+  margin-top: 1px;
+  position: absolute;
+  width: 222px;
+}
+
+#s-Image_30 {
+  -moz-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  height: 40px;
+  margin-left: 0px;
+  margin-top: 0px;
+  padding: 0px 0px;
+  position: absolute;
+  transform: rotate(0deg);
+  width: 222px;
+}
+
+#s-Image_30 > img, #s-Image_30 > svg {
+  box-shadow: none;
+  height: 40px;
+  width: 222px;
+}
+
+#s-Rectangle_16 {
+  -moz-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  background-color: #2B2B2B;
+  background-image: none;
+  box-shadow: none;
+  font-family: 'Comic Sans MS',Arial;
+  font-size: 10.0pt;
+  height: 38px;
+  line-height: 19px;
+  margin-left: 1px;
+  margin-top: 1px;
+  padding: 0px 0px 0px 10px;
+  position: absolute;
+  text-align: left;
+  text-shadow: none;
+  transform: rotate(0deg);
+  vertical-align: middle;
+  width: 221px;
+}
+
+#s-Rectangle_16 span {
+  color: #FFFFFF;
+  font-family: 'Comic Sans MS',Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-weight: 700;
+  text-align: left;
+  text-decoration: none;
+}
+
+#s-Rectangle_16 span#rtr-s-Rectangle_16_0 {
+  color: #FFFFFF;
+  font-family: 'Comic Sans MS',Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 0px;
+  text-align: left;
+  text-decoration: none;
+}
+
+#s-Rectangle_16 span#rtr-s-Rectangle_16_1 {
+  color: #FFFFFF;
+  font-family: 'Comic Sans MS',Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 0px;
+  text-align: center;
+  text-decoration: none;
+}
+
+#s-Rectangle_16 span#rtr-s-Rectangle_16_2 {
+  color: #FFFFFF;
+  font-family: 'Comic Sans MS',Arial;
+  font-size: 10.0pt;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 0px;
+  text-align: center;
+  text-decoration: none;
+}

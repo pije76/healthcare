@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% block styles %}
+	<link href="{% static 'css/charges_sheet.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+<div class="container">
+
+	{% block navmenu %}
+		{% include "navmenu.html" %}
+	{% endblock %}
+
+	<div class="row isi">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+			<form method="post">
+				{% csrf_token %}
+				<table class="table table-bordered">
+					<tbody>
+						<tr>
+							<td>Full name  (as per IC):</td>
+							<td colspan="3">{{ form.full_name|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>IC No:</td>
+							<td colspan="3">{{ form.ic_number|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Date of birth:</td>
+							<td colspan="3">{{ form.date_time_of_appointment|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Address:</td>
+							<td colspan="3">{{ form.hospital_clinic|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>Admission done by:</td>
+							<td colspan="3">{{ form.treatment_order|as_crispy_field }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<button type="submit" class="btn btn-primary">Sign in</button>
+			</form>
+
+		</div>
+
+	</div>
+</div>
+{% endblock %}

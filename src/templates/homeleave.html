@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% block styles %}
+	<link href="{% static 'css/homeleave.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+<div class="container">
+
+	{% block navmenu %}
+		{% include "navmenu.html" %}
+	{% endblock %}
+
+	<div class="row isi">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+			<form method="post">
+				{% csrf_token %}
+				<table class="table table-bordered">
+					<tbody>
+						Name: ……………………………………………..	
+I/C No: ……………………………..  
+
+I, ………………………..…………………..  NRIC No.: ……………………………….
+of ……………………..……………………..……...…..	Tel No.: …………………..  hereby wish to apply from SK Wellspring Home Care for self / patient …………………..…………………. to leave the care center at own risk as per attachment.
+I am fully responsible towards myself / this patient whilst out of the center, SK Wellspring Home Care and its staff of all liabilities in the event of my / the patient’s decline in health or any accidents which may occur whilst I am / said patient is out of the center.
+
+Signature or Thumbprint of 	……………………………………………..……………				    	(Patient / Family Responsible) 
+
+
+……………………………………..            ……………………………………………
+(Relationship)                                                (IC No. :)	                        				
+
+
+Witnessed by : 
+
+Name: ……………………………………
+
+Designation:  ……………………..…
+
+Signature:  ………………………..…			 
+
+Date:  ………………………………	
+
+
+		
+Note :	This form must be signed by the patient, carer or a member of the family 
+	responsible if patient is physically and mentally unfit.
+					</tbody>
+				</table>
+				<button type="submit" class="btn btn-primary">Sign in</button>
+			</form>
+
+		</div>
+
+	</div>
+</div>
+{% endblock %}
