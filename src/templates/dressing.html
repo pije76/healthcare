@@ -21,27 +21,37 @@
 
 			<form method="post">
 				{% csrf_token %}
-				<table class="table table-bordered">
+				<table class="table-sm table-bordered">
 					<tbody>
 						<tr>
 							<td>Full name  (as per IC):</td>
-							<td colspan="3">{{ form.full_name|as_crispy_field }}</td>
+							<td>{{ form.full_name|as_crispy_field }}</td>
 						</tr>
 						<tr>
 							<td>IC No:</td>
-							<td colspan="3">{{ form.ic_number|as_crispy_field }}</td>
+							<td>{{ form.ic_number|as_crispy_field }}</td>
 						</tr>
+					</tbody>
+				</table>
+				<table class="table table-bordered">
+					<thead>
 						<tr>
-							<td>Date of birth:</td>
-							<td colspan="3">{{ form.date_time_of_appointment|as_crispy_field }}</td>
+							<th>Date</th>
+							<th>Time</th>
+							<th>Type / Frequency of Dressing</th>
+							<th>Wound Condition</th>
+							<th>Photo</th>
+							<th>Done By</th>
 						</tr>
+					</thead>
+					<tbody>
 						<tr>
-							<td>Address:</td>
-							<td colspan="3">{{ form.hospital_clinic|as_crispy_field }}</td>
-						</tr>
-						<tr>
-							<td>Admission done by:</td>
-							<td colspan="3">{{ form.treatment_order|as_crispy_field }}</td>
+							<td>{{ form.date|as_crispy_field }}</td>
+							<td>{{ form.time|as_crispy_field }}</td>
+							<td>{{ form.type_frequency_of_dressing|as_crispy_field }}</td>
+							<td>{{ form.wound_condition|as_crispy_field }}</td>
+							<td>{{ form.photo|as_crispy_field }}</td>
+							<td>{{ form.done_by|as_crispy_field }}</td>
 						</tr>
 					</tbody>
 				</table>

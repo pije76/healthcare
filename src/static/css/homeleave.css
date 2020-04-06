@@ -1734,3 +1734,8 @@
   column-gap: 2rem;
   list-style: none;
 }
+
+.homeleve_body {
+  text-align: justify;
+  padding: 20px;
+}

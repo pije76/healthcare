@@ -66,9 +66,9 @@ TENANT_APPS = (
     'post_office',
     'accounts',
     'patient',
-    'jquery',
-    'bootstrap_themes',
-    'bootstrap_submenu',
+#    'jquery',
+#    'bootstrap_themes',
+#    'bootstrap_submenu',
     'crispy_forms',
     'debug_toolbar',
 )

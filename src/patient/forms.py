@@ -64,13 +64,24 @@ class AdmissionForm(forms.ModelForm):
     admission_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
     date_discharge = forms.DateField(required=False, label="", widget=forms.DateInput(attrs={'class': "form-control", 'type': "date"}))
 
-    def as_p(self):
-        return self._html_output(
-            normal_row='<br />%(html_class_attr)s%(label)s %(field)s',
-            error_row='%s',
-            row_ender='</p>',
-            help_text_html=' <span class="helptext">%s</span>',
-            errors_on_separate_row=False)
+
+class ApplicationForHomeCareHomeLeaveForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ApplicationForHomeCareHomeLeaveForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal checkbox-inline'
+        self.helper.label_class = 'col-lg-3'
+        self.helper.field_class = 'col-lg-7'
+
+    class Meta:
+        model = ApplicationForHomeCareHomeLeave
+        fields = '__all__'
+
+    full_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    ic_number = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    date_time_of_appointment = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    hospital_clinic = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 4, 'cols': 15}))
+    treatment_order = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 
 
 class AppointmentForm(forms.ModelForm):
@@ -80,13 +91,9 @@ class AppointmentForm(forms.ModelForm):
         self.helper.form_class = 'form-horizontal checkbox-inline'
         self.helper.label_class = 'col-lg-3'
         self.helper.field_class = 'col-lg-7'
-        self.helper.layout = Layout(
-            CustomCheckbox('mode'),
-            Submit('submit', 'Sign in')
-        )
 
     class Meta:
-        model = Admission
+        model = Appointment
         fields = '__all__'
 
     full_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
@@ -95,10 +102,151 @@ class AppointmentForm(forms.ModelForm):
     hospital_clinic = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 4, 'cols': 15}))
     treatment_order = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 
-    def as_p(self):
-        return self._html_output(
-            normal_row='<br />%(html_class_attr)s%(label)s %(field)s',
-            error_row='%s',
-            row_ender='</p>',
-            help_text_html=' <span class="helptext">%s</span>',
-            errors_on_separate_row=False)
+
+class CannulationForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(CannulationForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal checkbox-inline'
+        self.helper.label_class = 'col-lg-3'
+        self.helper.field_class = 'col-lg-7'
+
+    class Meta:
+        model = Cannulation
+        fields = '__all__'
+
+    full_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    ic_number = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    date_time = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    cannula_cbd_ryles_tube = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    due_date = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    done_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+
+
+class ChargesSheetForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ChargesSheetForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal checkbox-inline'
+        self.helper.label_class = 'col-lg-3'
+        self.helper.field_class = 'col-lg-7'
+
+    class Meta:
+        model = ChargesSheet
+        fields = '__all__'
+
+    full_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    ic_number = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    date = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    items = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    amount_unit = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    given_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+
+
+class DressingChartForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(DressingChartForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal checkbox-inline'
+        self.helper.label_class = 'col-lg-3'
+        self.helper.field_class = 'col-lg-7'
+
+    class Meta:
+        model = DressingChart
+        fields = '__all__'
+
+    full_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    ic_number = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    date = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    time = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    type_frequency_of_dressing = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    wound_condition = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    photo = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    done_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+
+
+class EnteralFeedingRegineForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(EnteralFeedingRegineForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal checkbox-inline'
+        self.helper.label_class = 'col-lg-3'
+        self.helper.field_class = 'col-lg-7'
+
+    class Meta:
+        model = EnteralFeedingRegine
+        fields = '__all__'
+
+    full_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    ic_number = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    date = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    time = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    type_frequency_of_dressing = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    wound_condition = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    photo = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    done_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+
+
+class HGTChartForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(HGTChartForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal checkbox-inline'
+        self.helper.label_class = 'col-lg-3'
+        self.helper.field_class = 'col-lg-7'
+
+    class Meta:
+        model = HGTChart
+        fields = '__all__'
+
+    full_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    ic_number = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    date = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    time = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    blood_glucose_reading = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    remark = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    done_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+
+
+class IntakeOutputChartForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(IntakeOutputChartForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal checkbox-inline'
+        self.helper.label_class = 'col-lg-3'
+        self.helper.field_class = 'col-lg-7'
+
+    class Meta:
+        model = IntakeOutputChart
+        fields = '__all__'
+
+    full_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    ic_number = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    date = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    time = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    type_frequency_of_dressing = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    wound_condition = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    photo = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    done_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+
+
+class MaintainanceForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(MaintainanceForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal checkbox-inline'
+        self.helper.label_class = 'col-lg-3'
+        self.helper.field_class = 'col-lg-7'
+
+    class Meta:
+        model = Maintainance
+        fields = '__all__'
+
+    full_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    ic_number = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    date = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    items = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    location_room = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    remark = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    staff_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+

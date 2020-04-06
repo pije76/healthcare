@@ -7,7 +7,7 @@
 {% block content %}
 
 {% block styles %}
-	<link href="{% static 'css/charges_sheet.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/appointment.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 <div class="container">
@@ -38,16 +38,18 @@
 						<tr>
 							<th>Date</th>
 							<th>Items</th>
-							<th>Amount / Unit</th>
-							<th>Given By:</th>
+							<th>Location/Room</th>
+							<th>Remarks</th>
+							<th>Staff-Name</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
 							<td>{{ form.date|as_crispy_field }}</td>
-							<td>{{ form.date|as_crispy_field }}</td>
 							<td>{{ form.items|as_crispy_field }}</td>
-							<td>{{ form.amount_unit|as_crispy_field }}</td>
+							<td>{{ form.location_room|as_crispy_field }}</td>
+							<td>{{ form.remark|as_crispy_field }}</td>
+							<td>{{ form.staff_name|as_crispy_field }}</td>
 						</tr>
 					</tbody>
 				</table>
