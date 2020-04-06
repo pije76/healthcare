@@ -21,27 +21,31 @@
 
 			<form method="post">
 				{% csrf_token %}
-				<table class="table table-bordered">
+				<table class="table-sm table-bordered">
 					<tbody>
 						<tr>
 							<td>Full name  (as per IC):</td>
-							<td colspan="3">{{ form.full_name|as_crispy_field }}</td>
+							<td>{{ form.full_name|as_crispy_field }}</td>
 						</tr>
 						<tr>
 							<td>IC No:</td>
-							<td colspan="3">{{ form.ic_number|as_crispy_field }}</td>
+							<td>{{ form.ic_number|as_crispy_field }}</td>
 						</tr>
+					</tbody>
+				</table>
+				<table class="table table-bordered">
+					<thead>
 						<tr>
-							<td>Date of birth:</td>
-							<td colspan="3">{{ form.date_time_of_appointment|as_crispy_field }}</td>
+							<th>Appointment</th>
+							<th>Hospital / Clinic</th>
+							<th>Treatment / Order</th>
 						</tr>
+					</thead>
+					<tbody>
 						<tr>
-							<td>Address:</td>
-							<td colspan="3">{{ form.hospital_clinic|as_crispy_field }}</td>
-						</tr>
-						<tr>
-							<td>Admission done by:</td>
-							<td colspan="3">{{ form.treatment_order|as_crispy_field }}</td>
+							<td>{{ form.date_time|as_crispy_field }}</td>
+							<td>{{ form.hospital_clinic|as_crispy_field }}</td>
+							<td>{{ form.treatment_order|as_crispy_field }}</td>
 						</tr>
 					</tbody>
 				</table>

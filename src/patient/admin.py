@@ -6,7 +6,9 @@ from .models import *
 
 admin.site.register(Patient)
 admin.site.register(Admission)
+admin.site.register(ApplicationForHomeCareHomeLeave)
 admin.site.register(Appointment)
 admin.site.register(Cannulation)
 admin.site.register(ChargesSheet)
+admin.site.register(DressingChart)
 

@@ -90,12 +90,12 @@ def appointment(request):
 
 def cannulation(request):
     if request.method == 'POST':
-        form = AppointmentForm(request.POST)
+        form = CannulationForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/')
     else:
-        form = AppointmentForm()
+        form = CannulationForm()
 
     context = {
         'navbar': 'cannulation',
@@ -107,12 +107,12 @@ def cannulation(request):
 
 def charges_sheet(request):
     if request.method == 'POST':
-        form = AppointmentForm(request.POST)
+        form = ChargesSheetForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/')
     else:
-        form = AppointmentForm()
+        form = ChargesSheetForm()
 
     context = {
         'navbar': 'charges_sheet',
@@ -124,12 +124,12 @@ def charges_sheet(request):
 
 def dressing(request):
     if request.method == 'POST':
-        form = AppointmentForm(request.POST)
+        form = DressingChartForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/')
     else:
-        form = AppointmentForm()
+        form = DressingChartForm()
 
     context = {
         'navbar': 'dressing',
@@ -141,12 +141,12 @@ def dressing(request):
 
 def enteral_feeding_regine(request):
     if request.method == 'POST':
-        form = AppointmentForm(request.POST)
+        form = EnteralFeedingRegineForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/')
     else:
-        form = AppointmentForm()
+        form = EnteralFeedingRegineForm()
 
     context = {
         'navbar': 'enteral_feeding_regine',
@@ -154,3 +154,35 @@ def enteral_feeding_regine(request):
     }
 
     return render(request, 'enteral_feeding_regine.html', context)
+
+def hgt_chart(request):
+    if request.method == 'POST':
+        form = HGTChartForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = HGTChartForm()
+
+    context = {
+        'navbar': 'hgt_chart',
+        'form': form,
+    }
+
+    return render(request, 'hgt_chart.html', context)
+
+def intake_output(request):
+    if request.method == 'POST':
+        form = DressingChartForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = DressingChartForm()
+
+    context = {
+        'navbar': 'intake_output',
+        'form': form,
+    }
+
+    return render(request, 'intake_output.html', context)
