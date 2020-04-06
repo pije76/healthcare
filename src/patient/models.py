@@ -161,3 +161,16 @@ class IntakeOutputChart(models.Model):
 
     def __str__(self):
         return str(self.full_name)
+
+
+class Maintainance(models.Model):
+    full_name = models.ForeignKey(Patient, related_name='name_maintainance', on_delete=models.CASCADE)
+    ic_number = models.ForeignKey(Patient, related_name='icnumber_maintainance', on_delete=models.CASCADE)
+    date = models.CharField(max_length=100)
+    items = models.CharField(max_length=100)
+    location_room = models.CharField(max_length=100)
+    remark = models.CharField(max_length=100)
+    staff_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(self.full_name)

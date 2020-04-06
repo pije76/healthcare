@@ -186,3 +186,19 @@ def intake_output(request):
     }
 
     return render(request, 'intake_output.html', context)
+
+def maintainance(request):
+    if request.method == 'POST':
+        form = MaintainanceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = MaintainanceForm()
+
+    context = {
+        'navbar': 'maintainance',
+        'form': form,
+    }
+
+    return render(request, 'maintainance.html', context)

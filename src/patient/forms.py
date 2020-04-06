@@ -228,3 +228,25 @@ class IntakeOutputChartForm(forms.ModelForm):
     wound_condition = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
     photo = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
     done_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+
+
+class MaintainanceForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(MaintainanceForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal checkbox-inline'
+        self.helper.label_class = 'col-lg-3'
+        self.helper.field_class = 'col-lg-7'
+
+    class Meta:
+        model = Maintainance
+        fields = '__all__'
+
+    full_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    ic_number = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    date = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    items = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    location_room = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    remark = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    staff_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+
