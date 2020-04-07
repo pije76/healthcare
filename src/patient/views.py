@@ -107,12 +107,12 @@ def cannulation(request):
 
 def charges_sheet(request):
     if request.method == 'POST':
-        form = ChargesSheetForm(request.POST)
+        form = ChargesForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/')
     else:
-        form = ChargesSheetForm()
+        form = ChargesForm()
 
     context = {
         'navbar': 'charges_sheet',
@@ -124,12 +124,12 @@ def charges_sheet(request):
 
 def dressing(request):
     if request.method == 'POST':
-        form = DressingChartForm(request.POST)
+        form = DressingForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/')
     else:
-        form = DressingChartForm()
+        form = DressingForm()
 
     context = {
         'navbar': 'dressing',

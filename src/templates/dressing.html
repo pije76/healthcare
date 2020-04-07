@@ -7,7 +7,7 @@
 {% block content %}
 
 {% block styles %}
-	<link href="{% static 'css/appointment.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/dressing.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 <div class="container">
@@ -38,9 +38,10 @@
 						<tr>
 							<th>Date</th>
 							<th>Time</th>
-							<th>Type / Frequency of Dressing</th>
+							<th>Type</th>
+							<th>Wound Location</th>
 							<th>Wound Condition</th>
-							<th>Photo</th>
+							<th>Images</th>
 							<th>Done By</th>
 						</tr>
 					</thead>
@@ -48,9 +49,10 @@
 						<tr>
 							<td>{{ form.date|as_crispy_field }}</td>
 							<td>{{ form.time|as_crispy_field }}</td>
-							<td>{{ form.type_frequency_of_dressing|as_crispy_field }}</td>
+							<td>{{ form.type|as_crispy_field }}</td>
+							<td>{{ form.wound_location|as_crispy_field }}</td>
 							<td>{{ form.wound_condition|as_crispy_field }}</td>
-							<td>{{ form.photo|as_crispy_field }}</td>
+							<td>{{ form.images|as_crispy_field }}</td>
 							<td>{{ form.done_by|as_crispy_field }}</td>
 						</tr>
 					</tbody>

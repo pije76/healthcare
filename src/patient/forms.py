@@ -123,16 +123,16 @@ class CannulationForm(forms.ModelForm):
     done_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 
 
-class ChargesSheetForm(forms.ModelForm):
+class ChargesForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(ChargesSheetForm, self).__init__(*args, **kwargs)
+        super(ChargesForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal checkbox-inline'
         self.helper.label_class = 'col-lg-3'
         self.helper.field_class = 'col-lg-7'
 
     class Meta:
-        model = ChargesSheet
+        model = Charges
         fields = '__all__'
 
     full_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
@@ -143,16 +143,16 @@ class ChargesSheetForm(forms.ModelForm):
     given_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 
 
-class DressingChartForm(forms.ModelForm):
+class DressingForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(DressingChartForm, self).__init__(*args, **kwargs)
+        super(DressingForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal checkbox-inline'
         self.helper.label_class = 'col-lg-3'
         self.helper.field_class = 'col-lg-7'
 
     class Meta:
-        model = DressingChart
+        model = Dressing
         fields = '__all__'
 
     full_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))

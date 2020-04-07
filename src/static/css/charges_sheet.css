@@ -1728,3 +1728,7 @@
 .custom-control-label {
   padding-left: 20px;
 }
+
+.table-sm {
+  margin-bottom: 10px;
+}

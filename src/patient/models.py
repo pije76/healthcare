@@ -94,7 +94,7 @@ class Cannulation(models.Model):
         return str(self.full_name)
 
 
-class ChargesSheet(models.Model):
+class Charges(models.Model):
     full_name = models.ForeignKey(Patient, related_name='name_chargessheet', on_delete=models.CASCADE)
     ic_number = models.ForeignKey(Patient, related_name='icnumber_chargessheet', on_delete=models.CASCADE)
     date = models.CharField(max_length=100)
@@ -110,7 +110,7 @@ def upload_path(instance, filename):
     return '{0}/{1}'.format('images', filename)
 
 
-class DressingChart(models.Model):
+class Dressing(models.Model):
     full_name = models.ForeignKey(Patient, related_name='name_dressing', on_delete=models.CASCADE)
     ic_number = models.ForeignKey(Patient, related_name='icnumber_dressing', on_delete=models.CASCADE)
     date = models.CharField(max_length=100)
