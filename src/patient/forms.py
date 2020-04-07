@@ -159,9 +159,10 @@ class DressingChartForm(forms.ModelForm):
     ic_number = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
     date = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
     time = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-    type_frequency_of_dressing = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    type = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    wound_location = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
     wound_condition = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-    photo = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    images = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
     done_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 
 
@@ -240,6 +241,48 @@ class MaintainanceForm(forms.ModelForm):
 
     class Meta:
         model = Maintainance
+        fields = '__all__'
+
+    full_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    ic_number = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    date = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    items = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    location_room = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    remark = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    staff_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+
+
+class MedicationAdministrationRecordForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(MedicationAdministrationRecordForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal checkbox-inline'
+        self.helper.label_class = 'col-lg-3'
+        self.helper.field_class = 'col-lg-7'
+
+    class Meta:
+        model = MedicationAdministrationRecord
+        fields = '__all__'
+
+    full_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    ic_number = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    date = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    items = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    location_room = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    remark = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    staff_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+
+
+class MedicationForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(MedicationForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal checkbox-inline'
+        self.helper.label_class = 'col-lg-3'
+        self.helper.field_class = 'col-lg-7'
+
+    class Meta:
+        model = Medication
         fields = '__all__'
 
     full_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))

@@ -137,10 +137,10 @@ TEMPLATES = [
             ],
         },
     },
-    {
-        'BACKEND': 'patient.pdf.PdftkEngine',
-        'APP_DIRS': True,
-    },
+#    {
+#        'BACKEND': 'patient.pdf.PdftkEngine',
+#        'APP_DIRS': True,
+#    },
 ]
 
 

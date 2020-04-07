@@ -155,6 +155,7 @@ def enteral_feeding_regine(request):
 
     return render(request, 'enteral_feeding_regine.html', context)
 
+
 def hgt_chart(request):
     if request.method == 'POST':
         form = HGTChartForm(request.POST)
@@ -170,6 +171,7 @@ def hgt_chart(request):
     }
 
     return render(request, 'hgt_chart.html', context)
+
 
 def intake_output(request):
     if request.method == 'POST':
@@ -187,6 +189,7 @@ def intake_output(request):
 
     return render(request, 'intake_output.html', context)
 
+
 def maintainance(request):
     if request.method == 'POST':
         form = MaintainanceForm(request.POST)
@@ -202,3 +205,139 @@ def maintainance(request):
     }
 
     return render(request, 'maintainance.html', context)
+
+
+def medication_administration(request):
+    if request.method == 'POST':
+        form = MaintainanceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = MaintainanceForm()
+
+    context = {
+        'navbar': 'medication_administration',
+        'form': form,
+    }
+
+    return render(request, 'medication_administration.html', context)
+
+
+def medication(request):
+    if request.method == 'POST':
+        form = MaintainanceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = MaintainanceForm()
+
+    context = {
+        'navbar': 'medication',
+        'form': form,
+    }
+
+    return render(request, 'medication.html', context)
+
+
+def nursing(request):
+    if request.method == 'POST':
+        form = MaintainanceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = MaintainanceForm()
+
+    context = {
+        'navbar': 'nursing',
+        'form': form,
+    }
+
+    return render(request, 'nursing.html', context)
+
+
+def physio_progress_note_back(request):
+    if request.method == 'POST':
+        form = MaintainanceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = MaintainanceForm()
+
+    context = {
+        'navbar': 'physio_progress_note_back',
+        'form': form,
+    }
+
+    return render(request, 'physio_progress_note_back.html', context)
+
+
+def physio_progress_note_front(request):
+    if request.method == 'POST':
+        form = MaintainanceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = MaintainanceForm()
+
+    context = {
+        'navbar': 'physio_progress_note_front',
+        'form': form,
+    }
+
+    return render(request, 'physio_progress_note_front.html', context)
+
+
+def physiotherapy_general_assessment(request):
+    if request.method == 'POST':
+        form = MaintainanceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = MaintainanceForm()
+
+    context = {
+        'navbar': 'physiotherapy_general_assessment',
+        'form': form,
+    }
+
+    return render(request, 'physiotherapy_general_assessment.html', context)
+
+
+def stool(request):
+    if request.method == 'POST':
+        form = MaintainanceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = MaintainanceForm()
+
+    context = {
+        'navbar': 'stool',
+        'form': form,
+    }
+
+    return render(request, 'stool.html', context)
+
+
+def vital_sign_flow(request):
+    if request.method == 'POST':
+        form = MaintainanceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = MaintainanceForm()
+
+    context = {
+        'navbar': 'vital_sign_flow',
+        'form': form,
+    }
+
+    return render(request, 'vital_sign_flow.html', context)

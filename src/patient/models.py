@@ -107,7 +107,7 @@ class ChargesSheet(models.Model):
 
 
 def upload_path(instance, filename):
-    return '{0}/{1}'.format('photo', filename)
+    return '{0}/{1}'.format('images', filename)
 
 
 class DressingChart(models.Model):
@@ -115,9 +115,10 @@ class DressingChart(models.Model):
     ic_number = models.ForeignKey(Patient, related_name='icnumber_dressing', on_delete=models.CASCADE)
     date = models.CharField(max_length=100)
     time = models.CharField(max_length=100)
-    type_frequency_of_dressing = models.CharField(max_length=100)
+    type = models.CharField(max_length=100)
+    wound_location = models.CharField(max_length=100)
     wound_condition = models.CharField(max_length=100)
-    photo = models.FileField(upload_to="upload_path", null=True, blank=True)
+    images = models.FileField(upload_to="upload_path", null=True, blank=True)
     done_by = models.CharField(max_length=100)
 
     def __str__(self):
@@ -166,6 +167,110 @@ class IntakeOutputChart(models.Model):
 class Maintainance(models.Model):
     full_name = models.ForeignKey(Patient, related_name='name_maintainance', on_delete=models.CASCADE)
     ic_number = models.ForeignKey(Patient, related_name='icnumber_maintainance', on_delete=models.CASCADE)
+    date = models.CharField(max_length=100)
+    items = models.CharField(max_length=100)
+    location_room = models.CharField(max_length=100)
+    remark = models.CharField(max_length=100)
+    staff_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(self.full_name)
+
+
+class MedicationAdministrationRecord(models.Model):
+    full_name = models.ForeignKey(Patient, related_name='name_medicationadministration', on_delete=models.CASCADE)
+    ic_number = models.ForeignKey(Patient, related_name='icnumber_medicationadministration', on_delete=models.CASCADE)
+    date = models.CharField(max_length=100)
+    items = models.CharField(max_length=100)
+    location_room = models.CharField(max_length=100)
+    remark = models.CharField(max_length=100)
+    staff_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(self.full_name)
+
+
+class Medication(models.Model):
+    full_name = models.ForeignKey(Patient, related_name='name_medication', on_delete=models.CASCADE)
+    ic_number = models.ForeignKey(Patient, related_name='icnumber_medication', on_delete=models.CASCADE)
+    date = models.CharField(max_length=100)
+    items = models.CharField(max_length=100)
+    location_room = models.CharField(max_length=100)
+    remark = models.CharField(max_length=100)
+    staff_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(self.full_name)
+
+
+class Nursing(models.Model):
+    full_name = models.ForeignKey(Patient, related_name='name_nursing', on_delete=models.CASCADE)
+    ic_number = models.ForeignKey(Patient, related_name='icnumber_nursing', on_delete=models.CASCADE)
+    date = models.CharField(max_length=100)
+    items = models.CharField(max_length=100)
+    location_room = models.CharField(max_length=100)
+    remark = models.CharField(max_length=100)
+    staff_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(self.full_name)
+
+
+class PhysioProgressNoteBack(models.Model):
+    full_name = models.ForeignKey(Patient, related_name='name_physioprogressnoteback', on_delete=models.CASCADE)
+    ic_number = models.ForeignKey(Patient, related_name='icnumber_physioprogressnoteback', on_delete=models.CASCADE)
+    date = models.CharField(max_length=100)
+    items = models.CharField(max_length=100)
+    location_room = models.CharField(max_length=100)
+    remark = models.CharField(max_length=100)
+    staff_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(self.full_name)
+
+
+class PhysioProgressNoteFront(models.Model):
+    full_name = models.ForeignKey(Patient, related_name='name_physioprogressnotefront', on_delete=models.CASCADE)
+    ic_number = models.ForeignKey(Patient, related_name='icnumber_physioprogressnotefront', on_delete=models.CASCADE)
+    date = models.CharField(max_length=100)
+    items = models.CharField(max_length=100)
+    location_room = models.CharField(max_length=100)
+    remark = models.CharField(max_length=100)
+    staff_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(self.full_name)
+
+
+class PhysiotherapyGeneralAssessment(models.Model):
+    full_name = models.ForeignKey(Patient, related_name='name_physiotherapygeneralassessment', on_delete=models.CASCADE)
+    ic_number = models.ForeignKey(Patient, related_name='icnumber_physiotherapygeneralassessment', on_delete=models.CASCADE)
+    date = models.CharField(max_length=100)
+    items = models.CharField(max_length=100)
+    location_room = models.CharField(max_length=100)
+    remark = models.CharField(max_length=100)
+    staff_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(self.full_name)
+
+
+class Stool(models.Model):
+    full_name = models.ForeignKey(Patient, related_name='name_stool', on_delete=models.CASCADE)
+    ic_number = models.ForeignKey(Patient, related_name='icnumber_stool', on_delete=models.CASCADE)
+    date = models.CharField(max_length=100)
+    items = models.CharField(max_length=100)
+    location_room = models.CharField(max_length=100)
+    remark = models.CharField(max_length=100)
+    staff_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return str(self.full_name)
+
+
+class VitalSignFlow(models.Model):
+    full_name = models.ForeignKey(Patient, related_name='name_vitalsignflow', on_delete=models.CASCADE)
+    ic_number = models.ForeignKey(Patient, related_name='icnumber_vitalsignflow', on_delete=models.CASCADE)
     date = models.CharField(max_length=100)
     items = models.CharField(max_length=100)
     location_room = models.CharField(max_length=100)

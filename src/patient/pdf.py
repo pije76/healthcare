@@ -25,8 +25,8 @@ class PdftkEngine(BaseEngine):
         super(PdftkEngine, self).__init__(params)
         self.engine = self._Engine(self.dirs, self.app_dirs, **options)
 
-    def get_template(self, template_name):
-        return PdfTemplate(self.engine.get_template(template_name='homeleave.pdf'))
+    def get_template(self, template_name, dirs=app_dirname):
+        return PdfTemplate(self.engine.get_template(template_name, dirs))
 
     class _Engine(Engine):
         def make_origin(self, display_name, loader, name, dirs):
