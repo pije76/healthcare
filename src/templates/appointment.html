@@ -17,6 +17,12 @@
 	{% endblock %}
 
 	<div class="row isi">
+
+		<div class="formtitle">
+			Appointment Form
+		</div>
+
+
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 			<form method="post">
@@ -43,9 +49,9 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td>{{ form.date_time|as_crispy_field }}</td>
-							<td>{{ form.hospital_clinic|as_crispy_field }}</td>
-							<td>{{ form.treatment_order|as_crispy_field }}</td>
+							<td colspan="1">{{ form.appointment|as_crispy_field }}</td>
+							<td colspan="1">{{ form.hospital_clinic|as_crispy_field }}</td>
+							<td colspan="1">{{ form.treatment_order|as_crispy_field }}</td>
 						</tr>
 					</tbody>
 				</table>

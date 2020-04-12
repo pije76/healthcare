@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.views.generic import RedirectView
 from django.urls import include, path  # For django versions from 2.0 and up
 
-from accounts.views import *
+from data.views import *
 from patient.views import *
 
 urlpatterns = [
@@ -29,7 +29,7 @@ urlpatterns = [
     path('vital-sign-flow/', vital_sign_flow, name='vital_sign_flow'),
     path('admin/', admin.site.urls),
     path(r'accounts/', include('allauth.urls')),
-    path(r'account/', include('accounts.urls')),
+    path(r'account/', include('patient.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

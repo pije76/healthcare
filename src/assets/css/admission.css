@@ -1,11 +1,34 @@
 .isi {
   height: auto;
+  padding-bottom: 20px;
 }
 
 .footer {
   height: 151px;
 }
 
+
+.kolom {
+  column-count: 2;
+  column-gap: 2rem;
+  list-style: none;
+}
+.dateku{
+  margin-left: -60px;
+}
+
+#div_id_age {
+  display: inline-flex;
+  margin-left: -10px;
+  margin-right: -80px;
+}
+.modeku {
+  display: inline-flex;
+}
+
+#id_ic_number, #id_birth_date, #id_marital_status, #id_phone, #id_religion, #id_ec_ic_number, #id_ec_relationship, #id_ec_phone, #id_date_discharge {
+    width: initial;
+}
 #s-Text_1 {
   width: auto;
   height: auto;
@@ -1421,12 +1444,13 @@
 }
 #shapewrapper-s-Line_1 {
   position: absolute;
-  width: 986px;
+  width: 1140px;
   height: 2px;
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
   transform: rotate(0deg);
   padding: 0px 0px;
+  border: 1px solid #DDDDE1;
 }
 #s-Line_1 {
   width: 986px;
@@ -1721,4 +1745,8 @@
   height: 27px;
   width: 15px;
   box-shadow: none;
+}
+
+.custom-control-label {
+  padding-left: 20px;
 }

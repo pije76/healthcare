@@ -17,6 +17,11 @@
 	{% endblock %}
 
 	<div class="row isi">
+
+		<div class="formtitle">
+			Charges Sheet
+		</div>
+
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 			<form method="post">
@@ -45,9 +50,9 @@
 					<tbody>
 						<tr>
 							<td>{{ form.date|as_crispy_field }}</td>
-							<td>{{ form.date|as_crispy_field }}</td>
 							<td>{{ form.items|as_crispy_field }}</td>
 							<td>{{ form.amount_unit|as_crispy_field }}</td>
+							<td>{{ form.given_by|as_crispy_field }}</td>
 						</tr>
 					</tbody>
 				</table>

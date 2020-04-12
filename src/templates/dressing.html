@@ -17,9 +17,14 @@
 	{% endblock %}
 
 	<div class="row isi">
+
+		<div class="formtitle">
+			Dressing Chart
+		</div>
+
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-			<form method="post">
+			<form method="post" enctype="multipart/form-data">
 				{% csrf_token %}
 				<table class="table-sm table-bordered">
 					<tbody>
@@ -39,9 +44,8 @@
 							<th>Date</th>
 							<th>Time</th>
 							<th>Type</th>
-							<th>Wound Location</th>
 							<th>Wound Condition</th>
-							<th>Images</th>
+							<th>Wound Location</th>
 							<th>Done By</th>
 						</tr>
 					</thead>
@@ -49,10 +53,9 @@
 						<tr>
 							<td>{{ form.date|as_crispy_field }}</td>
 							<td>{{ form.time|as_crispy_field }}</td>
-							<td>{{ form.type|as_crispy_field }}</td>
-							<td>{{ form.wound_location|as_crispy_field }}</td>
+							<td>{{ form.frequency|as_crispy_field }}</td>
 							<td>{{ form.wound_condition|as_crispy_field }}</td>
-							<td>{{ form.images|as_crispy_field }}</td>
+							<td>{{ form.wound_location|as_crispy_field }}</td>
 							<td>{{ form.done_by|as_crispy_field }}</td>
 						</tr>
 					</tbody>

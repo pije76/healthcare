@@ -17,6 +17,11 @@
 	{% endblock %}
 
 	<div class="row isi">
+
+		<div class="formtitle">
+			Stool Chart
+		</div>
+
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 			<form method="post">
@@ -37,19 +42,23 @@
 					<thead>
 						<tr>
 							<th>Date</th>
-							<th>Items</th>
-							<th>Location/Room</th>
-							<th>Remarks</th>
-							<th>Staff-Name</th>
+							<th>Time</th>
+							<th>Frequency</th>
+							<th>Consistency</th>
+							<th>Amount</th>
+							<th>Remark</th>
+							<th>Name</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
 							<td>{{ form.date|as_crispy_field }}</td>
-							<td>{{ form.items|as_crispy_field }}</td>
-							<td>{{ form.location_room|as_crispy_field }}</td>
+							<td>{{ form.time|as_crispy_field }}</td>
+							<td>{{ form.frequency|as_crispy_field }}</td>
+							<td>{{ form.consistency|as_crispy_field }}</td>
+							<td>{{ form.amount|as_crispy_field }}</td>
 							<td>{{ form.remark|as_crispy_field }}</td>
-							<td>{{ form.staff_name|as_crispy_field }}</td>
+							<td>{{ form.name|as_crispy_field }}</td>
 						</tr>
 					</tbody>
 				</table>

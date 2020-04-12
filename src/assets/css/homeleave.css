@@ -7,14 +7,6 @@
   height: 151px;
 }
 
-.table-sm {
-  width: 70%;
-}
-
-#id_ic_number {
-    width: initial;
-}
-
 #s-Text_1 {
   width: auto;
   height: auto;
@@ -1737,6 +1729,13 @@
   padding-left: 20px;
 }
 
-.table-sm {
-  margin-bottom: 10px;
+.kolom {
+  column-count: 2;
+  column-gap: 2rem;
+  list-style: none;
+}
+
+.homeleve_body {
+  text-align: justify;
+  padding: 20px;
 }
