@@ -2,6 +2,19 @@
   height: 205px;
 }
 
+.topBar {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 0px;
+}
+
+.formtitle {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 18px;
+  margin: -50px 50% 10px 220px;
+}
+
 #s-menuBar {
   height: 41px;
   margin-left: 0px;
@@ -182,6 +195,7 @@
   transform: rotate(0deg);
   vertical-align: middle;
   width: auto;
+  z-index: 99;
 }
 
 #menu_etext span {
@@ -408,12 +422,13 @@
   margin-left: 0px;
   margin-top: 128px;
   position: absolute;
-  width: 986px;
+  width: 1140px;
   height: 2px;
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
   transform: rotate(0deg);
   padding: 0px 0px;
+  border: 1px solid #DDDDE1;
 }
 
 #s-Line_1 {

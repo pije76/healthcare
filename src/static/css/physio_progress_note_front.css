@@ -7,14 +7,6 @@
   height: 151px;
 }
 
-.table-sm {
-  width: 70%;
-}
-
-#id_ic_number {
-    width: initial;
-}
-
 #s-Text_1 {
   width: auto;
   height: auto;
@@ -1736,6 +1728,7 @@
 .custom-control-label {
   padding-left: 20px;
 }
+
 
 .table-sm {
   margin-bottom: 10px;

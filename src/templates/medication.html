@@ -7,7 +7,7 @@
 {% block content %}
 
 {% block styles %}
-	<link href="{% static 'css/dressing.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/medication.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 <div class="container">
@@ -19,12 +19,12 @@
 	<div class="row isi">
 
 		<div class="formtitle">
-			Dressing Chart
+			Medication Record
 		</div>
 
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-			<form method="post" enctype="multipart/form-data">
+			<form method="post">
 				{% csrf_token %}
 				<table class="table-sm table-bordered">
 					<tbody>
@@ -42,21 +42,29 @@
 					<thead>
 						<tr>
 							<th>Date</th>
-							<th>Time</th>
-							<th>Type</th>
-							<th>Wound Condition</th>
-							<th>Wound Location</th>
-							<th>Done By</th>
+							<th>Times</th>
+							<th>Medication</th>
+							<th>Tablet/Unit</th>
+							<th>Dosage</th>
+							<th>Frequency</th>
+							<th>Top Up</th>
+							<th>Balance</th>
+							<th>Remark</th>
+							<th>Staff</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
 							<td>{{ form.date|as_crispy_field }}</td>
 							<td>{{ form.time|as_crispy_field }}</td>
+							<td>{{ form.medication|as_crispy_field }}</td>
+							<td>{{ form.tablet|as_crispy_field }}</td>
+							<td>{{ form.dosage|as_crispy_field }}</td>
 							<td>{{ form.frequency|as_crispy_field }}</td>
-							<td>{{ form.wound_condition|as_crispy_field }}</td>
-							<td>{{ form.wound_location|as_crispy_field }}</td>
-							<td>{{ form.done_by|as_crispy_field }}</td>
+							<td>{{ form.topup|as_crispy_field }}</td>
+							<td>{{ form.balance|as_crispy_field }}</td>
+							<td>{{ form.remark|as_crispy_field }}</td>
+							<td>{{ form.staff|as_crispy_field }}</td>
 						</tr>
 					</tbody>
 				</table>

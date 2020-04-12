@@ -76,6 +76,11 @@ $(document).ready(function()
 	{% endblock %}
 
 	<div class="row isi">
+
+		<div class="formtitle">
+			Admission Form
+		</div>
+		
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 			<form method="post">
@@ -85,7 +90,7 @@ $(document).ready(function()
 						<tr>
 							<td>Date & Time of admission:</td>
 							<td colspan="2">{{ form.date|as_crispy_field }}</td>
-							<td style="padding-left: 15px; display: inline-flex;">{{ form.time|as_crispy_field }} hours</td>
+							<td style="padding-left: 15px; display: inline-flex;">{{ form.time|as_crispy_field }} <p style="margin-top:5px;">hours</p></td>
 						</tr>
 						<tr>
 							<td>Mode of admission:</td>

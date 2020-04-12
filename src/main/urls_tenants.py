@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.views.generic import RedirectView
 from django.urls import include, path  # For django versions from 2.0 and up
 
-from accounts.views import *
+from data.views import *
 from patient.views import *
 
 urlpatterns = [
@@ -19,9 +19,17 @@ urlpatterns = [
     path('hgt/', hgt_chart, name='hgt_chart'),
     path('intake-output/', intake_output, name='intake_output'),
     path('maintainance/', maintainance, name='maintainance'),
+    path('medication-administration/', medication_administration, name='medication_administration'),
+    path('medication/', medication, name='medication'),
+    path('nursing/', nursing, name='nursing'),
+    path('physio-progress-note-back/', physio_progress_note_back, name='physio_progress_note_back'),
+    path('physio-progress-note-front/', physio_progress_note_front, name='physio_progress_note_front'),
+    path('physiotherapy-general-assessment/', physiotherapy_general_assessment, name='physiotherapy_general_assessment'),
+    path('stool/', stool, name='stool'),
+    path('vital-sign-flow/', vital_sign_flow, name='vital_sign_flow'),
     path('admin/', admin.site.urls),
     path(r'accounts/', include('allauth.urls')),
-    path(r'account/', include('accounts.urls')),
+    path(r'account/', include('patient.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

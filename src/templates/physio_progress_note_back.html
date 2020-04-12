@@ -7,7 +7,7 @@
 {% block content %}
 
 {% block styles %}
-	<link href="{% static 'css/dressing.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/physio_progress_note_back.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 <div class="container">
@@ -19,12 +19,12 @@
 	<div class="row isi">
 
 		<div class="formtitle">
-			Dressing Chart
+			Physiotherapy Progress Note-Back Sheet
 		</div>
 
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-			<form method="post" enctype="multipart/form-data">
+			<form method="post">
 				{% csrf_token %}
 				<table class="table-sm table-bordered">
 					<tbody>
@@ -42,21 +42,19 @@
 					<thead>
 						<tr>
 							<th>Date</th>
-							<th>Time</th>
-							<th>Type</th>
-							<th>Wound Condition</th>
-							<th>Wound Location</th>
-							<th>Done By</th>
+							<th>Items</th>
+							<th>Location/Room</th>
+							<th>Remarks</th>
+							<th>Staff-Name</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
 							<td>{{ form.date|as_crispy_field }}</td>
-							<td>{{ form.time|as_crispy_field }}</td>
-							<td>{{ form.frequency|as_crispy_field }}</td>
-							<td>{{ form.wound_condition|as_crispy_field }}</td>
-							<td>{{ form.wound_location|as_crispy_field }}</td>
-							<td>{{ form.done_by|as_crispy_field }}</td>
+							<td>{{ form.items|as_crispy_field }}</td>
+							<td>{{ form.location_room|as_crispy_field }}</td>
+							<td>{{ form.remark|as_crispy_field }}</td>
+							<td>{{ form.staff_name|as_crispy_field }}</td>
 						</tr>
 					</tbody>
 				</table>

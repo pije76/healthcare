@@ -7,7 +7,7 @@
 {% block content %}
 
 {% block styles %}
-	<link href="{% static 'css/appointment.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/enteral_feeding_regine.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 <div class="container">
@@ -17,6 +17,11 @@
 	{% endblock %}
 
 	<div class="row isi">
+
+		<div class="formtitle">
+			Enteral Feeding Regime
+		</div>
+
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 			<form method="post">
@@ -36,22 +41,16 @@
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th>Date</th>
 							<th>Time</th>
-							<th>Type / Frequency of Dressing</th>
-							<th>Wound Condition</th>
-							<th>Photo</th>
-							<th>Done By</th>
+							<th>Type of Milk</th>
+							<th>Amount (ml)</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td>{{ form.date|as_crispy_field }}</td>
 							<td>{{ form.time|as_crispy_field }}</td>
-							<td>{{ form.type_frequency_of_dressing|as_crispy_field }}</td>
-							<td>{{ form.wound_condition|as_crispy_field }}</td>
-							<td>{{ form.photo|as_crispy_field }}</td>
-							<td>{{ form.done_by|as_crispy_field }}</td>
+							<td>{{ form.type_of_milk|as_crispy_field }}</td>
+							<td>{{ form.amount|as_crispy_field }}</td>
 						</tr>
 					</tbody>
 				</table>

@@ -38,39 +38,41 @@ SHARED_APPS = (
     'django_tenants',  # mandatory
     'customers',  # you must list the app where your tenant model resides in
 
+    'django.contrib.auth',
     'django.contrib.contenttypes',
 
     # everything below here is optional
-    'django.contrib.auth',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.admin',
     'django.contrib.staticfiles',
-    'debug_toolbar',
 )
 
 TENANT_APPS = (
     # The following Django contrib apps must be in TENANT_APPS
-    'django.contrib.contenttypes',
     'django.contrib.auth',
+    'django.contrib.contenttypes',
+
     'django.contrib.admin',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'data',
+    'patient',
 
     # your tenant-specific apps
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'post_office',
-    'accounts',
-    'patient',
+
 #    'jquery',
 #    'bootstrap_themes',
 #    'bootstrap_submenu',
     'crispy_forms',
-    'debug_toolbar',
+    'widget_tweaks',
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + \
@@ -78,12 +80,13 @@ INSTALLED_APPS = list(SHARED_APPS) + \
 
 
 TENANT_MODEL = "customers.Client"  # aplp.Model
-
 TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
+#TENANT_USERS_DOMAIN = "edapt.com"
+
+#SESSION_COOKIE_DOMAIN = '.edapt.com'
 
 
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django_tenants.middleware.main.TenantMainMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -102,16 +105,18 @@ AUTHENTICATION_BACKENDS = (
 
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
+#    'tenant_users.permissions.backend.UserBackend',
 )
 
 # Allauth settings
+#AUTH_USER_MODEL = 'patient.UserProfile'
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_EMAIL_VERIFICATION= False
 LOGIN_REDIRECT_URL = 'account'
 LOGOUT_REDIRECT_URL = 'index'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
-ACCOUNT_FORMS = {'login': 'accounts.forms.MyLoginForm'}
+ACCOUNT_FORMS = {'login': 'patient.forms.MyLoginForm'}
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_SESSION_REMEMBER = False
 
@@ -137,10 +142,10 @@ TEMPLATES = [
             ],
         },
     },
-    {
-        'BACKEND': 'patient.pdf.PdftkEngine',
-        'APP_DIRS': True,
-    },
+#    {
+#        'BACKEND': 'patient.pdf.PdftkEngine',
+#        'APP_DIRS': True,
+#    },
 ]
 
 
@@ -261,3 +266,15 @@ with os.scandir(SETTINGS_PATH) as it:
             module.__file__ = entry
             sys.modules[module_name] = module
             exec(open(entry, "rb").read())
+
+if DEBUG:
+    MIDDLEWARE += (
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    )
+    INSTALLED_APPS += (
+        'debug_toolbar',
+    )
+    INTERNAL_IPS = ('127.0.0.1', )
+    DEBUG_TOOLBAR_CONFIG = {
+        'INTERCEPT_REDIRECTS': False,
+    }

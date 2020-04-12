@@ -1,14 +1,23 @@
-from django.db import models
 from django.contrib import admin
-from django_tenants.admin import TenantAdminMixin
+from django.contrib.auth import get_user_model
+from django.contrib.auth.admin import UserAdmin
 
 from .models import *
 
-admin.site.register(Patient)
-admin.site.register(Admission)
-admin.site.register(ApplicationForHomeCareHomeLeave)
-admin.site.register(Appointment)
-admin.site.register(Cannulation)
-admin.site.register(ChargesSheet)
-admin.site.register(DressingChart)
+# Register your models here.
 
+
+class UserAdmin(admin.ModelAdmin):
+    list_display = [
+#        'ic_number',
+        'user',
+#        'full_name',
+    ]
+    list_filter = ['user']
+
+
+    class Meta:
+        model = UserProfile
+
+
+admin.site.register(UserProfile, UserAdmin)
