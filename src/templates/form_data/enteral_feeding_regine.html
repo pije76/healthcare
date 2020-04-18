@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% block styles %}
+	<link href="{% static 'css/form_data/enteral_feeding_regine.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+<div class="container">
+
+	{% block navmenu %}
+		{% include "navmenu.html" %}
+	{% endblock %}
+
+	<div class="row isi">
+
+		<div class="formtitle">
+			Enteral Feeding Regime
+		</div>
+
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+			<form method="post">
+				{% csrf_token %}
+				<table class="table-sm table-bordered">
+					<tbody>
+						<tr>
+							<td>Full name  (as per IC):</td>
+							<td>{{ form.full_name|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>IC No:</td>
+							<td>{{ form.ic_number|as_crispy_field }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>Time</th>
+							<th>Type of Milk</th>
+							<th>Amount (ml)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{ form.time|as_crispy_field }}</td>
+							<td>{{ form.type_of_milk|as_crispy_field }}</td>
+							<td>{{ form.amount|as_crispy_field }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<button type="submit" class="btn btn-primary">Sign in</button>
+			</form>
+
+		</div>
+
+	</div>
+</div>
+{% endblock %}

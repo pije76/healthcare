@@ -3,22 +3,15 @@
 {% load static %}
 {% load i18n %}
 {% load account socialaccount %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
 <div class="container">
 
-	<div class="row navigation">
-		<div id="logo" class="" alt="image">
-			<a href="/" title="eDapt">
-				<img src="{% static "images/logo.png" %}" alt="Logo"/>
-			</a>
-		</div>
-
-		<div id="slogan_title" class="">
-			<span id="rtr-slogan_title_0">Learning</span>
-		</div>
-	</div>
+	{% block navmenu %}
+		{% include "navmenu.html" %}
+	{% endblock %}
 
 	<div class="row isi">
 		<div class="col-sm-2 col-md-2 col-lg-2">

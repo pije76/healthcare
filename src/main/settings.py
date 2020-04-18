@@ -59,8 +59,8 @@ TENANT_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'data',
-    'patient',
+    'form_data',
+    'accounts',
 
     # your tenant-specific apps
     'allauth',
@@ -109,14 +109,14 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Allauth settings
-#AUTH_USER_MODEL = 'patient.UserProfile'
+#AUTH_USER_MODEL = 'accounts.UserProfile'
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_EMAIL_VERIFICATION= False
 LOGIN_REDIRECT_URL = 'account'
 LOGOUT_REDIRECT_URL = 'index'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
-ACCOUNT_FORMS = {'login': 'patient.forms.MyLoginForm'}
+ACCOUNT_FORMS = {'login': 'accounts.forms.MyLoginForm'}
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_SESSION_REMEMBER = False
 
@@ -143,7 +143,7 @@ TEMPLATES = [
         },
     },
 #    {
-#        'BACKEND': 'patient.pdf.PdftkEngine',
+#        'BACKEND': 'accounts.pdf.PdftkEngine',
 #        'APP_DIRS': True,
 #    },
 ]
