@@ -30,30 +30,30 @@
 						<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						Patient Form</a>
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-							<a class="dropdown-item" href="/admission/">Admission Form</a>
-							<a class="dropdown-item" href="/homeleave/">Application For Home Leave</a>
-							<a class="dropdown-item" href="/appointment/">Appointment Form</a>
-							<a class="dropdown-item" href="/cannulation/">Cannulation Chart</a>
-							<a class="dropdown-item" href="/charges/">Charges Sheet</a>
-							<a class="dropdown-item" href="/dressing/">Dressing Chart</a>
-							<a class="dropdown-item" href="/enteral-feeding-regine/">Enteral Feeding Regime</a>
-							<a class="dropdown-item" href="/hgt/">HGT Chart</a>
-							<a class="dropdown-item" href="/intake-output/">Intake Output Chart</a>
-							<a class="dropdown-item" href="/maintainance/">Maintainance Form</a>
-							<a class="dropdown-item" href="/medication-administration/">Medication Administration Record</a>
-							<a class="dropdown-item" href="/medication/">Medication Records</a>
-							<a class="dropdown-item" href="/nursing/">Nursing Report</a>
-							<a class="dropdown-item" href="/physio-progress-note-back/">Physiotherapy Progress Note-Back Sheet</a>
-							<a class="dropdown-item" href="/physio-progress-note-front/">Physiotherapy Progress Note-Front Sheet</a>
-							<a class="dropdown-item" href="/physiotherapy-general-assessment/">Physiotherapy - General Assessment Form</a>
-							<a class="dropdown-item" href="/stool/">Stool Chart</a>
-							<a class="dropdown-item" href="/vital-sign-flow/">Vital Sign Flow Sheet</a>
+							<a class="dropdown-item" href="/forms/admission/">Admission Form</a>
+							<a class="dropdown-item" href="/forms/homeleave/">Application For Home Leave</a>
+							<a class="dropdown-item" href="/forms/appointment/">Appointment Form</a>
+							<a class="dropdown-item" href="/forms/cannulation/">Cannulation Chart</a>
+							<a class="dropdown-item" href="/forms/charges/">Charges Sheet</a>
+							<a class="dropdown-item" href="/forms/dressing/">Dressing Chart</a>
+							<a class="dropdown-item" href="/forms/enteral-feeding-regine/">Enteral Feeding Regime</a>
+							<a class="dropdown-item" href="/forms/hgt/">HGT Chart</a>
+							<a class="dropdown-item" href="/forms/intake-output/">Intake Output Chart</a>
+							<a class="dropdown-item" href="/forms/maintainance/">Maintainance Form</a>
+							<a class="dropdown-item" href="/forms/medication-administration/">Medication Administration Record</a>
+							<a class="dropdown-item" href="/forms/medication/">Medication Records</a>
+							<a class="dropdown-item" href="/forms/nursing/">Nursing Report</a>
+							<a class="dropdown-item" href="/forms/physio-progress-note-back/">Physiotherapy Progress Note-Back Sheet</a>
+							<a class="dropdown-item" href="/forms/physio-progress-note-front/">Physiotherapy Progress Note-Front Sheet</a>
+							<a class="dropdown-item" href="/forms/physiotherapy-general-assessment/">Physiotherapy - General Assessment Form</a>
+							<a class="dropdown-item" href="/forms/stool/">Stool Chart</a>
+							<a class="dropdown-item" href="/forms/vital-sign-flow/">Vital Sign Flow Sheet</a>
 						</div>
 					</div>
 
 				</div>
 				<div id="menu_progress" class="">
-					<span id="rtr-menu_progress_0"><a href="/progress/" class="{% if navbar == 'progress' %}active{% else %}inactive{% endif %}">Other Form</a></span>
+					<span id="rtr-menu_progress_0"><a href="/" class="{% if navbar == 'progress' %}active{% else %}inactive{% endif %}">Other Form</a></span>
 				</div>
 				<div id="menu_account" class="">
 					<span id="rtr-menu_account_0">
@@ -61,10 +61,14 @@
 					</span>
 				</div>
 				<div id="menu_logout" class="">
+					{% if user.is_authenticated %}
 					<form method="post" action="/accounts/logout/">
 						<input type="hidden" name="csrfmiddlewaretoken" value="">
 						<span id="rtr-menu_logout_0"><a href="/accounts/logout/">Logout</a></span>
 					</form>
+					{% else %}
+					<span id="rtr-menu_logout_0"><a href="/accounts/login/">Login</a></span>
+					{% endif %}
 				</div>
 			</div>
 		</div>
