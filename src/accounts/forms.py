@@ -1,34 +1,78 @@
 from django import forms
-from django.urls import reverse
-from django.utils.translation import ugettext as _
+from django.core.validators import RegexValidator
+from django.contrib.auth.models import *
+from django.contrib.auth import get_user_model
+from django.contrib.contenttypes.models import ContentType
+from django.shortcuts import get_list_or_404, get_object_or_404
 
 from allauth.account.forms import LoginForm
+from allauth.account.forms import SignupForm
 
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Field
-from crispy_forms.bootstrap import FormActions
+import json
 
-from .models import User
+#from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
+
+ic_number_validator = RegexValidator("\d{6}\-\d{2}\-\d{4}", "IC Number format needs to be yymmdd-xx-zzzz.")
+
+
+from .models import *
+from form_data.models import *
 
 class MyLoginForm(LoginForm):
-    def __init__(self, *args, **kwargs):
-        super(MyLoginForm, self).__init__(*args, **kwargs)
-        self.fields['login'].label = ""
-        self.fields['login'].required = False
-        self.fields['login'].widget = forms.TextInput()
-        self.fields['password'].label = ""
-        self.fields['password'].required = False
-        self.fields['password'].widget = forms.PasswordInput()
+	def __init__(self, *args, **kwargs):
+		super(MyLoginForm, self).__init__(*args, **kwargs)
+		self.fields['login'].label = ""
+		self.fields['login'].required = True
+		self.fields['login'].widget = forms.TextInput()
+		self.fields['password'].label = ""
+		self.fields['password'].required = True
+		self.fields['password'].widget = forms.PasswordInput()
 
-        helper = FormHelper()
-        helper.form_show_labels = False
-        helper.label_class = 'title_login'
-        helper.layout = Layout(
-            Field('login', placeholder = 'Username', id='id_login'),
-            Field('password', placeholder = 'Password', id='id_password'),
-            FormActions(
-                Submit('submit', 'Login', css_class = 'btn-primary')
-            ),
-        )
-        self.helper = helper
 
+class MySignUpForm(SignupForm):
+	def __init__(self, *args, **kwargs):
+		super(MySignUpForm, self).__init__(*args, **kwargs)
+
+	first_name = forms.CharField(max_length=100, required=True, label='First Name')
+	last_name = forms.CharField(max_length=100, required=False, label='Last Name (optional)')
+
+	class Meta:
+		model = PatientProfile
+#		fields = '__all__'
+		fields = ('first_name', 'last_name')
+
+	def custom_signup(self, request, user):
+		#	user = PatientProfile.objects.all()
+		user.first_name = self.cleaned_data['first_name']
+		user.last_name = self.cleaned_data['last_name']
+#		user.ic_number = self.cleaned_data['ic_number']
+		user.is_staff = True
+
+		user.save()
+		return user
+
+
+class ChangePatientProfile(forms.ModelForm):
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+
+#	user = User.objects.get(username=request.user.username)
+
+	first_name = forms.CharField(max_length=100, required=True, label='First Name')
+	last_name = forms.CharField(max_length=100, required=False, label='Last Name (optional)')
+	email = forms.CharField(max_length=100, required=False, label='Email (optional)')
+
+	class Meta:
+		model = PatientProfile
+		fields = ('first_name', 'last_name', 'email')
+
+
+class ChangeAdmission(forms.ModelForm):
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+
+	ic_number = forms.CharField(max_length=14, required=True, label='IC Number', validators=[ic_number_validator])
+
+	class Meta:
+		model = Admission
+		fields = ('ic_number',)

@@ -1,18 +1,21 @@
 {% load static %}
 
 <div class="row navigation">
+		
 		<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+			{% for object in logos %}
 			<a href="/">
 				<div id="logo_nav" class="" alt="image">
-					<img src="{% static "images/healthcare_logo.jpg" %}" alt="Logo Navbar"/>
+					<img src="{{ object.logo_url }}" alt="Logo Navbar" />
 				</div>
 			</a>
+			{% endfor %}
 		</div>
 
 		<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
 			<div id="s-menuBar" class="">
 				<div class="topBar">
-					SK WELLSPRING HOME CARE
+					{{ titles.title }}
 				</div>
 				<div id="s-Rectangle_1" class="">
 					<span id="rtr-s-Rectangle_1_0"></span>
@@ -53,7 +56,7 @@
 
 				</div>
 				<div id="menu_progress" class="">
-					<span id="rtr-menu_progress_0"><a href="/" class="{% if navbar == 'progress' %}active{% else %}inactive{% endif %}">Other Form</a></span>
+					<span id="rtr-menu_progress_0"><a href="/admin/" class="{% if navbar == 'profile' %}active{% else %}inactive{% endif %}">Admin Page</a></span>
 				</div>
 				<div id="menu_account" class="">
 					<span id="rtr-menu_account_0">

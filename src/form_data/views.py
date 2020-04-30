@@ -1,38 +1,66 @@
-from django.shortcuts import render
-from django.utils.translation import ugettext as _
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.db import connection
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
-
-from io import BytesIO
-from reportlab.pdfgen import canvas
-from .pdf import get_template
+from django.shortcuts import render, get_list_or_404, get_object_or_404
+from django.urls import reverse_lazy
+from django.utils.translation import ugettext as _
+from django.views.generic import ListView, CreateView, UpdateView
+from django.core import serializers
+from django.http import JsonResponse
 
 from .models import *
 from .forms import *
-from accounts.models import *
+#from accounts.models import *
+from customers.models import *
 
 # Create your views here.
-
-
-def admission(request):
-    #    item = Admission.objects.get(id=id)
-    #    form = AdmissionForm(initial={'ic_number': item.ic_number})
-    if request.method == 'POST':
-        form = AdmissionForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/admission/')
-    else:
-        form = AdmissionForm()
+def index(request):
+    schema_name = connection.schema_name
+    patients = PatientProfile.objects.filter(username=request.user.username)
+    logos = Client.objects.filter(schema_name=schema_name)
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 
     context = {
-        #        'item': 'item',
+        'patients': patients,
+        'logos': logos,
+        'titles': titles,
+    }
+    return render(request, 'index.html', context)
+
+@login_required
+def admission(request):
+    schema_name = connection.schema_name
+    logos = Client.objects.filter(schema_name=schema_name)
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+
+    if request.method == 'POST':
+        form = AdmissionForm(request.POST or None)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.full_name = request.user
+            instance.save()
+            messages.success(request, 'Your form has been sent successfully.')
+            return HttpResponseRedirect('/forms/index/')
+        else:
+            print(form.errors)
+    else:
+        form = AdmissionForm(initial={'full_name': request.user.full_name, 'time': '00:00'})
+
+    context = {
+        'logos': logos,
+        'titles': titles,
         'form': form,
     }
 
     return render(request, 'form_data/admission.html', context)
 
 
+@login_required
 def homeleave(request):
+    schema_name = connection.schema_name
+    logos = Client.objects.filter(schema_name=schema_name)
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     if request.method == 'POST':
         form = ApplicationForHomeLeaveForm(request.POST)
         if form.is_valid():
@@ -42,59 +70,54 @@ def homeleave(request):
         form = ApplicationForHomeLeaveForm()
 
     context = {
-        #        'navbar': 'homeleave',
+        'logos': logos,
+        'titles': titles,
         'form': form,
     }
 
     return render(request, 'form_data/homeleave.html', context)
 
 
-def viewpdf(request):
-    # Create the HttpResponse object with the appropriate PDF headers.
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="homeleave.pdf"'
-
-    buffer = BytesIO()
-
-    # Create the PDF object, using the BytesIO object as its "file."
-    p = canvas.Canvas(buffer)
-
-    # Draw things on the PDF. Here's where the PDF generation happens.
-    # See the ReportLab documentation for the full list of functionality.
-    p.drawString(100, 100, "Hello world.")
-
-    # Close the PDF object cleanly.
-    p.showPage()
-    p.save()
-
-    # Get the value of the BytesIO buffer and write it to the response.
-    pdf = buffer.getvalue()
-    buffer.close()
-    response.write(pdf)
-    return response
+def load_ic_number(request):
+    query = request.GET.get('full_name')
+    results = Admission.objects.filter(full_name=query)
+    context = {
+        'results': results,
+    }
+    return render(request, 'form_data/dropdown_list.html', context)
 
 
+@login_required
 def appointment(request):
+    schema_name = connection.schema_name
+    logos = Client.objects.filter(schema_name=schema_name)
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+
     if request.method == 'POST':
-        form = AppointmentForm(request.POST)
+        form = AppointmentForm(request.POST or None)
         if form.is_valid():
-            #            user = UserProfile.objects.get(id=user)
-            #            user = details.save(commit = False)
-            #            user.save()
             form.save()
-            return HttpResponseRedirect('/appointment/')
+            messages.success(request, 'Your form has been sent successfully.')
+            return HttpResponseRedirect('/forms/index/')
+        else:
+            print(form.errors)
     else:
         form = AppointmentForm()
 
     context = {
-        #        'user': user,
+        'logos': logos,
+        'titles': titles,
         'form': form,
     }
 
     return render(request, 'form_data/appointment.html', context)
 
 
+@login_required
 def cannulation(request):
+    schema_name = connection.schema_name
+    logos = Client.objects.filter(schema_name=schema_name)
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     if request.method == 'POST':
         form = CannulationForm(request.POST)
         if form.is_valid():
@@ -104,14 +127,19 @@ def cannulation(request):
         form = CannulationForm()
 
     context = {
-        'navbar': 'cannulation',
+        'logos': logos,
+        'titles': titles,
         'form': form,
     }
 
     return render(request, 'form_data/cannulation.html', context)
 
 
+@login_required
 def charges_sheet(request):
+    schema_name = connection.schema_name
+    logos = Client.objects.filter(schema_name=schema_name)
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     if request.method == 'POST':
         form = ChargesForm(request.POST)
         if form.is_valid():
@@ -121,14 +149,19 @@ def charges_sheet(request):
         form = ChargesForm()
 
     context = {
-        'navbar': 'charges_sheet',
+        'logos': logos,
+        'titles': titles,
         'form': form,
     }
 
     return render(request, 'form_data/charges_sheet.html', context)
 
 
+@login_required
 def dressing(request):
+    schema_name = connection.schema_name
+    logos = Client.objects.filter(schema_name=schema_name)
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     if request.method == 'POST':
         form = DressingForm(request.POST, request.FILES)
         if form.is_valid():
@@ -138,14 +171,19 @@ def dressing(request):
         form = DressingForm()
 
     context = {
-        'navbar': 'dressing',
+        'logos': logos,
+        'titles': titles,
         'form': form,
     }
 
     return render(request, 'form_data/dressing.html', context)
 
 
+@login_required
 def enteral_feeding_regine(request):
+    schema_name = connection.schema_name
+    logos = Client.objects.filter(schema_name=schema_name)
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     if request.method == 'POST':
         form = EnteralFeedingRegineForm(request.POST)
         if form.is_valid():
@@ -155,14 +193,19 @@ def enteral_feeding_regine(request):
         form = EnteralFeedingRegineForm()
 
     context = {
-        'navbar': 'enteral_feeding_regine',
+        'logos': logos,
+        'titles': titles,
         'form': form,
     }
 
     return render(request, 'form_data/enteral_feeding_regine.html', context)
 
 
+@login_required
 def hgt_chart(request):
+    schema_name = connection.schema_name
+    logos = Client.objects.filter(schema_name=schema_name)
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     if request.method == 'POST':
         form = HGTChartForm(request.POST)
         if form.is_valid():
@@ -172,14 +215,19 @@ def hgt_chart(request):
         form = HGTChartForm()
 
     context = {
-        'navbar': 'hgt_chart',
+        'logos': logos,
+        'titles': titles,
         'form': form,
     }
 
     return render(request, 'form_data/hgt_chart.html', context)
 
 
+@login_required
 def intake_output(request):
+    schema_name = connection.schema_name
+    logos = Client.objects.filter(schema_name=schema_name)
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     if request.method == 'POST':
         form = IntakeOutputChartForm(request.POST)
         if form.is_valid():
@@ -189,14 +237,19 @@ def intake_output(request):
         form = IntakeOutputChartForm()
 
     context = {
-        'navbar': 'intake_output',
+        'logos': logos,
+        'titles': titles,
         'form': form,
     }
 
     return render(request, 'form_data/intake_output.html', context)
 
 
+@login_required
 def maintainance(request):
+    schema_name = connection.schema_name
+    logos = Client.objects.filter(schema_name=schema_name)
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     if request.method == 'POST':
         form = MaintainanceForm(request.POST)
         if form.is_valid():
@@ -206,14 +259,19 @@ def maintainance(request):
         form = MaintainanceForm()
 
     context = {
-        'navbar': 'maintainance',
+        'logos': logos,
+        'titles': titles,
         'form': form,
     }
 
     return render(request, 'form_data/maintainance.html', context)
 
 
+@login_required
 def medication_administration(request):
+    schema_name = connection.schema_name
+    logos = Client.objects.filter(schema_name=schema_name)
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     if request.method == 'POST':
         form = MaintainanceForm(request.POST)
         if form.is_valid():
@@ -223,14 +281,19 @@ def medication_administration(request):
         form = MaintainanceForm()
 
     context = {
-        'navbar': 'medication_administration',
+        'logos': logos,
+        'titles': titles,
         'form': form,
     }
 
     return render(request, 'form_data/medication_administration.html', context)
 
 
+@login_required
 def medication(request):
+    schema_name = connection.schema_name
+    logos = Client.objects.filter(schema_name=schema_name)
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     if request.method == 'POST':
         form = MedicationRecordForm(request.POST)
         if form.is_valid():
@@ -240,14 +303,19 @@ def medication(request):
         form = MedicationRecordForm()
 
     context = {
-        'navbar': 'medication',
+        'logos': logos,
+        'titles': titles,
         'form': form,
     }
 
     return render(request, 'form_data/medication.html', context)
 
 
+@login_required
 def nursing(request):
+    schema_name = connection.schema_name
+    logos = Client.objects.filter(schema_name=schema_name)
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     if request.method == 'POST':
         form = NursingForm(request.POST)
         if form.is_valid():
@@ -257,14 +325,19 @@ def nursing(request):
         form = NursingForm()
 
     context = {
-        'navbar': 'nursing',
+        'logos': logos,
+        'titles': titles,
         'form': form,
     }
 
     return render(request, 'form_data/nursing.html', context)
 
 
+@login_required
 def physio_progress_note_back(request):
+    schema_name = connection.schema_name
+    logos = Client.objects.filter(schema_name=schema_name)
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     if request.method == 'POST':
         form = PhysioProgressNoteBackForm(request.POST)
         if form.is_valid():
@@ -274,14 +347,19 @@ def physio_progress_note_back(request):
         form = PhysioProgressNoteBackForm()
 
     context = {
-        'navbar': 'physio_progress_note_back',
+        'logos': logos,
+        'titles': titles,
         'form': form,
     }
 
     return render(request, 'form_data/physio_progress_note_back.html', context)
 
 
+@login_required
 def physio_progress_note_front(request):
+    schema_name = connection.schema_name
+    logos = Client.objects.filter(schema_name=schema_name)
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     if request.method == 'POST':
         form = PhysioProgressNoteFrontForm(request.POST)
         if form.is_valid():
@@ -291,14 +369,19 @@ def physio_progress_note_front(request):
         form = PhysioProgressNoteFrontForm()
 
     context = {
-        'navbar': 'physio_progress_note_front',
+        'logos': logos,
+        'titles': titles,
         'form': form,
     }
 
     return render(request, 'form_data/physio_progress_note_front.html', context)
 
 
+@login_required
 def physiotherapy_general_assessment(request):
+    schema_name = connection.schema_name
+    logos = Client.objects.filter(schema_name=schema_name)
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     if request.method == 'POST':
         form = PhysiotherapyGeneralAssessmentForm(request.POST)
         if form.is_valid():
@@ -308,14 +391,19 @@ def physiotherapy_general_assessment(request):
         form = PhysiotherapyGeneralAssessmentForm()
 
     context = {
-        'navbar': 'physiotherapy_general_assessment',
+        'logos': logos,
+        'titles': titles,
         'form': form,
     }
 
     return render(request, 'form_data/physiotherapy_general_assessment.html', context)
 
 
+@login_required
 def stool(request):
+    schema_name = connection.schema_name
+    logos = Client.objects.filter(schema_name=schema_name)
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     if request.method == 'POST':
         form = StoolForm(request.POST)
         if form.is_valid():
@@ -325,14 +413,19 @@ def stool(request):
         form = StoolForm()
 
     context = {
-        'navbar': 'stool',
+        'logos': logos,
+        'titles': titles,
         'form': form,
     }
 
     return render(request, 'form_data/stool.html', context)
 
 
+@login_required
 def vital_sign_flow(request):
+    schema_name = connection.schema_name
+    logos = Client.objects.filter(schema_name=schema_name)
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     if request.method == 'POST':
         form = VitalSignFlowForm(request.POST)
         if form.is_valid():
@@ -342,7 +435,8 @@ def vital_sign_flow(request):
         form = VitalSignFlowForm()
 
     context = {
-        'navbar': 'vital_sign_flow',
+        'logos': logos,
+        'titles': titles,
         'form': form,
     }
 

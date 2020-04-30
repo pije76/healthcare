@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block styles %}
+        <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    {% block navmenu %}
+        {% include "navmenu.html" %}
+    {% endblock %}
+
+    {% if user.is_authenticated %}
+    <div class="row isi">
+        <div class="col-sm-2 col-md-2 col-lg-2">
+        </div>
+    </div>
+
+    {% else %}
+    <div class="row isi">
+        <div class="col-sm-2 col-md-2 col-lg-2">
+        </div>
+
+        <div class="col-sm-8 col-md-8 col-lg-8">
+            <h1>{% trans "Sign Up" %}</h1>
+
+            <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+
+            <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="hidden" name="{{ redirect_field_name }}" value="/forms/admission/" />
+                <button type="submit">{% trans "Sign Up" %} &raquo;</button>
+            </form>
+        </div>
+
+    </div>
+    {% endif %}
+
+    <div class="row footer">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+            <div id="s-Title_1">
+                <span id="rtr-s-Title_1_0">PRODUCT</span>
+            </div>
+
+            <div id="s-Paragraph_1" class="">
+                <span id="rtr-s-Paragraph_1_0">Features</span>
+            </div>
+        </div>
+
+        <div class="col-sm-4 col-md-4 col-lg-4">
+            <div id="s-Title_2">
+                <span id="rtr-s-Title_2_0">CONTACT</span>
+            </div>
+
+            <div id="s-Paragraph_2" class="">
+                <span id="rtr-s-Paragraph_2_0">Tel: 12345678</span>
+                <span id="rtr-s-Paragraph_2_1"><br>Email: contact@gmail.com</span>
+            </div>
+        </div>
+
+        <div class="col-sm-4 col-md-4 col-lg-4">
+            <div id="s-Title_3">
+                <span id="rtr-s-Title_3_0">TRIAL</span>
+                <span id="rtr-s-Title_3_1">SIGN UP</span>
+            </div>
+
+            <div id="s-Paragraph_3" class="">
+                <span id="rtr-s-Paragraph_3_0">School</span>
+                <span id="rtr-s-Paragraph_3_1"><br>Individual</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -24,7 +24,7 @@
 
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-			<form method="post" enctype="multipart/form-data">
+			<form method="post" id="dataForm" data-url="{% url 'form_data:load_ic_number' %}" enctype="multipart/form-data" novalidate>
 				{% csrf_token %}
 				<table class="table-sm table-bordered">
 					<tbody>

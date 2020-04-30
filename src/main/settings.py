@@ -36,10 +36,14 @@ ALLOWED_HOSTS = ['*']
 
 SHARED_APPS = (
     'django_tenants',  # mandatory
-    'customers',  # you must list the app where your tenant model resides in
+    'customers',  # Custom defined app that contains the TenantModel. Must NOT exist in TENANT_APPS
 
     'django.contrib.auth',
     'django.contrib.contenttypes',
+
+#    'tenant_users.permissions',  # Defined in both shared apps and tenant apps
+#    'tenant_users.tenants',  # defined only in shared apps
+
 
     # everything below here is optional
     'django.contrib.sessions',
@@ -47,12 +51,21 @@ SHARED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
     'django.contrib.staticfiles',
+
+    'accounts',  # Custom app that contains the new User Model. Must NOT exist in TENANT_APPS
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    'massadmin',
+
 )
 
 TENANT_APPS = (
     # The following Django contrib apps must be in TENANT_APPS
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    #'tenant_users.permissions',  # Defined in both shared apps and tenant apps
 
     'django.contrib.admin',
     'django.contrib.sessions',
@@ -60,19 +73,29 @@ TENANT_APPS = (
     'django.contrib.staticfiles',
 
     'form_data',
-    'accounts',
 
     # your tenant-specific apps
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+#    'accounts',
+#    'allauth',
+#    'allauth.account',
+#    'allauth.socialaccount',
+
+#    'avatar',
+#    'userprofiles2',
+
     'post_office',
 
 #    'jquery',
 #    'bootstrap_themes',
 #    'bootstrap_submenu',
+
     'crispy_forms',
     'widget_tweaks',
+#    'django_select2',
+    'ajax_select',
+    'selectable',
+
+    'massadmin',
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + \
@@ -81,8 +104,8 @@ INSTALLED_APPS = list(SHARED_APPS) + \
 
 TENANT_MODEL = "customers.Client"  # aplp.Model
 TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
-#TENANT_USERS_DOMAIN = "edapt.com"
 
+#TENANT_USERS_DOMAIN = "edapt.com"
 #SESSION_COOKIE_DOMAIN = '.edapt.com'
 
 
@@ -99,24 +122,27 @@ MIDDLEWARE = [
 
 
 AUTHENTICATION_BACKENDS = (
-
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
-
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 #    'tenant_users.permissions.backend.UserBackend',
 )
 
 # Allauth settings
-#AUTH_USER_MODEL = 'accounts.UserProfile'
+AUTH_USER_MODEL = 'accounts.PatientProfile'
+AUTH_PROFILE_MODULE = 'accounts.PatientProfile'
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
-ACCOUNT_EMAIL_VERIFICATION= False
+ACCOUNT_EMAIL_VERIFICATION = False
 LOGIN_REDIRECT_URL = 'account'
 LOGOUT_REDIRECT_URL = 'index'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
-ACCOUNT_FORMS = {'login': 'accounts.forms.MyLoginForm'}
+ACCOUNT_FORMS = {
+    'login': 'accounts.forms.MyLoginForm',
+    'signup': 'accounts.forms.MySignUpForm'
+}
+#ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.MySignUpForm'
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_SESSION_REMEMBER = False
 
@@ -158,7 +184,7 @@ WSGI_APPLICATION = 'main.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
-        'NAME': 'healthcare',
+        'NAME': 'heathcare',
         'USER': 'pije76',
         'PASSWORD': 'tratap60',
     }
@@ -168,6 +194,8 @@ DATABASE_ROUTERS = (
     'django_tenants.routers.TenantSyncRouter',
 )
 
+
+#PG_EXTRA_SEARCH_PATHS = ['extensions']
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -200,6 +228,7 @@ USE_TZ = True
 
 SITE_ID = 1
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 STATIC_URL = '/static/'
@@ -213,23 +242,54 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
+#AJAX_LOOKUP_CHANNELS = {
+#    'fullname': {'model': 'form_data.full_name', 'search_field': 'full_name'},
+#    'fullname': ('form_data.lookups', 'FullnameLookup'),
+#}
+
+
+MASSEDIT = {
+    'ADD_ACTION_GLOBALLY': False,
+}
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
     'handlers': {
-        'console': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'stderr': {
+            'level': 'INFO',
             'class': 'logging.StreamHandler',
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, "debug.log"),
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'pika': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
         },
     },
     'root': {
-        'handlers': ['console'],
-        'level': 'DEBUG'
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'INFO',
-        },
+        'handlers': ['stderr'],
+        'level': 'INFO',
     },
 }
 
@@ -273,6 +333,7 @@ if DEBUG:
     )
     INSTALLED_APPS += (
         'debug_toolbar',
+        'debug_permissions',
     )
     INTERNAL_IPS = ('127.0.0.1', )
     DEBUG_TOOLBAR_CONFIG = {
