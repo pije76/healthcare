@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load staticfiles %}
 {% load i18n %}
-{% load account socialaccount %}
+{% load account %}
+{% load socialaccount %}
 {% load crispy_forms_tags %}
+
+{% block styles %}
+		<link href="{% static 'css/login.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
 
 {% block content %}
 
@@ -47,6 +53,9 @@
 				{% if redirect_field_value %}
 				<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
 				{% endif %}
+				<div id="title_register" class="">
+					<span id="rtr-title_register_0"><a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a></span>
+				</div>
 				<div id="title_forgetpassword" class="">
 					<span id="rtr-title_forgetpassword_0"><a href="{% url 'account_reset_password' %}">{% trans "Forgot password" %}</a></span>
 				</div>
@@ -58,40 +67,10 @@
 		<div class="col-sm-2 col-md-2 col-lg-2">
 		</div>
 	</div>
+	
+	{% block footer %}
+		{% include "footer.html" %}
+	{% endblock %}
 
-	<div class="row footer">
-		<div class="col-sm-4 col-md-4 col-lg-4">
-			<div id="s-Title_1">
-				<span id="rtr-s-Title_1_0">PRODUCT</span>
-			</div>
-
-			<div id="s-Paragraph_1" class="">
-				<span id="rtr-s-Paragraph_1_0">Features</span>
-			</div>
-		</div>
-
-		<div class="col-sm-4 col-md-4 col-lg-4">
-			<div id="s-Title_2">
-				<span id="rtr-s-Title_2_0">CONTACT</span>
-			</div>
-
-			<div id="s-Paragraph_2" class="">
-				<span id="rtr-s-Paragraph_2_0">Tel: 12345678</span>
-				<span id="rtr-s-Paragraph_2_1"><br>Email: contact@gmail.com</span>
-			</div>
-		</div>
-
-		<div class="col-sm-4 col-md-4 col-lg-4">
-			<div id="s-Title_3">
-				<span id="rtr-s-Title_3_0">TRIAL</span>
-				<span id="rtr-s-Title_3_1">SIGN UP</span>
-			</div>
-
-			<div id="s-Paragraph_3" class="">
-				<span id="rtr-s-Paragraph_3_0">School</span>
-				<span id="rtr-s-Paragraph_3_1"><br>Individual</span>
-			</div>
-		</div>
-	</div>
 </div>
 {% endblock %}

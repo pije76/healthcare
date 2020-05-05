@@ -3,7 +3,11 @@ from django.urls import path, re_path
 from .models import *
 from .views import *
 
+app_name = 'form_data'
+
 urlpatterns = [
+    path('', index, name='index'),
+    path('index/', index, name='index'),
     path('admission/', admission, name='admission'),
     path('homeleave/', homeleave, name='homeleave'),
     path('appointment/', appointment, name='appointment'),
@@ -22,5 +26,5 @@ urlpatterns = [
     path('physiotherapy-general-assessment/', physiotherapy_general_assessment, name='physiotherapy_general_assessment'),
     path('stool/', stool, name='stool'),
     path('vital-sign-flow/', vital_sign_flow, name='vital_sign_flow'),
+    path('load_ic_number/', load_ic_number, name='load_ic_number'),
 ]
-

@@ -1,19 +1,21 @@
 {% load static %}
 {% load staticfiles %}
+{% load selectable_tags %}
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v = "urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
-	<title>{% block title %}SK WELLSPRING HOME CARE{% endblock %}</title>
+	<title>{% block title %}{{ titles.title }}{% endblock %}</title>
 	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/global.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/navmenu.css' %}" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
+	{% include_ui_theme %}
 	{% block styles %}
 	{% endblock %}
 	<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+	<script src="{% static 'js/jquery-migrate-3.0.0.min.js' %}"></script>
 	<script src="{% static 'js/popper.min.js' %}"></script>
 	<script src="{% static 'js/bootstrap.min.js' %}"></script>
 	{% block scripts %}
@@ -23,5 +25,26 @@
 <body>
 	{% block content %}
 	{% endblock %}
+{% include_jquery_libs %}
+{{ form.media.js }}
+<script>
+$("#id_full_name").change(function()
+{
+	var url = $("#dataForm").attr("data-url");
+	var full_nameID = $(this).val();
+
+	$.ajax(
+	{
+		url: url,
+		data: {
+			'full_name': full_nameID
+		},
+		success: function(data)
+		{
+			$("#id_ic_number").html(data);
+		},
+	});
+});
+</script>
 </body>
 </html>

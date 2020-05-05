@@ -2,17 +2,23 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
-from django.urls import include, path  # For django versions from 2.0 and up
+from django.urls import include, path, re_path
 
 from form_data.views import *
 from accounts.views import *
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='accounts/login/', permanent=False), name='index'),
+    path('', index, name='index'),
+#    path('', RedirectView.as_view(url='accounts/login/', permanent=False), name='index'),
     path('forms/', include('form_data.urls')),
+#    path('grappelli/', include('grappelli.urls')),
+    path('admin/', include('massadmin.urls')),
     path('admin/', admin.site.urls),
-    path(r'accounts/', include('allauth.urls')),
-    path(r'account/', include('accounts.urls')),
+    path('accounts/', include('allauth.urls')),
+    path('account/', include('accounts.urls')),
+#    path('avatar/', include('avatar.urls')),
+    path('ajax_select/', include('ajax_select.urls')),
+#    path('profile/', include('userprofiles2.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

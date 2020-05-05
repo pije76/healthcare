@@ -6,6 +6,10 @@
   height: 151px;
 }
 
+#id_ic_number, #id_first_name, #id_last_name {
+    width: initial;
+}
+
 #name_title {
   margin-left: 59px;
   margin-top: 0px;
@@ -274,6 +278,138 @@
   line-height: 0px;
 }
 
+#changename_button span#rtr-changename_button_0 > a {
+  color: #030303;
+  text-decoration: none;
+}
+
+#changename_button {
+  -moz-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  background-color: transparent;
+  background-image: -moz-linear-gradient(top,#FFFFFF,#E6E6E6);
+  background-image: -o-linear-gradient(top,#FFFFFF,#E6E6E6);
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#FFFFFF), color-stop(100%,#E6E6E6));
+  background-image: -webkit-linear-gradient(top,#FFFFFF,#E6E6E6);
+  background-image: linear-gradient(to bottom,#FFFFFF,#E6E6E6);
+  border: 1px solid #CDCDCD;
+  box-shadow: none;
+  cursor: pointer;
+  font-family: 'Arial',Arial;
+  font-size: 14.0pt;
+  height: 32px;
+  margin-left: 493px;
+  margin-top: 0px;
+  padding-bottom: 1px;
+  padding-left: 1px;
+  padding-right: 1px;
+  padding-top: 1px;
+  position: absolute;
+  text-align: center;
+  text-shadow: none;
+  transform: rotate(0deg);
+  vertical-align: middle;
+  width: 178px;
+}
+
+#changename_button span {
+  color: #030303;
+  text-align: center;
+  text-decoration: none;
+  font-family: 'Arial',Arial;
+  font-size: 14.0pt;
+  font-style: normal;
+  font-weight: 400;
+}
+
+#changename_button span#rtr-changename_button_0 {
+  color: #030303;
+  text-align: center;
+  text-decoration: none;
+  font-family: 'Arial',Arial;
+  font-size: 14.0pt;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 0px;
+}
+
+#changeemail_button span#rtr-changeemail_button_0 > a {
+  color: #030303;
+  text-decoration: none;
+}
+
+#changeemail_button span#rtr-changeemail_button_0 > a {
+  color: #030303;
+  text-decoration: none;
+}
+
+#changeemail_button {
+  -moz-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  background-color: transparent;
+  background-image: -moz-linear-gradient(top,#FFFFFF,#E6E6E6);
+  background-image: -o-linear-gradient(top,#FFFFFF,#E6E6E6);
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#FFFFFF), color-stop(100%,#E6E6E6));
+  background-image: -webkit-linear-gradient(top,#FFFFFF,#E6E6E6);
+  background-image: linear-gradient(to bottom,#FFFFFF,#E6E6E6);
+  border: 1px solid #CDCDCD;
+  box-shadow: none;
+  cursor: pointer;
+  font-family: 'Arial',Arial;
+  font-size: 14.0pt;
+  height: 32px;
+  margin-left: 493px;
+  margin-top: 48px;
+  padding-bottom: 1px;
+  padding-left: 1px;
+  padding-right: 1px;
+  padding-top: 1px;
+  position: absolute;
+  text-align: center;
+  text-shadow: none;
+  transform: rotate(0deg);
+  vertical-align: middle;
+  width: 178px;
+}
+
+#changeemail_button span {
+  color: #030303;
+  text-align: center;
+  text-decoration: none;
+  font-family: 'Arial',Arial;
+  font-size: 14.0pt;
+  font-style: normal;
+  font-weight: 400;
+}
+
+#changeemail_button span#rtr-changeemail_button_0 {
+  color: #030303;
+  text-align: center;
+  text-decoration: none;
+  font-family: 'Arial',Arial;
+  font-size: 14.0pt;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 0px;
+}
+
+#changepassword_button span#rtr-changepassword_button_0 > a {
+  color: #030303;
+  text-decoration: none;
+}
+
+
+
+#changepassword_button span#rtr-changepassword_button_0 > a {
+  color: #030303;
+  text-decoration: none;
+}
+
+#changepassword_button span#rtr-changepassword_button_0 > a {
+  color: #030303;
+  text-decoration: none;
+}
+
 #changepassword_button {
   -moz-transform: rotate(0deg);
   -webkit-transform: rotate(0deg);
@@ -290,7 +426,7 @@
   font-size: 14.0pt;
   height: 32px;
   margin-left: 493px;
-  margin-top: 81px;
+  margin-top: 96px;
   padding-bottom: 1px;
   padding-left: 1px;
   padding-right: 1px;
@@ -325,6 +461,62 @@
 }
 
 #changepassword_button span#rtr-changepassword_button_0 > a {
+  color: #030303;
+  text-decoration: none;
+}
+
+
+#changefield_button {
+  -moz-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  background-color: transparent;
+  background-image: -moz-linear-gradient(top,#FFFFFF,#E6E6E6);
+  background-image: -o-linear-gradient(top,#FFFFFF,#E6E6E6);
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#FFFFFF), color-stop(100%,#E6E6E6));
+  background-image: -webkit-linear-gradient(top,#FFFFFF,#E6E6E6);
+  background-image: linear-gradient(to bottom,#FFFFFF,#E6E6E6);
+  border: 1px solid #CDCDCD;
+  box-shadow: none;
+  cursor: pointer;
+  font-family: 'Arial',Arial;
+  font-size: 14.0pt;
+  height: 32px;
+  margin-left: 493px;
+  margin-top: 157px;
+  padding-bottom: 1px;
+  padding-left: 1px;
+  padding-right: 1px;
+  padding-top: 1px;
+  position: absolute;
+  text-align: center;
+  text-shadow: none;
+  transform: rotate(0deg);
+  vertical-align: middle;
+  width: 178px;
+}
+
+#changefield_button span {
+  color: #030303;
+  text-align: center;
+  text-decoration: none;
+  font-family: 'Arial',Arial;
+  font-size: 14.0pt;
+  font-style: normal;
+  font-weight: 400;
+}
+
+#changefield_button span#rtr-changefield_button_0 {
+  color: #030303;
+  text-align: center;
+  text-decoration: none;
+  font-family: 'Arial',Arial;
+  font-size: 14.0pt;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 0px;
+}
+
+#changefield_button span#rtr-changefield_button_0 > a {
   color: #030303;
   text-decoration: none;
 }

@@ -3,11 +3,12 @@
 }
 
 .isi {
-  height: 340px;
+  height: auto;
 }
 
 .footer {
   height: 151px;
+  padding-top: 20px;
 }
 
 #logo {
