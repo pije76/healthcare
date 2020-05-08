@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block headtitle %}
+    {{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block content %}
+
+{% block styles %}
+	<link href="{% static 'css/patient_data/intake_output.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+<div class="container">
+
+	{% block navmenu %}
+		{% include "navmenu.html" %}
+	{% endblock %}
+
+	<div class="row isi">
+
+		<div class="formtitle">
+			{{ page_title }}
+		</div>
+
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+			<form method="post" id="dataForm" data-url="{% url 'patient_form:intake_output' %}" novalidate>
+				{% csrf_token %}
+				<table class="table table-bordered">
+					<col>
+						<colgroup span="3"></colgroup>
+						<colgroup span="3"></colgroup>
+					</col>
+					<col>
+						<colgroup span="2"></colgroup>
+						<colgroup span="2"></colgroup>
+					</col>
+					<tr>
+						<th class="text-center" rowspan="1"></th>
+						<th class="text-center" rowspan="1"></th>
+						<th class="text-center" rowspan="1"></th>
+						<th class="text-center" rowspan="1"></th>
+						<th class="text-center" colspan="6" scope="colgroup">Intake</th>
+						<th class="text-center" colspan="6" scope="colgroup">Output</th>
+					</tr>
+					<tr>
+						<th class="text-center" rowspan="1"></th>
+						<th class="text-center" rowspan="1"></th>
+						<th class="text-center" rowspan="1"></th>
+						<th class="text-center" rowspan="1"></th>
+						<th class="text-center" colspan="2" scope="colgroup">Oral</th>
+						<th class="text-center" colspan="2" scope="colgroup">Parenteral</th>
+						<th class="text-center" colspan="2" scope="colgroup">Other</th>
+						<th class="text-center" colspan="2" scope="colgroup">Urine</th>
+						<th class="text-center" colspan="2" scope="colgroup">Gas-Tric</th>
+						<th class="text-center" colspan="2" scope="colgroup">Other</th>
+					</tr>
+
+					<tr>
+						<th class="text-center" rowspan="1">Name</th>
+						<th class="text-center" rowspan="1">I/C No</th>
+						<th class="text-center" rowspan="1">Date</th>
+						<th class="text-center" rowspan="1">Time</th>
+						<th class="text-center" scope="col">Type</th>
+						<th class="text-center" scope="col">ml.</th>
+						<th class="text-center" scope="col">Type</th>
+						<th class="text-center" scope="col">ml.</th>
+						<th class="text-center" scope="col">Type</th>
+						<th class="text-center" scope="col">ml.</th>
+						<th class="text-center" scope="col">Type</th>
+						<th class="text-center" scope="col">ml.</th>
+						<th class="text-center" scope="col">Type</th>
+						<th class="text-center" scope="col">ml.</th>
+						<th class="text-center" scope="col">Type</th>
+						<th class="text-center" scope="col">ml.</th>
+					</tr>
+
+					{% for item in patient_data %}
+					<tr>
+						<td>{{ item.full_name }}</td>
+						<td>{{ item.ic_number }}</td>
+						<td>{{ item.date }}</td>
+						<td>{{ item.time }}</td>
+						<td>{{ item.intake_oral_type }}</td>
+						<td>{{ item.intake_oral_ml }}</td>
+						<td>{{ item.intake_parenteral_type }}</td>
+						<td>{{ item.intake_parenteral_ml }}</td>
+						<td>{{ item.intake_other_type }}</td>
+						<td>{{ item.intake_other_ml }}</td>
+						<td>{{ item.urine_ml }}</td>
+						<td>{{ item.urine_cumtotal }}</td>
+						<td>{{ item.urine_cumtotal }}</td>
+						<td>{{ item.urine_gastric_ml }}</td>
+						<td>{{ item.other_type }}</td>
+						<td>{{ item.other_ml }}</td>
+					</tr>
+					{% endfor %}
+				</table>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+
+		</div>
+
+	</div>
+</div>
+{% endblock %}

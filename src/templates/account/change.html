@@ -10,6 +10,10 @@
 <link href="{% static 'css/account.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
+{% block headtitle %}
+    {{ page_title }} | {{ titles.title }}
+{% endblock %}
+
 {% block content %}
 
 <div class="container">

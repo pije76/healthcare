@@ -4,13 +4,15 @@ from django.conf.urls.static import static
 from django.views.generic import RedirectView
 from django.urls import include, path, re_path
 
-from form_data.views import *
+from patient_form.views import *
+from patient_data.views import *
 from accounts.views import *
 
 urlpatterns = [
     path('', index, name='index'),
 #    path('', RedirectView.as_view(url='accounts/login/', permanent=False), name='index'),
-    path('forms/', include('form_data.urls')),
+    path('form/', include('patient_form.urls')),
+    path('data/', include('patient_data.urls')),
 #    path('grappelli/', include('grappelli.urls')),
     path('admin/', include('massadmin.urls')),
     path('admin/', admin.site.urls),

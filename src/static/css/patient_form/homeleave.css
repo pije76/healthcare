@@ -1,0 +1,39 @@
+.isi {
+  height: auto;
+  padding-bottom: 20px;
+}
+
+.footer {
+  height: 151px;
+}
+
+#div_id_full_name, #div_id_ic_number, #div_id_patient_family_name, #div_id_nric_number, #div_id_patient_family_phone, #div_id_patient_family_name {
+  margin-left: 30px;
+}
+
+#div_id_patient_family_relationship {
+  margin-left: 0px;
+}
+
+#div_id_nric_number {
+  width: 200px;
+}
+
+#div_id_patient_family_name, #div_id_patient_family_relationship {
+  width: 210px;
+}
+
+.custom-control-label {
+  padding-left: 20px;
+}
+
+.kolom {
+  column-count: 2;
+  column-gap: 2rem;
+  list-style: none;
+}
+
+.homeleave_body {
+  text-align: justify;
+  padding: 20px;
+}

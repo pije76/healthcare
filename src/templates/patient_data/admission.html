@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block headtitle %}
+    {{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block content %}
+
+{% block styles %}
+	<link href="{% static 'css/patient_data/admission.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+<div class="container">
+
+	{% block navmenu %}
+		{% include "navmenu.html" %}
+	{% endblock %}
+
+	<div class="row isi">
+
+		<div class="formtitle">
+			{{ page_title }}
+		</div>
+		
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+			<form method="post">
+				{% csrf_token %}
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th class="text-center">Name</th>
+							<th class="text-center">I/C No</th>
+							<th class="text-center">Date & Time of Admission</th>
+							<th class="text-center">Mode of Admission</th>
+							<th class="text-center">Date of Birth</th>
+							<th class="text-center">Age</th>
+							<th class="text-center">Gender</th>
+							<th class="text-center">Marital Status</th>
+							<th class="text-center">Address</th>
+							<th class="text-center">Phone</th>
+							<th class="text-center">Religion</th>
+							<th class="text-center">Occupation</th>
+							<th class="text-center">EC Name</th>
+							<th class="text-center">EC IC Number</th>
+							<th class="text-center">EC Relationship</th>
+							<th class="text-center">EC Phone</th>
+							<th class="text-center">EC Address</th>
+							<th class="text-center">General Condition</th>
+							<th class="text-center">Temperature</th>
+							<th class="text-center">Pulse</th>
+							<th class="text-center">BP</th>
+							<th class="text-center">Resp</th>
+							<th class="text-center">Spo2</th>
+							<th class="text-center">Medication</th>
+							<th class="text-center">Food</th>
+							<th class="text-center">Others</th>
+							<th class="text-center">Biohazard Infectious Disease</th>
+							<th class="text-center">Medical History</th>
+							<th class="text-center">Surgical History</th>
+							<th class="text-center">Diagnosis</th>
+							<th class="text-center">Own Medication</th>
+							<th class="text-center">Denture</th>
+							<th class="text-center">Admission By</th>
+							<th class="text-center">Date Discharge</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						{% for item in patient_data %}
+						<tr>
+							<td>{{ item.full_name }}</td>
+							<td>{{ item.ic_number }}</td>
+							<td>{{ item.date }}</td>
+							<td>{{ item.mode }}</td>
+							<td>{{ item.birth_date }}</td>
+							<td>{{ item.age }}</td>
+							<td>{{ item.gender }}</td>
+							<td>{{ item.marital_status }}</td>
+							<td>{{ item.address }}</td>
+							<td>{{ item.phone }}</td>
+							<td>{{ item.religion }}</td>
+							<td>{{ item.occupation }}</td>
+							<td>{{ item.ec_name }}</td>
+							<td>{{ item.ec_ic_number }}</td>
+							<td>{{ item.ec_relationship }}</td>
+							<td>{{ item.ec_phone }}</td>
+							<td>{{ item.ec_address }}</td>
+							<td>{{ item.general_condition }}</td>
+							<td>{{ item.temperature }}</td>
+							<td>{{ item.pulse }}</td>
+							<td>{{ item.BP }}</td>
+							<td>{{ item.resp }}</td>
+							<td>{{ item.spo2 }}</td>
+							<td>{{ item.medication }}</td>
+							<td>{{ item.food }}</td>
+							<td>{{ item.others }}</td>
+							<td>{{ item.biohazard_infectious_disease }}</td>
+							<td>{{ item.medical_history }}</td>
+							<td>{{ item.surgical_history }}</td>
+							<td>{{ item.diagnosis }}</td>
+							<td>{{ item.own_medication }}</td>
+							<td>{{ item.denture }}</td>
+							<td>{{ item.admission_by }}</td>
+							<td>{{ item.date_discharge }}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+
+		</div>
+
+	</div>
+</div>
+{% endblock %}

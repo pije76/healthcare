@@ -16,7 +16,7 @@ ic_number_validator = RegexValidator("\d{6}\-\d{2}\-\d{4}", "IC Number format ne
 
 
 from .models import *
-from form_data.models import *
+from patient_form.models import *
 
 class MyLoginForm(LoginForm):
 	def __init__(self, *args, **kwargs):

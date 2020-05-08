@@ -195,7 +195,8 @@
   transform: rotate(0deg);
   vertical-align: middle;
   width: auto;
-  z-index: 99;
+  z-index: 1;
+  overflow: visible;
 }
 
 #menu_etext span {
@@ -252,7 +253,7 @@
   font-family: 'Comic Sans MS',Arial;
   font-size: 10.0pt;
   height: auto;
-  margin-left: 260px;
+  margin-left: 300px;
   margin-top: 12px;
   padding: 0px 0px;
   position: absolute;
@@ -261,6 +262,8 @@
   transform: rotate(0deg);
   vertical-align: middle;
   width: auto;
+  z-index: 1;
+  overflow: visible;
 }
 
 #menu_progress span {
@@ -305,7 +308,7 @@
   font-family: 'Comic Sans MS',Arial;
   font-size: 10.0pt;
   height: auto;
-  margin-left: 409px;
+  margin-left: 430px;
   margin-top: 12px;
   padding: 0px 0px;
   position: absolute;
@@ -441,4 +444,8 @@
   stroke-width: 2px;
   stroke: #DDDDDD;
   box-shadow: none;
+}
+
+#menu_etext > div.dropdown.show {
+  z-index: 999999;
 }

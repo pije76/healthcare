@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block headtitle %}
+    {{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block content %}
+
+{% block styles %}
+	<link href="{% static 'css/patient_form/vital_sign_flow.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+<div class="container">
+
+	{% block navmenu %}
+		{% include "navmenu.html" %}
+	{% endblock %}
+
+	<div class="row isi">
+
+		<div class="formtitle">
+			{{ page_title }}
+		</div>
+
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+			<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" novalidate>
+				{% csrf_token %}
+				<table class="table-sm table-bordered">
+					<tbody>
+						<tr>
+							<td>NAME:</td>
+							<td>{{ form.full_name|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>I/C NO:</td>
+							<td>{{ form.ic_number|as_crispy_field }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<table class="table table-bordered">
+					<col>
+						<colgroup span="2"></colgroup>
+						<colgroup span="2"></colgroup>
+						<colgroup span="2"></colgroup>
+					</col>
+					<tr>
+						<th rowspan="2">Date</th>
+						<th rowspan="2">Time</th>
+						<th rowspan="2">Temp (ºC)</th>
+						<th rowspan="2">Pulse (bpm)</th>
+						<th colspan="2" scope="colgroup">Blood Pressure (mmHg)</th>
+						<th rowspan="2">Respiration (min)</th>
+						<th colspan="2" scope="colgroup">SPO2</th>
+						<th colspan="2" scope="colgroup">HGT</th>
+					</tr>
+					<tr>
+						<th scope="col">Systolic</th>
+						<th scope="col">Diastolic</th>
+						<th scope="col">(%)</th>
+						<th scope="col">O2/min</th>
+						<th scope="col">(mmol/L)</th>
+						<th scope="col">Remarks</th>
+					</tr>
+					<tr>
+						<td>{{ form.date|as_crispy_field }}</td>
+						<td>{{ form.time|as_crispy_field }}</td>
+						<td>{{ form.temp|as_crispy_field }}</td>
+						<td>{{ form.pulse|as_crispy_field }}</td>
+						<td>{{ form.respiration|as_crispy_field }}</td>
+						<td>{{ form.respiration|as_crispy_field }}</td>
+						<td>{{ form.respiration|as_crispy_field }}</td>
+						<td>{{ form.spo2_percentage|as_crispy_field }}</td>
+						<td>{{ form.spo2_percentage|as_crispy_field }}</td>
+						<td>{{ form.respiration|as_crispy_field }}</td>
+						<td>{{ form.respiration|as_crispy_field }}</td>
+					</tr>
+				</table>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+
+		</div>
+
+	</div>
+</div>
+{% endblock %}

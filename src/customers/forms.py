@@ -5,7 +5,7 @@ from crispy_forms.helper import FormHelper
 
 from crispy_forms.layout import Submit, Layout, Div, Fieldset
 
-from form_data.models import *
+from patient_form.models import *
 
 
 class AdmissionForm(forms.ModelForm):

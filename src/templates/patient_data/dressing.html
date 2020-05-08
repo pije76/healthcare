@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block headtitle %}
+    {{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block content %}
+
+{% block styles %}
+	<link href="{% static 'css/patient_data/dressing.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+<div class="container">
+
+	{% block navmenu %}
+		{% include "navmenu.html" %}
+	{% endblock %}
+
+	<div class="row isi">
+
+		<div class="formtitle">
+			{{ page_title }}
+		</div>
+
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+			<form method="post" id="dataForm" data-url="{% url 'patient_form:dressing' %}" enctype="multipart/form-data" novalidate>
+				{% csrf_token %}
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th class="text-center">NAME:</th>
+							<th class="text-center">I/C NO:</th>
+							<th class="text-center">Date</th>
+							<th class="text-center">Time</th>
+							<th class="text-center">Frequency of Dressing</th>
+							<th class="text-center">Type of Dressing</th>
+							<th class="text-center">Wound Location</th>
+							<th class="text-center">Wound Condition</th>
+							<th class="text-center">Photos</th>
+							<th class="text-center">Done By</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for item in patient_data %}
+						<tr>
+							<td>{{ item.full_name }}</td>
+							<td>{{ item.ic_number }}</td>
+							<td>{{ item.date }}</td>
+							<td>{{ item.time }}</td>
+							<td>{{ item.frequency_dressing }}</td>
+							<td>{{ item.type_dressing }}</td>
+							<td>{{ item.wound_location }}</td>
+							<td>{{ item.wound_condition }}</td>
+							<td>{{ item.photos }}</td>
+							<td>{{ item.done_by }}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+
+		</div>
+
+	</div>
+</div>
+{% endblock %}
