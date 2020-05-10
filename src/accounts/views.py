@@ -13,7 +13,7 @@ from allauth.account.forms import LoginForm, SignupForm
 
 from accounts.models import *
 from customers.models import *
-from form_data.models import *
+from patient_form.models import *
 from .models import *
 from .forms import *
 
@@ -23,11 +23,13 @@ def index(request):
     patients = PatientProfile.objects.filter(username=request.user.username)
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+    page_title = 'Account'
 
     context = {
         'patients': patients,
         'logos': logos,
         'titles': titles,
+        'page_title': page_title,
     }
     return render(request, 'index.html', context)
 
@@ -38,8 +40,9 @@ def change_profile(request):
     patients = PatientProfile.objects.filter(username=request.user.username)
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+    page_title = 'Account'
     icnumbers = Admission.objects.filter(full_name=request.user)
-    initial_icnumber = Admission.objects.filter(full_name=request.user).values_list('ic_number', flat=True).first()
+#    initial_icnumber = Admission.objects.filter(full_name=request.user).values_list('ic_number', flat=True).first()
 
     if request.method == 'POST':
         form = ChangePatientProfile(request.POST, instance=request.user)
@@ -61,11 +64,13 @@ def change_profile(request):
         'patients': patients,
         'logos': logos,
         'titles': titles,
+        'page_title': page_title,
         'navbar': 'account',
         'icnumbers': icnumbers,
         'form': form,
     }
     return render(request, 'account/change.html', context)
+
 
 @login_required
 def change_number(request):
@@ -73,6 +78,7 @@ def change_number(request):
     patients = PatientProfile.objects.filter(username=request.user.username)
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+    page_title = 'Account'
     icnumbers = Admission.objects.filter(full_name=request.user)
     initial_icnumber = Admission.objects.filter(full_name=request.user).values_list('ic_number', flat=True).first()
 
@@ -94,17 +100,7 @@ def change_number(request):
         'patients': patients,
         'logos': logos,
         'titles': titles,
-        'navbar': 'account',
-        'icnumbers': icnumbers,
-        'form': form,
-    }
-    return render(request, 'account/change.html', context)
-
-
-    context = {
-        'patients': patients,
-        'logos': logos,
-        'titles': titles,
+        'page_title': page_title,
         'navbar': 'account',
         'icnumbers': icnumbers,
         'form': form,
@@ -119,11 +115,13 @@ def account(request):
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     icnumbers = Admission.objects.filter(full_name=request.user)
+    page_title = 'Account'
 
     context = {
         'patients': patients,
         'logos': logos,
         'titles': titles,
+        'page_title': page_title,
         'icnumbers': icnumbers,
         'navbar': 'account',
         'form': LoginForm(),

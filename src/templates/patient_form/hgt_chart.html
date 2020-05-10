@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block headtitle %}
+    {{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block content %}
+
+{% block styles %}
+	<link href="{% static 'css/patient_form/hgt_chart.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+<div class="container">
+
+	{% block navmenu %}
+		{% include "navmenu.html" %}
+	{% endblock %}
+
+	<div class="row isi">
+
+		<div class="formtitle">
+			{{ page_title }}
+		</div>
+
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+			<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" novalidate>
+				{% csrf_token %}
+				<table class="table-sm table-bordered">
+					<tbody>
+						<tr>
+							<td>NAME:</td>
+							<td>{{ form.full_name|as_crispy_field }}</td>
+						</tr>
+						<tr>
+							<td>I/C NO:</td>
+							<td>{{ form.ic_number|as_crispy_field }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th class="text-center">Date</th>
+							<th class="text-center">Time</th>
+							<th class="text-center">Blood glucose reading (mmol/L)</th>
+							<th class="text-center">Remark:</th>
+							<th class="text-center">Done By:</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{ form.date|as_crispy_field }}</td>
+							<td>{{ form.time|as_crispy_field }}</td>
+							<td>{{ form.blood_glucose_reading|as_crispy_field }}</td>
+							<td>{{ form.remark|as_crispy_field }}</td>
+							<td>{{ form.done_by|as_crispy_field }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+
+		</div>
+
+	</div>
+</div>
+{% endblock %}

@@ -24,10 +24,12 @@ class PatientProfile(AbstractUser):
 	def __str__(self):
 		return str(self.full_name)
 
+	def patientprofile(self):
+		return hasattr(self, 'patient_profile')
+
 	def save(self, *args, **kwargs):
 		self.full_name = '{0} {1}'.format(self.first_name, self.last_name)
 		super().save(*args, **kwargs)
-
 
 	class Meta:
 		verbose_name = 'Patient Profile'

@@ -72,7 +72,8 @@ TENANT_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'form_data',
+    'patient_form',
+    'patient_data',
 
     # your tenant-specific apps
 #    'accounts',
@@ -90,6 +91,7 @@ TENANT_APPS = (
 #    'bootstrap_submenu',
 
     'crispy_forms',
+    'jsignature',
     'widget_tweaks',
 #    'django_select2',
     'ajax_select',
@@ -243,8 +245,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 #AJAX_LOOKUP_CHANNELS = {
-#    'fullname': {'model': 'form_data.full_name', 'search_field': 'full_name'},
-#    'fullname': ('form_data.lookups', 'FullnameLookup'),
+#    'fullname': {'model': 'patient_form.full_name', 'search_field': 'full_name'},
+#    'fullname': ('patient_form.lookups', 'FullnameLookup'),
 #}
 
 
