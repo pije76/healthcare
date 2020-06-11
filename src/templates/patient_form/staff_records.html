@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block headtitle %}
+    {{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block content %}
+
+{% block styles %}
+	<link href="{% static 'css/patient_form/stool.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+<div class="row isi">
+
+	<div class="formtitle">
+		{{ page_title }}
+		<br />
+		_______ YEAR _______
+	</div>
+
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+		<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" novalidate>
+			{% csrf_token %}
+			<table class="table-sm table-bordered">
+				<tbody>
+					<tr>
+						<td>NAME:</td>
+						<td>{{ form.full_name|as_crispy_field }}</td>
+					</tr>
+					<tr>
+						<td>I/C NO:</td>
+						<td>{{ form.ic_number|as_crispy_field }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th class="text-center">Annual Leave _______ Days (Entitled)</th>
+						<th class="text-center">Public Holiday ______ Days (Entitled)</th>
+						<th class="text-center">Replacement Public Holiday</th>
+						<th class="text-center">Medical Certificate</th>
+						<th class="text-center">Siri No & Diagnosis</th>
+						<th class="text-center">Emergency Leaves</th>
+						<th class="text-center">Reasons</th>
+						<th class="text-center">Unpaid Leaves</th>
+						<th class="text-center">Reasons</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{ form.annual_leave_days|as_crispy_field }}</td>
+						<td>{{ form.public_holiday_days|as_crispy_field }}</td>
+						<td>{{ form.replacement_public_holiday|as_crispy_field }}</td>
+						<td>{{ form.medical_certificate|as_crispy_field }}</td>
+						<td>{{ form.siri_no_diagnosis|as_crispy_field }}</td>
+						<td>{{ form.emergency_leaves|as_crispy_field }}</td>
+						<td>{{ form.emergency_leaves_reasons|as_crispy_field }}</td>
+						<td>{{ form.unpaid_leaves|as_crispy_field }}</td>
+						<td>{{ form.unpaid_leaves_reasons|as_crispy_field }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+
+	</div>
+
+</div>
+
+{% endblock %}

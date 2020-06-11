@@ -14,149 +14,67 @@
 
 {% block content %}
 
-<div class="container">
-
-	{% block navmenu %}
-		{% include "navmenu.html" %}
-	{% endblock %}
-
 	<div class="row isi">
 
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-			{% if user.is_authenticated %}
-
-				{% if patients %}
-
-					{% for item in patients %}
-						<div id="name_title" class="">
-							<span id="rtr-name_title_0">Name &nbsp; &nbsp; &nbsp;</span>
-						</div>
-						<div id="name_field" class="">
-							<span id="rtr-name_field_0">{{ item.full_name }}</span>
-						</div>
-						<div id="changename_button" class="">
-							<span id="rtr-changename_button_0"><a href="/account/change-profile/">Change Full Name</a></span>
-						</div>
-						<div id="email_title" class="">
-							<span id="rtr-email_title_0">Email</span>
-						</div>
-						<div id="email_field" class="">
-							<span id="rtr-email_field_0">{{ item.email }}</span>
-						</div>
-						<div id="changeemail_button" class="">
-							<span id="rtr-changeemail_button_0"><a href="/account/change-profile/">Change Email</a></span>
-						</div>
-						<div id="password_title" class="">
-							<span id="rtr-password_title_0">Password</span>
-						</div>
-						<div id="password_field" class="">
-							<span id="rtr-password_field_0">xxxxxx</span>
-						</div>
-						<div id="changepassword_button" class="">
-							<span id="rtr-changepassword_button_0"><a href="/accounts/password/change/">Change password</a></span>
-						</div>
-						<div id="class_title" class="">
-							<span id="rtr-class_title_0">IC Number</span>
-						</div>
-						{% if icnumbers %}
-							{% for item in icnumbers %}
-						<div id="class_field" class="">
-							<span id="rtr-class_field_0">{{ item.ic_number }}</span>
-						</div>
-							{% endfor %}
-						{% endif %}
-						<div id="changefield_button" class="">
-							<span id="rtr-changefield_button_0"><a href="/account/change-icnumber/">Change IC Number</a></span>
-						</div>
-						<div id="contactadmin" class="">
-							<span id="rtr-contactadmin_0">Contact administrator (email)</span>
-						</div>
-						<div id="contactteacher" class="">
-							<span id="rtr-contactteacher_0">Contact administrator (email teacher)</span>
-						</div>
-					{% endfor %}
-
-				{% else %}
-
-					<div id="name_title" class="">
-						<span id="rtr-name_title_0">Name &nbsp; &nbsp; &nbsp;</span>
-					</div>
-					<div id="name_field" class="">
-						<span id="rtr-name_field_0"></span>
-					</div>
-					<div id="email_title" class="">
-						<span id="rtr-email_title_0">Email</span>
-					</div>
-					<div id="email_field" class="">
-						<span id="rtr-email_field_0"></span>
-					</div>
-					<div id="password_title" class="">
-						<span id="rtr-password_title_0">Password</span>
-					</div>
-					<div id="password_field" class="">
-						<span id="rtr-password_field_0">xxxxxx</span>
-					</div>
-					<div id="changepassword_button" class="">
-						<span id="rtr-changepassword_button_0"><a href="/accounts/password/change/">Change password</a></span>
-					</div>
-					<div id="class_title" class="">
-						<span id="rtr-class_title_0">IC Number</span>
-					</div>
-					<div id="class_field" class="">
-						<span id="rtr-class_field_0"></span>
-					</div>
-					<div id="contactadmin" class="">
-						<span id="rtr-contactadmin_0">Contact administrator (email)</span>
-					</div>
-					<div id="contactteacher" class="">
-						<span id="rtr-contactteacher_0">Contact administrator (email teacher)</span>
-					</div>
-
-				{% endif %}
-
-				<div id="s-Text_12" class="">
-					<span id="rtr-s-Text_12_0">Feeback to Edapt</span>
-				</div>
-
-				<div id="input_feedback" class="">
-					<div class="backgroundLayer"></div>
-					<div class="paddingLayer">
-						<div class="content">
-							<div class="valign">
-								<input type="text" value="" maxlength="100" tabindex="-1" placeholder="">
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div id="s-Button_2" class="">
-					<span id="rtr-s-Button_2_0"><a href="/submit/">Send</a></span>
-				</div>
-
-				<div id="s-Title" class="">
-					<div class="icon"></div>
-					<select id="s-Title-options" class="s-6c5b677b-8c09-45c3-b4ac-b730b8f63824 dropdown-options">
-						<option selected="selected" class="option">Error in content</option>
-						<option class="option">Unexpected behaviour</option>
-						<option class="option">Suggestions</option>
-						<option class="option">General feedback</option>
-						<option class="option"></option>
-					</select>
-				</div>
-
-				 <div id="s-Text_13" class="">
-					<span id="rtr-s-Text_13_0">Subject</span>
-				 </div>
-
-			{% endif %}
-
+		<div class="col-md-10">
+		    <div class="card">
+		        <div class="card-body">
+		            <div class="row">
+		                <div class="col-md-12">
+		                    <h4>Your Profile</h4>
+		                    <hr>
+		                </div>
+		            </div>
+		            
+		            <div class="row">
+		            {% if user.is_authenticated %}
+		        	{% if patients %}
+		        	{% for item in patients %}
+		                <div class="col-md-12">
+		                    <form>
+                              <div class="form-group row">
+                                <label for="lastname" class="col-4 col-form-label">Full Name</label> 
+                                <div class="col-8">
+                                  <input id="fullname" name="lastname" placeholder="{{ item.full_name }}" class="form-control here" type="text">
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="email" class="col-4 col-form-label">Email*</label> 
+                                <div class="col-8">
+                                  <input id="email" name="email" placeholder="{{ item.email }}" class="form-control here" required="required" type="text">
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="icnumber" class="col-4 col-form-label">IC Number</label> 
+                                <div class="col-8">
+	                                {% if icnumbers %}
+									{% for item in icnumbers %}
+								    <input id="icnumber" name="icnumber" placeholder="{{ item.ic_number }}" class="form-control here" required="required" type="text">
+								    {% endfor %}
+								    {% endif %}
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="newpass" class="col-4 col-form-label">New Password</label> 
+                                <div class="col-8">
+                                  <input id="newpass" name="newpass" placeholder="New Password" class="form-control here" type="text">
+                                </div>
+                              </div> 
+                              <div class="form-group row">
+                                <div class="offset-4 col-8">
+                                  <button name="submit" type="submit" class="btn btn-primary">Update My Profile</button>
+                                </div>
+                              </div>
+                            </form>
+		                </div>
+		                {% endfor %}
+		                {% endif %}
+		                {% endif %}
+		            </div>
+		            
+		        </div>
+		    </div>
 		</div>
 	</div>
 
-	{% block footer %}
-		{% include "footer.html" %}
-	{% endblock %}
-	 
-</div>
 {% endblock %}

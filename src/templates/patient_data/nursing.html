@@ -14,45 +14,39 @@
 	<link href="{% static 'css/patient_data/nursing.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
-<div class="container">
+<div class="row isi">
 
-	{% block navmenu %}
-		{% include "navmenu.html" %}
-	{% endblock %}
+	<div class="formtitle">
+		{{ page_title }}
+	</div>
 
-	<div class="row isi">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-		<div class="formtitle">
-			{{ page_title }}
-		</div>
-
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-			<form method="post" id="dataForm" data-url="{% url 'patient_form:nursing' %}" novalidate>
-				{% csrf_token %}
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							<th class="text-center">Name</th>
-							<th class="text-center">I/C No</th>
-							<th class="text-center">Report</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for item in patient_data %}
-						<tr>
-							<td>{{ item.full_name }}</td>
-							<td>{{ item.ic_number }}</td>
-							<td>{{ item.report }}</td>
-						</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-				<button type="submit" class="btn btn-primary">Submit</button>
-			</form>
-
-		</div>
+		<form method="post" id="dataForm" data-url="{% url 'patient_form:nursing' %}" novalidate>
+			{% csrf_token %}
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th class="text-center">Name</th>
+						<th class="text-center">I/C No</th>
+						<th class="text-center">Report</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in patient_data %}
+					<tr>
+						<td>{{ item.full_name }}</td>
+						<td>{{ item.ic_number }}</td>
+						<td>{{ item.report }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
 
 	</div>
+
 </div>
+
 {% endblock %}

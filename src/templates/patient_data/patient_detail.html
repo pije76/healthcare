@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block javascript %}
+	<script src="{% static 'js/patient_data.js' %}"></script>
+{% endblock %}
+
+{% block headtitle %}
+{% for item in page_title %}
+	{{ item.username }} | {{ titles.title }}
+{% endfor %}
+{% endblock %}
+
+{% block styles %}
+	<link href="{% static 'css/patient_data/patient_data.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+
+<div class="row detail">
+
+	<div class="col-12">
+		{% if patients %}
+				{% for item in patients %}
+				<div class="col-4">
+					<span id="name_title">Name:</span>
+					<span id="name_field">{{ item.full_name }}</span>
+				</div>
+				<div class="col-6">
+					<span id="class_title">IC Number:</span>
+					{% if icnumbers %}
+						{% for item in icnumbers %}
+							<span id="class_field">{{ item.ic_number }}</span>
+						{% endfor %}
+					{% endif %}
+				</div>
+				{% endfor %}
+		{% endif %}
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-6">
+		<div class="card bg-light mb-3">
+			<div class="card-header">Add Data</div>
+				<div class="card-body">
+					<div class="col-sm-6 text-sm-left">
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/form/admission/">Admission Form</a>
+						</div>
+						<div class="link_detail">				
+							<a class="btn btn-primary"href="/form/homeleave/">Application For Home Leave</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/form/appointment/">Appointment Records</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/form/cannulation/">Catheterization and Cannulation Chart</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/form/charges/">Charges Sheet</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/form/dressing/">Dressing Chart</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/form/enteral-feeding-regime/">Enteral Feeding Regime</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/form/hgt/">HGT Chart</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/form/intake-output/">Intake Output Chart</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/form/maintainance/">Maintainance Form</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/form/medication-administration/">Medication Administration Record</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/form/medication/">Medication Records</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/form/nursing/">Nursing Report</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/form/physio-progress-note/">Physiotherapy Progress Note Sheet</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/form/physiotherapy-general-assessment/">Physiotherapy - General Assessment Form</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/form/stool/">Stool Chart</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/form/vital-sign-flow/">Vital Sign Flow Sheet</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	<div class="col-6">
+		<div class="card bg-light mb-3">
+			<div class="card-header">Old Data</div>
+				<div class="card-body">
+
+					<div class="col-sm-6 text-sm-left">
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/data/admission/">Admission Form</a>
+						</div>
+						<div class="link_detail">				
+							<a class="btn btn-primary"href="/data/homeleave/">Application For Home Leave</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/data/appointment/">Appointment Records</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/data/cannulation/">Catheterization and Cannulation Chart</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/data/charges/">Charges Sheet</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/data/dressing/">Dressing Chart</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/data/enteral-feeding-regime/">Enteral Feeding Regime</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/data/hgt/">HGT Chart</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/data/intake-output/">Intake Output Chart</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/data/maintainance/">Maintainance Form</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/data/medication-administration/">Medication Administration Record</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/data/medication/">Medication Records</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/data/nursing/">Nursing Report</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/data/physio-progress-note/">Physiotherapy Progress Note Sheet</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/data/physiotherapy-general-assessment/">Physiotherapy - General Assessment Form</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/data/stool/">Stool Chart</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-primary"href="/data/vital-sign-flow/">Vital Sign Flow Sheet</a>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

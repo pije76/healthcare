@@ -1,32 +1,53 @@
 from django import forms
-from django.core.validators import RegexValidator
 from django.contrib.auth.models import *
-from django.contrib.auth import get_user_model
-from django.contrib.contenttypes.models import ContentType
-from django.shortcuts import get_list_or_404, get_object_or_404
+from django.urls import reverse
+from django.utils.translation import ugettext as _
 
 from allauth.account.forms import LoginForm
 from allauth.account.forms import SignupForm
 
-import json
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import HTML
 
 #from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
-
-ic_number_validator = RegexValidator("\d{6}\-\d{2}\-\d{4}", "IC Number format needs to be yymmdd-xx-zzzz.")
-
 
 from .models import *
 from patient_form.models import *
 
+
 class MyLoginForm(LoginForm):
 	def __init__(self, *args, **kwargs):
 		super(MyLoginForm, self).__init__(*args, **kwargs)
-		self.fields['login'].label = ""
-		self.fields['login'].required = True
-		self.fields['login'].widget = forms.TextInput()
-		self.fields['password'].label = ""
-		self.fields['password'].required = True
-		self.fields['password'].widget = forms.PasswordInput()
+		self.helper = FormHelper(self)
+		# Add magic stuff to redirect back.
+		self.helper.layout.append(
+			HTML(
+				"{% if redirect_field_value %}"
+				"<input type='hidden' name='{{ redirect_field_name }}'"
+				" value='{{ redirect_field_value }}' />"
+				"{% endif %}"
+			)
+		)
+		# Add password reset link.
+		self.helper.layout.append(
+			HTML(
+				"<p><a class='button secondaryAction' href={url}>{text}</a></p>".format(
+					url=reverse('account_reset_password'),
+					text=_('Forgot Password?')
+				),
+			)
+		)
+		# Add submit button like in original form.
+		self.helper.layout.append(
+			HTML(
+				'<button class="btn btn-primary btn-block" type="submit">'
+				'%s</button>' % _('Sign In')
+			)
+		)
+
+		self.helper.form_class = 'form-horizontal'
+		self.helper.label_class = 'col-xs-2 hide'
+		self.helper.field_class = 'col-xs-8'
 
 
 class MySignUpForm(SignupForm):

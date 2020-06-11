@@ -8,71 +8,21 @@
 {% load crispy_forms_tags %}
 
 {% block styles %}
-		<link href="{% static 'css/login.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/login.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block headtitle %}{% trans "Login" %}{% endblock %}
 
 {% block content %}
 
-<div class="container">
-
-	{% block navmenu %}
-		{% include "navmenu.html" %}
-	{% endblock %}
 
 	<div class="row isi">
-		<div class="col-sm-2 col-md-2 col-lg-2">
+
+		<div class="login-form">
+			<h2 class="text-center">Log in</h2>
+			{% crispy form %}
 		</div>
 
-		<div class="col-sm-8 col-md-8 col-lg-8">
-			<div id="s-fieldSet" class="">
-				<div id="s-Rectangle_1" class="">
-					<span id="rtr-s-Rectangle_1_0"></span>
-				</div>
-
-				<div id="login_box" class="" alt="image">
-					<img src="{% static "images/loginbox.png" %}" alt="Login"/>
-				</div>
-
-				<div id="fieldset_title" class="">
-					<span id="rtr-fieldset_title_0">Field Set / Group</span>
-				</div>
-			</div>
-
-			<div id="title_login" class="">
-				<span id="rtr-title_login_0">Login ID</span>
-			</div>
-
-			<div id="title_password" class="">
-				<span id="rtr-title_password_0">Password</span>
-			</div>
-
-
-			<form class="login" method="POST" action="{% url 'account_login' %}">
-				{% csrf_token %}
-				{{ form.as_p }}
-				{% if redirect_field_value %}
-				<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-				{% endif %}
-				<div id="title_register" class="">
-					<span id="rtr-title_register_0"><a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a></span>
-				</div>
-				<div id="title_forgetpassword" class="">
-					<span id="rtr-title_forgetpassword_0"><a href="{% url 'account_reset_password' %}">{% trans "Forgot password" %}</a></span>
-				</div>
-				<button id="s-Button_2" class="primaryAction" type="submit">{% trans "Sign In" %}</button>
-			</form>
-
-		</div>
-
-		<div class="col-sm-2 col-md-2 col-lg-2">
-		</div>
 	</div>
 	
-	{% block footer %}
-		{% include "footer.html" %}
-	{% endblock %}
-
-</div>
 {% endblock %}

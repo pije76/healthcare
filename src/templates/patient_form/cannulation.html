@@ -14,57 +14,84 @@
 	<link href="{% static 'css/patient_form/cannulation.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
-<div class="container">
+<div class="row isi">
 
-	{% block navmenu %}
-		{% include "navmenu.html" %}
-	{% endblock %}
+	<div class="formtitle">
+		{{ page_title }}
+	</div>
 
-	<div class="row isi">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-		<div class="formtitle">
-			{{ page_title }}
-		</div>
+		<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" novalidate>
+			{% csrf_token %}
+			<table class="table-sm table-bordered">
+				<tbody>
+					<tr>
+						<td>NAME:</td>
+						<td>{{ form.full_name|as_crispy_field }}</td>
+					</tr>
+					<tr>
+						<td>I/C NO:</td>
+						<td>{{ form.ic_number|as_crispy_field }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table table-bordered">
+				<col>
+					<colgroup span="1"></colgroup>
+				</col>
+				<tr>
+					<th class="text-center" colspan="6" scope="colgroup">Nasogastric tube</th>
+					<th class="text-center" colspan="6" scope="colgroup">Urinary catheter</th>
+					<th class="text-center" colspan="6" scope="colgroup">Cannula</th>
+				</tr>
+				<tr>
+					<th class="text-center" scope="col">Date</th>
+					<th class="text-center" scope="col">Size (Fr)</th>
+					<th class="text-center" scope="col">Type</th>
+					<th class="text-center" scope="col">Location</th>
+					<th class="text-center" scope="col">Due date</th>
+					<th class="text-center" scope="col">Inserted by</th>
+					<th class="text-center" scope="col">Date</th>
+					<th class="text-center" scope="col">Size (Fr)</th>
+					<th class="text-center" scope="col">Type</th>
+					<th class="text-center" scope="col">Location</th>
+					<th class="text-center" scope="col">Due date</th>
+					<th class="text-center" scope="col">Inserted by</th>
+					<th class="text-center" scope="col">Date</th>
+					<th class="text-center" scope="col">Size (Fr)</th>
+					<th class="text-center" scope="col">Type</th>
+					<th class="text-center" scope="col">Location</th>
+					<th class="text-center" scope="col">Due date</th>
+					<th class="text-center" scope="col">Inserted by</th>
+				</tr>
 
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-			<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" novalidate>
-				{% csrf_token %}
-				<table class="table-sm table-bordered">
-					<tbody>
-						<tr>
-							<td>NAME:</td>
-							<td>{{ form.full_name|as_crispy_field }}</td>
-						</tr>
-						<tr>
-							<td>I/C NO:</td>
-							<td>{{ form.ic_number|as_crispy_field }}</td>
-						</tr>
-					</tbody>
-				</table>
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							<th class="text-center">Date & Time</th>
-							<th class="text-center">Cannula/CBD/Ryle's tube</th>
-							<th class="text-center">Due Date</th>
-							<th class="text-center">Done by</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>{{ form.date_time|as_crispy_field }}</td>
-							<td>{{ form.cannula_cbd_ryles_tube|as_crispy_field }}</td>
-							<td>{{ form.due_date|as_crispy_field }}</td>
-							<td>{{ form.done_by|as_crispy_field }}</td>
-						</tr>
-					</tbody>
-				</table>
-				<button type="submit" class="btn btn-primary">Submit</button>
-			</form>
-
-		</div>
+				<tr>
+					<th class="text-center" scope="row">{{ form.nasogastric_tube_date|as_crispy_field }}</th>
+					<td>{{ form.nasogastric_tube_size|as_crispy_field }}</td>
+					<td>{{ form.nasogastric_tube_type|as_crispy_field }}</td>
+					<td>{{ form.nasogastric_tube_location|as_crispy_field }}</td>
+					<td>{{ form.nasogastric_tube_due_date|as_crispy_field }}</td>
+					<td>{{ form.nasogastric_tube_inserted_by|as_crispy_field }}</td>
+					<th class="text-center" scope="row">{{ form.nasogastric_tube_date|as_crispy_field }}</th>
+					<td>{{ form.nasogastric_tube_size|as_crispy_field }}</td>
+					<td>{{ form.nasogastric_tube_type|as_crispy_field }}</td>
+					<td>{{ form.nasogastric_tube_location|as_crispy_field }}</td>
+					<td>{{ form.nasogastric_tube_due_date|as_crispy_field }}</td>
+					<td>{{ form.nasogastric_tube_inserted_by|as_crispy_field }}</td>
+					<th class="text-center" scope="row">{{ form.nasogastric_tube_date|as_crispy_field }}</th>
+					<td>{{ form.nasogastric_tube_size|as_crispy_field }}</td>
+					<td>{{ form.nasogastric_tube_type|as_crispy_field }}</td>
+					<td>{{ form.nasogastric_tube_location|as_crispy_field }}</td>
+					<td>{{ form.nasogastric_tube_due_date|as_crispy_field }}</td>
+					<td>{{ form.nasogastric_tube_inserted_by|as_crispy_field }}</td>
+				</tr>
+			</table>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
 
 	</div>
+
 </div>
+
 {% endblock %}

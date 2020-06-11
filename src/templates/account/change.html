@@ -16,24 +16,17 @@
 
 {% block content %}
 
-<div class="container">
+<div class="row isi">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-	{% block navmenu %}
-	{% include "navmenu.html" %}
-	{% endblock %}
+		<h1>{% trans "Change Profile" %}</h1>
 
-	<div class="row isi">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-			<h1>{% trans "Change Profile" %}</h1>
-
-			<form method="post">
-				{% csrf_token %}
-				{{ form|crispy }}
-				<button type="submit" name="action">{% trans "Change Profile" %}</button>
-			</form>
-		</div>
+		<form method="post">
+			{% csrf_token %}
+			{{ form|crispy }}
+			<button class="btn btn-primary" type="submit" name="action">{% trans "Change Profile" %}</button>
+		</form>
 	</div>
-
 </div>
+
 {% endblock %}

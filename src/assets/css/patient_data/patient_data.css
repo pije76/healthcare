@@ -1,0 +1,14 @@
+.detail {
+  border: 1px solid #ddd;
+  padding: 10px 0px;
+  margin: 0px 0px 15px 0px;
+}
+
+.link_detail {
+  margin-bottom: 5px;
+  width: max-content;
+}
+
+.link_detail a {
+  text-align: left;
+}

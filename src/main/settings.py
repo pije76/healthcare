@@ -41,10 +41,6 @@ SHARED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
 
-#    'tenant_users.permissions',  # Defined in both shared apps and tenant apps
-#    'tenant_users.tenants',  # defined only in shared apps
-
-
     # everything below here is optional
     'django.contrib.sessions',
     'django.contrib.sites',
@@ -53,19 +49,18 @@ SHARED_APPS = (
     'django.contrib.staticfiles',
 
     'accounts',  # Custom app that contains the new User Model. Must NOT exist in TENANT_APPS
+    'bootstrapform',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
 
     'massadmin',
-
 )
 
 TENANT_APPS = (
     # The following Django contrib apps must be in TENANT_APPS
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    #'tenant_users.permissions',  # Defined in both shared apps and tenant apps
 
     'django.contrib.admin',
     'django.contrib.sessions',
@@ -76,11 +71,6 @@ TENANT_APPS = (
     'patient_data',
 
     # your tenant-specific apps
-#    'accounts',
-#    'allauth',
-#    'allauth.account',
-#    'allauth.socialaccount',
-
 #    'avatar',
 #    'userprofiles2',
 
@@ -128,7 +118,6 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
-#    'tenant_users.permissions.backend.UserBackend',
 )
 
 # Allauth settings

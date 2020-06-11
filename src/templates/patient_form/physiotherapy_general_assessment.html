@@ -14,131 +14,145 @@
 <link href="{% static 'css/patient_form/physiotherapy_general_assessment.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
-<div class="container">
-	{% block navmenu %}
-		{% include "navmenu.html" %}
-	{% endblock %}
-
-	<div class="row isi">
-		
-		<div class="formtitle">
-			{{ page_title }}
-		</div>
-
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-			<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" novalidate>
-				{% csrf_token %}
-
-				<table class="table-sm table-bordered">
-					<tbody>
-						<tr>
-							<td>NAME:</td>
-							<td>{{ form.full_name|as_crispy_field }}</td>
-						</tr>
-						<tr>
-							<td>I/C NO:</td>
-							<td>{{ form.ic_number|as_crispy_field }}</td>
-						</tr>
-					</tbody>
-				</table>
-
-				<table class="table table-bordered">
-					<thead>
-						<tr></tr>
-					</thead>
-
-					<tbody>
-						<tr>
-							<td>Doctor's Diagnosis{{ form.doctor_diagnosis|as_crispy_field }}
-                            <br />Doctor's Management{{ form.doctor_management|as_crispy_field }}
-                            <br />Problem{{ form.problem|as_crispy_field }}
-                            </td>
-                            <td class="items">
-                                <figure>
-                                    <img src="{% static "images/left_body.png" %}" alt="Left Body"/>
-                                    <figcaption>RIGHT&emsp;&emsp;LEFT</figcaption>
-                                </figure>
-                                <figure>
-                                    <img src="{% static "images/right_body.png" %}" alt="Right Body"/>
-                                    <figcaption>RIGHT&emsp;&emsp;LEFT</figcaption>
-                                </figure>
-                            </td>
-						</tr>
-						<tr>
-							<td>
-								Pain Scale{{ form.pain_scale|as_crispy_field }}
-								<br />
-								Comments: {{ form.comments|as_crispy_field }}
-							</td>
-                            <td>Current History {{ form.current_history|as_crispy_field }}</td>
-						</tr>
-						<tr>
-							<td>Special Question{{ form.special_question|as_crispy_field }}</td>
-                            <td>Past History (relating to current problem ){{ form.past_history|as_crispy_field }}</td>
-						</tr>
-						<tr>
-							<td>General Health{{ form.general_health|as_crispy_field }}</td>
-						</tr>
-						<tr>
-							<td>PMX / Surgery{{ form.pmx_surgery|as_crispy_field }}</td>
-                            <td>Observation{{ form.observation|as_crispy_field }}</td>
-						</tr>
-                        <tr>
-                            <td>IX/MRI/X-Ray{{ form.ix_mri_x_ray|as_crispy_field }}</td>
-                        </tr>
-                        <tr>
-                            <td>Medications/Steroids{{ form.medications_steroids|as_crispy_field }}</td>
-                        </tr>
-                        <tr>
-                            <td>Occupation/Recreation{{ form.occupation_recreation|as_crispy_field }}</td>
-                            <td>Palpation{{ form.palpation|as_crispy_field }}</td>
-                        </tr>
-                        <tr>
-                            <td>Pacemaker/Hearing Aid{{ form.pacemaker_hearing_aid|as_crispy_field }}</td>
-                        </tr>
-                        <tr>
-                            <td>Splinting{{ form.splinting|as_crispy_field }}</td>
-                        </tr>
-                        <tr>
-                            <td>Physical Examination Movement:{{ form.physical_examination_movement|as_crispy_field }}</td>
-                            <td>Neurological:{{ form.neurological|as_crispy_field }}</td>
-                        </tr>
-                        <tr>
-                            <td>Muscle Power{{ form.muscle_power|as_crispy_field }}</td>
-                            <td>Clearing Test/ Other Joint:{{ form.clearing_test_other_joint|as_crispy_field }}</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>Physiotherapist’s Impression:{{ form.physiotherapists_impression|as_crispy_field }}</td>
-                        </tr>
-                        <tr>
-                            <td>Functional Activities{{ form.functional_activities|as_crispy_field }}</td>
-                            <td>Short Term Goals{{ form.short_term_goals|as_crispy_field }}</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>Long Term Goals:{{ form.long_term_goals|as_crispy_field }}</td>
-                        </tr>
-                        <tr>
-                            <td>Special Test{{ form.special_test|as_crispy_field }}</td>
-                            <td>Plan Treatment:{{ form.plan_treatment|as_crispy_field }}</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Date & Time:{{ form.date_time|as_crispy_field }}<br />
-                                Attending Physiotherapist:{{ form.attending_physiotherapist|as_crispy_field }}
-                            </td>
-                        </tr>
-					</tbody>
-				</table>
-
-				<button type="submit" class="btn btn-primary">Submit</button>
-			</form>
-
-		</div>
-	</div>
+<div class="row isi">
 	
+	<div class="formtitle">
+		{{ page_title }}
+	</div>
+
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+		<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" novalidate>
+			{% csrf_token %}
+
+			<table class="table-sm table-bordered">
+				<tbody>
+					<tr>
+						<td>NAME:</td>
+						<td>{{ form.full_name|as_crispy_field }}</td>
+					</tr>
+					<tr>
+						<td>I/C NO:</td>
+						<td>{{ form.ic_number|as_crispy_field }}</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<table class="table table-bordered">
+				<thead>
+					<tr></tr>
+				</thead>
+
+				<tbody>
+					<tr>
+						<td>Doctor's Diagnosis{{ form.doctor_diagnosis|as_crispy_field }}
+                        <br />Doctor's Management{{ form.doctor_management|as_crispy_field }}
+                        <br />Problem{{ form.problem|as_crispy_field }}
+                        </td>
+                        <td class="items">
+                            <figure>
+                                <img src="{% static "images/left_body.png" %}" alt="Left Body"/>
+                                <figcaption>RIGHT&emsp;&emsp;LEFT</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="{% static "images/right_body.png" %}" alt="Right Body"/>
+                                <figcaption>RIGHT&emsp;&emsp;LEFT</figcaption>
+                            </figure>
+                        </td>
+					</tr>
+					<tr>
+						<td>
+							Pain Scale{{ form.pain_scale|as_crispy_field }}
+							<br />
+							Comments: {{ form.comments|as_crispy_field }}
+						</td>
+                        <td>Current History {{ form.current_history|as_crispy_field }}</td>
+					</tr>
+					<tr>
+						<td>Special Question</td>
+                        <td>Past History (relating to current problem ){{ form.past_history|as_crispy_field }}</td>
+					</tr>
+					<tr>
+						<td>General Health</td>
+                        <td>{{ form.general_health|as_crispy_field }}</td>
+					</tr>
+					<tr>
+						<td>PMX / Surgery</td>
+                        <td>
+                            Observation
+                            <br />
+                            {{ form.pmx_surgery|as_crispy_field }}
+                        </td>
+					</tr>
+                    <tr>
+                        <td>IX/MRI/X-Ray</td>
+                        <td>{{ form.ix_mri_x_ray|as_crispy_field }}</td>
+                    </tr>
+                    <tr>
+                        <td>Medications/Steroids</td>
+                        <td>{{ form.medications_steroids|as_crispy_field }}</td>
+                    </tr>
+                    <tr>
+                        <td>Occupation/Recreation</td>
+                        <td>Palpation{{ form.occupation_recreation|as_crispy_field }}</td>
+                    </tr>
+                    <tr>
+                        <td>Pacemaker/Hearing Aid</td>
+                        <td>{{ form.pacemaker_hearing_aid|as_crispy_field }}</td>
+                    </tr>
+                    <tr>
+                        <td>Splinting</td>
+                        <td>{{ form.splinting|as_crispy_field }}</td>
+                    </tr>
+                    <tr>
+                        <td>Physical Examination Movement:{{ form.physical_examination_movement|as_crispy_field }}</td>
+                        <td>Neurological:{{ form.neurological|as_crispy_field }}</td>
+                    </tr>
+                    <tr>
+                        <td>Muscle Power{{ form.muscle_power|as_crispy_field }}</td>
+                        <td>
+                            Clearing Test/ Other Joint:{{ form.clearing_test_other_joint|as_crispy_field }}
+                            <br />
+                            Physiotherapist’s Impression:{{ form.physiotherapists_impression|as_crispy_field }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Functional Activities
+                            <br/>
+                            {{ form.functional_activities|as_crispy_field }}
+                        </td>
+                        <td>
+                            Short Term Goals
+                            <br />
+                            {{ form.short_term_goals|as_crispy_field }}
+                            <br />
+                            Long Term Goals:
+                            <br />
+                            {{ form.long_term_goals|as_crispy_field }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Special Test{{ form.special_test|as_crispy_field }}</td>
+                        <td>Plan Treatment:{{ form.plan_treatment|as_crispy_field }}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Date & Time:
+                            <br />
+                            Attending Physiotherapist:
+                        </td>
+                        <td>
+                            {{ form.date_time|as_crispy_field }}<br />
+                            {{ form.attending_physiotherapist|as_crispy_field }}
+                        </td>
+                    </tr>
+				</tbody>
+			</table>
+
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+
+	</div>
 </div>
 
 {% endblock %}

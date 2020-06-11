@@ -14,53 +14,47 @@
 	<link href="{% static 'css/patient_data/maintainance.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
-<div class="container">
+<div class="row isi">
 
-	{% block navmenu %}
-		{% include "navmenu.html" %}
-	{% endblock %}
+	<div class="formtitle">
+		{{ page_title }}
+	</div>
 
-	<div class="row isi">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-		<div class="formtitle">
-			{{ page_title }}
-		</div>
-
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-			<form method="post" id="dataForm" data-url="{% url 'patient_form:maintainance' %}" novalidate>
-				{% csrf_token %}
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							<th class="text-center">Name</th>
-							<th class="text-center">I/C No</th>
-							<th class="text-center">Date</th>
-							<th class="text-center">Items</th>
-							<th class="text-center">Location/Room</th>
-							<th class="text-center">Remarks</th>
-							<th class="text-center">Staff-Name</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for item in patient_data %}
-						<tr>
-							<td>{{ item.full_name }}</td>
-							<td>{{ item.ic_number }}</td>
-							<td>{{ item.date }}</td>
-							<td>{{ item.items }}</td>
-							<td>{{ item.location_room }}</td>
-							<td>{{ item.remark }}</td>
-							<td>{{ item.staff_name }}</td>
-						</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-				<button type="submit" class="btn btn-primary">Submit</button>
-			</form>
-
-		</div>
+		<form method="post" id="dataForm" data-url="{% url 'patient_form:maintainance' %}" novalidate>
+			{% csrf_token %}
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th class="text-center">Name</th>
+						<th class="text-center">I/C No</th>
+						<th class="text-center">Date</th>
+						<th class="text-center">Items</th>
+						<th class="text-center">Location/Room</th>
+						<th class="text-center">Remarks</th>
+						<th class="text-center">Staff-Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in patient_data %}
+					<tr>
+						<td>{{ item.full_name }}</td>
+						<td>{{ item.ic_number }}</td>
+						<td>{{ item.date }}</td>
+						<td>{{ item.items }}</td>
+						<td>{{ item.location_room }}</td>
+						<td>{{ item.remark }}</td>
+						<td>{{ item.staff_name }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
 
 	</div>
+
 </div>
+
 {% endblock %}
