@@ -14,65 +14,59 @@
 	<link href="{% static 'css/patient_form/dressing.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
-<div class="container">
+<div class="row isi">
 
-	{% block navmenu %}
-		{% include "navmenu.html" %}
-	{% endblock %}
+	<div class="formtitle">
+		{{ page_title }}
+	</div>
 
-	<div class="row isi">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-		<div class="formtitle">
-			{{ page_title }}
-		</div>
-
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-			<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" enctype="multipart/form-data" novalidate>
-				{% csrf_token %}
-				<table class="table-sm table-bordered">
-					<tbody>
-						<tr>
-							<td>NAME:</td>
-							<td>{{ form.full_name|as_crispy_field }}</td>
-						</tr>
-						<tr>
-							<td>I/C NO:</td>
-							<td>{{ form.ic_number|as_crispy_field }}</td>
-						</tr>
-					</tbody>
-				</table>
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							<th class="text-center">Date</th>
-							<th class="text-center">Time</th>
-							<th class="text-center">Frequency of Dressing</th>
-							<th class="text-center">Type of Dressing</th>
-							<th class="text-center">Wound Location</th>
-							<th class="text-center">Wound Condition</th>
-							<th class="text-center">Photos</th>
-							<th class="text-center">Done By</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>{{ form.date|as_crispy_field }}</td>
-							<td>{{ form.time|as_crispy_field }}</td>
-							<td>{{ form.frequency_dressing|as_crispy_field }}</td>
-							<td>{{ form.type_dressing|as_crispy_field }}</td>
-							<td>{{ form.wound_location|as_crispy_field }}</td>
-							<td>{{ form.wound_condition|as_crispy_field }}</td>
-							<td>{{ form.photos|as_crispy_field }}</td>
-							<td>{{ form.done_by|as_crispy_field }}</td>
-						</tr>
-					</tbody>
-				</table>
-				<button type="submit" class="btn btn-primary">Submit</button>
-			</form>
-
-		</div>
+		<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" enctype="multipart/form-data" novalidate>
+			{% csrf_token %}
+			<table class="table-sm table-bordered">
+				<tbody>
+					<tr>
+						<td>NAME:</td>
+						<td>{{ form.full_name|as_crispy_field }}</td>
+					</tr>
+					<tr>
+						<td>I/C NO:</td>
+						<td>{{ form.ic_number|as_crispy_field }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th class="text-center">DATE</th>
+						<th class="text-center">TIME</th>
+						<th class="text-center">FREQUENCY</th>
+						<th class="text-center">TYPE</th>
+						<th class="text-center">WOUND'S LOCATION</th>
+						<th class="text-center">WOUND'S CONDITION</th>
+						<th class="text-center">IMAGES</th>
+						<th class="text-center">DONE BY:</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{ form.date|as_crispy_field }}</td>
+						<td>{{ form.time|as_crispy_field }}</td>
+						<td>{{ form.frequency_dressing|as_crispy_field }}</td>
+						<td>{{ form.type_dressing|as_crispy_field }}</td>
+						<td>{{ form.wound_location|as_crispy_field }}</td>
+						<td>{{ form.wound_condition|as_crispy_field }}</td>
+						<td>{{ form.images|as_crispy_field }}</td>
+						<td>{{ form.done_by|as_crispy_field }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
 
 	</div>
+
 </div>
+
 {% endblock %}

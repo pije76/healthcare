@@ -14,67 +14,61 @@
 	<link href="{% static 'css/patient_form/charges_sheet.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
-<div class="container">
+<div class="row isi">
 
-	{% block navmenu %}
-		{% include "navmenu.html" %}
-	{% endblock %}
+	<div class="formtitle">
+		{{ page_title }}
+	</div>
 
-	<div class="row isi">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-		<div class="formtitle">
-			{{ page_title }}
-		</div>
-
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-			<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" novalidate>
-				{% csrf_token %}
-				<table class="table-sm table-bordered">
-					<tbody>
-						<tr>
-							<td>NAME:</td>
-							<td>{{ form.full_name|as_crispy_field }}</td>
-						</tr>
-						<tr>
-							<td>I/C NO:</td>
-							<td>{{ form.ic_number|as_crispy_field }}</td>
-						</tr>
-					</tbody>
-				</table>
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							<th class="text-center">Date</th>
-							<th class="text-center">Items</th>
-							<th class="text-center">Amount / Unit</th>
-							<th class="text-center">Given By:</th>
-							<th class="text-center"></th>
-							<th class="text-center">Date</th>
-							<th class="text-center">Items</th>
-							<th class="text-center">Amount / Unit</th>
-							<th class="text-center">Given By:</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>{{ form.date|as_crispy_field }}</td>
-							<td>{{ form.items|as_crispy_field }}</td>
-							<td>{{ form.amount_unit|as_crispy_field }}</td>
-							<td>{{ form.given_by|as_crispy_field }}</td>
-							<td></td>
-							<td>{{ form.date|as_crispy_field }}</td>
-							<td>{{ form.items|as_crispy_field }}</td>
-							<td>{{ form.amount_unit|as_crispy_field }}</td>
-							<td>{{ form.given_by|as_crispy_field }}</td>
-						</tr>
-					</tbody>
-				</table>
-				<button type="submit" class="btn btn-primary">Submit</button>
-			</form>
-
-		</div>
+		<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" novalidate>
+			{% csrf_token %}
+			<table class="table-sm table-bordered">
+				<tbody>
+					<tr>
+						<td>NAME:</td>
+						<td>{{ form.full_name|as_crispy_field }}</td>
+					</tr>
+					<tr>
+						<td>I/C NO:</td>
+						<td>{{ form.ic_number|as_crispy_field }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th class="text-center">Date</th>
+						<th class="text-center">Items</th>
+						<th class="text-center">Amount / Unit</th>
+						<th class="text-center">Given By:</th>
+						<th class="text-center"></th>
+						<th class="text-center">Date</th>
+						<th class="text-center">Items</th>
+						<th class="text-center">Amount / Unit</th>
+						<th class="text-center">Given By:</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{ form.date|as_crispy_field }}</td>
+						<td>{{ form.items|as_crispy_field }}</td>
+						<td>{{ form.amount_unit|as_crispy_field }}</td>
+						<td>{{ form.given_by|as_crispy_field }}</td>
+						<td></td>
+						<td>{{ form.date|as_crispy_field }}</td>
+						<td>{{ form.items|as_crispy_field }}</td>
+						<td>{{ form.amount_unit|as_crispy_field }}</td>
+						<td>{{ form.given_by|as_crispy_field }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
 
 	</div>
+
 </div>
+
 {% endblock %}

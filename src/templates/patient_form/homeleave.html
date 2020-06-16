@@ -14,133 +14,127 @@
 	<link href="{% static 'css/patient_form/homeleave.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
-<div class="container">
+<div class="row isi">
 
-	{% block navmenu %}
-		{% include "navmenu.html" %}
-	{% endblock %}
-
-	<div class="row isi">
-
-		<div class="formtitle">
-			{{ page_title }}
-		</div>
-
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-			<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" novalidate>
-				{% csrf_token %}
-				<div class="homeleave_body">
-
-					<div class="row">
-						<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-inline">
-							Name: {{ form.full_name|as_crispy_field }}
-						</div>
-					</div>
-
-					<br />
-
-					<div class="row">
-						<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-inline">
-							I/C No: {{ form.ic_number|as_crispy_field }}
-						</div>
-					</div>
-
-					<br />
-
-					<div class="row">
-						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline">
-							I, {{ form.patient_family_name|as_crispy_field }} 
-						</div>
-						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline">
-							NRIC No.: {{ form.nric_number|as_crispy_field }}
-						</div>
-					</div>
-
-					<br />
-
-					<div class="row">
-						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline">
-							of {{ form.patient_family_relationship|as_crispy_field }}
-						</div>
-						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline">
-							Tel No.: {{ form.patient_family_phone|as_crispy_field }}
-						</div>
-					</div>
-
-					<br />
-
-					<div class="row">
-						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-							hereby wish to apply from SK Wellspring Home Care for self / patient
-						</div>
-						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-							{{ form.patient_family_name|as_crispy_field }}
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-							to leave the care center at own risk as per attachment.<br />
-							I am fully responsible towards myself / this patient whilst out of the center, SK Wellspring Home Care and its staff of all liabilities in the event of my / the patient’s decline in health or any accidents which may occur whilst I am / said patient is out of the center.
-						</div>
-					</div>
-
-					<br />
-
-					<div class="row">
-						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-							Signature or Thumbprint of
-						</div>
-						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-							{{ form.patient_family_name|as_crispy_field }}
-							(Patient / Family Responsible)
-						</div>
-					</div>
-					<br />
-					<div class="row">
-						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-							{{ form.patient_family_relationship|as_crispy_field }}<br />
-							(Relationship)
-						</div>
-						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-							{{ form.nric_number|as_crispy_field }}<br />
-							(IC No. :)
-						</div>
-					</div>
-
-					<br />
-					Witnessed by :
-					<div class="row">
-						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline">
-							Name: {{ form.patient_family_name|as_crispy_field }}
-						</div>
-					</div>
-					<br />
-					<div class="row">
-						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline">
-							Designation: {{ form.designation|as_crispy_field }}
-						</div>
-					</div>
-					<br />
-					<div class="row">
-						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline">
-							Signature: {{ form.signature|as_crispy_field }}
-						</div>
-					</div>
-					<br />
-					<div class="row">
-						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline">
-							Date: {{ form.date|as_crispy_field }}
-						</div>
-					</div>
-					<br />
-					<b>Note</b> :	This form must be signed by the patient, carer or a member of the family responsible if patient is physically and mentally unfit.
-				</div>
-				<button type="submit" class="btn btn-primary">Sign in</button>
-			</form>
-		</div>
-
+	<div class="formtitle">
+		{{ page_title }}
 	</div>
+
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+		<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" novalidate>
+			{% csrf_token %}
+			<div class="homeleave_body">
+
+				<div class="row">
+					<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-inline">
+						Name: {{ form.full_name|as_crispy_field }}
+					</div>
+				</div>
+
+				<br />
+
+				<div class="row">
+					<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 form-inline">
+						I/C No: {{ form.ic_number|as_crispy_field }}
+					</div>
+				</div>
+
+				<br />
+
+				<div class="row">
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline">
+						I, {{ form.patient_family_name|as_crispy_field }} 
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline">
+						NRIC No.: {{ form.nric_number|as_crispy_field }}
+					</div>
+				</div>
+
+				<br />
+
+				<div class="row">
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline">
+						of {{ form.patient_family_relationship|as_crispy_field }}
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline">
+						Tel No.: {{ form.patient_family_phone|as_crispy_field }}
+					</div>
+				</div>
+
+				<br />
+
+				<div class="row">
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+						hereby wish to apply from SK Wellspring Home Care for self / patient
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+						{{ form.patient_family_name|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						to leave the care center at own risk as per attachment.<br />
+						I am fully responsible towards myself / this patient whilst out of the center, SK Wellspring Home Care and its staff of all liabilities in the event of my / the patient’s decline in health or any accidents which may occur whilst I am / said patient is out of the center.
+					</div>
+				</div>
+
+				<br />
+
+				<div class="row">
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+						Signature or Thumbprint of
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+						{{ form.patient_family_name|as_crispy_field }}
+						(Patient / Family Responsible)
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+						{{ form.patient_family_relationship|as_crispy_field }}<br />
+						(Relationship)
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+						{{ form.nric_number|as_crispy_field }}<br />
+						(IC No. :)
+					</div>
+				</div>
+
+				<br />
+				Witnessed by :
+				<div class="row">
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline">
+						Name: {{ form.patient_family_name|as_crispy_field }}
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline">
+						Designation: {{ form.designation|as_crispy_field }}
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline">
+						Signature: {{ form.signature|as_crispy_field }}
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-inline">
+						Date: {{ form.date|as_crispy_field }}
+					</div>
+				</div>
+				<br />
+				<b>Note</b> :	This form must be signed by the patient, carer or a member of the family responsible if patient is physically and mentally unfit.
+			</div>
+			<button type="submit" class="btn btn-primary">Sign in</button>
+		</form>
+	</div>
+
 </div>
+
 {% endblock %}

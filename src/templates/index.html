@@ -10,36 +10,30 @@
 
 {% block content %}
 
-<div class="container">
+<div class="row isi">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-	{% block navmenu %}
-		{% include "navmenu.html" %}
-	{% endblock %}
+		{% if messages %}
 
-	<div class="row isi">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<ul class="messages">
+			{% for message in messages %}
+			<div class="alert {{ message.tags }} alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				{{ message }}
+			</div>
+			{% endfor %}
+		</ul>
 
-			{% if messages %}
+		{% endif %}
 
-			<ul class="messages">
-				{% for message in messages %}
-				<div class="alert {{ message.tags }} alert-dismissible" role="alert">
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					{{ message }}
-				</div>
-				{% endfor %}
-			</ul>
-
-			{% endif %}
-
-		</div>
+		<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+		<h1 class="display-4">Healthcare Multi Tenant</h1>
+		<p class="lead">It's built with default Bootstrap components and utilities with little customization.</p>
 	</div>
 
-	{% block footer %}
-		{% include "footer.html" %}
-	{% endblock %}
-	 
+	</div>
 </div>
+
 {% endblock %}

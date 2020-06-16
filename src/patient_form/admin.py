@@ -46,10 +46,14 @@ class AppointmentAdmin(admin.ModelAdmin):
         'id',
         'full_name',
         'ic_number',
-        'appointment',
-        'hospital_clinic',
+        'date',
+        'time',
+        'hospital_clinic_center',
+        'department',
+        'planning_investigation',
         'treatment_order',
     ]
+
 #   search_fields = ['full_name']
 #    list_filter = ['patient']
 #    readonly_fields = ('patient', 'appointment',)
@@ -70,21 +74,37 @@ class AppointmentAdmin(admin.ModelAdmin):
 #        return form
 
 
+class EnteralFeedingRegimeAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'full_name',
+        'ic_number',
+        'time',
+        'type_of_milk',
+        'amount',
+    ]
+    ModelAdmin.ordering = ('id',)
+
+
 admin.site.register(Admission, AdmissionAdmin)
 admin.site.register(ApplicationForHomeLeave)
 admin.site.register(Appointment, AppointmentAdmin)
 admin.site.register(Cannulation)
 admin.site.register(Charges)
+admin.site.register(WoundCondition)
 admin.site.register(Dressing)
-admin.site.register(EnteralFeedingRegime)
+admin.site.register(EnteralFeedingRegime, EnteralFeedingRegimeAdmin)
 admin.site.register(HGTChart)
 admin.site.register(IntakeOutputChart)
 admin.site.register(Maintainance)
 admin.site.register(MedicationAdministrationRecord)
 admin.site.register(MedicationRecord)
+admin.site.register(MiscellaneousChargesSlip)
 admin.site.register(Nursing)
-admin.site.register(PhysioProgressNoteBack)
-admin.site.register(PhysioProgressNoteFront)
+admin.site.register(OvertimeClaim)
+admin.site.register(PhysioProgressNote)
 admin.site.register(PhysiotherapyGeneralAssessment)
 admin.site.register(Stool)
+admin.site.register(StaffRecords)
 admin.site.register(VitalSignFlow)
+admin.site.register(VisitingConsultant)

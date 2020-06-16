@@ -1,107 +1,104 @@
 {% load static %}
+{% load i18n %}
 
-<div class="row navigation">
-		
-		<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-			{% for object in logos %}
-			<a href="/">
-				<div id="logo_nav" class="" alt="image">
-					<img src="{{ object.logo_url }}" alt="Logo Navbar" />
-				</div>
-			</a>
-			{% endfor %}
-		</div>
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+	<h5 class="my-0 mr-md-auto font-weight-normal text-center">
+		{% for object in logos %}
+		<img class="logotenant" src="{{ object.logo_url }}" alt="Logo Navbar" />
+		<a href="/" class="text-title">
+			<span class="text-center">{{ titles.title }}</span>
+		</a>			
+		{% endfor %}
+	</h5>
 
-		<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-			<div id="s-menuBar" class="">
-				<div class="topBar">
-					{{ titles.title }}
-				</div>
-				<div id="s-Rectangle_1" class="">
-					<span id="rtr-s-Rectangle_1_0"></span>
-				</div>
-					<div id="s-Image_55" class="" alt="image">
-						<img src="{% static "images/navbar.png" %}" alt="Navbar"/>
-					</div>
-				<div id="menu_practise" class="">
-					<span id="rtr-menu_practise_0">
-						<a href="/" class="{% if navbar == 'home' %}active{% else %}inactive{% endif %}">Home</a>
-					</span>
-				</div>
-				<div id="menu_etext" class="">
-					<div class="dropdown show">
-						<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Patient Form</a>
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-							<a class="dropdown-item" href="/form/admission/">Admission Form</a>
-							<a class="dropdown-item" href="/form/homeleave/">Application For Home Leave</a>
-							<a class="dropdown-item" href="/form/appointment/">Appointment Form</a>
-							<a class="dropdown-item" href="/form/cannulation/">Cannulation Chart</a>
-							<a class="dropdown-item" href="/form/charges/">Charges Sheet</a>
-							<a class="dropdown-item" href="/form/dressing/">Dressing Chart</a>
-							<a class="dropdown-item" href="/form/enteral-feeding-regime/">Enteral Feeding Regime</a>
-							<a class="dropdown-item" href="/form/hgt/">HGT Chart</a>
-							<a class="dropdown-item" href="/form/intake-output/">Intake Output Chart</a>
-							<a class="dropdown-item" href="/form/maintainance/">Maintainance Form</a>
-							<a class="dropdown-item" href="/form/medication-administration/">Medication Administration Record</a>
-							<a class="dropdown-item" href="/form/medication/">Medication Records</a>
-							<a class="dropdown-item" href="/form/nursing/">Nursing Report</a>
-							<a class="dropdown-item" href="/form/physio-progress-note-back/">Physiotherapy Progress Note-Back Sheet</a>
-							<a class="dropdown-item" href="/form/physio-progress-note-front/">Physiotherapy Progress Note-Front Sheet</a>
-							<a class="dropdown-item" href="/form/physiotherapy-general-assessment/">Physiotherapy - General Assessment Form</a>
-							<a class="dropdown-item" href="/form/stool/">Stool Chart</a>
-							<a class="dropdown-item" href="/form/vital-sign-flow/">Vital Sign Flow Sheet</a>
+	<nav class="navbar navbar-expand-sm navbar-light">
+		<div class="container">
+			<div class="collapse navbar-collapse" id="navbarNavDropdown">
+				<ul class="navbar-nav">
+					 <li class="nav-item">
+						<a class="nav-link" href="/"><i class="fas fa-home"></i>&nbsp;Home <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#"><i class="fab fa-wpforms"></i>&nbsp;Patient Form</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+							<a class="dropdown-item" href="{% url 'patient_form:admission' %}">Admission Form</a>
+							<a class="dropdown-item" href="{% url 'patient_form:homeleave' %}">Application For Home Leave</a>
+							<a class="dropdown-item" href="{% url 'patient_form:appointment' %}">Appointment Records</a>
+							<a class="dropdown-item" href="{% url 'patient_form:cannulation' %}">Catheterization and Cannulation Chart</a>
+							<a class="dropdown-item" href="{% url 'patient_form:charges_sheet' %}">Charges Sheet</a>
+							<a class="dropdown-item" href="{% url 'patient_form:dressing' %}">Dressing Chart</a>
+							<a class="dropdown-item" href="{% url 'patient_form:enteral_feeding_regime' %}">Enteral Feeding Regime</a>
+							<a class="dropdown-item" href="{% url 'patient_form:hgt_chart' %}">HGT Chart</a>
+							<a class="dropdown-item" href="{% url 'patient_form:intake_output' %}">Intake Output Chart</a>
+							<a class="dropdown-item" href="{% url 'patient_form:maintainance' %}">Maintainance Form</a>
+							<a class="dropdown-item" href="{% url 'patient_form:medication_administration' %}">Medication Administration Record</a>
+							<a class="dropdown-item" href="{% url 'patient_form:medication' %}">Medication Records</a>
+							<a class="dropdown-item" href="{% url 'patient_form:miscellaneous_charges_slip' %}">Miscellaneous Charges Slip</a>
+							<a class="dropdown-item" href="{% url 'patient_form:nursing' %}">Nursing Report</a>
+							<a class="dropdown-item" href="{% url 'patient_form:overtime_claim' %}">Overtime Claim Form</a>
+							<a class="dropdown-item" href="{% url 'patient_form:physio_progress_note' %}">Physiotherapy Progress Note Sheet</a>
+							<a class="dropdown-item" href="{% url 'patient_form:physiotherapy_general_assessment' %}">Physiotherapy - General Assessment Form</a>
+							<a class="dropdown-item" href="{% url 'patient_form:staff_records' %}">Staff Records</a>
+							<a class="dropdown-item" href="{% url 'patient_form:stool' %}">Stool Chart</a>
+							<a class="dropdown-item" href="{% url 'patient_form:visiting_consultant_records' %}">Visiting Consultant Records</a>
+							<a class="dropdown-item" href="{% url 'patient_form:vital_sign_flow' %}">Vital Sign Flow Sheet</a>
 						</div>
-					</div>
-				</div>
-				<div id="menu_progress" class="">
-					<div class="dropdown show">
-						<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Patient Data</a>
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-							<a class="dropdown-item" href="/data/admission/">Admission Form</a>
-							<a class="dropdown-item" href="/data/homeleave/">Application For Home Leave</a>
-							<a class="dropdown-item" href="/data/appointment/">Appointment Form</a>
-							<a class="dropdown-item" href="/data/cannulation/">Cannulation Chart</a>
-							<a class="dropdown-item" href="/data/charges/">Charges Sheet</a>
-							<a class="dropdown-item" href="/data/dressing/">Dressing Chart</a>
-							<a class="dropdown-item" href="/data/enteral-feeding-regime/">Enteral Feeding Regime</a>
-							<a class="dropdown-item" href="/data/hgt/">HGT Chart</a>
-							<a class="dropdown-item" href="/data/intake-output/">Intake Output Chart</a>
-							<a class="dropdown-item" href="/data/maintainance/">Maintainance Form</a>
-							<a class="dropdown-item" href="/data/medication-administration/">Medication Administration Record</a>
-							<a class="dropdown-item" href="/data/medication/">Medication Records</a>
-							<a class="dropdown-item" href="/data/nursing/">Nursing Report</a>
-							<a class="dropdown-item" href="/data/physio-progress-note-back/">Physiotherapy Progress Note-Back Sheet</a>
-							<a class="dropdown-item" href="/data/physio-progress-note-front/">Physiotherapy Progress Note-Front Sheet</a>
-							<a class="dropdown-item" href="/data/physiotherapy-general-assessment/">Physiotherapy - General Assessment Form</a>
-							<a class="dropdown-item" href="/data/stool/">Stool Chart</a>
-							<a class="dropdown-item" href="/data/vital-sign-flow/">Vital Sign Flow Sheet</a>
-						</div>
-					</div>
-
-				</div>
-				<div id="menu_account" class="">
-					<span id="rtr-menu_account_0">
-						<a href="/account/" class="{% if navbar == 'account' %}active{% else %}inactive{% endif %}">Account</a>
-					</span>
-				</div>
-				<div id="menu_logout" class="">
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/data/"><i class="fa fa-table"></i>&nbsp;Patient Data</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/data/"><i class="fa fa-language"></i>&nbsp;Translate</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class='caret'></span></a>						
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+							<form name="languageIt" action="{% url 'set_language' %}" method="post">
+							{% csrf_token %}
+								<input name="next" type="hidden" value="{{ redirect_to }}" />
+								<input name="language" type="hidden" value="it" />
+								<a class="dropdown-item" href="javascript:document.languageEn.submit()"><i class="flag flag-16 flag-us"></i>English</a>
+							</form>
+							<form name="languageIt" action="{% url 'set_language' %}" method="post">
+							{% csrf_token %}
+								<input name="next" type="hidden" value="{{ redirect_to }}" />
+								<input name="language" type="hidden" value="it" />
+								<a class="dropdown-item" href="javascript:document.languageMy.submit()"><i class="flag flag-16 flag-my"></i>Malaysia</a>
+							</form>
+						</div>						
+					</li>
 					{% if user.is_authenticated %}
-					<form method="post" action="/accounts/logout/">
-						<input type="hidden" name="csrfmiddlewaretoken" value="">
-						<span id="rtr-menu_logout_0"><a href="/accounts/logout/">Logout</a></span>
-					</form>
+					<li class="nav-item">
+						<a class="nav-link" href="#"><i class="fas fa-user"></i>&nbsp;{{ user }}</a>
+					</li>
 					{% else %}
-					<span id="rtr-menu_logout_0"><a href="/accounts/login/">Login</a></span>
+					<li class="nav-item">
+						<a class="nav-link" href="#"><i class="fas fa-user"></i>&nbsp;Account</a>
+					</li>
 					{% endif %}
-				</div>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+						{% if user.is_authenticated %}
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+							<a class="dropdown-item" href="/account/"><i class="fas fa-user"></i>&nbsp;My Account</a>
+							<a class="dropdown-item" href="/accounts/password/change/"><i class="fas fa-user"></i>&nbsp;Change password</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="/accounts/logout/"><i class="fas fa-sign-out-alt"></i>&nbsp;Logout</a>
+						</div>
+							{% else %}
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+							<a class="dropdown-item" href="/accounts/login/"><i class="fas fa-sign-in-alt"></i>&nbsp;Login</a>
+							<a class="dropdown-item" href="/accounts/signup/"><i class="fas fa-user-plus"></i>&nbsp;Sign up</a>
+						</div>
+						{% endif %}
+					</li>
+				</ul>
 			</div>
 		</div>
+	</nav>
 
-		<div id="shapewrapper-s-Line_1" class="">
-			<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" id="svg-s-Line_1" class="svgContainer" style="width: 100%; height: 100%; left: 0px; top: 0px;">
-				<path id="s-Line_1" class="" d="M 0 1 L 986 1" style="fill: rgba(0, 0, 0, 0);"></path>
-			</svg>
-		</div>
 </div>
+

@@ -6,6 +6,7 @@ from django.db import connection
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.views.i18n import set_language
 
 from allauth.account.signals import user_signed_up, user_logged_in
 from allauth.account.views import LoginView, SignupView

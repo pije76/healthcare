@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block javascript %}
+    <script src="{% static 'js/patient_list.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="page-wrapper">
+
+    <div class="container-fluid">
+
+        <div class="formtitle">
+            {{ page_title }}
+        </div>
+
+        <div class="row">
+
+            <div class="col-12">
+                <div class="card">
+
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+                            <table id="t_add_row" class="table table-striped table-bordered display" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Patient Name</th>
+                                        <th>JKL</th>
+                                        <th>ETH</th>
+                                        <th>Email</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for item in tables %}
+                                    <tr>
+                                        <td>{{ item.id }}</td>
+                                        <td><a href="{% url 'patient_data:patientdata_detail' item.id %}" title="View Detail" >{{ item }}</a></td>
+                                        <td>{{ item }}</td>
+                                        <td>{{ item }}</td>
+                                        <td>{{ item.email }}</td>
+                                    </tr>
+                                    {% endfor %}
+
+
+                                </tfoot>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+
+                <div class="modal-content">
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %} 

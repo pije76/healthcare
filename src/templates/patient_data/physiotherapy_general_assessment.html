@@ -14,103 +14,96 @@
 <link href="{% static 'css/patient_data/physiotherapy_general_assessment.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
-<div class="container">
-	{% block navmenu %}
-		{% include "navmenu.html" %}
-	{% endblock %}
-
-	<div class="row isi">
-		
-		<div class="formtitle">
-			{{ page_title }}
-		</div>
-
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-			<form method="post" id="dataForm" data-url="{% url 'patient_form:physiotherapy_general_assessment' %}" novalidate>
-				{% csrf_token %}
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-                            <th class="text-center">Name</th>
-                            <th class="text-center">I/C No</th>
-                            <th class="text-center">Doctor's Diagnosis</th>
-                            <th class="text-center">Doctor's Management</th>
-                            <th class="text-center">Problem</th>
-                            <th class="text-center">Pain Scale</th>
-                            <th class="text-center">Comments</th>
-                            <th class="text-center">Special Question</th>
-                            <th class="text-center">General Health</th>
-                            <th class="text-center">PMX / Surgery</th>
-                            <th class="text-center">Observation</th>
-                            <th class="text-center">IX/MRI/X-Ray</th>
-                            <th class="text-center">Medications/Steroids</th>
-                            <th class="text-center">Occupation/Recreation</th>
-                            <th class="text-center">Palpation</th>
-                            <th class="text-center">Pacemaker/Hearing Aid</th>
-                            <th class="text-center">Splinting</th>
-                            <th class="text-center">Physical Examination Movement</th>
-                            <th class="text-center">Muscle Power</th>
-                            <th class="text-center">Functional Activities</th>
-                            <th class="text-center">Special Test</th>
-                            <th class="text-center">Date & Time</th>
-                            <th class="text-center">Attending Physiotherapist</th>
-                            <th class="text-center">Current History</th>
-                            <th class="text-center">Past History</th>
-                            <th class="text-center">Neurological</th>
-                            <th class="text-center">Clearing Test/ Other Joint</th>
-                            <th class="text-center">Physiotherapist’s Impression</th>
-                            <th class="text-center">Short Term Goals</th>
-                            <th class="text-center">Long Term Goals</th>
-                            <th class="text-center">Plan Treatment</th>
-                        </tr>
-					</thead>
-
-					<tbody>
-                        {% for item in patient_data %}
-                        <tr>
-                            <td>{{ item.full_name }}</td>
-                            <td>{{ item.ic_number }}</td>
-                            <td>{{ item.doctor_diagnosis }}</td>
-                            <td>{{ item.doctor_management }}</td>
-                            <td>{{ item.problem }}</td>
-                            <td>{{ item.pain_scale }}</td>
-                            <td>{{ item.comments }}</td>
-                            <td>{{ item.special_question }}</td>
-                            <td>{{ item.general_health }}</td>
-                            <td>{{ item.pmx_surgery }}</td>
-                            <td>{{ item.observation }}</td>
-                            <td>{{ item.ix_mri_x_ray }}</td>
-                            <td>{{ item.medications_steroids }}</td>
-                            <td>{{ item.occupation_recreation }}</td>
-                            <td>{{ item.palpation }}</td>
-                            <td>{{ item.pacemaker_hearing_aid }}</td>
-                            <td>{{ item.splinting }}</td>
-                            <td>{{ item.physical_examination_movement }}</td>
-                            <td>{{ item.muscle_power }}</td>
-                            <td>{{ item.functional_activities }}</td>
-                            <td>{{ item.special_test }}</td>
-                            <td>{{ item.date_time }}</td>
-                            <td>{{ item.attending_physiotherapist }}</td>
-                            <td>{{ item.current_history }}</td>
-                            <td>{{ item.past_history }}</td>
-                            <td>{{ item.neurological }}</td>
-                            <td>{{ item.clearing_test_other_joint }}</td>
-                            <td>{{ item.physiotherapists_impression }}</td>
-                            <td>{{ item.short_term_goals }}</td>
-                            <td>{{ item.long_term_goals }}</td>
-                            <td>{{ item.plan_treatment }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-				</table>
-
-				<button type="submit" class="btn btn-primary">Submit</button>
-			</form>
-
-		</div>
-	</div>
+<div class="row isi">
 	
-</div>
+	<div class="formtitle">
+		{{ page_title }}
+	</div>
 
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+		<form method="post" id="dataForm" data-url="{% url 'patient_form:physiotherapy_general_assessment' %}" novalidate>
+			{% csrf_token %}
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+                        <th class="text-center">Name</th>
+                        <th class="text-center">I/C No</th>
+                        <th class="text-center">Doctor's Diagnosis</th>
+                        <th class="text-center">Doctor's Management</th>
+                        <th class="text-center">Problem</th>
+                        <th class="text-center">Pain Scale</th>
+                        <th class="text-center">Comments</th>
+                        <th class="text-center">Special Question</th>
+                        <th class="text-center">General Health</th>
+                        <th class="text-center">PMX / Surgery</th>
+                        <th class="text-center">Observation</th>
+                        <th class="text-center">IX/MRI/X-Ray</th>
+                        <th class="text-center">Medications/Steroids</th>
+                        <th class="text-center">Occupation/Recreation</th>
+                        <th class="text-center">Palpation</th>
+                        <th class="text-center">Pacemaker/Hearing Aid</th>
+                        <th class="text-center">Splinting</th>
+                        <th class="text-center">Physical Examination Movement</th>
+                        <th class="text-center">Muscle Power</th>
+                        <th class="text-center">Functional Activities</th>
+                        <th class="text-center">Special Test</th>
+                        <th class="text-center">Date & Time</th>
+                        <th class="text-center">Attending Physiotherapist</th>
+                        <th class="text-center">Current History</th>
+                        <th class="text-center">Past History</th>
+                        <th class="text-center">Neurological</th>
+                        <th class="text-center">Clearing Test/ Other Joint</th>
+                        <th class="text-center">Physiotherapist’s Impression</th>
+                        <th class="text-center">Short Term Goals</th>
+                        <th class="text-center">Long Term Goals</th>
+                        <th class="text-center">Plan Treatment</th>
+                    </tr>
+				</thead>
+
+				<tbody>
+                    {% for item in patient_data %}
+                    <tr>
+                        <td>{{ item.full_name }}</td>
+                        <td>{{ item.ic_number }}</td>
+                        <td>{{ item.doctor_diagnosis }}</td>
+                        <td>{{ item.doctor_management }}</td>
+                        <td>{{ item.problem }}</td>
+                        <td>{{ item.pain_scale }}</td>
+                        <td>{{ item.comments }}</td>
+                        <td>{{ item.special_question }}</td>
+                        <td>{{ item.general_health }}</td>
+                        <td>{{ item.pmx_surgery }}</td>
+                        <td>{{ item.observation }}</td>
+                        <td>{{ item.ix_mri_x_ray }}</td>
+                        <td>{{ item.medications_steroids }}</td>
+                        <td>{{ item.occupation_recreation }}</td>
+                        <td>{{ item.palpation }}</td>
+                        <td>{{ item.pacemaker_hearing_aid }}</td>
+                        <td>{{ item.splinting }}</td>
+                        <td>{{ item.physical_examination_movement }}</td>
+                        <td>{{ item.muscle_power }}</td>
+                        <td>{{ item.functional_activities }}</td>
+                        <td>{{ item.special_test }}</td>
+                        <td>{{ item.date_time }}</td>
+                        <td>{{ item.attending_physiotherapist }}</td>
+                        <td>{{ item.current_history }}</td>
+                        <td>{{ item.past_history }}</td>
+                        <td>{{ item.neurological }}</td>
+                        <td>{{ item.clearing_test_other_joint }}</td>
+                        <td>{{ item.physiotherapists_impression }}</td>
+                        <td>{{ item.short_term_goals }}</td>
+                        <td>{{ item.long_term_goals }}</td>
+                        <td>{{ item.plan_treatment }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+			</table>
+
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+
+	</div>
+</div>
+	
 {% endblock %}
