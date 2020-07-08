@@ -29,6 +29,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Patient Name</th>
+                                        <th>IC Number</th>
                                         <th>JKL</th>
                                         <th>ETH</th>
                                         <th>Email</th>
@@ -36,17 +37,29 @@
                                 </thead>
 
                                 <tbody>
+                                    {% if user.is_superuser %}
                                     {% for item in tables %}
                                     <tr>
                                         <td>{{ item.id }}</td>
                                         <td><a href="{% url 'patient_data:patientdata_detail' item.id %}" title="View Detail" >{{ item }}</a></td>
-                                        <td>{{ item }}</td>
-                                        <td>{{ item }}</td>
+                                        <td>{{ item.ic_number }}</td>
+                                        <td>{{ item.jkl }}</td>
+                                        <td>{{ item.eth }}</td>
                                         <td>{{ item.email }}</td>
                                     </tr>
                                     {% endfor %}
-
-
+                                    {% else %}
+                                    {% for item in tables %}
+                                    <tr>
+                                        <td>{{ item.id }}</td>
+                                        <td><a href="{% url 'patient_data:patientdata_detail' item.id %}" title="View Detail" >{{ item }}</a></td>
+                                        <td>{{ item.ic_number }}</td>
+                                        <td>{{ item.jkl }}</td>
+                                        <td>{{ item.eth }}</td>
+                                        <td>{{ item.email }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% endif %}
                                 </tfoot>
                             </table>
                         </div>

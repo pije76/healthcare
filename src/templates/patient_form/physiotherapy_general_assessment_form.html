@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block headtitle %}
+	{{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block content %}
+
+{% block styles %}
+<link href="{% static 'css/patient_form/physiotherapy_general_assessment.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block extrahead %}
+	{{ form.media }}
+{% endblock %}
+
+<div class="row isi">
+	
+	<div class="formtitle">
+		{{ page_title }}
+	</div>
+
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+		<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" novalidate>
+			{% csrf_token %}
+
+			<table class="table-sm table-bordered">
+				<tbody>
+					<tr>
+						<td>{% trans "NAME" %}:</td>
+						<td>{{ patients }}{{ form.patient|as_crispy_field }}</td>
+					</tr>
+					<tr>
+						<td>{% trans "I/C NO" %}:</td>
+						<td>{{ icnumbers }}</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div class="container-fluid" id="generalass">
+
+				<div class="row">
+					<div class="col-4 col">
+						{% trans "Doctor's Diagnosis" %}
+						<br />
+						{{ form.doctor_diagnosis|as_crispy_field }}
+						<br />
+						{% trans "Doctor's Management" %}
+						{{ form.doctor_management|as_crispy_field }}
+						<br />
+						{% trans "Problem" %}
+						{{ form.problem|as_crispy_field }}
+					</div>
+
+					<div class="col-4 col">
+						<figure>
+							<img src="{% static "images/left_body.png" %}" alt="Left Body"/>
+							<figcaption>{% trans "RIGHT" %}&emsp;&emsp;{% trans "LEFT" %}</figcaption>
+						</figure>
+					</div>
+
+					<div class="col-4 col">
+						<figure>
+							<img src="{% static "images/right_body.png" %}" alt="Right Body"/>
+							<figcaption>{% trans "RIGHT" %}&emsp;&emsp;{% trans "LEFT" %}</figcaption>
+						</figure>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-4 col">
+						{% trans "Pain Scale" %}{{ form.pain_scale|as_crispy_field }}
+						<br />
+						{% trans "Comments" %}: {{ form.comments|as_crispy_field }}
+					</div>
+
+					<div class="col-8 col">
+						{% trans "Current History" %} {{ form.current_history|as_crispy_field }}
+					</div>
+
+				</div>
+
+				<div class="row">
+					<div class="col-4 col">
+						{% trans "Special Question" %}
+					</div>
+
+					<div class="col-8 col">
+					{% trans "Past History (relating to current problem )" %}{{ form.past_history|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-4 col">
+					{% trans "General Health" %}
+					</div>
+
+					<div class="col-8 col">
+						{{ form.general_health|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-4 col">
+						{% trans "PMX / Surgery" %}
+					</div>
+
+					<div class="col-8 col">
+						{% trans "Observation" %}
+						<br />
+						{{ form.pmx_surgery|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-4 col">
+						{% trans "IX/MRI/X-Ray" %}
+					</div>
+
+					<div class="col-8 col">
+						{{ form.ix_mri_x_ray|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-4 col">
+						{% trans "Medications/Steroids" %}
+					</div>
+
+					<div class="col-8 col">
+						{{ form.medications_steroids|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-4 col">
+						{% trans "Occupation/Recreation" %}
+					</div>
+
+					<div class="col-8 col">
+						{% trans "Palpation" %}
+						{{ form.occupation_recreation|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-4 col">
+						{% trans "Pacemaker/Hearing Aid" %}
+					</div>
+
+					<div class="col-8 col">
+					{{ form.pacemaker_hearing_aid|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-4 col">
+						{% trans "Splinting" %}
+					</div>
+
+					<div class="col-8 col">
+						{{ form.splinting|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-4 col">
+						{% trans "Physical Examination Movement" %}:
+						<br />
+						{{ form.physical_examination_movement|as_crispy_field }}
+					</div>
+
+					<div class="col-8 col">
+						{% trans "Neurological" %}:
+						{{ form.neurological|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-4 col">
+						{% trans "Muscle Power" %}
+						{{ form.muscle_power|as_crispy_field }}
+					</div>
+
+					<div class="col-8 col">
+						{% trans "Clearing Test/ Other Joint" %}:{{ form.clearing_test_other_joint|as_crispy_field }}
+						<br />
+						{% trans "Physiotherapist’s Impression" %}:
+						{{ form.physiotherapists_impression|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-4 col">
+						{% trans "Functional Activities" %}
+						<br/>
+						{{ form.functional_activities|as_crispy_field }}
+					</div>
+
+					<div class="col-8 col">
+						{% trans "Short Term Goals" %}
+						<br />
+						{{ form.short_term_goals|as_crispy_field }}
+						<br />
+						{% trans "Long Term Goals" %}:
+						<br />
+						{{ form.long_term_goals|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-4 col">
+						{% trans "Special Test" %}
+						{{ form.special_test|as_crispy_field }}
+					</div>
+
+					<div class="col-8 col">
+						{% trans "Plan Treatment" %}:
+						{{ form.plan_treatment|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-4 col">
+						{% trans "Date & Time" %}:
+					</div>
+
+					<div class="col-8 col">
+						{{ form.date_time|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-4 col">
+						{% trans "Attending Physiotherapist" %}:
+					</div>
+					<div class="col-8 col">
+						{{ form.attending_physiotherapist|as_crispy_field }}
+					</div>
+				</div>
+			</div>
+
+			</br />
+
+			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+			{% for item in profiles %}
+			<a class="btn btn-danger" href="{% url 'patient_data:patientdata_detail' item.id %}">{% trans "Cancel" %}</a>
+			{% endfor %}
+		</form>
+
+	</div>
+</div>
+
+{% endblock %}

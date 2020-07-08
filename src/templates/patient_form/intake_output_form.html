@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block headtitle %}
+    {{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block content %}
+
+{% block styles %}
+	<link href="{% static 'css/patient_form/intake_output.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block extrahead %}
+	{{ form.media }}
+{% endblock %}
+
+<div class="row isi">
+
+	<div class="formtitle">
+		{{ page_title }}
+	</div>
+
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+		<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" novalidate>
+			{% csrf_token %}
+			<table class="table-sm table-bordered">
+				<tbody>
+					<tr>
+						<td>{% trans "NAME" %}:</td>
+						<td>{{ patients }}{{ form.patient|as_crispy_field }}</td>
+					</tr>
+					<tr>
+						<td>{% trans "I/C NO" %}:</td>
+						<td>{{ icnumbers }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table table-bordered">
+				<tr>
+					<th class="text-center" rowspan="3">{% trans "DATE" %}</th>
+					<th class="text-center" colspan="7">{% trans "INTAKE" %}</th>
+					<th class="text-center" colspan="7">{% trans "OUTPUT" %}</th>
+				</tr>
+				<tr>
+					<th class="text-center" rowspan="2">{% trans "TIME" %}</th>
+					<th class="text-center" colspan="2">{% trans "ORAL" %}</th>
+					<th class="text-center" colspan="2">{% trans "PARENTERAL" %}</th>
+					<th class="text-center" colspan="2">{% trans "OTHER" %}</th>
+					<th class="text-center" rowspan="2">{% trans "TIME" %}</th>
+					<th class="text-center" colspan="2">{% trans "URINE" %}</th>
+					<th class="text-center">{% trans "GAS-TRIC" %}</th>
+					<th class="text-center" colspan="2">{% trans "OTHER" %}</th>
+				</tr>
+				<tr>
+					<th class="text-center">{% trans "Type" %}</th>
+					<th class="text-center">{% trans "ml." %}</th>
+					<th class="text-center">{% trans "Type" %}</th>
+					<th class="text-center">{% trans "ml." %}</th>
+					<th class="text-center">{% trans "Type" %}</th>
+					<th class="text-center">{% trans "ml." %}</th>
+					<th class="text-center">{% trans "ml." %}</th>
+					<th class="text-center">{% trans "Cum. Total" %}</th>
+					<th class="text-center">{% trans "ml." %}</th>
+					<th class="text-center">{% trans "Type" %}</th>
+					<th class="text-center">{% trans "ml." %}</th>
+				</tr>
+				<tr>
+					<td>{{ form.date|as_crispy_field }}</td>
+					<td>{{ form.time_intake|as_crispy_field }}</td>
+					<td>{{ form.intake_oral_type|as_crispy_field }}</td>
+					<td>{{ form.intake_oral_ml|as_crispy_field }}</td>
+					<td>{{ form.intake_parenteral_type|as_crispy_field }}</td>
+					<td>{{ form.intake_parenteral_ml|as_crispy_field }}</td>
+					<td>{{ form.intake_other_type|as_crispy_field }}</td>
+					<td>{{ form.intake_other_ml|as_crispy_field }}</td>
+					<td>{{ form.time_output|as_crispy_field }}</td>
+					<td>{{ form.output_urine_ml|as_crispy_field }}</td>
+					<td>{{ form.output_urine_cum|as_crispy_field }}</td>
+					<td>{{ form.output_gastric_ml|as_crispy_field }}</td>
+					<td>{{ form.output_other_type|as_crispy_field }}</td>
+					<td>{{ form.output_other_ml|as_crispy_field }}</td>
+				</tr>
+			</table>
+			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+			{% for item in profiles %}
+			<a class="btn btn-danger" href="{% url 'patient_data:patientdata_detail' item.id %}">{% trans "Cancel" %}</a>
+			{% endfor %}
+		</form>
+
+	</div>
+
+</div>
+
+{% endblock %}

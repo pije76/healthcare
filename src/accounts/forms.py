@@ -14,6 +14,7 @@ from crispy_forms.layout import HTML
 from .models import *
 from patient_form.models import *
 
+ic_number_validator = RegexValidator("\d{6}\-\d{2}\-\d{4}", "IC Number format needs to be yymmdd-xx-zzzz.")
 
 class MyLoginForm(LoginForm):
 	def __init__(self, *args, **kwargs):
@@ -52,10 +53,10 @@ class MyLoginForm(LoginForm):
 
 class MySignUpForm(SignupForm):
 	def __init__(self, *args, **kwargs):
-		super(MySignUpForm, self).__init__(*args, **kwargs)
+		super().__init__(*args, **kwargs)
 
-	first_name = forms.CharField(max_length=100, required=True, label='First Name')
-	last_name = forms.CharField(max_length=100, required=False, label='Last Name (optional)')
+	first_name = forms.CharField(max_length=100, required=True, label=_('First Name'))
+	last_name = forms.CharField(max_length=100, required=False, label=_('Last Name (optional)'))
 
 	class Meta:
 		model = PatientProfile
@@ -79,20 +80,31 @@ class ChangePatientProfile(forms.ModelForm):
 
 #	user = User.objects.get(username=request.user.username)
 
-	first_name = forms.CharField(max_length=100, required=True, label='First Name')
-	last_name = forms.CharField(max_length=100, required=False, label='Last Name (optional)')
-	email = forms.CharField(max_length=100, required=False, label='Email (optional)')
+	first_name = forms.CharField(required=True, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	last_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	email = forms.EmailField(required=False, label='', widget=forms.TextInput(attrs={'class': "form-control"}))
+	ic_number = forms.CharField(max_length=14, required=False, label="", initial='yymmdd-xx-zzzz', validators=[ic_number_validator], widget=forms.TextInput(attrs={'class': "form-control"}))
+	jkl = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	eth = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 
 	class Meta:
 		model = PatientProfile
-		fields = ('first_name', 'last_name', 'email')
+		fields = ('first_name', 'last_name', 'email', 'ic_number', 'jkl', 'eth')
 
 
 class ChangeAdmission(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 
-	ic_number = forms.CharField(max_length=14, required=True, label='IC Number', validators=[ic_number_validator])
+	def clean_ic_number(self):
+		ic_number = self.cleaned_data['ic_number']
+		try:
+			ic_number = Admission.objects.get(ic_number=ic_number)
+		except Admission.DoesNotExist:
+			return ic_number
+		raise forms.ValidationError('%s already exists' % ic_number)
+
+	ic_number = forms.CharField(max_length=14, required=False, label="", initial='yymmdd-xx-zzzz', validators=[ic_number_validator], widget=forms.TextInput(attrs={'class': "form-control"}))
 
 	class Meta:
 		model = Admission

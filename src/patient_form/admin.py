@@ -3,6 +3,7 @@ from django import forms
 from django.contrib import admin
 from django.contrib.admin.options import ModelAdmin
 from django.contrib.admin.widgets import AutocompleteSelect
+from mptt.admin import MPTTModelAdmin, DraggableMPTTAdmin
 
 #from django_tenants.admin import TenantAdminMixin
 # from ajax_select.admin import AjaxSelectAdmin
@@ -21,11 +22,10 @@ from .models import *
 class AdmissionAdmin(admin.ModelAdmin):
     list_display = [
         'id',
-#       'patient',
-        'full_name',
-        'ic_number',
+        'patient',
         'date',
         'time',
+        'admitted',
         'mode',
         'birth_date',
         'age',
@@ -36,16 +36,31 @@ class AdmissionAdmin(admin.ModelAdmin):
         'religion',
         'occupation',
     ]
-    autocomplete_fields = ['full_name', ]
+    autocomplete_fields = ['patient', ]
     ModelAdmin.ordering = ('id',)
 
+
+class ApplicationForHomeLeaveAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'patient',
+        'patient_family_name',
+        'nric_number',
+        'patient_family_relationship',
+        'patient_family_phone',
+        'designation',
+        'signature',
+        'date',
+    ]
+    autocomplete_fields = ['patient', ]
+    ModelAdmin.ordering = ('id',)
 
 class AppointmentAdmin(admin.ModelAdmin):
 #   form = AppointmentForm
     list_display = [
         'id',
-        'full_name',
-        'ic_number',
+        'patient',
+#        'ic_number',
         'date',
         'time',
         'hospital_clinic_center',
@@ -54,18 +69,18 @@ class AppointmentAdmin(admin.ModelAdmin):
         'treatment_order',
     ]
 
-#   search_fields = ['full_name']
+#   search_fields = ['patient']
 #    list_filter = ['patient']
 #    readonly_fields = ('patient', 'appointment',)
 #   autocomplete_except = []  # disable adding autocomplete_fields for listed fields
 #   autocomplete_all = False  # disable automatic adding of autocomplete_fields at all
-    autocomplete_fields = ['full_name', ]  # must be a foreign key or a many-to-many field.
+    autocomplete_fields = ['patient', ]  # must be a foreign key or a many-to-many field.
     ModelAdmin.ordering = ('id',)
 
 #    def save_model(self, request, obj, form, change):
-#        if not obj.full_name.id:
+#        if not obj.patient.id:
 #        if not change:
-#            obj.full_name = request.user
+#            obj.patient = request.user
 #        obj.save()
 
 #    def get_form(self, request, obj=None, **kwargs):
@@ -73,31 +88,102 @@ class AppointmentAdmin(admin.ModelAdmin):
 #        form.base_fields['patient'].label_from_instance = lambda obj: "{} {}".format(obj.id, obj.ic_number)
 #        return form
 
+class DressingAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'patient',
+        'date',
+        'time',
+        'frequency_dressing',
+        'wound_location',
+        'type_dressing',
+        'wound_location',
+        'wound_condition',
+        'photos',
+        'image_img',
+        'done_by',
+    ]
+
 
 class EnteralFeedingRegimeAdmin(admin.ModelAdmin):
     list_display = [
         'id',
-        'full_name',
-        'ic_number',
+        'patient',
         'time',
         'type_of_milk',
         'amount',
+        'warm_water_before',
+        'warm_water_after',
+#        'total_fluids',
+    ]
+
+
+class MaintainanceAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'date',
+        'items',
+        'location_room',
+        'reported_by',
+        'status',
     ]
     ModelAdmin.ordering = ('id',)
 
 
+class MedicationAdministrationRecordAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'patient',
+        'allergy',
+        'medication_name',
+        'medication_dosage',
+        'medication_tab',
+        'medication_frequency',
+        'medication_route',
+        'medication_date',
+        'medication_time',
+        'signature_nurse',
+        'stat',
+        'date_time',
+        'given_by',
+    ]
+    ModelAdmin.ordering = ('id',)
+
+
+class IntakeOutputChartAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'patient',
+        'date',
+        'time_intake',
+        'intake_oral_type',
+        'intake_oral_ml',
+        'intake_parenteral_type',
+        'intake_parenteral_ml',
+        'intake_other_type',
+        'intake_other_ml',
+        'time_output',
+        'output_urine_ml',
+        'output_urine_cum',
+        'output_gastric_ml',
+        'output_other_type',
+        'output_other_ml',
+    ]
+    ModelAdmin.ordering = ('id',)
+
 admin.site.register(Admission, AdmissionAdmin)
-admin.site.register(ApplicationForHomeLeave)
+admin.site.register(ApplicationForHomeLeave, ApplicationForHomeLeaveAdmin)
 admin.site.register(Appointment, AppointmentAdmin)
-admin.site.register(Cannulation)
+admin.site.register(CatheterizationCannulation)
 admin.site.register(Charges)
-admin.site.register(WoundCondition)
-admin.site.register(Dressing)
+admin.site.register(WoundCondition , MPTTModelAdmin)
+#admin.site.register(WoundCondition, DraggableMPTTAdmin)
+admin.site.register(Dressing, DressingAdmin)
 admin.site.register(EnteralFeedingRegime, EnteralFeedingRegimeAdmin)
 admin.site.register(HGTChart)
-admin.site.register(IntakeOutputChart)
-admin.site.register(Maintainance)
-admin.site.register(MedicationAdministrationRecord)
+admin.site.register(IntakeOutputChart, IntakeOutputChartAdmin)
+admin.site.register(Maintainance, MaintainanceAdmin)
+admin.site.register(MedicationAdministrationRecord, MedicationAdministrationRecordAdmin)
 admin.site.register(MedicationRecord)
 admin.site.register(MiscellaneousChargesSlip)
 admin.site.register(Nursing)

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block headtitle %}
+    {{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block content %}
+
+{% block styles %}
+	<link href="{% static 'css/patient_form/stool.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block extrahead %}
+	{{ form.media }}
+{% endblock %}
+
+<div class="row isi">
+
+	<div class="formtitle">
+		{{ page_title }}
+	</div>
+
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+		<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" novalidate>
+			{% csrf_token %}
+			<table class="table-sm table-bordered">
+				<tbody>
+					<tr>
+						<td>{% trans "NAME" %}:</td>
+						<td>{{ patients }}{{ form.patient|as_crispy_field }}</td>
+					</tr>
+					<tr>
+						<td>{% trans "I/C NO" %}:</td>
+						<td>{{ icnumbers }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th class="text-center">{% trans "Annual Leave _____ Days (Entitled)" %}</th>
+						<th class="text-center">{% trans "Public Holiday _____ Days (Entitled)" %}</th>
+						<th class="text-center">{% trans "Replacement Public Holiday" %}</th>
+						<th class="text-center">{% trans "Medical Certificate" %}</th>
+						<th class="text-center">{% trans "Siri No & Diagnosis" %}</th>
+						<th class="text-center">{% trans "Emergency Leaves" %}</th>
+						<th class="text-center">{% trans "Reasons" %}</th>
+						<th class="text-center">{% trans "Unpaid Leaves" %}</th>
+						<th class="text-center">{% trans "Reasons" %}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{ form.annual_leave_days|as_crispy_field }}</td>
+						<td>{{ form.public_holiday_days|as_crispy_field }}</td>
+						<td>{{ form.replacement_public_holiday|as_crispy_field }}</td>
+						<td>{{ form.medical_certificate|as_crispy_field }}</td>
+						<td>{{ form.siri_no_diagnosis|as_crispy_field }}</td>
+						<td>{{ form.emergency_leaves|as_crispy_field }}</td>
+						<td>{{ form.emergency_leaves_reasons|as_crispy_field }}</td>
+						<td>{{ form.unpaid_leaves|as_crispy_field }}</td>
+						<td>{{ form.unpaid_leaves_reasons|as_crispy_field }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<br />
+			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+			{% for item in profiles %}
+			<a class="btn btn-danger" href="{% url 'patient_data:patientdata_detail' item.id %}">{% trans "Cancel" %}</a>
+			{% endfor %}
+		</form>
+
+	</div>
+
+</div>
+
+{% endblock %}

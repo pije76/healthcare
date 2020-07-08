@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block headtitle %}
+    {{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block content %}
+
+{% block styles %}
+	<link href="{% static 'css/patient_form/homeleave.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block extrahead %}
+	{{ form.media }}
+{% endblock %}
+
+<div class="row isi">
+
+	<div class="formtitle">
+		{{ page_title }}
+	</div>
+
+	<p style="font-size:12px">{% include 'messages.html' %}</p>
+
+	<div class="col-12">
+
+		<form method="post">
+			{% csrf_token %}
+			<div class="homeleave_body">
+
+				<div class="row">
+					<div class="col-4 form-inline">
+						{% trans "Name" %}: {{ form.patient|as_crispy_field }}
+					</div>
+				</div>
+
+				<br />
+
+				<div class="row">
+					<div class="col-4 form-inline">
+						{% trans "I/C No" %}: {{ form.nric_number|as_crispy_field }}
+					</div>
+				</div>
+
+				<br />
+
+				<div class="row">
+					<div class="col-6 form-inline">
+						{% trans "I" %}, &nbsp;&nbsp;{{ form.patient_family_name|as_crispy_field }} 
+					</div>
+					<div class="col-6 form-inline">
+						{% trans "NRIC No." %}: &nbsp;{{ form.nric_number|as_crispy_field }}
+					</div>
+				</div>
+
+				<br />
+
+				<div class="row">
+					<div class="col-6 form-inline">
+						{% trans "of" %} &nbsp;{{ form.patient_family_relationship|as_crispy_field }}
+					</div>
+					<div class="col-6 form-inline">
+						{% trans "Tel No." %}: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ form.patient_family_phone|as_crispy_field }}
+					</div>
+				</div>
+
+				<br />
+
+				<div class="row">
+					<div class="col-6">
+						{% trans "hereby wish to apply from SK Wellspring Home Care for self / patient" %}
+					</div>
+					<div class="col-6">
+						{{ form.patient|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-12">
+						{% trans "to leave the care center at own risk as per attachment." %}
+						<br />
+						<br />
+						{% trans "I am fully responsible towards myself / this patient whilst out of the center, SK Wellspring Home Care and its staff of all liabilities in the event of my / the patient’s decline in health or any accidents which may occur whilst I am / said patient is out of the center." %}
+					</div>
+				</div>
+
+				<br />
+				<br />
+
+				<div class="row">
+					<div class="col-4">
+						{% trans "Signature or Thumbprint of" %}
+					</div>
+
+					<div class="col-8">
+						{{ form.patient_family_name|as_crispy_field }}
+						<b>({% trans "Patient / Family Responsible" %})</b>
+					</div>
+				</div>
+
+				<br />
+
+				<div class="row">
+					<div class="col-6">
+						{{ form.patient_family_relationship|as_crispy_field }}
+						<b>({% trans "Relationship" %})</b>
+					</div>
+
+					<div class="col-6">
+						{{ form.nric_number|as_crispy_field }}
+						<b>({% trans "IC No." %})</b>
+					</div>
+				</div>
+
+				<br /><br /><br />
+
+				<div class="row form-inline">
+					<div class="col-2">
+						{% trans "Witnessed by" %}:
+					</div>
+				</div>
+				<br />
+				<div class="row form-inline">
+					<div class="col-2">
+						{% trans "Name" %}: 
+					</div>
+					<div class="col-2">
+						{{ form.patient_family_name|as_crispy_field }}
+					</div>
+				</div>
+				<br />
+				<div class="row form-inline">
+					<div class="col-2">
+						{% trans "Designation" %}:
+					</div>
+					<div class="col-2">
+						{{ form.designation|as_crispy_field }}
+					</div>
+				</div>
+				<br />
+				<div class="row form-inline">
+					<div class="col-2">
+						{% trans "Signature" %}:
+					</div>
+					<div class="col-2">
+						{{ form.signature|as_crispy_field }}
+					</div>
+				</div>
+				<br />
+				<div class="row form-inline">
+					<div class="col-2">
+						{% trans "Date" %}:
+					</div>
+					<div class="col-2">
+						{{ form.date|as_crispy_field }}
+					</div>
+				</div>
+				<br />
+				<b>{% trans "Note" %}</b>:	{% trans "This form must be signed by the patient, carer or a member of the family responsible if patient is physically and mentally unfit." %}
+			</div>
+			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+			{% for item in profiles %}
+			<a class="btn btn-danger" href="{% url 'patient_data:patientdata_detail' item.id %}">{% trans "Cancel" %}</a>
+			{% endfor %}
+		</form>
+	</div>
+
+</div>
+
+{% endblock %}

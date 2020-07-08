@@ -54,5 +54,5 @@
 }
 
 .custom-control {
-  display: table-cell;;
+  display: inline-flex;
 }

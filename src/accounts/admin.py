@@ -38,7 +38,9 @@ class PatientProfileAdmin(admin.ModelAdmin):
         'username',
         'email',
         'full_name',
-#        'ic_number',
+        'ic_number',
+        'jkl',
+        'eth',
         'is_staff',
     ]
 #    list_filter = ['user']

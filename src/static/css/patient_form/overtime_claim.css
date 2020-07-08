@@ -1,0 +1,35 @@
+.isi {
+  height: auto;
+  padding-bottom: 20px;
+}
+
+.footer {
+  height: 151px;
+}
+
+.table-sm {
+  width: 70%;
+}
+
+.ui-icon-trash {
+    display: inline-block;
+}
+
+.custom-control-label {
+  padding-left: 20px;
+}
+
+.table-sm {
+  margin-bottom: 10px;
+}
+
+.checked_sign {
+  display: inline-flex;
+}
+
+#id_duration_time_0, #id_duration_time_1 {
+    margin-right: 5px;
+}
+.help {
+    display: none;
+}

@@ -1,210 +1,50 @@
-{% extends 'base.html' %}
-
-{% load static %}
-{% load staticfiles %}
-{% load crispy_forms_tags %}
-
-{% block headtitle %}
-    {{ page_title }} | {{ titles.title }}
-{% endblock %}
-
-{% block styles %}
-	<link href="{% static 'css/patient_form/admission.css' %}" rel="stylesheet" type="text/css">
-{% endblock %}
-
-{% block content %}
-
-<div class="row isi">
-
-	<div class="formtitle">
-		{{ page_title }}
-	</div>
-	
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-		<form method="post">
-			{% csrf_token %}
-			<table class="table table-bordered">
-				<tbody>
-					<tr>
-						<td>Admission:</td>
-						<td colspan="2">{{ form.date|as_crispy_field }}</td>
-						<td style="padding-left: 15px; display: inline-flex;">{{ form.time|as_crispy_field }} <p style="margin-top:5px;">hours</p></td>
-					</tr>
-					<tr>
-						<td>Admitted through:</td>
-						<td colspan="3">{{ form.admitted|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Mode of admission:</td>
-						<td colspan="3">{{ form.mode|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Full name  (as per IC):</td>
-						<td>{{ form.full_name|as_crispy_field }}</td>
-						<td>IC No:</td>
-						<td>{{ form.ic_number|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Age:</td>
-						<td>{{ form.age|as_crispy_field }}</td>
-						<td>Date of birth:</td>
-						<td>{{ form.birth_date|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Sex / Gender:</td>
-						<td colspan="3">{{ form.gender|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Marital Status:</td>
-						<td colspan="3">{{ form.marital_status|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Religion:</td>
-						<td colspan="3">{{ form.religion|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Occupation:</td>
-						<td colspan="3">{{ form.occupation|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Communication:</td>
-						<td colspan="3">
-						{{ form.communication_sight|as_crispy_field }}
-						<br />
-						{{ form.communication_hearing|as_crispy_field }}
-						<br />
-						{{ form.communication_others|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Address:</td>
-						<td colspan="3">{{ form.address|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Tel No:</td>
-						<td colspan="3">{{ form.phone|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Emergency contact:</td>
-						<td colspan="3">{{ form.ec_name|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td colspan="3">{{ form.ec_ic_number|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td colspan="3">{{ form.ec_relationship|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td colspan="3">{{ form.ec_phone|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td colspan="3">{{ form.ec_address|as_crispy_field }}</td>
-					</tr>
-
-					<tr>
-						<td>General condition:</td>
-						<td colspan="3">{{ form.general_condition|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Vital sign:</td>
-						<td colspan="3">
-							<table style="width: -webkit-fill-available;">
-								<tbody>
-									<tr>
-										<td>Temp (ºc):</td>
-										<td style="padding-left: 15px; display: inline-flex; width: -webkit-fill-available;">{{ form.vital_sign_temperature|as_crispy_field }}<p style="margin-top:5px;">º</p></td>
-									</tr>
-									<tr>
-										<td>Pulse (bpm):</td>
-										<td>{{ form.vital_sign_pulse|as_crispy_field }}</td>
-									</tr>
-									<tr>
-										<td>BP (mmHg):</td>
-										<td>{{ form.vital_sign_bp|as_crispy_field }}</td>
-									</tr>
-									<tr>
-										<td>Resp (min):</td>
-										<td>{{ form.vital_sign_resp|as_crispy_field }}</td>
-									</tr>
-									<tr>
-										<td>SPO2 (%):</td>
-										<td style="padding-left: 15px; display: inline-flex; width: -webkit-fill-available;">{{ form.vital_sign_spo2|as_crispy_field }}<p style="margin-top:5px;">% (RA)</p></td>
-									</tr>
-									<tr>
-										<td>On Oxygen therapy:</td>
-										<td>{{ form.vital_sign_on_oxygen_therapy|as_crispy_field }}</td>
-									</tr>
-									<tr>
-										<td>HGT(mmol/L):</td>
-										<td>{{ form.vital_sign_hgt|as_crispy_field }}</td>
-									</tr>
-								</tbody>
-							</table>
-						</td>
-					</tr>
-					<tr>
-						<td>Allergy:</td>
-						<td>{{ form.allergy_drug|as_crispy_field }}</td>
-						<td>{{ form.allergy_food|as_crispy_field }}</td>
-						<td>{{ form.allergy_others|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Biohazard/ infectious disease:</td>
-						<td colspan="3">{{ form.biohazard_infectious_disease|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Invasive line insitu:</td>
-						<td colspan="3">{{ form.invasive_line_insitu|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Medical history:</td>
-						<td colspan="3">{{ form.medical_history|as_crispy_field }}</td>
-					</tr>					<tr>
-						<td>Surgical history:</td>
-						<td colspan="3">{{ form.surgical_history|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Date:<br />{{ form.date_diagnosis|as_crispy_field }}</td>
-						<td>Diagnosis:<br />{{ form.diagnosis|as_crispy_field }}</td>
-						<td>Date:<br />{{ form.date_operation|as_crispy_field }}</td>
-						<td>Operation:<br />{{ form.operation|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Own medication:</td>
-						<td colspan="3">{{ form.own_medication|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Adaptive aids with patient on admission:</td>
-						<td colspan="3">{{ form.adaptive_aids_with_patient|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Orientation:</td>
-						<td colspan="3">{{ form.orientation|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Special information:</td>
-						<td colspan="3">{{ form.special_information|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>Admission done by:</td>
-						<td colspan="3">{{ form.special_information|as_crispy_field }}</td>
-					</tr>
-				</tbody>
-			</table>
-			<button type="submit" class="btn btn-primary">Submit</button>
-		</form>
-
-	</div>
-
-</div>
-
 <script type="text/javascript">
 $(document).ready(function()
 {
+	$('input[id^="id_admitted_"]').click(function()
+	{
+		var $this = $(this);
+		if ($this.is("#id_admitted_1"))
+		{
+			if ($("#id_admitted_1:checked").length > 0)
+			{
+				$("#id_admitted_2").prop({ checked: false });
+				$("#id_admitted_3").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_admitted_2").prop("disabled", false);
+				$("#id_admitted_3").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_admitted_2"))
+		{
+			if ($("#id_admitted_2:checked").length > 0)
+			{
+				$("#id_admitted_1").prop({ checked: false });
+				$("#id_admitted_3").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_admitted_1").prop("disabled", false);
+				$("#id_admitted_3").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_admitted_3"))
+		{
+			if ($("#id_admitted_3:checked").length > 0)
+			{
+				$("#id_admitted_1").prop({ checked: false });
+				$("#id_admitted_2").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_admitted_1").prop("disabled", false);
+				$("#id_admitted_2").prop("disabled", false);
+			}
+		}
+	});
+
 	$('input[id^="id_mode_"]').click(function()
 	{
 		var $this = $(this);
@@ -213,10 +53,12 @@ $(document).ready(function()
 			if ($("#id_mode_1:checked").length > 0)
 			{
 				$("#id_mode_2").prop({ checked: false });
+				$("#id_mode_3").prop({ checked: false });
 			}
 			else
 			{
 				$("#id_mode_2").prop("disabled", false);
+				$("#id_mode_3").prop("disabled", false);
 			}
 		}
 		else if ($this.is("#id_mode_2"))
@@ -224,10 +66,25 @@ $(document).ready(function()
 			if ($("#id_mode_2:checked").length > 0)
 			{
 				$("#id_mode_1").prop({ checked: false });
+				$("#id_mode_3").prop({ checked: false });
 			}
 			else
 			{
 				$("#id_mode_1").prop("disabled", false);
+				$("#id_mode_3").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_mode_3"))
+		{
+			if ($("#id_mode_3:checked").length > 0)
+			{
+				$("#id_mode_1").prop({ checked: false });
+				$("#id_mode_2").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_mode_1").prop("disabled", false);
+				$("#id_mode_2").prop("disabled", false);
 			}
 		}
 	});
@@ -258,6 +115,1230 @@ $(document).ready(function()
 			}
 		}
 	});
+
+	$('input[id^="id_marital_status_"]').click(function()
+	{
+		var $this = $(this);
+		if ($this.is("#id_marital_status_1"))
+		{
+			if ($("#id_marital_status_1:checked").length > 0)
+			{
+				$("#id_marital_status_2").prop({ checked: false });
+				$("#id_marital_status_3").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_marital_status_2").prop("disabled", false);
+				$("#id_marital_status_3").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_marital_status_2"))
+		{
+			if ($("#id_marital_status_2:checked").length > 0)
+			{
+				$("#id_marital_status_1").prop({ checked: false });
+				$("#id_marital_status_3").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_marital_status_1").prop("disabled", false);
+				$("#id_marital_status_3").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_marital_status_3"))
+		{
+			if ($("#id_marital_status_3:checked").length > 0)
+			{
+				$("#id_marital_status_1").prop({ checked: false });
+				$("#id_marital_status_2").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_marital_status_1").prop("disabled", false);
+				$("#id_marital_status_2").prop("disabled", false);
+			}
+		}
+	});
+
+	$('input[id^="id_religion_"]').click(function()
+	{
+		var $this = $(this);
+		if ($this.is("#id_religion_1"))
+		{
+			if ($("#id_religion_1:checked").length > 0)
+			{
+				$("#id_religion_2").prop({ checked: false });
+				$("#id_religion_3").prop({ checked: false });
+				$("#id_religion_4").prop({ checked: false });
+				$("#id_religion_5").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_religion_2").prop("disabled", false);
+				$("#id_religion_3").prop("disabled", false);
+				$("#id_religion_4").prop("disabled", false);
+				$("#id_religion_5").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_religion_2"))
+		{
+			if ($("#id_religion_2:checked").length > 0)
+			{
+				$("#id_religion_1").prop({ checked: false });
+				$("#id_religion_3").prop({ checked: false });
+				$("#id_religion_4").prop({ checked: false });
+				$("#id_religion_5").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_religion_1").prop("disabled", false);
+				$("#id_religion_3").prop("disabled", false);
+				$("#id_religion_4").prop("disabled", false);
+				$("#id_religion_5").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_religion_3"))
+		{
+			if ($("#id_religion_3:checked").length > 0)
+			{
+				$("#id_religion_1").prop({ checked: false });
+				$("#id_religion_2").prop({ checked: false });
+				$("#id_religion_4").prop({ checked: false });
+				$("#id_religion_5").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_religion_1").prop("disabled", false);
+				$("#id_religion_2").prop("disabled", false);
+				$("#id_religion_4").prop("disabled", false);
+				$("#id_religion_5").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_religion_4"))
+		{
+			if ($("#id_religion_4:checked").length > 0)
+			{
+				$("#id_religion_1").prop({ checked: false });
+				$("#id_religion_2").prop({ checked: false });
+				$("#id_religion_3").prop({ checked: false });
+				$("#id_religion_5").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_religion_1").prop("disabled", false);
+				$("#id_religion_2").prop("disabled", false);
+				$("#id_religion_3").prop("disabled", false);
+				$("#id_religion_5").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_religion_5"))
+		{
+			if ($("#id_religion_5:checked").length > 0)
+			{
+				$("#id_religion_1").prop({ checked: false });
+				$("#id_religion_2").prop({ checked: false });
+				$("#id_religion_3").prop({ checked: false });
+				$("#id_religion_4").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_religion_1").prop("disabled", false);
+				$("#id_religion_2").prop("disabled", false);
+				$("#id_religion_3").prop("disabled", false);
+				$("#id_religion_4").prop("disabled", false);
+			}
+		}        
+	});
+
+	$('input[id^="id_occupation_"]').click(function()
+	{
+		var $this = $(this);
+		if ($this.is("#id_occupation_1"))
+		{
+			if ($("#id_occupation_1:checked").length > 0)
+			{
+				$("#id_occupation_2").prop({ checked: false });
+				$("#id_occupation_3").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_occupation_2").prop("disabled", false);
+				$("#id_occupation_3").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_occupation_2"))
+		{
+			if ($("#id_occupation_2:checked").length > 0)
+			{
+				$("#id_occupation_1").prop({ checked: false });
+				$("#id_occupation_3").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_occupation_1").prop("disabled", false);
+				$("#id_occupation_3").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_occupation_3"))
+		{
+			if ($("#id_occupation_3:checked").length > 0)
+			{
+				$("#id_occupation_1").prop({ checked: false });
+				$("#id_occupation_2").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_occupation_1").prop("disabled", false);
+				$("#id_occupation_2").prop("disabled", false);
+			}
+		}
+	});
+
+	$('input[id^="id_communication_sight_"]').click(function()
+	{
+		var $this = $(this);
+		if ($this.is("#id_communication_sight_1"))
+		{
+			if ($("#id_communication_sight_1:checked").length > 0)
+			{
+				$("#id_communication_sight_2").prop({ checked: false });
+				$("#id_communication_sight_3").prop({ checked: false });
+				$("#id_communication_sight_4").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_communication_sight_2").prop("disabled", false);
+				$("#id_communication_sight_3").prop("disabled", false);
+				$("#id_communication_sight_4").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_communication_sight_2"))
+		{
+			if ($("#id_communication_sight_2:checked").length > 0)
+			{
+				$("#id_communication_sight_1").prop({ checked: false });
+				$("#id_communication_sight_3").prop({ checked: false });
+				$("#id_communication_sight_4").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_communication_sight_1").prop("disabled", false);
+				$("#id_communication_sight_3").prop("disabled", false);
+				$("#id_communication_sight_4").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_communication_sight_3"))
+		{
+			if ($("#id_communication_sight_3:checked").length > 0)
+			{
+				$("#id_communication_sight_1").prop({ checked: false });
+				$("#id_communication_sight_2").prop({ checked: false });
+				$("#id_communication_sight_4").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_communication_sight_1").prop("disabled", false);
+				$("#id_communication_sight_2").prop("disabled", false);
+				$("#id_communication_sight_4").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_communication_sight_4"))
+		{
+			if ($("#id_communication_sight_4:checked").length > 0)
+			{
+				$("#id_communication_sight_1").prop({ checked: false });
+				$("#id_communication_sight_2").prop({ checked: false });
+				$("#id_communication_sight_3").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_communication_sight_1").prop("disabled", false);
+				$("#id_communication_sight_2").prop("disabled", false);
+				$("#id_communication_sight_3").prop("disabled", false);
+			}
+		}
+
+	});
+
+	$('input[id^="id_communication_hearing_"]').click(function()
+	{
+		var $this = $(this);
+		if ($this.is("#id_communication_hearing_1"))
+		{
+			if ($("#id_communication_hearing_1:checked").length > 0)
+			{
+				$("#id_communication_hearing_2").prop({ checked: false });
+				$("#id_communication_hearing_3").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_communication_hearing_2").prop("disabled", false);
+				$("#id_communication_hearing_3").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_communication_hearing_2"))
+		{
+			if ($("#id_communication_hearing_2:checked").length > 0)
+			{
+				$("#id_communication_hearing_1").prop({ checked: false });
+				$("#id_communication_hearing_3").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_communication_hearing_1").prop("disabled", false);
+				$("#id_communication_hearing_3").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_communication_hearing_3"))
+		{
+			if ($("#id_communication_hearing_3:checked").length > 0)
+			{
+				$("#id_communication_hearing_1").prop({ checked: false });
+				$("#id_communication_hearing_2").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_communication_hearing_1").prop("disabled", false);
+				$("#id_communication_hearing_2").prop("disabled", false);
+			}
+		}
+	});
+
+	$('input[id^="id_general_condition_"]').click(function()
+	{
+		var $this = $(this);
+		if ($this.is("#id_general_condition_1"))
+		{
+			if ($("#id_general_condition_1:checked").length > 0)
+			{
+				$("#id_general_condition_2").prop({ checked: false });
+				$("#id_general_condition_3").prop({ checked: false });
+				$("#id_general_condition_4").prop({ checked: false });
+				$("#id_general_condition_5").prop({ checked: false });
+				$("#id_general_condition_6").prop({ checked: false });
+				$("#id_general_condition_7").prop({ checked: false });
+				$("#id_general_condition_8").prop({ checked: false });
+				$("#id_general_condition_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_general_condition_2").prop("disabled", false);
+				$("#id_general_condition_3").prop("disabled", false);
+				$("#id_general_condition_4").prop("disabled", false);
+				$("#id_general_condition_5").prop("disabled", false);
+				$("#id_general_condition_6").prop("disabled", false);
+				$("#id_general_condition_7").prop("disabled", false);
+				$("#id_general_condition_8").prop("disabled", false);
+				$("#id_general_condition_9").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_general_condition_2"))
+		{
+			if ($("#id_general_condition_2:checked").length > 0)
+			{
+				$("#id_general_condition_1").prop({ checked: false });
+				$("#id_general_condition_3").prop({ checked: false });
+				$("#id_general_condition_4").prop({ checked: false });
+				$("#id_general_condition_5").prop({ checked: false });
+				$("#id_general_condition_6").prop({ checked: false });
+				$("#id_general_condition_7").prop({ checked: false });
+				$("#id_general_condition_8").prop({ checked: false });
+				$("#id_general_condition_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_general_condition_1").prop("disabled", false);
+				$("#id_general_condition_3").prop("disabled", false);
+				$("#id_general_condition_4").prop("disabled", false);
+				$("#id_general_condition_5").prop("disabled", false);
+				$("#id_general_condition_6").prop("disabled", false);
+				$("#id_general_condition_7").prop("disabled", false);
+				$("#id_general_condition_8").prop("disabled", false);
+				$("#id_general_condition_9").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_general_condition_3"))
+		{
+			if ($("#id_general_condition_3:checked").length > 0)
+			{
+				$("#id_general_condition_1").prop({ checked: false });
+				$("#id_general_condition_2").prop({ checked: false });
+				$("#id_general_condition_4").prop({ checked: false });
+				$("#id_general_condition_5").prop({ checked: false });
+				$("#id_general_condition_6").prop({ checked: false });
+				$("#id_general_condition_7").prop({ checked: false });
+				$("#id_general_condition_8").prop({ checked: false });
+				$("#id_general_condition_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_general_condition_1").prop("disabled", false);
+				$("#id_general_condition_2").prop("disabled", false);
+				$("#id_general_condition_4").prop("disabled", false);
+				$("#id_general_condition_5").prop("disabled", false);
+				$("#id_general_condition_6").prop("disabled", false);
+				$("#id_general_condition_7").prop("disabled", false);
+				$("#id_general_condition_8").prop("disabled", false);
+				$("#id_general_condition_9").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_general_condition_4"))
+		{
+			if ($("#id_general_condition_4:checked").length > 0)
+			{
+				$("#id_general_condition_1").prop({ checked: false });
+				$("#id_general_condition_2").prop({ checked: false });
+				$("#id_general_condition_3").prop({ checked: false });
+				$("#id_general_condition_5").prop({ checked: false });
+				$("#id_general_condition_6").prop({ checked: false });
+				$("#id_general_condition_7").prop({ checked: false });
+				$("#id_general_condition_8").prop({ checked: false });
+				$("#id_general_condition_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_general_condition_1").prop("disabled", false);
+				$("#id_general_condition_2").prop("disabled", false);
+				$("#id_general_condition_3").prop("disabled", false);
+				$("#id_general_condition_5").prop("disabled", false);
+				$("#id_general_condition_6").prop("disabled", false);
+				$("#id_general_condition_7").prop("disabled", false);
+				$("#id_general_condition_8").prop("disabled", false);
+				$("#id_general_condition_9").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_general_condition_5"))
+		{
+			if ($("#id_general_condition_5:checked").length > 0)
+			{
+				$("#id_general_condition_1").prop({ checked: false });
+				$("#id_general_condition_2").prop({ checked: false });
+				$("#id_general_condition_3").prop({ checked: false });
+				$("#id_general_condition_4").prop({ checked: false });
+				$("#id_general_condition_6").prop({ checked: false });
+				$("#id_general_condition_7").prop({ checked: false });
+				$("#id_general_condition_8").prop({ checked: false });
+				$("#id_general_condition_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_general_condition_1").prop("disabled", false);
+				$("#id_general_condition_2").prop("disabled", false);
+				$("#id_general_condition_3").prop("disabled", false);
+				$("#id_general_condition_4").prop("disabled", false);
+				$("#id_general_condition_6").prop("disabled", false);
+				$("#id_general_condition_7").prop("disabled", false);
+				$("#id_general_condition_8").prop("disabled", false);
+				$("#id_general_condition_9").prop("disabled", false);
+			}
+		}        
+		else if ($this.is("#id_general_condition_6"))
+		{
+			if ($("#id_general_condition_6:checked").length > 0)
+			{
+				$("#id_general_condition_1").prop({ checked: false });
+				$("#id_general_condition_2").prop({ checked: false });
+				$("#id_general_condition_3").prop({ checked: false });
+				$("#id_general_condition_4").prop({ checked: false });
+				$("#id_general_condition_5").prop({ checked: false });
+				$("#id_general_condition_7").prop({ checked: false });
+				$("#id_general_condition_8").prop({ checked: false });
+				$("#id_general_condition_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_general_condition_1").prop("disabled", false);
+				$("#id_general_condition_2").prop("disabled", false);
+				$("#id_general_condition_3").prop("disabled", false);
+				$("#id_general_condition_4").prop("disabled", false);
+				$("#id_general_condition_5").prop("disabled", false);
+				$("#id_general_condition_7").prop("disabled", false);
+				$("#id_general_condition_8").prop("disabled", false);
+				$("#id_general_condition_9").prop("disabled", false);
+			}
+		}        
+		else if ($this.is("#id_general_condition_7"))
+		{
+			if ($("#id_general_condition_7:checked").length > 0)
+			{
+				$("#id_general_condition_1").prop({ checked: false });
+				$("#id_general_condition_2").prop({ checked: false });
+				$("#id_general_condition_3").prop({ checked: false });
+				$("#id_general_condition_4").prop({ checked: false });
+				$("#id_general_condition_5").prop({ checked: false });
+				$("#id_general_condition_6").prop({ checked: false });
+				$("#id_general_condition_8").prop({ checked: false });
+				$("#id_general_condition_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_general_condition_1").prop("disabled", false);
+				$("#id_general_condition_2").prop("disabled", false);
+				$("#id_general_condition_3").prop("disabled", false);
+				$("#id_general_condition_4").prop("disabled", false);
+				$("#id_general_condition_5").prop("disabled", false);
+				$("#id_general_condition_6").prop("disabled", false);
+				$("#id_general_condition_8").prop("disabled", false);
+				$("#id_general_condition_9").prop("disabled", false);
+			}
+		}        
+		else if ($this.is("#id_general_condition_8"))
+		{
+			if ($("#id_general_condition_8:checked").length > 0)
+			{
+				$("#id_general_condition_1").prop({ checked: false });
+				$("#id_general_condition_2").prop({ checked: false });
+				$("#id_general_condition_3").prop({ checked: false });
+				$("#id_general_condition_4").prop({ checked: false });
+				$("#id_general_condition_5").prop({ checked: false });
+				$("#id_general_condition_6").prop({ checked: false });
+				$("#id_general_condition_7").prop({ checked: false });
+				$("#id_general_condition_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_general_condition_1").prop("disabled", false);
+				$("#id_general_condition_2").prop("disabled", false);
+				$("#id_general_condition_3").prop("disabled", false);
+				$("#id_general_condition_4").prop("disabled", false);
+				$("#id_general_condition_5").prop("disabled", false);
+				$("#id_general_condition_6").prop("disabled", false);
+				$("#id_general_condition_7").prop("disabled", false);
+				$("#id_general_condition_9").prop("disabled", false);
+			}
+		}        
+		else if ($this.is("#id_general_condition_9"))
+		{
+			if ($("#id_general_condition_9:checked").length > 0)
+			{
+				$("#id_general_condition_1").prop({ checked: false });
+				$("#id_general_condition_2").prop({ checked: false });
+				$("#id_general_condition_3").prop({ checked: false });
+				$("#id_general_condition_4").prop({ checked: false });
+				$("#id_general_condition_5").prop({ checked: false });
+				$("#id_general_condition_6").prop({ checked: false });
+				$("#id_general_condition_7").prop({ checked: false });
+				$("#id_general_condition_8").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_general_condition_1").prop("disabled", false);
+				$("#id_general_condition_2").prop("disabled", false);
+				$("#id_general_condition_3").prop("disabled", false);
+				$("#id_general_condition_4").prop("disabled", false);
+				$("#id_general_condition_5").prop("disabled", false);
+				$("#id_general_condition_6").prop("disabled", false);
+				$("#id_general_condition_7").prop("disabled", false);
+				$("#id_general_condition_8").prop("disabled", false);
+			}
+		}        
+
+	});
+
+	$('input[id^="id_vital_sign_on_oxygen_therapy_"]').click(function()
+	{
+		var $this = $(this);
+		if ($this.is("#id_vital_sign_on_oxygen_therapy_1"))
+		{
+			if ($("#id_vital_sign_on_oxygen_therapy_1:checked").length > 0)
+			{
+				$("#id_vital_sign_on_oxygen_therapy_2").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_vital_sign_on_oxygen_therapy_2").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_vital_sign_on_oxygen_therapy_2"))
+		{
+			if ($("#id_vital_sign_on_oxygen_therapy_2:checked").length > 0)
+			{
+				$("#id_vital_sign_on_oxygen_therapy_1").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_vital_sign_on_oxygen_therapy_1").prop("disabled", false);
+			}
+		}
+	});
+
+	$('input[id^="id_invasive_line_insitu_"]').click(function()
+	{
+		var $this = $(this);
+		if ($this.is("#id_invasive_line_insitu_1"))
+		{
+			if ($("#id_invasive_line_insitu_1:checked").length > 0)
+			{
+				$("#id_invasive_line_insitu_2").prop({ checked: false });
+				$("#id_invasive_line_insitu_3").prop({ checked: false });
+				$("#id_invasive_line_insitu_4").prop({ checked: false });
+				$("#id_invasive_line_insitu_5").prop({ checked: false });
+				$("#id_invasive_line_insitu_6").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_invasive_line_insitu_2").prop("disabled", false);
+				$("#id_invasive_line_insitu_3").prop("disabled", false);
+				$("#id_invasive_line_insitu_4").prop("disabled", false);
+				$("#id_invasive_line_insitu_5").prop("disabled", false);
+				$("#id_invasive_line_insitu_6").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_invasive_line_insitu_2"))
+		{
+			if ($("#id_invasive_line_insitu_2:checked").length > 0)
+			{
+				$("#id_invasive_line_insitu_1").prop({ checked: false });
+				$("#id_invasive_line_insitu_3").prop({ checked: false });
+				$("#id_invasive_line_insitu_4").prop({ checked: false });
+				$("#id_invasive_line_insitu_5").prop({ checked: false });
+				$("#id_invasive_line_insitu_6").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_invasive_line_insitu_1").prop("disabled", false);
+				$("#id_invasive_line_insitu_3").prop("disabled", false);
+				$("#id_invasive_line_insitu_4").prop("disabled", false);
+				$("#id_invasive_line_insitu_5").prop("disabled", false);
+				$("#id_invasive_line_insitu_6").prop("disabled", false);        
+			}
+		}
+		else if ($this.is("#id_invasive_line_insitu_3"))
+		{
+			if ($("#id_invasive_line_insitu_3:checked").length > 0)
+			{
+				$("#id_invasive_line_insitu_1").prop({ checked: false });
+				$("#id_invasive_line_insitu_2").prop({ checked: false });
+				$("#id_invasive_line_insitu_4").prop({ checked: false });
+				$("#id_invasive_line_insitu_5").prop({ checked: false });
+				$("#id_invasive_line_insitu_6").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_invasive_line_insitu_1").prop("disabled", false);
+				$("#id_invasive_line_insitu_2").prop("disabled", false);
+				$("#id_invasive_line_insitu_4").prop("disabled", false);
+				$("#id_invasive_line_insitu_5").prop("disabled", false);
+				$("#id_invasive_line_insitu_6").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_invasive_line_insitu_4"))
+		{
+			if ($("#id_invasive_line_insitu_4:checked").length > 0)
+			{
+				$("#id_invasive_line_insitu_1").prop({ checked: false });
+				$("#id_invasive_line_insitu_2").prop({ checked: false });
+				$("#id_invasive_line_insitu_3").prop({ checked: false });
+				$("#id_invasive_line_insitu_5").prop({ checked: false });
+				$("#id_invasive_line_insitu_6").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_invasive_line_insitu_1").prop("disabled", false);
+				$("#id_invasive_line_insitu_2").prop("disabled", false);
+				$("#id_invasive_line_insitu_3").prop("disabled", false);
+				$("#id_invasive_line_insitu_5").prop("disabled", false);
+				$("#id_invasive_line_insitu_6").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_invasive_line_insitu_5"))
+		{
+			if ($("#id_invasive_line_insitu_5:checked").length > 0)
+			{
+				$("#id_invasive_line_insitu_1").prop({ checked: false });
+				$("#id_invasive_line_insitu_2").prop({ checked: false });
+				$("#id_invasive_line_insitu_3").prop({ checked: false });
+				$("#id_invasive_line_insitu_4").prop({ checked: false });
+				$("#id_invasive_line_insitu_6").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_invasive_line_insitu_1").prop("disabled", false);
+				$("#id_invasive_line_insitu_2").prop("disabled", false);
+				$("#id_invasive_line_insitu_3").prop("disabled", false);
+				$("#id_invasive_line_insitu_4").prop("disabled", false);
+				$("#id_invasive_line_insitu_6").prop("disabled", false);          
+			}
+		}        
+		else if ($this.is("#id_invasive_line_insitu_6"))
+		{
+			if ($("#id_invasive_line_insitu_6:checked").length > 0)
+			{
+				$("#id_invasive_line_insitu_1").prop({ checked: false });
+				$("#id_invasive_line_insitu_2").prop({ checked: false });
+				$("#id_invasive_line_insitu_3").prop({ checked: false });
+				$("#id_invasive_line_insitu_4").prop({ checked: false });
+				$("#id_invasive_line_insitu_5").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_invasive_line_insitu_1").prop("disabled", false);
+				$("#id_invasive_line_insitu_2").prop("disabled", false);
+				$("#id_invasive_line_insitu_3").prop("disabled", false);
+				$("#id_invasive_line_insitu_4").prop("disabled", false);
+				$("#id_invasive_line_insitu_5").prop("disabled", false);          
+			}
+		}        
+
+	});
+
+	$('input[id^="id_medical_history_"]').click(function()
+	{
+		var $this = $(this);
+		if ($this.is("#id_medical_history_1"))
+		{
+			if ($("#id_medical_history_1:checked").length > 0)
+			{
+				$("#id_medical_history_2").prop({ checked: false });
+				$("#id_medical_history_3").prop({ checked: false });
+				$("#id_medical_history_4").prop({ checked: false });
+				$("#id_medical_history_5").prop({ checked: false });
+				$("#id_medical_history_6").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_medical_history_2").prop("disabled", false);
+				$("#id_medical_history_3").prop("disabled", false);
+				$("#id_medical_history_4").prop("disabled", false);
+				$("#id_medical_history_5").prop("disabled", false);
+				$("#id_medical_history_6").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_medical_history_2"))
+		{
+			if ($("#id_medical_history_2:checked").length > 0)
+			{
+				$("#id_medical_history_1").prop({ checked: false });
+				$("#id_medical_history_3").prop({ checked: false });
+				$("#id_medical_history_4").prop({ checked: false });
+				$("#id_medical_history_5").prop({ checked: false });
+				$("#id_medical_history_6").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_medical_history_1").prop("disabled", false);
+				$("#id_medical_history_3").prop("disabled", false);
+				$("#id_medical_history_4").prop("disabled", false);
+				$("#id_medical_history_5").prop("disabled", false);
+				$("#id_medical_history_6").prop("disabled", false);        
+			}
+		}
+		else if ($this.is("#id_medical_history_3"))
+		{
+			if ($("#id_medical_history_3:checked").length > 0)
+			{
+				$("#id_medical_history_1").prop({ checked: false });
+				$("#id_medical_history_2").prop({ checked: false });
+				$("#id_medical_history_4").prop({ checked: false });
+				$("#id_medical_history_5").prop({ checked: false });
+				$("#id_medical_history_6").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_medical_history_1").prop("disabled", false);
+				$("#id_medical_history_2").prop("disabled", false);
+				$("#id_medical_history_4").prop("disabled", false);
+				$("#id_medical_history_5").prop("disabled", false);
+				$("#id_medical_history_6").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_medical_history_4"))
+		{
+			if ($("#id_medical_history_4:checked").length > 0)
+			{
+				$("#id_medical_history_1").prop({ checked: false });
+				$("#id_medical_history_2").prop({ checked: false });
+				$("#id_medical_history_3").prop({ checked: false });
+				$("#id_medical_history_5").prop({ checked: false });
+				$("#id_medical_history_6").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_medical_history_1").prop("disabled", false);
+				$("#id_medical_history_2").prop("disabled", false);
+				$("#id_medical_history_3").prop("disabled", false);
+				$("#id_medical_history_5").prop("disabled", false);
+				$("#id_medical_history_6").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_medical_history_5"))
+		{
+			if ($("#id_medical_history_5:checked").length > 0)
+			{
+				$("#id_medical_history_1").prop({ checked: false });
+				$("#id_medical_history_2").prop({ checked: false });
+				$("#id_medical_history_3").prop({ checked: false });
+				$("#id_medical_history_4").prop({ checked: false });
+				$("#id_medical_history_6").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_medical_history_1").prop("disabled", false);
+				$("#id_medical_history_2").prop("disabled", false);
+				$("#id_medical_history_3").prop("disabled", false);
+				$("#id_medical_history_4").prop("disabled", false);
+				$("#id_medical_history_6").prop("disabled", false);          
+			}
+		}        
+		else if ($this.is("#id_medical_history_6"))
+		{
+			if ($("#id_medical_history_6:checked").length > 0)
+			{
+				$("#id_medical_history_1").prop({ checked: false });
+				$("#id_medical_history_2").prop({ checked: false });
+				$("#id_medical_history_3").prop({ checked: false });
+				$("#id_medical_history_4").prop({ checked: false });
+				$("#id_medical_history_5").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_medical_history_1").prop("disabled", false);
+				$("#id_medical_history_2").prop("disabled", false);
+				$("#id_medical_history_3").prop("disabled", false);
+				$("#id_medical_history_4").prop("disabled", false);
+				$("#id_medical_history_5").prop("disabled", false);          
+			}
+		}        
+
+	});
+
+	$('input[id^="id_own_medication_"]').click(function()
+	{
+		var $this = $(this);
+		if ($this.is("#id_own_medication_1"))
+		{
+			if ($("#id_own_medication_1:checked").length > 0)
+			{
+				$("#id_own_medication_2").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_own_medication_2").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_own_medication_2"))
+		{
+			if ($("#id_own_medication_2:checked").length > 0)
+			{
+				$("#id_own_medication_1").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_own_medication_1").prop("disabled", false);
+			}
+		}
+	});
+
+	$('input[id^="id_adaptive_aids_with_patient_"]').click(function()
+	{
+		var $this = $(this);
+		if ($this.is("#id_adaptive_aids_with_patient_1"))
+		{
+			if ($("#id_adaptive_aids_with_patient_1:checked").length > 0)
+			{
+				$("#id_adaptive_aids_with_patient_2").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_3").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_4").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_5").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_6").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_7").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_8").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_adaptive_aids_with_patient_2").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_3").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_4").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_5").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_6").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_7").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_8").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_9").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_adaptive_aids_with_patient_2"))
+		{
+			if ($("#id_adaptive_aids_with_patient_2:checked").length > 0)
+			{
+				$("#id_adaptive_aids_with_patient_1").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_3").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_4").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_5").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_6").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_7").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_8").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_adaptive_aids_with_patient_1").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_3").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_4").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_5").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_6").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_7").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_8").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_9").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_adaptive_aids_with_patient_3"))
+		{
+			if ($("#id_adaptive_aids_with_patient_3:checked").length > 0)
+			{
+				$("#id_adaptive_aids_with_patient_1").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_2").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_4").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_5").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_6").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_7").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_8").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_adaptive_aids_with_patient_1").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_2").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_4").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_5").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_6").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_7").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_8").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_9").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_adaptive_aids_with_patient_4"))
+		{
+			if ($("#id_adaptive_aids_with_patient_4:checked").length > 0)
+			{
+				$("#id_adaptive_aids_with_patient_1").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_2").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_3").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_5").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_6").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_7").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_8").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_adaptive_aids_with_patient_1").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_2").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_3").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_5").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_6").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_7").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_8").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_9").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_adaptive_aids_with_patient_5"))
+		{
+			if ($("#id_adaptive_aids_with_patient_5:checked").length > 0)
+			{
+				$("#id_adaptive_aids_with_patient_1").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_2").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_3").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_4").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_6").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_7").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_8").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_adaptive_aids_with_patient_1").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_2").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_3").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_4").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_6").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_7").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_8").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_9").prop("disabled", false);
+			}
+		}        
+		else if ($this.is("#id_adaptive_aids_with_patient_6"))
+		{
+			if ($("#id_adaptive_aids_with_patient_6:checked").length > 0)
+			{
+				$("#id_adaptive_aids_with_patient_1").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_2").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_3").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_4").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_5").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_7").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_8").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_adaptive_aids_with_patient_1").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_2").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_3").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_4").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_5").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_7").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_8").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_9").prop("disabled", false);
+			}
+		}        
+		else if ($this.is("#id_adaptive_aids_with_patient_7"))
+		{
+			if ($("#id_adaptive_aids_with_patient_7:checked").length > 0)
+			{
+				$("#id_adaptive_aids_with_patient_1").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_2").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_3").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_4").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_5").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_6").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_8").prop({ checked: false });
+				$("#id_adaptive_aids_with_patient_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_adaptive_aids_with_patient_1").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_2").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_3").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_4").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_5").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_6").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_8").prop("disabled", false);
+				$("#id_adaptive_aids_with_patient_9").prop("disabled", false);
+			}
+		}        
+	});
+
+	$('input[id^="id_orientation_"]').click(function()
+	{
+		var $this = $(this);
+		if ($this.is("#id_orientation_1"))
+		{
+			if ($("#id_orientation_1:checked").length > 0)
+			{
+				$("#id_orientation_2").prop({ checked: false });
+				$("#id_orientation_3").prop({ checked: false });
+				$("#id_orientation_4").prop({ checked: false });
+				$("#id_orientation_5").prop({ checked: false });
+				$("#id_orientation_6").prop({ checked: false });
+				$("#id_orientation_7").prop({ checked: false });
+				$("#id_orientation_8").prop({ checked: false });
+				$("#id_orientation_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_orientation_2").prop("disabled", false);
+				$("#id_orientation_3").prop("disabled", false);
+				$("#id_orientation_4").prop("disabled", false);
+				$("#id_orientation_5").prop("disabled", false);
+				$("#id_orientation_6").prop("disabled", false);
+				$("#id_orientation_7").prop("disabled", false);
+				$("#id_orientation_8").prop("disabled", false);
+				$("#id_orientation_9").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_orientation_2"))
+		{
+			if ($("#id_orientation_2:checked").length > 0)
+			{
+				$("#id_orientation_1").prop({ checked: false });
+				$("#id_orientation_3").prop({ checked: false });
+				$("#id_orientation_4").prop({ checked: false });
+				$("#id_orientation_5").prop({ checked: false });
+				$("#id_orientation_6").prop({ checked: false });
+				$("#id_orientation_7").prop({ checked: false });
+				$("#id_orientation_8").prop({ checked: false });
+				$("#id_orientation_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_orientation_1").prop("disabled", false);
+				$("#id_orientation_3").prop("disabled", false);
+				$("#id_orientation_4").prop("disabled", false);
+				$("#id_orientation_5").prop("disabled", false);
+				$("#id_orientation_6").prop("disabled", false);
+				$("#id_orientation_7").prop("disabled", false);
+				$("#id_orientation_8").prop("disabled", false);
+				$("#id_orientation_9").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_orientation_3"))
+		{
+			if ($("#id_orientation_3:checked").length > 0)
+			{
+				$("#id_orientation_1").prop({ checked: false });
+				$("#id_orientation_2").prop({ checked: false });
+				$("#id_orientation_4").prop({ checked: false });
+				$("#id_orientation_5").prop({ checked: false });
+				$("#id_orientation_6").prop({ checked: false });
+				$("#id_orientation_7").prop({ checked: false });
+				$("#id_orientation_8").prop({ checked: false });
+				$("#id_orientation_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_orientation_1").prop("disabled", false);
+				$("#id_orientation_2").prop("disabled", false);
+				$("#id_orientation_4").prop("disabled", false);
+				$("#id_orientation_5").prop("disabled", false);
+				$("#id_orientation_6").prop("disabled", false);
+				$("#id_orientation_7").prop("disabled", false);
+				$("#id_orientation_8").prop("disabled", false);
+				$("#id_orientation_9").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_orientation_4"))
+		{
+			if ($("#id_orientation_4:checked").length > 0)
+			{
+				$("#id_orientation_1").prop({ checked: false });
+				$("#id_orientation_2").prop({ checked: false });
+				$("#id_orientation_3").prop({ checked: false });
+				$("#id_orientation_5").prop({ checked: false });
+				$("#id_orientation_6").prop({ checked: false });
+				$("#id_orientation_7").prop({ checked: false });
+				$("#id_orientation_8").prop({ checked: false });
+				$("#id_orientation_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_orientation_1").prop("disabled", false);
+				$("#id_orientation_2").prop("disabled", false);
+				$("#id_orientation_3").prop("disabled", false);
+				$("#id_orientation_5").prop("disabled", false);
+				$("#id_orientation_6").prop("disabled", false);
+				$("#id_orientation_7").prop("disabled", false);
+				$("#id_orientation_8").prop("disabled", false);
+				$("#id_orientation_9").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_orientation_5"))
+		{
+			if ($("#id_orientation_5:checked").length > 0)
+			{
+				$("#id_orientation_1").prop({ checked: false });
+				$("#id_orientation_2").prop({ checked: false });
+				$("#id_orientation_3").prop({ checked: false });
+				$("#id_orientation_4").prop({ checked: false });
+				$("#id_orientation_6").prop({ checked: false });
+				$("#id_orientation_7").prop({ checked: false });
+				$("#id_orientation_8").prop({ checked: false });
+				$("#id_orientation_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_orientation_1").prop("disabled", false);
+				$("#id_orientation_2").prop("disabled", false);
+				$("#id_orientation_3").prop("disabled", false);
+				$("#id_orientation_4").prop("disabled", false);
+				$("#id_orientation_6").prop("disabled", false);
+				$("#id_orientation_7").prop("disabled", false);
+				$("#id_orientation_8").prop("disabled", false);
+				$("#id_orientation_9").prop("disabled", false);
+			}
+		}        
+		else if ($this.is("#id_orientation_6"))
+		{
+			if ($("#id_orientation_6:checked").length > 0)
+			{
+				$("#id_orientation_1").prop({ checked: false });
+				$("#id_orientation_2").prop({ checked: false });
+				$("#id_orientation_3").prop({ checked: false });
+				$("#id_orientation_4").prop({ checked: false });
+				$("#id_orientation_5").prop({ checked: false });
+				$("#id_orientation_7").prop({ checked: false });
+				$("#id_orientation_8").prop({ checked: false });
+				$("#id_orientation_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_orientation_1").prop("disabled", false);
+				$("#id_orientation_2").prop("disabled", false);
+				$("#id_orientation_3").prop("disabled", false);
+				$("#id_orientation_4").prop("disabled", false);
+				$("#id_orientation_5").prop("disabled", false);
+				$("#id_orientation_7").prop("disabled", false);
+				$("#id_orientation_8").prop("disabled", false);
+				$("#id_orientation_9").prop("disabled", false);
+			}
+		}        
+		else if ($this.is("#id_orientation_7"))
+		{
+			if ($("#id_orientation_7:checked").length > 0)
+			{
+				$("#id_orientation_1").prop({ checked: false });
+				$("#id_orientation_2").prop({ checked: false });
+				$("#id_orientation_3").prop({ checked: false });
+				$("#id_orientation_4").prop({ checked: false });
+				$("#id_orientation_5").prop({ checked: false });
+				$("#id_orientation_6").prop({ checked: false });
+				$("#id_orientation_8").prop({ checked: false });
+				$("#id_orientation_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_orientation_1").prop("disabled", false);
+				$("#id_orientation_2").prop("disabled", false);
+				$("#id_orientation_3").prop("disabled", false);
+				$("#id_orientation_4").prop("disabled", false);
+				$("#id_orientation_5").prop("disabled", false);
+				$("#id_orientation_6").prop("disabled", false);
+				$("#id_orientation_8").prop("disabled", false);
+				$("#id_orientation_9").prop("disabled", false);
+			}
+		}        
+		else if ($this.is("#id_orientation_8"))
+		{
+			if ($("#id_orientation_8:checked").length > 0)
+			{
+				$("#id_orientation_1").prop({ checked: false });
+				$("#id_orientation_2").prop({ checked: false });
+				$("#id_orientation_3").prop({ checked: false });
+				$("#id_orientation_4").prop({ checked: false });
+				$("#id_orientation_5").prop({ checked: false });
+				$("#id_orientation_6").prop({ checked: false });
+				$("#id_orientation_7").prop({ checked: false });
+				$("#id_orientation_9").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_orientation_1").prop("disabled", false);
+				$("#id_orientation_2").prop("disabled", false);
+				$("#id_orientation_3").prop("disabled", false);
+				$("#id_orientation_4").prop("disabled", false);
+				$("#id_orientation_5").prop("disabled", false);
+				$("#id_orientation_6").prop("disabled", false);
+				$("#id_orientation_7").prop("disabled", false);
+				$("#id_orientation_9").prop("disabled", false);
+			}
+		}        
+		else if ($this.is("#id_orientation_9"))
+		{
+			if ($("#id_orientation_9:checked").length > 0)
+			{
+				$("#id_orientation_1").prop({ checked: false });
+				$("#id_orientation_2").prop({ checked: false });
+				$("#id_orientation_3").prop({ checked: false });
+				$("#id_orientation_4").prop({ checked: false });
+				$("#id_orientation_5").prop({ checked: false });
+				$("#id_orientation_6").prop({ checked: false });
+				$("#id_orientation_7").prop({ checked: false });
+				$("#id_orientation_8").prop({ checked: false });
+			}
+			else
+			{
+				$("#id_orientation_1").prop("disabled", false);
+				$("#id_orientation_2").prop("disabled", false);
+				$("#id_orientation_3").prop("disabled", false);
+				$("#id_orientation_4").prop("disabled", false);
+				$("#id_orientation_5").prop("disabled", false);
+				$("#id_orientation_6").prop("disabled", false);
+				$("#id_orientation_7").prop("disabled", false);
+				$("#id_orientation_8").prop("disabled", false);
+			}
+		}        
+
+	});
+
 });
 </script>
-{% endblock %}

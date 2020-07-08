@@ -1,22 +1,26 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.db import connection
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
-from django.shortcuts import render, get_list_or_404, get_object_or_404
-from django.urls import reverse_lazy
+from django.db.models import F, Sum
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect, JsonResponse
+from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
+from django.urls import reverse, reverse_lazy
 from django.utils.translation import ugettext as _
 from django.views.generic import ListView, CreateView, UpdateView
-from django.core import serializers
-from django.http import JsonResponse
-from django.db.models import F, Sum
 
-from jsignature.utils import draw_signature
+#from jsignature.utils import draw_signature
 
 from .models import *
 from .forms import *
 #from accounts.models import *
 from customers.models import *
 
+#from datetime import timedelta
+import datetime
+
+#nowtime = datetime.time(datetime.now())
+now = datetime.date.today
 
 # Create your views here.
 def index(request):
@@ -24,7 +28,7 @@ def index(request):
 	patients = PatientProfile.objects.filter(username=request.user.username)
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Homepage'
+	page_title = _('Home')
 
 	context = {
 		'patients': patients,
@@ -36,63 +40,97 @@ def index(request):
 
 
 @login_required
-def admission(request):
+def admission(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Admission Form'
+	page_title = _('Admission Form')
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
 
 	if request.method == 'POST':
 		form = AdmissionForm(request.POST or None)
+		
 		if form.is_valid():
-			instance = form.save(commit=False)
-			instance.full_name = request.user
-			instance.save()
-			return HttpResponseRedirect('/data/admission/')
+			form.save()
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
 		else:
-			print(form.errors)
+			messages.warning(request, form.errors)
 	else:
-		form = AdmissionForm(initial={'full_name': request.user.full_name, 'time': '00:00'})
+		form = AdmissionForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/admission.html', context)
+	return render(request, 'patient_form/admission_form.html', context)
 
 
 @login_required
-def homeleave(request):
+def application_homeleave(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Application For Home Leave'
+	page_title = _('Application For Home Leave')
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
+
 
 	if request.method == 'POST':
-		form = ApplicationForHomeLeaveForm(request.POST)
+		form = ApplicationForHomeLeaveForm(request.POST or None, instance=request.user)
 		if form.is_valid():
-#            profile = form.save(commit=False)
-#            profile.signature = form.cleaned_data.get('signature')
-#            if profile.signature:
-#                profile.signature = draw_signature(signature)
-#                signature_file_path = draw_signature(signature, as_file=True)
-#            profile.save()
-			form.save()
-			return HttpResponseRedirect('/data/homeleave/')
+			profile = form.save(commit=False)
+			profile.patient = form.cleaned_data['patient']
+			profile.patient_family_name = form.cleaned_data['patient_family_name']
+			profile.nric_number = form.cleaned_data['nric_number']
+			profile.patient_family_relationship = form.cleaned_data['patient_family_relationship']
+			profile.patient_family_phone = form.cleaned_data['patient_family_phone']
+			profile.designation = form.cleaned_data['designation']
+			profile.signature = form.cleaned_data['signature']
+			profile.date = form.cleaned_data['date']
+			profile.save()
+#			form.save()
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
+		else:
+			messages.warning(request, form.errors)
 	else:
-		form = ApplicationForHomeLeaveForm()
+#		form = ApplicationForHomeLeaveForm(initial=initial)
+#		form = ApplicationForHomeLeaveForm(instance=request.user)
+		form = ApplicationForHomeLeaveForm(initial=initial, instance=request.user)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/homeleave.html', context)
+	return render(request, 'patient_form/application_homeleave_form.html', context)
 
 
 def load_ic_number(request):
@@ -105,484 +143,781 @@ def load_ic_number(request):
 
 
 @login_required
-def appointment(request):
+def appointment(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Appointment Records'
-	appointments = Appointment.objects.all()
+	page_title = _('Appointment Records')
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
 
 	if request.method == 'POST':
 		form = AppointmentForm(request.POST or None)
+
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect('/data/appointment/')
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
 		else:
-			print(form.errors)
+			messages.warning(request, form.errors)
+
 	else:
-		form = AppointmentForm()
+		form = AppointmentForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
-		'appointments': appointments,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/appointment.html', context)
+	return render(request, 'patient_form/appointment_form.html', context)
 
 
 @login_required
-def cannulation(request):
+def catheterization_cannulation(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Catheterization and Cannulation Chart'
+	page_title = _('Catheterization and Cannulation Chart')
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
+
 
 	if request.method == 'POST':
-		form = CannulationForm(request.POST)
+		form = CannulationForm(request.POST or None)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect('/data/cannulation/')
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
+		else:
+			messages.warning(request, form.errors)
+
 	else:
-		form = CannulationForm()
+		form = CannulationForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/cannulation.html', context)
+	return render(request, 'patient_form/cannulation_form.html', context)
 
 
 @login_required
-def charges_sheet(request):
+def charges_sheet(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Charges Sheet'
+	page_title = _('Charges Sheet')
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
+
 
 	if request.method == 'POST':
-		form = ChargesForm(request.POST)
+		form = ChargesForm(request.POST or None)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect('/data/charges/')
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
+		else:
+			messages.warning(request, form.errors)
 	else:
-		form = ChargesForm()
+		form = ChargesForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/charges_sheet.html', context)
+	return render(request, 'patient_form/charges_sheet_form.html', context)
 
 
 @login_required
-def dressing(request):
+def dressing(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Dressing Chart'
+	page_title = _('Dressing Chart')
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
+
 
 	if request.method == 'POST':
 		form = DressingForm(request.POST, request.FILES)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect('/data/dressing/')
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
+		else:
+			messages.warning(request, form.errors)
 	else:
-		form = DressingForm()
+		form = DressingForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/dressing.html', context)
+	return render(request, 'patient_form/dressing_form.html', context)
 
 
 @login_required
-def enteral_feeding_regime(request):
+def enteral_feeding_regime(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Enteral Feeding Regime'
-	total_feeding = EnteralFeedingRegime.objects.aggregate(Sum('amount'))
-	total_flush = EnteralFeedingRegime.objects.aggregate(Sum('warm_water_before'))
+	page_title = _('Enteral Feeding Regime')
 #	total_flush = EnteralFeedingRegime.objects.all().annotate(total_food=F('warm_water_before ') + F('warm_water_after'))
 #    total = EnteralFeedingRegime.objects.aggregate(total_population=Sum('amount'))
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
+
 
 	if request.method == 'POST':
-		form = EnteralFeedingRegimeForm(request.POST)
+		form = EnteralFeedingRegimeForm(request.POST or None)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect('/data/enteral-feeding-regime/')
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
+		else:
+			messages.warning(request, form.errors)
 	else:
-		form = EnteralFeedingRegimeForm()
+		form = EnteralFeedingRegimeForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
-		'total_feeding': total_feeding,
-		'total_flush': total_flush,
 	}
 
-	return render(request, 'patient_form/enteral_feeding_regime.html', context)
+	return render(request, 'patient_form/enteral_feeding_regime_form.html', context)
 
 
 @login_required
-def hgt_chart(request):
+def hgt_chart(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'HGT Chart'
+	page_title = _('HGT Chart')
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
+
 
 	if request.method == 'POST':
-		form = HGTChartForm(request.POST)
+		form = HGTChartForm(request.POST or None)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect('/data/hgt/')
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
+		else:
+			messages.warning(request, form.errors)
 	else:
-		form = HGTChartForm()
+		form = HGTChartForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/hgt_chart.html', context)
+	return render(request, 'patient_form/hgt_chart_form.html', context)
 
 
 @login_required
-def intake_output(request):
+def intake_output(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Intake Output Chart'
+	page_title = _('Intake Output Chart')
+	profiles = PatientProfile.objects.filter(pk=id)
+	patients = get_object_or_404(PatientProfile, pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
 
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
 	if request.method == 'POST':
-		form = IntakeOutputChartForm(request.POST)
+		form = IntakeOutputChartForm(request.POST or None)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect('/data/intake-output/')
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
+		else:
+			messages.warning(request, form.errors)
 	else:
-		form = IntakeOutputChartForm()
+		form = IntakeOutputChartForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/intake_output.html', context)
+	return render(request, 'patient_form/intake_output_form.html', context)
 
 
 @login_required
-def maintainance(request):
+def maintainance(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Maintainance Form'
+	page_title = _('Maintainance Form')
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
+
 
 	if request.method == 'POST':
-		form = MaintainanceForm(request.POST)
+		form = MaintainanceForm(request.POST or None)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect('/data/maintainance/')
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
+		else:
+			messages.warning(request, form.errors)
 	else:
-		form = MaintainanceForm()
+		form = MaintainanceForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/maintainance.html', context)
+	return render(request, 'patient_form/maintainance_form.html', context)
 
 
 @login_required
-def medication_administration(request):
+def medication_record(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Medication Administration Record'
+	page_title = _('Medication Records')
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
+
 
 	if request.method == 'POST':
-		form = MedicationAdministrationRecordForm(request.POST)
+		form = MedicationRecordForm(request.POST or None)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect('/data/medication-administration/')
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
+		else:
+			messages.warning(request, form.errors)
 	else:
-		form = MedicationAdministrationRecordForm()
+		form = MedicationRecordForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/medication_administration.html', context)
+	return render(request, 'patient_form/medication_form.html', context)
 
 
 @login_required
-def medication(request):
+def medication_administration(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Medication Records'
+	page_title = _('Medication Administration Record')
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	allergies = MedicationAdministrationRecord.objects.filter(pk=id).values_list('allergy', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
+
 
 	if request.method == 'POST':
-		form = MedicationRecordForm(request.POST)
+		form = MedicationAdministrationRecordForm(request.POST or None)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect('/data/medication/')
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
+		else:
+			messages.warning(request, form.errors)
 	else:
-		form = MedicationRecordForm()
+		form = MedicationAdministrationRecordForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/medication.html', context)
+	return render(request, 'patient_form/medication_administration_form.html', context)
 
 
 @login_required
-def miscellaneous_charges_slip(request):
+def miscellaneous_charges_slip(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Miscellaneous Charges Slip'
+	page_title = _('Miscellaneous Charges Slip')
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
+
 
 	if request.method == 'POST':
-		form = MiscellaneousChargesSlipForm(request.POST)
+		form = MiscellaneousChargesSlipForm(request.POST or None)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect('/data/miscellaneous-charges-slip/')
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
+		else:
+			messages.warning(request, form.errors)
 	else:
-		form = MiscellaneousChargesSlipForm()
+		form = MiscellaneousChargesSlipForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/miscellaneouschargesslip.html', context)
+	return render(request, 'patient_form/miscellaneouschargesslip_form.html', context)
 
 
 @login_required
-def nursing(request):
+def nursing(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Nursing Report'
+	page_title = _('Nursing Report')
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
+
 
 	if request.method == 'POST':
-		form = NursingForm(request.POST)
+		form = NursingForm(request.POST or None)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect('/data/nursing/')
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
+		else:
+			messages.warning(request, form.errors)
 	else:
-		form = NursingForm()
+		form = NursingForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/nursing.html', context)
+	return render(request, 'patient_form/nursing_form.html', context)
 
 
 @login_required
-def overtime_claim(request):
+def overtime_claim(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Overtime Claim Form'
+	page_title = _('Overtime Claim Form')
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
+
 
 	if request.method == 'POST':
-		form = OvertimeClaimForm(request.POST)
+		form = OvertimeClaimForm(request.POST or None)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect('/data/overtime-claim/')
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
+		else:
+			messages.warning(request, form.errors)
 	else:
-		form = OvertimeClaimForm()
+		form = OvertimeClaimForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/overtime_claim.html', context)
+	return render(request, 'patient_form/overtime_claim_form.html', context)
 
 
 @login_required
-def physio_progress_note(request):
+def physio_progress_note(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Physiotherapy Progress Note'
+	page_title = _('Physiotherapy Progress Note')
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
+
 
 	if request.method == 'POST':
-		form = PhysioProgressNoteForm(request.POST)
+		form = PhysioProgressNoteForm(request.POST or None)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect('/data/physio-progress-note/')
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
+		else:
+			messages.warning(request, form.errors)
 	else:
-		form = PhysioProgressNoteForm()
+		form = PhysioProgressNoteForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/physio_progress_note.html', context)
+	return render(request, 'patient_form/physio_progress_note_form.html', context)
 
 
 @login_required
-def physiotherapy_general_assessment(request):
+def physiotherapy_general_assessment(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Physiotherapy General Assessment Form'
+	page_title = _('Physiotherapy General Assessment Form')
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
+
 
 	if request.method == 'POST':
-		form = PhysiotherapyGeneralAssessmentForm(request.POST)
+		form = PhysiotherapyGeneralAssessmentForm(request.POST or None)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect('/data/physiotherapy-general-assessment/')
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
+		else:
+			messages.warning(request, form.errors)
 	else:
-		form = PhysiotherapyGeneralAssessmentForm()
+		form = PhysiotherapyGeneralAssessmentForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/physiotherapy_general_assessment.html', context)
+	return render(request, 'patient_form/physiotherapy_general_assessment_form.html', context)
 
 
 @login_required
-def staff_records(request):
+def staff_records(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Staff Records'
+	page_title = _('Staff Records')
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
+
 
 	if request.method == 'POST':
-		form = StaffRecordsForm(request.POST)
+		form = StaffRecordsForm(request.POST or None)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect('/data/stool/')
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
+		else:
+			messages.warning(request, form.errors)
 	else:
-		form = StaffRecordsForm()
+		form = StaffRecordsForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/staff_records.html', context)
+	return render(request, 'patient_form/staff_records_form.html', context)
 
 
 @login_required
-def stool(request):
+def stool(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Stool Chart'
+	page_title = _('Stool Chart')
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
+
 
 	if request.method == 'POST':
-		form = StoolForm(request.POST)
+		form = StoolForm(request.POST or None)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect('/data/stool/')
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
+		else:
+			messages.warning(request, form.errors)
 	else:
-		form = StoolForm()
+		form = StoolForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/stool.html', context)
+	return render(request, 'patient_form/stool_form.html', context)
 
 
 @login_required
-def visiting_consultant_records(request):
+def visiting_consultant_records(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Visiting Consultant Records'
+	page_title = _('Visiting Consultant Records')
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
+
 
 	if request.method == 'POST':
-		form = VisitingConsultantForm(request.POST)
+		form = VisitingConsultantForm(request.POST or None)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect('/data/stool/')
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
+		else:
+			messages.warning(request, form.errors)
 	else:
-		form = VisitingConsultantForm()
+		form = VisitingConsultantForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/visiting_consultant_records.html', context)
+	return render(request, 'patient_form/visiting_consultant_records_form.html', context)
 
 @login_required
-def vital_sign_flow(request):
+def vital_sign_flow(request, id):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = 'Vital Sign Flow Sheet'
+	page_title = _('Vital Sign Flow Sheet')
+	patients = get_object_or_404(PatientProfile, pk=id)
+	profiles = PatientProfile.objects.filter(pk=id)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	initial = {
+		'patient': patients,
+		'ic_number': icnumbers,
+	}
+
 
 	if request.method == 'POST':
-		form = VitalSignFlowForm(request.POST)
+		form = VitalSignFlowForm(request.POST or None)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect('/data/vital-sign-flow/')
+
+			messages.success(request, _('Your form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', id=patients.id)
+		else:
+			messages.warning(request, form.errors)
 	else:
-		form = VitalSignFlowForm()
+		form = VitalSignFlowForm(initial=initial)
 
 	context = {
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
 		'form': form,
 	}
 
-	return render(request, 'patient_form/vital_sign_flow.html', context)
+	return render(request, 'patient_form/vital_sign_flow_form.html', context)

@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
 
 from django_tenants.models import TenantMixin, DomainMixin
 #from tenant_users.tenants.models import TenantBase
@@ -30,9 +31,9 @@ class Client(TenantMixin):
         if self.logo and hasattr(self.logo, 'url'):
             return mark_safe('<img src="%s" style="width: 60px; height: 60px" />' % self.logo.url)
         else:
-            return '(No Thumbnail)'
+            return _('No Thumbnail')
 
-    image_img.short_description = 'Thumbnail'
+    image_img.short_description = _('Thumbnail')
 
 
 class Domain(DomainMixin):

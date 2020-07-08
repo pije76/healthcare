@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+#from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ugettext_lazy as _
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -35,63 +37,73 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 SHARED_APPS = (
-    'django_tenants',  # mandatory
-    'customers',  # Custom defined app that contains the TenantModel. Must NOT exist in TENANT_APPS
+	'django_tenants',  # mandatory
+	'customers',  # Custom defined app that contains the TenantModel. Must NOT exist in TENANT_APPS
 
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
 
-    # everything below here is optional
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.admin',
-    'django.contrib.staticfiles',
+	# everything below here is optional
+	'django.contrib.sessions',
+	'django.contrib.sites',
+	'django.contrib.messages',
+	'django.contrib.admin',
+	'django.contrib.staticfiles',
 
-    'accounts',  # Custom app that contains the new User Model. Must NOT exist in TENANT_APPS
-    'bootstrapform',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+	'accounts',  # Custom app that contains the new User Model. Must NOT exist in TENANT_APPS
+	'bootstrapform',
+	'allauth',
+	'allauth.account',
+	'allauth.socialaccount',
 
-    'massadmin',
+	'mptt',
+	'massadmin',
+	'bootstrap_datepicker_plus',
+	'phonenumber_field',
+	'bootstrap_modal_forms',
+	'durationwidget',
 )
 
 TENANT_APPS = (
-    # The following Django contrib apps must be in TENANT_APPS
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
+	# The following Django contrib apps must be in TENANT_APPS
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
 
-    'django.contrib.admin',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+	'django.contrib.admin',
+	'django.contrib.sessions',
+	'django.contrib.messages',
+	'django.contrib.staticfiles',
 
-    'patient_form',
-    'patient_data',
+	'patient_form',
+	'patient_data',
 
-    # your tenant-specific apps
+	# your tenant-specific apps
 #    'avatar',
 #    'userprofiles2',
 
-    'post_office',
+	'post_office',
 
 #    'jquery',
 #    'bootstrap_themes',
 #    'bootstrap_submenu',
 
-    'crispy_forms',
-    'jsignature',
-    'widget_tweaks',
+	'crispy_forms',
+#    'jsignature',
+	'widget_tweaks',
 #    'django_select2',
-    'ajax_select',
-    'selectable',
+	'ajax_select',
+	'selectable',
 
-    'massadmin',
+	'mptt',
+	'massadmin',
+	'bootstrap_datepicker_plus',
+	'phonenumber_field',
+	'bootstrap_modal_forms',
+	'durationwidget',
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + \
-    [app for app in TENANT_APPS if app not in SHARED_APPS]
+	[app for app in TENANT_APPS if app not in SHARED_APPS]
 
 
 TENANT_MODEL = "customers.Client"  # aplp.Model
@@ -102,22 +114,23 @@ TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
 
 
 MIDDLEWARE = [
-    'django_tenants.middleware.main.TenantMainMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'django_tenants.middleware.main.TenantMainMiddleware',
+	'django.contrib.sessions.middleware.SessionMiddleware',
+	'django.contrib.auth.middleware.AuthenticationMiddleware',
+	'django.contrib.messages.middleware.MessageMiddleware',
+	'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'django.middleware.csrf.CsrfViewMiddleware',
+	'django.middleware.locale.LocaleMiddleware',
+	'django.middleware.security.SecurityMiddleware',
+	'django.middleware.common.CommonMiddleware',
 ]
 
 
 AUTHENTICATION_BACKENDS = (
-    # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
-    # `allauth` specific authentication methods, such as login by e-mail
-    'allauth.account.auth_backends.AuthenticationBackend',
+	# Needed to login by username in Django admin, regardless of `allauth`
+	'django.contrib.auth.backends.ModelBackend',
+	# `allauth` specific authentication methods, such as login by e-mail
+	'allauth.account.auth_backends.AuthenticationBackend',
 )
 
 # Allauth settings
@@ -126,12 +139,12 @@ AUTH_PROFILE_MODULE = 'accounts.PatientProfile'
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_EMAIL_VERIFICATION = False
-LOGIN_REDIRECT_URL = 'account'
+LOGIN_REDIRECT_URL = 'patient_data:patientdata_list'
 LOGOUT_REDIRECT_URL = 'index'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_FORMS = {
-    'login': 'accounts.forms.MyLoginForm',
-    'signup': 'accounts.forms.MySignUpForm'
+	'login': 'accounts.forms.MyLoginForm',
+	'signup': 'accounts.forms.MySignUpForm'
 }
 #ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.MySignUpForm'
 ACCOUNT_LOGOUT_ON_GET = True
@@ -142,23 +155,23 @@ ROOT_URLCONF = 'main.urls_tenants'
 PUBLIC_SCHEMA_URLCONF = 'main.urls_public'
 
 TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.contrib.auth.context_processors.auth',
-                'django.template.context_processors.debug',
-                'django.template.context_processors.i18n',
-                'django.template.context_processors.media',
-                'django.template.context_processors.static',
-                'django.template.context_processors.tz',
-                'django.template.context_processors.request',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
+	{
+		'BACKEND': 'django.template.backends.django.DjangoTemplates',
+		'DIRS': [os.path.join(BASE_DIR, 'templates')],
+		'APP_DIRS': True,
+		'OPTIONS': {
+			'context_processors': [
+				'django.contrib.auth.context_processors.auth',
+				'django.template.context_processors.debug',
+				'django.template.context_processors.i18n',
+				'django.template.context_processors.media',
+				'django.template.context_processors.static',
+				'django.template.context_processors.tz',
+				'django.template.context_processors.request',
+				'django.contrib.messages.context_processors.messages',
+			],
+		},
+	},
 #    {
 #        'BACKEND': 'accounts.pdf.PdftkEngine',
 #        'APP_DIRS': True,
@@ -173,16 +186,16 @@ WSGI_APPLICATION = 'main.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django_tenants.postgresql_backend',
-        'NAME': 'heathcare',
-        'USER': 'pije76',
-        'PASSWORD': 'tratap60',
-    }
+	'default': {
+		'ENGINE': 'django_tenants.postgresql_backend',
+		'NAME': 'heathcare',
+		'USER': 'pije76',
+		'PASSWORD': 'tratap60',
+	}
 }
 
 DATABASE_ROUTERS = (
-    'django_tenants.routers.TenantSyncRouter',
+	'django_tenants.routers.TenantSyncRouter',
 )
 
 
@@ -192,15 +205,15 @@ DATABASE_ROUTERS = (
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+	{
+		'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+	},
+	{
+		'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+	},
+	{
+		'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+	},
 ]
 
 
@@ -224,7 +237,7 @@ SITE_ID = 1
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
+	os.path.join(BASE_DIR, "static"),
 )
 STATIC_ROOT = os.path.join(BASE_DIR, "assets")
 
@@ -239,94 +252,157 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 #}
 
 
+LANGUAGES = [
+    ('en', _('English')),
+    ('ms', _('Malay')),
+]
+
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
+
 MASSEDIT = {
-    'ADD_ACTION_GLOBALLY': False,
+	'ADD_ACTION_GLOBALLY': False,
 }
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        },
-        'stderr': {
-            'level': 'INFO',
-            'class': 'logging.StreamHandler',
-        },
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, "debug.log"),
-        },
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-        'pika': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-        },
-    },
-    'root': {
-        'handlers': ['stderr'],
-        'level': 'INFO',
-    },
+	'version': 1,
+	'disable_existing_loggers': False,
+	'filters': {
+		'require_debug_false': {
+			'()': 'django.utils.log.RequireDebugFalse'
+		}
+	},
+	'handlers': {
+		'mail_admins': {
+			'level': 'ERROR',
+			'filters': ['require_debug_false'],
+			'class': 'django.utils.log.AdminEmailHandler'
+		},
+		'stderr': {
+			'level': 'INFO',
+			'class': 'logging.StreamHandler',
+		},
+		'file': {
+			'level': 'DEBUG',
+			'class': 'logging.FileHandler',
+			'filename': os.path.join(BASE_DIR, "debug.log"),
+		},
+	},
+	'loggers': {
+		'django.request': {
+			'handlers': ['file'],
+			'level': 'DEBUG',
+			'propagate': True,
+		},
+		'pika': {
+			'handlers': ['mail_admins'],
+			'level': 'ERROR',
+		},
+	},
+	'root': {
+		'handlers': ['stderr'],
+		'level': 'INFO',
+	},
 }
 
 # crispy form
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-DATE_INPUT_FORMATS = 'd/m/Y'
-DATE_FORMAT = 'd/m/Y'
+#DATE_INPUT_FORMATS = 'd/m/Y'
+DATE_INPUT_FORMATS = '%d/%m/%Y'
+#DATE_INPUT_FORMATS = ['%d/%m/%y',]
+#DATE_INPUT_FORMATS = 'd/m/Y'
+#DATE_INPUT_FORMATS = '%d/%B/%Y'
+#DATE_INPUT_FORMATS = ['%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y',]
 
+#DATE_FORMAT = 'd/m/Y'
+DATE_FORMAT = '%d/%m/%Y'
+
+TIME_INPUT_FORMATS = ('%H:%M', '%H:%i')
+#TIME_INPUT_FORMATS = ['%H:%M:%S', '%H:%M:%S.%f', '%H:%M',]
+DATETIME_INPUT_FORMATS = ('%m/%y', '%m/%Y', )
 
 # Post office email
 EMAIL_BACKEND = 'post_office.EmailBackend'
 
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+	messages.DEBUG: 'alert-info',
+	messages.INFO: 'alert-info',
+	messages.SUCCESS: 'alert-success',
+	messages.WARNING: 'alert-warning',
+	messages.ERROR: 'alert-danger',
+}
+
+CACHES = {
+	'default': {
+		'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+	},
+	"file_resubmit": {
+		'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+		"LOCATION": os.path.join(BASE_DIR, "'cache/file_resubmit")
+	},
+}
 
 # Override settings here
 
 try:
-    from .local_settings import *
+	from .local_settings import *
 except ImportError:
-    pass
+	pass
 
 
 # Include settings from python files in subdirectory /settings.d
 SETTINGS_PATH = os.path.join(PROJECT_APP_PATH, 'settings.d')
 
 with os.scandir(SETTINGS_PATH) as it:
-    for entry in it:
-        if not entry.name.startswith('.') and entry.name.endswith('.py') and entry.is_file():
-            # print(entry.name)
-            import sys
-            import imp
-            module_name = "{}.{}".format(PROJECT_APP, entry.name)
-            module = imp.new_module(module_name)
-            module.__file__ = entry
-            sys.modules[module_name] = module
-            exec(open(entry, "rb").read())
+	for entry in it:
+		if not entry.name.startswith('.') and entry.name.endswith('.py') and entry.is_file():
+			# print(entry.name)
+			import sys
+			import imp
+			module_name = "{}.{}".format(PROJECT_APP, entry.name)
+			module = imp.new_module(module_name)
+			module.__file__ = entry
+			sys.modules[module_name] = module
+			exec(open(entry, "rb").read())
 
 if DEBUG:
-    MIDDLEWARE += (
-        'debug_toolbar.middleware.DebugToolbarMiddleware',
-    )
-    INSTALLED_APPS += (
-        'debug_toolbar',
-        'debug_permissions',
-    )
-    INTERNAL_IPS = ('127.0.0.1', )
-    DEBUG_TOOLBAR_CONFIG = {
-        'INTERCEPT_REDIRECTS': False,
-    }
+	MIDDLEWARE += (
+		'debug_toolbar.middleware.DebugToolbarMiddleware',
+	)
+	INSTALLED_APPS += (
+		'debug_toolbar',
+		'debug_permissions',
+	)
+	INTERNAL_IPS = ('127.0.0.1', )
+	DEBUG_TOOLBAR_CONFIG = {
+		'INTERCEPT_REDIRECTS': False,
+	}
+	TEMPLATES = [
+		{
+			'BACKEND': 'django.template.backends.django.DjangoTemplates',
+			'DIRS': [os.path.join(BASE_DIR, 'templates')],
+			'APP_DIRS': True,
+			'OPTIONS': {
+				"debug": DEBUG,
+				'context_processors': [
+					'django.contrib.auth.context_processors.auth',
+					'django.template.context_processors.debug',
+					'django.template.context_processors.i18n',
+					'django.template.context_processors.media',
+					'django.template.context_processors.static',
+					'django.template.context_processors.tz',
+					'django.template.context_processors.request',
+					'django.contrib.messages.context_processors.messages',
+				],
+				"string_if_invalid": '<< MISSING VARIABLE "%s" >>' if DEBUG else "",
+			},
+		},
+	#    {
+	#        'BACKEND': 'accounts.pdf.PdftkEngine',
+	#        'APP_DIRS': True,
+	#    },
+	]

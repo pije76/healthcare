@@ -15,32 +15,6 @@
     display: inline-block;
 }
 
-#id_ic_number {
-    width: 50% !important;
-    margin-top: 5px;
-}
-
-#id_full_name_text {
-    margin-top: 5px;
-}
-
-#id_full_name_on_deck {
-    margin-top: 10px;
-    margin-bottom: -15px;
-}
-
-#div_id_ic_number > div > span {
-    width: 50% !important;
-}
-
-#div_id_full_name > div > span {
-  width: 200px;
-}
-
-#hint_id_full_name {
-  padding-top: 5px;
-}
-
 .custom-control-label {
   padding-left: 20px;
 }
@@ -57,4 +31,24 @@
     margin:0px 20px;
     display:inline-block;
     text-decoration:none;
+}
+
+#generalass {
+  padding: 20px;
+}
+
+#generalass .col {
+  border: 1px solid #c9c9c9;
+}
+
+#generalass .col:not(:last-child) {
+  border-right-width: 0;
+}
+
+#generalass .row:not(:last-child) .col {
+  border-bottom-width: 0;
+}
+
+.form-group {
+  margin-top: 10px;
 }

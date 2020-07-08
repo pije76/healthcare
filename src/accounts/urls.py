@@ -1,16 +1,17 @@
-from django.urls import path, re_path
+from django.urls import include, path, re_path
 from django.views.generic import RedirectView
 from django.views.i18n import set_language
 
-from . import views
-from .forms import *
+from .views import *
 
 urlpatterns = [
-    path('', views.account, name='account'),
-    path('change-profile/', views.change_profile, name='change_profile'),
-    path('change-icnumber/', views.change_number, name='change_number'),
+    path('', account, name='account'),
+    re_path(r'^change-profile/$', change_profile, name='change_profile'),
+    path('change-icnumber/', change_number, name='change_number'),
 #    path('login/', RedirectView.as_view(url='accounts/login/', permanent=False), name='index'),
-    path('login/', views.index, name='index'),
+    path('login/', index, name='index'),
+    re_path(r'^signup/$', signup_view, name='signup_view'),
     re_path(r'^setlang/$', set_language, name='set_language'),
+    re_path(r'^i18n/', include('django.conf.urls.i18n')),
 #    path('login/', LoginView.as_view(), name="login" ),
 ]
