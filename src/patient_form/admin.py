@@ -171,6 +171,21 @@ class IntakeOutputChartAdmin(admin.ModelAdmin):
     ]
     ModelAdmin.ordering = ('id',)
 
+
+class OvertimeClaimAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'patient',
+        'date',
+        'duration_time',
+        'hours',
+        'checked_sign_by',
+        'verify_by',
+    ]
+    autocomplete_fields = ['patient', ]
+    ModelAdmin.ordering = ('id',)
+
+
 admin.site.register(Admission, AdmissionAdmin)
 admin.site.register(ApplicationForHomeLeave, ApplicationForHomeLeaveAdmin)
 admin.site.register(Appointment, AppointmentAdmin)
@@ -187,7 +202,7 @@ admin.site.register(MedicationAdministrationRecord, MedicationAdministrationReco
 admin.site.register(MedicationRecord)
 admin.site.register(MiscellaneousChargesSlip)
 admin.site.register(Nursing)
-admin.site.register(OvertimeClaim)
+admin.site.register(OvertimeClaim, OvertimeClaimAdmin)
 admin.site.register(PhysioProgressNote)
 admin.site.register(PhysiotherapyGeneralAssessment)
 admin.site.register(Stool)

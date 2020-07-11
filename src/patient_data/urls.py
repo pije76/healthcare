@@ -39,17 +39,3 @@ urlpatterns = [
     re_path(r'^visiting-consultant-records/(?P<id>\d+)/$', visiting_consultant_records, name='visiting_consultant_records'),
     re_path(r'^vital-sign-flow/(?P<id>\d+)/$', vital_sign_flow_data, name='vital_sign_flow_data'),
 ]
-
-
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)),
-
-        # For django versions before 2.0:
-        # url(r'^__debug__/', include(debug_toolbar.urls)),
-
-    ] + urlpatterns

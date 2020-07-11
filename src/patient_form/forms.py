@@ -351,7 +351,7 @@ class NursingForm(forms.ModelForm):
 class OvertimeClaimForm(forms.ModelForm):
 
 	date = forms.DateField(required=False, label="", initial=now, widget=DatePickerInput(attrs={'class': "form-control"}))
-	duration_time = forms.DurationField(required=False, label="", initial="00:05:00", widget=TimeDurationWidget(show_days=False, show_hours=True, show_minutes=True, show_seconds=False))
+	duration_time = forms.DurationField(required=False, label="", initial="00:00:00", widget=TimeDurationWidget(show_days=False, show_hours=True, show_minutes=True, show_seconds=False))
 	hours = forms.TimeField(required=False, label="", initial="00:00", widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
 	checked_sign_by = forms.CharField(required=True, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	verify_by = forms.CharField(required=True, label="", widget=forms.TextInput(attrs={'class': "form-control"}))

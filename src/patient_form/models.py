@@ -659,9 +659,13 @@ class OvertimeClaim(models.Model):
 	def __str__(self):
 		return str(self.patient)
 
-#	def timeslot_duration_HHmm(self):
-#		sec = self.timeslot_duration.total_seconds()
-#		return '%02d:%02d' % (int((sec/3600)%3600), int((sec/60)%60))
+	def convert_duration_time(self):
+		sec = self.duration_time.total_seconds()
+		return '%02d:%02d' % (int((sec/3600)%3600), int((sec/60)%60))
+
+#	def get_duration(self):
+#		return self.datetime.time(convert_duration_time)
+#		return self.datetime.date(date)
 
 	class Meta:
 		verbose_name = _('Overtime Claim')

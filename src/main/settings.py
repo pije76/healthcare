@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-#from django.utils.translation import gettext_lazy as _
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
+#from django.utils.translation import ugettext_lazy as _
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -62,6 +62,7 @@ SHARED_APPS = (
 	'phonenumber_field',
 	'bootstrap_modal_forms',
 	'durationwidget',
+	'hreflang',
 )
 
 TENANT_APPS = (
@@ -100,6 +101,7 @@ TENANT_APPS = (
 	'phonenumber_field',
 	'bootstrap_modal_forms',
 	'durationwidget',
+	'hreflang',
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + \
@@ -115,14 +117,15 @@ TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
 
 MIDDLEWARE = [
 	'django_tenants.middleware.main.TenantMainMiddleware',
+	'django.middleware.security.SecurityMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
+	'django.middleware.locale.LocaleMiddleware',
+#	'solid_i18n.middleware.SolidLocaleMiddleware',
+	'django.middleware.common.CommonMiddleware',
+	'django.middleware.csrf.CsrfViewMiddleware',
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
-	'django.middleware.csrf.CsrfViewMiddleware',
-	'django.middleware.locale.LocaleMiddleware',
-	'django.middleware.security.SecurityMiddleware',
-	'django.middleware.common.CommonMiddleware',
 ]
 
 
@@ -136,7 +139,7 @@ AUTHENTICATION_BACKENDS = (
 # Allauth settings
 AUTH_USER_MODEL = 'accounts.PatientProfile'
 AUTH_PROFILE_MODULE = 'accounts.PatientProfile'
-ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = False
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_EMAIL_VERIFICATION = False
 LOGIN_REDIRECT_URL = 'patient_data:patientdata_list'
@@ -161,13 +164,13 @@ TEMPLATES = [
 		'APP_DIRS': True,
 		'OPTIONS': {
 			'context_processors': [
-				'django.contrib.auth.context_processors.auth',
 				'django.template.context_processors.debug',
+				'django.template.context_processors.request',
+				'django.contrib.auth.context_processors.auth',
 				'django.template.context_processors.i18n',
 				'django.template.context_processors.media',
 				'django.template.context_processors.static',
 				'django.template.context_processors.tz',
-				'django.template.context_processors.request',
 				'django.contrib.messages.context_processors.messages',
 			],
 		},
@@ -254,12 +257,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LANGUAGES = [
     ('en', _('English')),
-    ('ms', _('Malay')),
+#    ('my', _('Malaysia')),
+    ('id', _('Indonesia')),
 ]
 
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
+
+#SOLID_I18N_USE_REDIRECTS = False
 
 MASSEDIT = {
 	'ADD_ACTION_GLOBALLY': False,
@@ -389,13 +395,13 @@ if DEBUG:
 			'OPTIONS': {
 				"debug": DEBUG,
 				'context_processors': [
-					'django.contrib.auth.context_processors.auth',
 					'django.template.context_processors.debug',
+					'django.template.context_processors.request',
+					'django.contrib.auth.context_processors.auth',
 					'django.template.context_processors.i18n',
 					'django.template.context_processors.media',
 					'django.template.context_processors.static',
 					'django.template.context_processors.tz',
-					'django.template.context_processors.request',
 					'django.contrib.messages.context_processors.messages',
 				],
 				"string_if_invalid": '<< MISSING VARIABLE "%s" >>' if DEBUG else "",

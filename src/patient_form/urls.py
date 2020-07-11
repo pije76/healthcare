@@ -31,3 +31,4 @@ urlpatterns = [
     re_path(r'^vital-sign-flow/(?P<id>\d+)/$', vital_sign_flow, name='vital_sign_flow'),
     path('load_ic_number/', load_ic_number, name='load_ic_number'),
 ]
+

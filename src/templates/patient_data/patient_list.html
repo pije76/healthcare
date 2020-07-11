@@ -1,5 +1,8 @@
 {% extends "base.html" %}
+
 {% load static %}
+{% load staticfiles %}
+{% load i18n %}
 {% load widget_tweaks %}
 
 {% block javascript %}
@@ -27,12 +30,12 @@
                             <table id="t_add_row" class="table table-striped table-bordered display" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
-                                        <th>Patient Name</th>
-                                        <th>IC Number</th>
-                                        <th>JKL</th>
-                                        <th>ETH</th>
-                                        <th>Email</th>
+                                        <th>{% trans "No" %}</th>
+                                        <th>{% trans "Patient Name" %}</th>
+                                        <th>{% trans "IC Number" %}</th>
+                                        <th>{% trans "JKL" %}</th>
+                                        <th>{% trans "ETH" %}</th>
+                                        <th>{% trans "Email" %}</th>
                                     </tr>
                                 </thead>
 
@@ -41,7 +44,7 @@
                                     {% for item in tables %}
                                     <tr>
                                         <td>{{ item.id }}</td>
-                                        <td><a href="{% url 'patient_data:patientdata_detail' item.id %}" title="View Detail" >{{ item }}</a></td>
+                                        <td><a href="{% url 'patient_data:patientdata_detail' item.id %}" title="{% trans "View Detail" %}" >{{ item }}</a></td>
                                         <td>{{ item.ic_number }}</td>
                                         <td>{{ item.jkl }}</td>
                                         <td>{{ item.eth }}</td>
@@ -52,7 +55,7 @@
                                     {% for item in tables %}
                                     <tr>
                                         <td>{{ item.id }}</td>
-                                        <td><a href="{% url 'patient_data:patientdata_detail' item.id %}" title="View Detail" >{{ item }}</a></td>
+                                        <td><a href="{% url 'patient_data:patientdata_detail' item.id %}" title="{% trans "View Detail" %}" >{{ item }}</a></td>
                                         <td>{{ item.ic_number }}</td>
                                         <td>{{ item.jkl }}</td>
                                         <td>{{ item.eth }}</td>

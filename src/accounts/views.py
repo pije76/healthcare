@@ -1,13 +1,14 @@
-from django.shortcuts import render, render_to_response
-from django.http import HttpResponse
-from django.template import loader
-from django.dispatch import receiver
-from django.db import connection
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.views.i18n import set_language
+from django.db import connection
+from django.dispatch import receiver
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
+from django.shortcuts import render, render_to_response, redirect
+from django.template import loader
+from django.utils import translation
 from django.utils.translation import ugettext as _
+from django.views.i18n import set_language
 
 from allauth.account.signals import user_signed_up, user_logged_in
 from allauth.account.views import LoginView
@@ -21,12 +22,46 @@ from .models import *
 from .forms import *
 
 
+def set_language_from_url(request, user_language):
+	schema_name = connection.schema_name
+	patients = PatientProfile.objects.filter(username=request.user.username)
+	logos = Client.objects.filter(schema_name=schema_name)
+	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+	page_title = _('Home')
+
+	translation.activate(user_language)
+	request.session[translation.LANGUAGE_SESSION_KEY] = user_language
+#	redirect_to = request.META.get('HTTP_REFERER', reverse('index'))
+#	response = HttpResponse(redirect_to)
+#	response = redirect('index')
+#	response.set_cookie(settings.LANGUAGE_COOKIE_NAME, user_language)
+#	return redirect('index')
+	context = {
+		'patients': patients,
+		'logos': logos,
+		'titles': titles,
+		'page_title': page_title,
+	}
+
+	return render(request, 'index.html', context)
+
 def index(request):
 	schema_name = connection.schema_name
 	patients = PatientProfile.objects.filter(username=request.user.username)
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Home')
+#	user_language = 'en'
+#	translation.activate(user_language)
+#	request.session['django_language'] = user_language
+#	request.session[translation.LANGUAGE_SESSION_KEY] = user_language
+#	redirect_to = request.META.get('HTTP_REFERER', reverse('/account/'))
+#	if translation.LANGUAGE_SESSION_KEY in request.session:
+#		del request.session[translation.LANGUAGE_SESSION_KEY]
+#		return HttpResponseRedirect(redirect_to)
+#	response = HttpResponse(redirect_to)
+#	response.set_cookie(settings.LANGUAGE_COOKIE_NAME, user_language)
+#	print(translation.get_language())
 
 	context = {
 		'patients': patients,
@@ -35,6 +70,7 @@ def index(request):
 		'page_title': page_title,
 	}
 	return render(request, 'index.html', context)
+
 
 def signup_view(request):
 #	tags = Tags()

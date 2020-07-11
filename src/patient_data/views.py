@@ -447,7 +447,9 @@ def overtime_claim(request, id):
 	page_title = _('Overtime Claim Form')
 	patients = OvertimeClaim.objects.filter(patient=id)
 	profiles = PatientProfile.objects.filter(pk=id)
-	durations = OvertimeClaim.objects.filter(patient=id).order_by('duration_time').values_list('duration_time', flat=True).first()
+#	durations = OvertimeClaim.objects.filter(patient=id).order_by('duration_time').values_list('duration_time', flat=True).first()
+#	durations = datetime.time(h, m, s)
+#	model.time_field = t
 
 	context = {
 		'logos': logos,
@@ -455,7 +457,7 @@ def overtime_claim(request, id):
 		'page_title': page_title,
 		'patients': patients,
 		'profiles': profiles,
-		'durations': durations,
+#		'durations': durations,
 	}
 
 	return render(request, 'patient_data/overtime_claim_data.html', context)
