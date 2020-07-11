@@ -62,7 +62,6 @@ SHARED_APPS = (
 	'phonenumber_field',
 	'bootstrap_modal_forms',
 	'durationwidget',
-	'hreflang',
 )
 
 TENANT_APPS = (
@@ -101,7 +100,6 @@ TENANT_APPS = (
 	'phonenumber_field',
 	'bootstrap_modal_forms',
 	'durationwidget',
-	'hreflang',
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + \
@@ -120,7 +118,6 @@ MIDDLEWARE = [
 	'django.middleware.security.SecurityMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.middleware.locale.LocaleMiddleware',
-#	'solid_i18n.middleware.SolidLocaleMiddleware',
 	'django.middleware.common.CommonMiddleware',
 	'django.middleware.csrf.CsrfViewMiddleware',
 	'django.contrib.auth.middleware.AuthenticationMiddleware',

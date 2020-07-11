@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-10 23:57+0700\n"
+"POT-Creation-Date: 2020-07-11 17:22+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -73,32 +73,32 @@ msgstr ""
 
 #: accounts/models.py:40 accounts/models.py:41
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
-#: accounts/views.py:30 patient_form/models.py:47 patient_form/views.py:31
-#: templates/navmenu.html:22
+#: accounts/views.py:30 accounts/views.py:53 patient_form/models.py:47
+#: patient_form/views.py:31 templates/navmenu.html:23
 msgid "Home"
-msgstr ""
+msgstr "Beranda"
 
-#: accounts/views.py:74 templates/account/email.html:8
-#: templates/navmenu.html:68
+#: accounts/views.py:100 templates/account/email.html:8
+#: templates/navmenu.html:44
 msgid "Account"
-msgstr ""
+msgstr "Akun"
 
-#: accounts/views.py:95 templates/account/change.html:28
+#: accounts/views.py:121 templates/account/change.html:28
 #: templates/account/change.html:80
 msgid "Change Profile"
-msgstr ""
+msgstr "Ganti Profil"
 
-#: accounts/views.py:125
+#: accounts/views.py:151
 msgid "Your profile has been change successfully."
 msgstr ""
 
-#: accounts/views.py:156
+#: accounts/views.py:182
 msgid "Change Number"
 msgstr ""
 
-#: accounts/views.py:167 patient_form/views.py:63 patient_form/views.py:114
+#: accounts/views.py:193 patient_form/views.py:63 patient_form/views.py:114
 #: patient_form/views.py:166 patient_form/views.py:208
 #: patient_form/views.py:250 patient_form/views.py:291
 #: patient_form/views.py:334 patient_form/views.py:375
@@ -110,7 +110,7 @@ msgstr ""
 #: patient_form/views.py:825 patient_form/views.py:866
 #: patient_form/views.py:906
 msgid "Your form has been save successfully."
-msgstr ""
+msgstr "Isian anda berhasil disimpan"
 
 #: customers/models.py:34 patient_form/models.py:484
 msgid "No Thumbnail"
@@ -124,21 +124,25 @@ msgstr ""
 msgid "Enter a valid time span: e.g. \"3 days, 4 hours, 2 minutes\""
 msgstr ""
 
-#: main/settings.py:256 templates/navmenu.html:52
+#: main/settings.py:256 templates/navmenu.html:35
 msgid "English"
 msgstr ""
 
-#: main/settings.py:258
+#: main/settings.py:258 templates/navmenu.html:36
 msgid "Indonesia"
+msgstr ""
+
+#: main/urls_tenants.py:26
+msgid "account/"
 msgstr ""
 
 #: patient_data/views.py:37
 msgid "Patient List"
-msgstr ""
+msgstr "Daftar Pasien"
 
 #: patient_data/views.py:65
 msgid "Patient Detail"
-msgstr ""
+msgstr "Detil Pasien"
 
 #: patient_data/views.py:84 patient_form/views.py:47
 #: templates/patient_data/patient_detail.html:59
@@ -690,7 +694,7 @@ msgstr ""
 #: templates/patient_form/visiting_consultant_records_form.html:64
 #: templates/patient_form/vital_sign_flow_form.html:84
 msgid "Cancel"
-msgstr ""
+msgstr "Batal"
 
 #: patient_form/models.py:195
 msgid "Reflexes"
@@ -792,10 +796,29 @@ msgstr ""
 #: templates/patient_data/vital_sign_flow_data.html:48
 #: templates/patient_form/application_homeleave_form.html:38
 #: templates/patient_form/application_homeleave_form.html:130
+#: templates/patient_form/appointment_form.html:38
+#: templates/patient_form/cannulation_form.html:35
+#: templates/patient_form/charges_sheet_form.html:35
+#: templates/patient_form/dressing_form.html:35
+#: templates/patient_form/enteral_feeding_regime_form.html:35
+#: templates/patient_form/hgt_chart_form.html:35
+#: templates/patient_form/intake_output_form.html:35
+#: templates/patient_form/maintainance_form.html:35
+#: templates/patient_form/medication_administration_form.html:35
 #: templates/patient_form/medication_administration_form.html:62
+#: templates/patient_form/medication_form.html:35
+#: templates/patient_form/miscellaneouschargesslip_form.html:35
+#: templates/patient_form/nursing_form.html:35
+#: templates/patient_form/overtime_claim_form.html:35
+#: templates/patient_form/physio_progress_note_form.html:39
+#: templates/patient_form/physiotherapy_general_assessment_form.html:36
+#: templates/patient_form/staff_records_form.html:35
+#: templates/patient_form/stool_form.html:35
 #: templates/patient_form/stool_form.html:53
+#: templates/patient_form/visiting_consultant_records_form.html:35
+#: templates/patient_form/vital_sign_flow_form.html:35
 msgid "Name"
-msgstr ""
+msgstr "Nama"
 
 #: patient_form/models.py:312
 #: templates/patient_form/application_homeleave_form.html:111
@@ -901,7 +924,7 @@ msgstr ""
 
 #: templates/account.html:25
 msgid "Your Profile"
-msgstr ""
+msgstr "Profil Anda"
 
 #: templates/account.html:36
 msgid "Username"
@@ -940,7 +963,7 @@ msgstr ""
 #: templates/patient_data/visiting_consultant_records_data.html:52
 #: templates/patient_data/vital_sign_flow_data.html:52
 msgid "IC Number"
-msgstr ""
+msgstr "Nomor IC"
 
 #: templates/account.html:60 templates/account/change.html:67
 #: templates/patient_data/patient_list.html:36
@@ -1018,13 +1041,10 @@ msgstr ""
 msgid "Do you really want to remove the selected e-mail address?"
 msgstr ""
 
-#: templates/account/login.html:14 templates/navmenu.html:82
+#: templates/account/login.html:14 templates/account/login.html:22
+#: templates/navmenu.html:58
 msgid "Login"
-msgstr ""
-
-#: templates/account/login.html:22
-msgid "Log in"
-msgstr ""
+msgstr "Masuk"
 
 #: templates/account/password_change.html:14
 #: templates/account/password_change.html:19
@@ -1117,41 +1137,37 @@ msgstr ""
 
 #: templates/index.html:21
 msgid "Healthcare Multi Tenant"
-msgstr ""
+msgstr "Perawatan Kesehatan Multi Tenan"
 
 #: templates/index.html:22
 msgid ""
 "It's built with default Bootstrap components and utilities with little "
 "customization."
-msgstr ""
+msgstr "Ini terbuat dari komponen Bootstrap dengan sedikit utilitas"
 
-#: templates/navmenu.html:25
+#: templates/navmenu.html:26
 msgid "Patient Data"
 msgstr "Data Pasien"
 
-#: templates/navmenu.html:43
+#: templates/navmenu.html:29
 msgid "Translate"
-msgstr ""
+msgstr "Terjemahan"
 
-#: templates/navmenu.html:58
-msgid "Malaysia"
-msgstr ""
-
-#: templates/navmenu.html:75
+#: templates/navmenu.html:51
 msgid "My Account"
-msgstr ""
+msgstr "Akun Saya"
 
-#: templates/navmenu.html:76
+#: templates/navmenu.html:52
 msgid "Change password"
 msgstr ""
 
-#: templates/navmenu.html:78
+#: templates/navmenu.html:54
 msgid "Logout"
-msgstr ""
+msgstr "Keluar"
 
-#: templates/navmenu.html:83
+#: templates/navmenu.html:59
 msgid "Sign up"
-msgstr ""
+msgstr "Daftar"
 
 #: templates/patient_data/admission_data.html:74
 #: templates/patient_data/appointment_data.html:74
@@ -1180,7 +1196,9 @@ msgstr ""
 #: templates/patient_form/cannulation_form.html:60
 #: templates/patient_form/cannulation_form.html:66
 #: templates/patient_form/charges_sheet_form.html:47
+#: templates/patient_form/dressing_form.html:47
 #: templates/patient_form/hgt_chart_form.html:47
+#: templates/patient_form/intake_output_form.html:46
 #: templates/patient_form/maintainance_form.html:47
 #: templates/patient_form/medication_administration_form.html:59
 #: templates/patient_form/medication_form.html:47
@@ -1190,7 +1208,7 @@ msgstr ""
 #: templates/patient_form/stool_form.html:47
 #: templates/patient_form/vital_sign_flow_form.html:51
 msgid "Date"
-msgstr ""
+msgstr "Tanggal"
 
 #: templates/patient_data/admission_data.html:75
 #: templates/patient_data/appointment_data.html:75
@@ -1203,13 +1221,17 @@ msgstr ""
 #: templates/patient_data/stool_data.html:75
 #: templates/patient_data/vital_sign_flow_data.html:75
 #: templates/patient_form/appointment_form.html:51
+#: templates/patient_form/dressing_form.html:48
+#: templates/patient_form/enteral_feeding_regime_form.html:47
 #: templates/patient_form/hgt_chart_form.html:48
+#: templates/patient_form/intake_output_form.html:51
+#: templates/patient_form/intake_output_form.html:55
 #: templates/patient_form/medication_administration_form.html:58
 #: templates/patient_form/medication_form.html:48
 #: templates/patient_form/stool_form.html:48
 #: templates/patient_form/vital_sign_flow_form.html:52
 msgid "Time"
-msgstr ""
+msgstr "Waktu"
 
 #: templates/patient_data/admission_data.html:76
 msgid "Admitted"
@@ -1748,7 +1770,7 @@ msgstr ""
 
 #: templates/patient_data/patient_detail.html:51
 msgid "Add Data"
-msgstr ""
+msgstr "Tambah Data"
 
 #: templates/patient_data/patient_detail.html:104
 #: templates/patient_data/patient_detail.html:181
@@ -1762,7 +1784,7 @@ msgstr ""
 
 #: templates/patient_data/patient_detail.html:130
 msgid "Old Data"
-msgstr ""
+msgstr "Data Lama"
 
 #: templates/patient_data/patient_list.html:47
 #: templates/patient_data/patient_list.html:58
@@ -2155,9 +2177,28 @@ msgstr ""
 #: templates/patient_form/visiting_consultant_records_form.html:62
 #: templates/patient_form/vital_sign_flow_form.html:82
 msgid "Submit"
-msgstr ""
+msgstr "Kirim"
 
 #: templates/patient_form/application_homeleave_form.html:46
+#: templates/patient_form/appointment_form.html:42
+#: templates/patient_form/cannulation_form.html:39
+#: templates/patient_form/charges_sheet_form.html:39
+#: templates/patient_form/dressing_form.html:39
+#: templates/patient_form/enteral_feeding_regime_form.html:39
+#: templates/patient_form/hgt_chart_form.html:39
+#: templates/patient_form/intake_output_form.html:39
+#: templates/patient_form/maintainance_form.html:39
+#: templates/patient_form/medication_administration_form.html:41
+#: templates/patient_form/medication_form.html:39
+#: templates/patient_form/miscellaneouschargesslip_form.html:39
+#: templates/patient_form/nursing_form.html:39
+#: templates/patient_form/overtime_claim_form.html:39
+#: templates/patient_form/physio_progress_note_form.html:43
+#: templates/patient_form/physiotherapy_general_assessment_form.html:40
+#: templates/patient_form/staff_records_form.html:39
+#: templates/patient_form/stool_form.html:39
+#: templates/patient_form/visiting_consultant_records_form.html:39
+#: templates/patient_form/vital_sign_flow_form.html:39
 msgid "I/C No"
 msgstr ""
 
@@ -2219,50 +2260,6 @@ msgid ""
 "responsible if patient is physically and mentally unfit."
 msgstr ""
 
-#: templates/patient_form/appointment_form.html:38
-#: templates/patient_form/cannulation_form.html:35
-#: templates/patient_form/charges_sheet_form.html:35
-#: templates/patient_form/dressing_form.html:35
-#: templates/patient_form/enteral_feeding_regime_form.html:35
-#: templates/patient_form/hgt_chart_form.html:35
-#: templates/patient_form/intake_output_form.html:35
-#: templates/patient_form/maintainance_form.html:35
-#: templates/patient_form/medication_administration_form.html:35
-#: templates/patient_form/medication_form.html:35
-#: templates/patient_form/miscellaneouschargesslip_form.html:35
-#: templates/patient_form/nursing_form.html:35
-#: templates/patient_form/overtime_claim_form.html:35
-#: templates/patient_form/physio_progress_note_form.html:39
-#: templates/patient_form/physiotherapy_general_assessment_form.html:36
-#: templates/patient_form/staff_records_form.html:35
-#: templates/patient_form/stool_form.html:35
-#: templates/patient_form/visiting_consultant_records_form.html:35
-#: templates/patient_form/vital_sign_flow_form.html:35
-msgid "NAME"
-msgstr ""
-
-#: templates/patient_form/appointment_form.html:42
-#: templates/patient_form/cannulation_form.html:39
-#: templates/patient_form/charges_sheet_form.html:39
-#: templates/patient_form/dressing_form.html:39
-#: templates/patient_form/enteral_feeding_regime_form.html:39
-#: templates/patient_form/hgt_chart_form.html:39
-#: templates/patient_form/intake_output_form.html:39
-#: templates/patient_form/maintainance_form.html:39
-#: templates/patient_form/medication_administration_form.html:41
-#: templates/patient_form/medication_form.html:39
-#: templates/patient_form/miscellaneouschargesslip_form.html:39
-#: templates/patient_form/nursing_form.html:39
-#: templates/patient_form/overtime_claim_form.html:39
-#: templates/patient_form/physio_progress_note_form.html:43
-#: templates/patient_form/physiotherapy_general_assessment_form.html:40
-#: templates/patient_form/staff_records_form.html:39
-#: templates/patient_form/stool_form.html:39
-#: templates/patient_form/visiting_consultant_records_form.html:39
-#: templates/patient_form/vital_sign_flow_form.html:39
-msgid "I/C NO"
-msgstr ""
-
 #: templates/patient_form/appointment_form.html:52
 msgid "Hospital/Clinic/Center"
 msgstr ""
@@ -2282,18 +2279,6 @@ msgstr ""
 #: templates/patient_form/charges_sheet_form.html:50
 #: templates/patient_form/miscellaneouschargesslip_form.html:50
 msgid "Given By:"
-msgstr ""
-
-#: templates/patient_form/dressing_form.html:47
-#: templates/patient_form/intake_output_form.html:46
-msgid "DATE"
-msgstr ""
-
-#: templates/patient_form/dressing_form.html:48
-#: templates/patient_form/enteral_feeding_regime_form.html:47
-#: templates/patient_form/intake_output_form.html:51
-#: templates/patient_form/intake_output_form.html:55
-msgid "TIME"
 msgstr ""
 
 #: templates/patient_form/dressing_form.html:49

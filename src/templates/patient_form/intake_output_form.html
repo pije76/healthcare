@@ -32,27 +32,27 @@
 			<table class="table-sm table-bordered">
 				<tbody>
 					<tr>
-						<td>{% trans "NAME" %}:</td>
+						<td>{% trans "Name" %}:</td>
 						<td>{{ patients }}{{ form.patient|as_crispy_field }}</td>
 					</tr>
 					<tr>
-						<td>{% trans "I/C NO" %}:</td>
+						<td>{% trans "I/C No" %}:</td>
 						<td>{{ icnumbers }}</td>
 					</tr>
 				</tbody>
 			</table>
 			<table class="table table-bordered">
 				<tr>
-					<th class="text-center" rowspan="3">{% trans "DATE" %}</th>
+					<th class="text-center" rowspan="3">{% trans "Date" %}</th>
 					<th class="text-center" colspan="7">{% trans "INTAKE" %}</th>
 					<th class="text-center" colspan="7">{% trans "OUTPUT" %}</th>
 				</tr>
 				<tr>
-					<th class="text-center" rowspan="2">{% trans "TIME" %}</th>
+					<th class="text-center" rowspan="2">{% trans "Time" %}</th>
 					<th class="text-center" colspan="2">{% trans "ORAL" %}</th>
 					<th class="text-center" colspan="2">{% trans "PARENTERAL" %}</th>
 					<th class="text-center" colspan="2">{% trans "OTHER" %}</th>
-					<th class="text-center" rowspan="2">{% trans "TIME" %}</th>
+					<th class="text-center" rowspan="2">{% trans "Time" %}</th>
 					<th class="text-center" colspan="2">{% trans "URINE" %}</th>
 					<th class="text-center">{% trans "GAS-TRIC" %}</th>
 					<th class="text-center" colspan="2">{% trans "OTHER" %}</th>
