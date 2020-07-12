@@ -132,11 +132,9 @@
                                             <td>{{ item.long_term_goals }}</td>
                                             <td>{{ item.plan_treatment }}</td>
                                             <td>
-                                                <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline" data-url="{% url 'patient_data:patientdata_edit' item.id %}" title="Edit">
-                                                    <i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
+                                                <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn" data-url="{% url 'patient_data:physiotherapy_general_assessment_data_edit' item.id %}"data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
                                                 </button>
-                                                <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline" data-url="{% url 'patient_data:patientdata_delete' item.id %}" title="Delete">
-                                                    <i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
+                                                <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-url="{% url 'patient_data:physiotherapy_general_assessment_data_delete' item.id %}"data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
                                                 </button>
                                             </td>
                                         </tr>

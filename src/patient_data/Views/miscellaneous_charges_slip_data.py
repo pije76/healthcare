@@ -23,7 +23,7 @@ end_time_night = datetime.strptime('23:59', '%H:%M').time()
 
 
 @login_required
-def save_vital_sign_flow_data_form(request, form, template_name):
+def save_miscellaneous_charges_slip_data_form(request, form, template_name):
     data = dict()
 
     if request.method == 'POST':
@@ -34,7 +34,7 @@ def save_vital_sign_flow_data_form(request, form, template_name):
             patients.save()
             data['form_is_valid'] = True
             patients = Appointment.objects.all()
-            data['html_vital_sign_flow_list'] = render_to_string('patient_data/vital_sign_flow_data/vital_sign_flow_data.html', {'patients': patients})
+            data['html_miscellaneous_charges_slip_list'] = render_to_string('patient_data/miscellaneous_charges_slip_data/miscellaneous_charges_slip_data.html', {'patients': patients})
         else:
             data['form_is_valid'] = False
 
@@ -45,13 +45,14 @@ def save_vital_sign_flow_data_form(request, form, template_name):
 
     return JsonResponse(data)
 
+
 @login_required
-def vital_sign_flow_data(request, id):
+def miscellaneous_charges_slip(request, id):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-    page_title = _('Vital Sign Flow Sheet')
-    patients = VitalSignFlow.objects.filter(patient=id)
+    page_title = _('Miscellaneous Charges Slip')
+    patients = MiscellaneousChargesSlip.objects.filter(patient=id)
     profiles = PatientProfile.objects.filter(pk=id)
 
     context = {
@@ -62,33 +63,32 @@ def vital_sign_flow_data(request, id):
         'profiles': profiles,
     }
 
-    return render(request, 'patient_data/vital_sign_flow_data/vital_sign_flow_data.html', context)
-
+    return render(request, 'patient_data/miscellaneous_charges_slip_data/miscellaneous_charges_slip_data.html', context)
 
 @login_required
-def vital_sign_flow_data_edit(request, id):
-    vital_sign_flows = get_object_or_404(Appointment, pk=id)
+def miscellaneous_charges_slip_data_edit(request, id):
+    miscellaneous_charges_slips = get_object_or_404(Appointment, pk=id)
     if request.method == 'POST':
-        form = AppointmentForm(request.POST or None, instance=vital_sign_flows)
+        form = AppointmentForm(request.POST or None, instance=miscellaneous_charges_slips)
     else:
-        form = AppointmentForm(instance=vital_sign_flows)
-    return save_vital_sign_flow_data_form(request, form, 'patient_data/vital_sign_flow_data/partial_edit.html')
+        form = AppointmentForm(instance=miscellaneous_charges_slips)
+    return save_miscellaneous_charges_slip_data_form(request, form, 'patient_data/miscellaneous_charges_slip_data/partial_edit.html')
 
 
 @login_required
-def vital_sign_flow_data_delete(request, id):
-    vital_sign_flows = get_object_or_404(Appointment, pk=id)
+def miscellaneous_charges_slip_data_delete(request, id):
+    miscellaneous_charges_slips = get_object_or_404(Appointment, pk=id)
     data = dict()
 
     if request.method == 'POST':
-        vital_sign_flows.delete()
+        miscellaneous_charges_slips.delete()
         data['form_is_valid'] = True
         patients = Appointment.objects.all()
-        data['html_vital_sign_flow_list'] = render_to_string('patient_data/vital_sign_flow_data/vital_sign_flow_data.html', {'patients': patients})
+        data['html_miscellaneous_charges_slip_list'] = render_to_string('patient_data/miscellaneous_charges_slip_data/miscellaneous_charges_slip_data.html', {'patients': patients})
         return JsonResponse(data)
     else:
-        context = {'vital_sign_flows': vital_sign_flows}
-        data['html_form'] = render_to_string('patient_data/vital_sign_flow_data/partial_delete.html', context, request=request)
+        context = {'miscellaneous_charges_slips': miscellaneous_charges_slips}
+        data['html_form'] = render_to_string('patient_data/miscellaneous_charges_slip_data/partial_delete.html', context, request=request)
         return JsonResponse(data)
 
     return JsonResponse(data)

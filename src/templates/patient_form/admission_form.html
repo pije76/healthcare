@@ -9,12 +9,16 @@
     {{ page_title }} | {{ titles.title }}
 {% endblock %}
 
+{% block extrahead %}
+	{{ form.media }}
+{% endblock %}
+
 {% block styles %}
 	<link href="{% static 'css/patient_form/admission.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
-{% block extrahead %}
-	{{ form.media }}
+{% block javascript %}
+	<script src="{% static 'js/admission.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -57,6 +61,7 @@
 						<td>{{ form.age|as_crispy_field }}</td>
 						<td>{% trans "Date of birth" %}:</td>
 						<td>{{ form.birth_date|as_crispy_field }}</td>
+						Total = <input id="grand_total" disabled="">
 					</tr>
 					<tr>
 						<td>{% trans "Sex / Gender" %}:</td>
@@ -232,6 +237,5 @@
 
 </div>
 
-{% include 'patient_form/admission.html' %}
 
 {% endblock %}

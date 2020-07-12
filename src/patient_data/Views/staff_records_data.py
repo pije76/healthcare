@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import connection
+from django.db.models import Sum, Count
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.http import JsonResponse
@@ -23,7 +24,7 @@ end_time_night = datetime.strptime('23:59', '%H:%M').time()
 
 
 @login_required
-def save_vital_sign_flow_data_form(request, form, template_name):
+def save_staff_records_data_form(request, form, template_name):
     data = dict()
 
     if request.method == 'POST':
@@ -34,7 +35,7 @@ def save_vital_sign_flow_data_form(request, form, template_name):
             patients.save()
             data['form_is_valid'] = True
             patients = Appointment.objects.all()
-            data['html_vital_sign_flow_list'] = render_to_string('patient_data/vital_sign_flow_data/vital_sign_flow_data.html', {'patients': patients})
+            data['html_staff_records_list'] = render_to_string('patient_data/staff_records_data/staff_records_data.html', {'patients': patients})
         else:
             data['form_is_valid'] = False
 
@@ -45,14 +46,17 @@ def save_vital_sign_flow_data_form(request, form, template_name):
 
     return JsonResponse(data)
 
+
 @login_required
-def vital_sign_flow_data(request, id):
+def staff_records(request, id):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-    page_title = _('Vital Sign Flow Sheet')
-    patients = VitalSignFlow.objects.filter(patient=id)
+    page_title = _('Staff Records')
+    patients = StaffRecords.objects.filter(patient=id)
     profiles = PatientProfile.objects.filter(pk=id)
+    total_annual = StaffRecords.objects.filter(patient=id).aggregate(Sum('annual_leave_days'))
+    total_public = StaffRecords.objects.filter(patient=id,).aggregate(Sum('public_holiday_days'))
 
     context = {
         'logos': logos,
@@ -60,35 +64,36 @@ def vital_sign_flow_data(request, id):
         'page_title': page_title,
         'patients': patients,
         'profiles': profiles,
+        'total_annual': total_annual,
+        'total_public': total_public,
     }
 
-    return render(request, 'patient_data/vital_sign_flow_data/vital_sign_flow_data.html', context)
-
+    return render(request, 'patient_data/staff_records_data/staff_records_data.html', context)
 
 @login_required
-def vital_sign_flow_data_edit(request, id):
-    vital_sign_flows = get_object_or_404(Appointment, pk=id)
+def staff_records_data_edit(request, id):
+    staff_recordss = get_object_or_404(Appointment, pk=id)
     if request.method == 'POST':
-        form = AppointmentForm(request.POST or None, instance=vital_sign_flows)
+        form = AppointmentForm(request.POST or None, instance=staff_recordss)
     else:
-        form = AppointmentForm(instance=vital_sign_flows)
-    return save_vital_sign_flow_data_form(request, form, 'patient_data/vital_sign_flow_data/partial_edit.html')
+        form = AppointmentForm(instance=staff_recordss)
+    return save_staff_records_data_form(request, form, 'patient_data/staff_records_data/partial_edit.html')
 
 
 @login_required
-def vital_sign_flow_data_delete(request, id):
-    vital_sign_flows = get_object_or_404(Appointment, pk=id)
+def staff_records_data_delete(request, id):
+    staff_recordss = get_object_or_404(Appointment, pk=id)
     data = dict()
 
     if request.method == 'POST':
-        vital_sign_flows.delete()
+        staff_recordss.delete()
         data['form_is_valid'] = True
         patients = Appointment.objects.all()
-        data['html_vital_sign_flow_list'] = render_to_string('patient_data/vital_sign_flow_data/vital_sign_flow_data.html', {'patients': patients})
+        data['html_staff_records_list'] = render_to_string('patient_data/staff_records_data/staff_records_data.html', {'patients': patients})
         return JsonResponse(data)
     else:
-        context = {'vital_sign_flows': vital_sign_flows}
-        data['html_form'] = render_to_string('patient_data/vital_sign_flow_data/partial_delete.html', context, request=request)
+        context = {'staff_recordss': staff_recordss}
+        data['html_form'] = render_to_string('patient_data/staff_records_data/partial_delete.html', context, request=request)
         return JsonResponse(data)
 
     return JsonResponse(data)

@@ -23,6 +23,8 @@ import datetime
 now = datetime.date.today
 
 # Create your views here.
+
+
 def index(request):
 	schema_name = connection.schema_name
 	patients = PatientProfile.objects.filter(username=request.user.username)
@@ -56,7 +58,7 @@ def admission(request, id):
 
 	if request.method == 'POST':
 		form = AdmissionForm(request.POST or None)
-		
+
 		if form.is_valid():
 			form.save()
 
@@ -95,7 +97,6 @@ def application_homeleave(request, id):
 		'ic_number': icnumbers,
 	}
 
-
 	if request.method == 'POST':
 		form = ApplicationForHomeLeaveForm(request.POST or None, instance=request.user)
 		if form.is_valid():
@@ -116,8 +117,8 @@ def application_homeleave(request, id):
 		else:
 			messages.warning(request, form.errors)
 	else:
-#		form = ApplicationForHomeLeaveForm(initial=initial)
-#		form = ApplicationForHomeLeaveForm(instance=request.user)
+		#		form = ApplicationForHomeLeaveForm(initial=initial)
+		#		form = ApplicationForHomeLeaveForm(instance=request.user)
 		form = ApplicationForHomeLeaveForm(initial=initial, instance=request.user)
 
 	context = {
@@ -199,7 +200,6 @@ def catheterization_cannulation(request, id):
 		'ic_number': icnumbers,
 	}
 
-
 	if request.method == 'POST':
 		form = CannulationForm(request.POST or None)
 		if form.is_valid():
@@ -241,7 +241,6 @@ def charges_sheet(request, id):
 		'ic_number': icnumbers,
 	}
 
-
 	if request.method == 'POST':
 		form = ChargesForm(request.POST or None)
 		if form.is_valid():
@@ -281,7 +280,6 @@ def dressing(request, id):
 		'patient': patients,
 		'ic_number': icnumbers,
 	}
-
 
 	if request.method == 'POST':
 		form = DressingForm(request.POST, request.FILES)
@@ -325,7 +323,6 @@ def enteral_feeding_regime(request, id):
 		'ic_number': icnumbers,
 	}
 
-
 	if request.method == 'POST':
 		form = EnteralFeedingRegimeForm(request.POST or None)
 		if form.is_valid():
@@ -365,7 +362,6 @@ def hgt_chart(request, id):
 		'patient': patients,
 		'ic_number': icnumbers,
 	}
-
 
 	if request.method == 'POST':
 		form = HGTChartForm(request.POST or None)
@@ -446,7 +442,6 @@ def maintainance(request, id):
 		'ic_number': icnumbers,
 	}
 
-
 	if request.method == 'POST':
 		form = MaintainanceForm(request.POST or None)
 		if form.is_valid():
@@ -486,7 +481,6 @@ def medication_record(request, id):
 		'patient': patients,
 		'ic_number': icnumbers,
 	}
-
 
 	if request.method == 'POST':
 		form = MedicationRecordForm(request.POST or None)
@@ -530,7 +524,6 @@ def medication_administration(request, id):
 		'allergy': allergies,
 	}
 
-
 	if request.method == 'POST':
 		form = MedicationAdministrationRecordForm(request.POST or None)
 		if form.is_valid():
@@ -571,7 +564,6 @@ def miscellaneous_charges_slip(request, id):
 		'ic_number': icnumbers,
 	}
 
-
 	if request.method == 'POST':
 		form = MiscellaneousChargesSlipForm(request.POST or None)
 		if form.is_valid():
@@ -594,7 +586,7 @@ def miscellaneous_charges_slip(request, id):
 		'form': form,
 	}
 
-	return render(request, 'patient_form/miscellaneouschargesslip_form.html', context)
+	return render(request, 'patient_form/miscellaneous_charges_slip_form.html', context)
 
 
 @login_required
@@ -611,7 +603,6 @@ def nursing(request, id):
 		'patient': patients,
 		'ic_number': icnumbers,
 	}
-
 
 	if request.method == 'POST':
 		form = NursingForm(request.POST or None)
@@ -653,7 +644,6 @@ def overtime_claim(request, id):
 		'ic_number': icnumbers,
 	}
 
-
 	if request.method == 'POST':
 		form = OvertimeClaimForm(request.POST or None)
 		if form.is_valid():
@@ -693,7 +683,6 @@ def physio_progress_note(request, id):
 		'patient': patients,
 		'ic_number': icnumbers,
 	}
-
 
 	if request.method == 'POST':
 		form = PhysioProgressNoteForm(request.POST or None)
@@ -735,7 +724,6 @@ def physiotherapy_general_assessment(request, id):
 		'ic_number': icnumbers,
 	}
 
-
 	if request.method == 'POST':
 		form = PhysiotherapyGeneralAssessmentForm(request.POST or None)
 		if form.is_valid():
@@ -775,7 +763,6 @@ def staff_records(request, id):
 		'patient': patients,
 		'ic_number': icnumbers,
 	}
-
 
 	if request.method == 'POST':
 		form = StaffRecordsForm(request.POST or None)
@@ -817,7 +804,6 @@ def stool(request, id):
 		'ic_number': icnumbers,
 	}
 
-
 	if request.method == 'POST':
 		form = StoolForm(request.POST or None)
 		if form.is_valid():
@@ -858,7 +844,6 @@ def visiting_consultant_records(request, id):
 		'ic_number': icnumbers,
 	}
 
-
 	if request.method == 'POST':
 		form = VisitingConsultantForm(request.POST or None)
 		if form.is_valid():
@@ -883,6 +868,7 @@ def visiting_consultant_records(request, id):
 
 	return render(request, 'patient_form/visiting_consultant_records_form.html', context)
 
+
 @login_required
 def vital_sign_flow(request, id):
 	schema_name = connection.schema_name
@@ -897,7 +883,6 @@ def vital_sign_flow(request, id):
 		'patient': patients,
 		'ic_number': icnumbers,
 	}
-
 
 	if request.method == 'POST':
 		form = VitalSignFlowForm(request.POST or None)

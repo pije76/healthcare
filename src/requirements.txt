@@ -15,7 +15,7 @@ django-bootstrap-modal-forms==2.0.0
 django-crispy-forms==1.9.0
 django-debug-permissions==1.0.0
 django-debug-toolbar==2.2
-django-extensions==2.2.9
+django-durationwidget==1.0.5
 django-imagekit==4.0.2
 django-js-asset==1.2.2
 django-mass-edit==3.2.0
@@ -27,6 +27,7 @@ django-selectable==1.2.1
 django-static-arrive==2.4.1.0
 django-static-jquery3==3.4.1.1
 django-tenants==3.1.0
+-e hg+https://bitbucket.org/schinckel/django-timedelta-field@229cd5a9ae15b6611c6689ce3a074333fdc7daf2#egg=django_timedeltafield
 django-widget-tweaks==1.4.8
 docopt==0.6.2
 gevent==20.5.1

@@ -359,6 +359,10 @@ class Admission(models.Model):
 	def __str__(self):
 		return str(self.patient)
 
+	@property
+	def age(self):
+		return int((datetime.now().date() - self.birth_date).days / 365.25)
+
 	class Meta:
 		verbose_name = _('Admission')
 		verbose_name_plural = _("Admission")

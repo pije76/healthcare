@@ -39,7 +39,7 @@ $(function()
 			{
 				if (data.form_is_valid)
 				{
-					$("#t_add_row tbody").html(data.html_appointment_list);
+					$("#t_add_row tbody").html(data.html_homeleave_list);
 					$("#exampleModal").modal("hide");
 				}
 				else
@@ -65,7 +65,7 @@ $(function()
 			{
 				if (data.form_is_valid)
 				{
-					$("#t_add_row tbody").html(data.html_appointment_list);
+					$("#t_add_row tbody").html(data.html_homeleave_list);
 					$("#exampleModal").modal("hide");
 				}
 				else
@@ -79,17 +79,17 @@ $(function()
 
 	/* Binding */
 
-	// Create appointment
+	// Create homeleave
 	$(".addRow").click(loadForm);
 
 
-	// Update appointment
+	// Update homeleave
 	$("#t_add_row tbody").on("click", ".edit-row-btn", loadForm);
-	$("#exampleModal").on("submit", ".appointment-update-form", saveEditForm);
+	$("#exampleModal").on("submit", ".homeleave-update-form", saveEditForm);
 
-	// Delete appointment
+	// Delete homeleave
 	$("#t_add_row tbody").on("click", ".delete-row-btn", loadForm);
-	$("#exampleModal").on("submit", ".appointment-delete-form", saveDeleteForm);
+	$("#exampleModal").on("submit", ".homeleave-delete-form", saveDeleteForm);
 
 
 });

@@ -13,11 +13,15 @@
 	{{ form.media }}
 {% endblock %}
 
-{% block content %}
-
 {% block styles %}
 	<link href="{% static 'css/patient_form/enteral_feeding_regine.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
+
+{% block javascript %}
+	<script src="{% static 'js/enteral_feeding_regime.js' %}"></script>
+{% endblock %}
+
+{% block content %}
 
 <div class="row isi">
 
@@ -71,32 +75,4 @@
 
 </div>
 
-{% block javascript %}
-<script type="text/javascript">
-$(document).ready(function()
-{
-	$('.calc').change(function()
-	{
-		var total = 0;
-		$('.calc').each(function()
-		{
-			if($(this).val() != '')
-			{
-				total += parseInt($(this).val());
-			}
-		});
-		$('#total').html(total);
-	});
-});
-
-$(document).ready(function()
-{
-	//when the select changes:
-	$('.calc').on("change", function()
-	{
-		$('#total').val($(this).val());
-	});
-});
-</script>
-{% endblock %}
 {% endblock %}

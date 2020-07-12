@@ -1,18 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core import serializers
 from django.db import connection
-from django.db.models import Count, Sum, F, Q
-from django.db.models.functions import Trunc
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
-from django.shortcuts import render, get_list_or_404, get_object_or_404
-from django.urls import reverse_lazy
-from django.utils import timezone
+from django.db.models import Sum, Count
+from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext as _
-from django.views.generic import ListView
 from django.http import JsonResponse
 
 from patient_form.models import *
+from patient_form.forms import *
 from accounts.models import *
 from customers.models import *
 
@@ -27,6 +22,30 @@ end_time_day = datetime.strptime('12:00', '%H:%M').time()
 start_time_night = datetime.strptime('12:01', '%H:%M').time()
 end_time_night = datetime.strptime('23:59', '%H:%M').time()
 
+
+
+@login_required
+def save_intake_output_data_form(request, form, template_name):
+    data = dict()
+
+    if request.method == 'POST':
+        if form.is_valid():
+            patients = Appointment()
+            patients = form.save(commit=False)
+            patients.patient = request.user
+            patients.save()
+            data['form_is_valid'] = True
+            patients = Appointment.objects.all()
+            data['html_intake_output_list'] = render_to_string('patient_data/intake_output_data/intake_output_data.html', {'patients': patients})
+        else:
+            data['form_is_valid'] = False
+
+    context = {
+        'form': form,
+    }
+    data['html_form'] = render_to_string(template_name, context, request=request)
+
+    return JsonResponse(data)
 
 
 
@@ -105,4 +124,33 @@ def intake_output_data(request, id):
         'time_range_night': time_range_night,
     }
 
-    return render(request, 'patient_data/intake_output_data.html', context)
+    return render(request, 'patient_data/intake_output_data/intake_output_data.html', context)
+
+
+@login_required
+def intake_output_data_edit(request, id):
+    intake_outputs = get_object_or_404(Appointment, pk=id)
+    if request.method == 'POST':
+        form = AppointmentForm(request.POST or None, instance=intake_outputs)
+    else:
+        form = AppointmentForm(instance=intake_outputs)
+    return save_intake_output_data_form(request, form, 'patient_data/intake_output_data/partial_edit.html')
+
+
+@login_required
+def intake_output_data_delete(request, id):
+    intake_outputs = get_object_or_404(Appointment, pk=id)
+    data = dict()
+
+    if request.method == 'POST':
+        intake_outputs.delete()
+        data['form_is_valid'] = True
+        patients = Appointment.objects.all()
+        data['html_intake_output_list'] = render_to_string('patient_data/intake_output_data/intake_output_data.html', {'patients': patients})
+        return JsonResponse(data)
+    else:
+        context = {'intake_outputs': intake_outputs}
+        data['html_form'] = render_to_string('patient_data/intake_output_data/partial_delete.html', context, request=request)
+        return JsonResponse(data)
+
+    return JsonResponse(data)
