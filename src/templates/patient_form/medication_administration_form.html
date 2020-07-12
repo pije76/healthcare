@@ -50,21 +50,17 @@
 			</table>
 
 			<table class="table table-bordered">
-				<col>
-					<colgroup span="1"></colgroup>
-				</col>
 				<tr>
-					<th class="text-center" colspan="4" scope="colgroup">{% trans "Medication" %}</th>
-					<th class="text-center" colspan="1" scope="colgroup">{% trans "Time" %}</th>
-					<th class="text-center" colspan="1" scope="colgroup">{% trans "Date" %}</th>
+					<th class="text-center" colspan="5">{% trans "Medication" %}</th>
+					<th class="text-center" rowspan="2">{% trans "Date/Time" %}</th>
+					<th class="text-center" rowspan="2">{% trans "Signature" %}</th>
 				</tr>
 				<tr>
-					<th class="text-center" scope="col">{% trans "Name" %}</th>
-					<th class="text-center" scope="col">{% trans "Dosage" %}</th>
-					<th class="text-center" scope="col">{% trans "Tab/MLS" %}</th>
-					<th class="text-center" scope="col">{% trans "Frequency" %}</th>
-					<th class="text-center"></th>
-					<th class="text-center"></th>
+					<th class="text-center">{% trans "Name" %}</th>
+					<th class="text-center">{% trans "Dosage" %}</th>
+					<th class="text-center">{% trans "Tab/MLS" %}</th>
+					<th class="text-center">{% trans "Frequency" %}</th>
+					<th class="text-center">{% trans "Route" %}</th>
 				</tr>
 				<tbody>
 					<tr>
@@ -72,13 +68,9 @@
 						<td>{{ form.medication_dosage|as_crispy_field }}</td>
 						<td>{{ form.medication_tab|as_crispy_field }}</td>
 						<td>{{ form.medication_frequency|as_crispy_field }}</td>
-						<td>{{ form.medication_time|as_crispy_field }}</td>
-						<td>{{ form.medication_date|as_crispy_field }}</td>
-					</tr>
-						<td class="text-center"><b>{% trans "Route" %}</b></td>
-						<td colspan="3">{{ form.medication_route|as_crispy_field }}</td>
-						<td></td>
-						<td></td>
+						<td>{{ form.medication_route|as_crispy_field }}</td>
+						<td>{{ form.medication_date_time|as_crispy_field }}</td>
+						<td>{{ form.signature_nurse|as_crispy_field }}</td>
 					</tr>
 				</tbody>
 			</table>

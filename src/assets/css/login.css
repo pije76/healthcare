@@ -39,7 +39,7 @@
   margin-left: 20px;
   margin-top: 0px; 
   position: relative;
-  width: 50px !important;
+  width: 200px !important;
   height: auto;
   text-shadow: none;
   cursor: text;
@@ -55,7 +55,7 @@
   margin-left: 20px;
   margin-top: 0px;
   position: relative;
-  width: auto;
+  width: 200px !important;
   height: auto;
   text-shadow: none;
   cursor: text;

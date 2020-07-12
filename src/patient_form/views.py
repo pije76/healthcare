@@ -527,6 +527,7 @@ def medication_administration(request, id):
 	initial = {
 		'patient': patients,
 		'ic_number': icnumbers,
+		'allergy': allergies,
 	}
 
 

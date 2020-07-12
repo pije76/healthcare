@@ -4,8 +4,8 @@
 
 {% get_current_language as LANGUAGE_CODE %}
 
-<!DOCTYPE html>
-<html lang="{{LANGUAGE_CODE}}">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v = "urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="{{LANGUAGE_CODE}}">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
 	<title>
@@ -27,7 +27,7 @@
 	{% block styles %}
 	{% endblock %}
 
-	<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+	<script src="{% static 'js/jquery.min.js' %}"></script>
 	<script src="{% static 'js/jquery-migrate-3.0.0.min.js' %}"></script>
 	<script src="{% static 'js/popper.min.js' %}"></script>
 	<script src="{% static 'js/bootstrap.min.js' %}"></script>

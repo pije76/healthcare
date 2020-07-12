@@ -343,10 +343,6 @@ CACHES = {
 	'default': {
 		'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
 	},
-	"file_resubmit": {
-		'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-		"LOCATION": os.path.join(BASE_DIR, "'cache/file_resubmit")
-	},
 }
 
 # Override settings here

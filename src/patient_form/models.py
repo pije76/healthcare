@@ -29,11 +29,12 @@ now = date.today
 
 
 def validate_international_phonenumber(value):
-    phone_number = to_python(value)
-    if phone_number and not phone_number.is_valid():
-        raise ValidationError(
-            _("Please enter valid phone number with following format: +[country code][area code][phone number]"), code="invalid_phone_number"
-        )
+	phone_number = to_python(value)
+	if phone_number and not phone_number.is_valid():
+		raise ValidationError(
+			_("Please enter valid phone number with following format: +[country code][area code][phone number]"), code="invalid_phone_number"
+		)
+
 
 WOUND_FREQUENCY_CHOICES = (
 	('od', 'OD'),
@@ -220,12 +221,12 @@ AMOUNT_CHOICES = (
 )
 
 BOOLEAN_CHOICES = (
-    (False, _('No')),
+	(False, _('No')),
 	(True, _('Yes')),
 )
 
 YES_NO_CHOICES = (
-    ('no', _('No')),
+	('no', _('No')),
 	('yes', _('Yes')),
 )
 
@@ -268,6 +269,15 @@ MEDICATION_ADMINISTRATION_FREQUENCY_CHOICES = (
 	('others', _('OTHERS')),
 )
 
+MEDICATION_ADMINISTRATION_STAT_CHOICES = (
+	('n', 'N-NBM'),
+	('o', 'O-Omit'),
+	('r', 'R-Refused'),
+	('ta', 'TA-Take Away'),
+	('t', 'T-Taken'),
+	('w', 'W-Withold'),
+)
+
 TAB_CHOICES = (
 	('1', _('1/1 = 1 Tab')),
 	('2', _('11/11 = 2 Tabs')),
@@ -287,9 +297,11 @@ SIGNATURE_CHOICES = (
 messageserror = "IC Number format needs to be yymmdd-xx-zzzz."
 ic_number_validator = RegexValidator(regex='\d{6}\-\d{2}\-\d{4}', message=messageserror, code="invalid")
 
+
 def get_now():
-    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-	
+	return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
 class Admission(models.Model):
 	patient = models.OneToOneField(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(default=now, blank=True, null=True)
@@ -343,10 +355,6 @@ class Admission(models.Model):
 	orientation = models.CharField(choices=ORIENTATION_CHOICES, max_length=255, blank=True, null=True)
 	special_information = models.CharField(max_length=255, blank=True, null=True)
 	admission_by = models.CharField(max_length=255, blank=True, null=True)
-
-	class Meta:
-		verbose_name = _('Admission')
-		verbose_name_plural = _("Admission")
 
 	def __str__(self):
 		return str(self.patient)
@@ -435,10 +443,6 @@ class Charges(models.Model):
 		verbose_name_plural = _("Charges")
 
 
-def upload_path(instance, filename):
-	return '{0}/{1}'.format('dressing_location', filename)
-
-
 class WoundCondition(MPTTModel):
 	name = models.CharField(max_length=255, blank=True, null=True)
 	parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True, on_delete=models.CASCADE)
@@ -451,13 +455,15 @@ class WoundCondition(MPTTModel):
 		verbose_name_plural = _('Wound Condition')
 
 	def indented_title(self):
-		return ("-"*4) * self.get_level() + self.name
+		return ("-" * 4) * self.get_level() + self.name
 
 	def __str__(self):
 		return self.name
 
+
 def upload_path(instance, filename):
 	return '{0}/{1}'.format('dressing_location', filename)
+
 
 class Dressing(models.Model):
 	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
@@ -498,6 +504,7 @@ class AnnotationManager(models.Manager):
 	def get_queryset(self):
 		return super().get_queryset().annotate(**self.annotations)
 
+
 class EnteralFeedingRegime(models.Model):
 	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
 	time = models.TimeField(blank=True, null=True)
@@ -508,7 +515,7 @@ class EnteralFeedingRegime(models.Model):
 	_total_fluids = None
 
 	objects = AnnotationManager(
-		total_fluids=F('warm_water_before')+F('warm_water_after'),
+			total_fluids=F('warm_water_before') + F('warm_water_after'),
 	)
 
 	def __str__(self):
@@ -578,6 +585,7 @@ class Maintainance(models.Model):
 		verbose_name = _('Maintainance')
 		verbose_name_plural = _("Maintainance")
 
+
 class MedicationRecord(models.Model):
 	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(default=now, blank=True, null=True)
@@ -605,10 +613,9 @@ class MedicationAdministrationRecord(models.Model):
 	medication_tab = models.CharField(choices=TAB_CHOICES, max_length=255, blank=True, null=True)
 	medication_frequency = models.CharField(choices=MEDICATION_ADMINISTRATION_FREQUENCY_CHOICES, max_length=255, blank=True, null=True)
 	medication_route = models.CharField(choices=ROUTE_CHOICES, max_length=255, blank=True, null=True)
-	medication_date = models.DateField(default=now, blank=True, null=True)
-	medication_time = models.TimeField(blank=True, null=True)
+	medication_date_time = models.DateTimeField(default=get_now, blank=True, null=True)
 	signature_nurse = models.CharField(choices=SIGNATURE_CHOICES, max_length=255, blank=True, null=True)
-	stat = models.CharField(max_length=255, blank=True, null=True)
+	stat = models.CharField(choices=MEDICATION_ADMINISTRATION_STAT_CHOICES, max_length=255, blank=True, null=True)
 	date_time = models.DateTimeField(default=get_now, blank=True, null=True)
 	given_by = models.CharField(max_length=255, blank=True, null=True)
 
@@ -661,7 +668,28 @@ class OvertimeClaim(models.Model):
 
 	def convert_duration_time(self):
 		sec = self.duration_time.total_seconds()
-		return '%02d:%02d' % (int((sec/3600)%3600), int((sec/60)%60))
+		return '%02d:%02d' % (int((sec / 3600) % 3600), int((sec / 60) % 60))
+
+	def to_timedelta(self, value):
+		if not value or value == '0':
+			return TimeDelta(microseconds=0)
+
+		pairs = []
+		for b in value.lower().split():
+			for index, char in enumerate(b):
+				if not char.isdigit():
+					pairs.append((b[:index], b[index:])) #digits, letters
+					break
+		if not pairs:
+			raise ValidationError(self.error_messages['invalid'])
+
+		microseconds = 0
+		for digits, chars in pairs:
+			if not digits or not chars:
+				raise ValidationError(self.error_messages['invalid'])
+			microseconds += int(digits) * TimeDelta.values_in_microseconds[chars]
+
+		return TimeDelta(microseconds=microseconds)
 
 #	def get_duration(self):
 #		return self.datetime.time(convert_duration_time)
