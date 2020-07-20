@@ -8,19 +8,24 @@ from django.shortcuts import render, redirect, get_list_or_404, get_object_or_40
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import ugettext as _
 from django.views.generic import ListView, CreateView, UpdateView
+from django.forms import modelformset_factory
+from django.forms.models import inlineformset_factory
 
 #from jsignature.utils import draw_signature
+from crispy_forms.helper import *
 
 from .models import *
 from .forms import *
 #from accounts.models import *
 from customers.models import *
 
-#from datetime import timedelta
-import datetime
+from datetime import *
+#import datetime
 
 #nowtime = datetime.time(datetime.now())
-now = datetime.date.today
+#now = datetime.date.today
+#now = datetime.now()
+now = date.today
 
 # Create your views here.
 
@@ -42,32 +47,68 @@ def index(request):
 
 
 @login_required
-def admission(request, id):
+def admission(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Admission Form')
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
 		'ic_number': icnumbers,
 	}
 
-	if request.method == 'POST':
-		form = AdmissionForm(request.POST or None)
+	if request.method == 'GET':
+		form = AdmissionForm(request.GET or None)
+		formset = AdmissionFormSet(queryset=Admission.objects.none())
+		helper = MyFormSetHelper()
 
-		if form.is_valid():
-			form.save()
+#	if request.method == 'POST':
+	elif request.method == 'POST':
+#		form = AdmissionForm(request.POST)
+#		form = AdmissionForm(request.POST or None, prefix='forma')
+		formset = AdmissionFormSet(request.POST)
+#		formset = AdmissionFormSet(request.POST or None, prefix='formb')
+#		formset = AdmissionFormSet(request.POST or None, queryset=None)
+		formset = AdmissionFormSet(request.POST)
+		helper = MyFormSetHelper()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+#		if form.is_valid():
+		if form.is_valid() and formset.is_valid():
+#			profile = form.save(commit=False)
+#			profile.patient = form.cleaned_data['patient']
+#			profile.birth_date = form.cleaned_data['birth_date']
+#			delta = datetime.now().date() - profile.birth_date
+#			int((datetime.now().date() - self.birth_date).days / 365.25)
+#			profile.age = delta
+#			print(delta.days)
+#			profile.save()
+			admissionform = form.save()
+
+			for form in formset:
+				profile = form.save(commit=False)
+				profile.ec_name = admissionform
+				profile.ec_ic_number = admissionform
+				profile.ec_relationship = admissionform
+				profile.ec_phone = admissionform
+				profile.ec_address = admissionform
+				profile.save()
+
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
+			messages.warning(request, formset.errors)
 	else:
 		form = AdmissionForm(initial=initial)
+#		form = AdmissionForm(initial=initial, prefix='forma')
+#		formset = AdmissionFormSet(queryset=None)
+		formset = AdmissionFormSet()
+#		formset = AdmissionFormSet(initial=initial, prefix='formb')
+		helper = MyFormSetHelper()
 
 	context = {
 		'logos': logos,
@@ -77,20 +118,22 @@ def admission(request, id):
 		'profiles': profiles,
 		'icnumbers': icnumbers,
 		'form': form,
+		'formset': formset,
+#		'helper': helper,
 	}
 
 	return render(request, 'patient_form/admission_form.html', context)
 
 
 @login_required
-def application_homeleave(request, id):
+def application_homeleave(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Application For Home Leave')
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -112,8 +155,8 @@ def application_homeleave(request, id):
 			profile.save()
 #			form.save()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 	else:
@@ -144,14 +187,14 @@ def load_ic_number(request):
 
 
 @login_required
-def appointment(request, id):
+def appointment(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Appointment Records')
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -164,8 +207,8 @@ def appointment(request, id):
 		if form.is_valid():
 			form.save()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 
@@ -186,14 +229,14 @@ def appointment(request, id):
 
 
 @login_required
-def catheterization_cannulation(request, id):
+def catheterization_cannulation(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Catheterization and Cannulation Chart')
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -205,8 +248,8 @@ def catheterization_cannulation(request, id):
 		if form.is_valid():
 			form.save()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 
@@ -227,14 +270,14 @@ def catheterization_cannulation(request, id):
 
 
 @login_required
-def charges_sheet(request, id):
+def charges_sheet(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Charges Sheet')
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -246,8 +289,8 @@ def charges_sheet(request, id):
 		if form.is_valid():
 			form.save()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 	else:
@@ -267,14 +310,14 @@ def charges_sheet(request, id):
 
 
 @login_required
-def dressing(request, id):
+def dressing(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Dressing Chart')
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -286,8 +329,8 @@ def dressing(request, id):
 		if form.is_valid():
 			form.save()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 	else:
@@ -307,16 +350,16 @@ def dressing(request, id):
 
 
 @login_required
-def enteral_feeding_regime(request, id):
+def enteral_feeding_regime(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Enteral Feeding Regime')
 #	total_flush = EnteralFeedingRegime.objects.all().annotate(total_food=F('warm_water_before ') + F('warm_water_after'))
 #    total = EnteralFeedingRegime.objects.aggregate(total_population=Sum('amount'))
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -328,8 +371,8 @@ def enteral_feeding_regime(request, id):
 		if form.is_valid():
 			form.save()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 	else:
@@ -349,14 +392,14 @@ def enteral_feeding_regime(request, id):
 
 
 @login_required
-def hgt_chart(request, id):
+def hgt_chart(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('HGT Chart')
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -368,8 +411,8 @@ def hgt_chart(request, id):
 		if form.is_valid():
 			form.save()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 	else:
@@ -389,14 +432,14 @@ def hgt_chart(request, id):
 
 
 @login_required
-def intake_output(request, id):
+def intake_output(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Intake Output Chart')
-	profiles = PatientProfile.objects.filter(pk=id)
-	patients = get_object_or_404(PatientProfile, pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	profiles = PatientProfile.objects.filter(username=username)
+	patients = get_object_or_404(PatientProfile, username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -407,8 +450,8 @@ def intake_output(request, id):
 		if form.is_valid():
 			form.save()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 	else:
@@ -428,14 +471,14 @@ def intake_output(request, id):
 
 
 @login_required
-def maintainance(request, id):
+def maintainance(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Maintainance Form')
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -447,8 +490,8 @@ def maintainance(request, id):
 		if form.is_valid():
 			form.save()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 	else:
@@ -468,14 +511,14 @@ def maintainance(request, id):
 
 
 @login_required
-def medication_record(request, id):
+def medication_record(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Medication Records')
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -487,8 +530,8 @@ def medication_record(request, id):
 		if form.is_valid():
 			form.save()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 	else:
@@ -508,15 +551,16 @@ def medication_record(request, id):
 
 
 @login_required
-def medication_administration(request, id):
+def medication_administration(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Medication Administration Record')
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
-	allergies = MedicationAdministrationRecord.objects.filter(pk=id).values_list('allergy', flat=True).first()
+	patientid = PatientProfile.objects.get(username=username).id
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	allergies = MedicationAdministrationRecord.objects.filter(patient=patientid).values_list('allergy', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -524,17 +568,33 @@ def medication_administration(request, id):
 		'allergy': allergies,
 	}
 
-	if request.method == 'POST':
-		form = MedicationAdministrationRecordForm(request.POST or None)
-		if form.is_valid():
-			form.save()
+	if request.method == 'GET':
+		form = MedicationAdministrationRecordForm(request.GET or None)
+		formset = MedicationAdministrationRecordFormSet(queryset=MedicationAdministrationRecord.objects.none())
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+	elif request.method == 'POST':
+		form = MedicationAdministrationRecordForm(request.POST)
+		formset = MedicationAdministrationRecordFormSet(request.POST)
+
+		if form.is_valid() and formset.is_valid():
+			medicationadministrationform = form.save()
+
+			for form in formset:
+				profile = form.save(commit=False)
+				profile.medication_name = medicationadministrationform
+				profile.medication_dosage = medicationadministrationform
+				profile.medication_tab = medicationadministrationform
+				profile.medication_frequency = medicationadministrationform
+				profile.medication_route = medicationadministrationform
+				profile.save()
+
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 	else:
 		form = MedicationAdministrationRecordForm(initial=initial)
+		formset = MedicationAdministrationRecordFormSet()
 
 	context = {
 		'logos': logos,
@@ -544,20 +604,21 @@ def medication_administration(request, id):
 		'profiles': profiles,
 		'icnumbers': icnumbers,
 		'form': form,
+		'formset': formset,
 	}
 
 	return render(request, 'patient_form/medication_administration_form.html', context)
 
 
 @login_required
-def miscellaneous_charges_slip(request, id):
+def miscellaneous_charges_slip(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Miscellaneous Charges Slip')
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -569,8 +630,8 @@ def miscellaneous_charges_slip(request, id):
 		if form.is_valid():
 			form.save()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 	else:
@@ -590,14 +651,14 @@ def miscellaneous_charges_slip(request, id):
 
 
 @login_required
-def nursing(request, id):
+def nursing(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Nursing Report')
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -609,8 +670,8 @@ def nursing(request, id):
 		if form.is_valid():
 			form.save()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 	else:
@@ -630,14 +691,20 @@ def nursing(request, id):
 
 
 @login_required
-def overtime_claim(request, id):
+def overtime_claim(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Overtime Claim Form')
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+#	durations = OvertimeClaim.objects.filter(patient=id).values_list('duration_time', flat=True).
+#	d = dict()
+#	d['duration_time'] = a.duration_time
+#	total = OvertimeClaim.objects.annotate(duration = Func(F('end_date'), F('start_date'), function='age'))
+
+#	t = datetime.time(convert_duration_hour, convert_duration_minute)
 
 	initial = {
 		'patient': patients,
@@ -647,10 +714,29 @@ def overtime_claim(request, id):
 	if request.method == 'POST':
 		form = OvertimeClaimForm(request.POST or None)
 		if form.is_valid():
+#			profile = OvertimeClaim()
+#			profile = form.save(commit=False)
+#			profile.patient = form.cleaned_data['patient']
+#			profile.date = form.cleaned_data['date']
+#			profile.duration_time = form.cleaned_data['duration_time']
+#			profile.hours = form.cleaned_data['hours']
+#			profile.hours = profile.hours.strptime(profile.hours.strftime("%H:%M"), "%H:%M")
+#			profile.hours = datetime.datetime.strptime(duration_time, '%H:%M').time()
+#			profile.total_hours = form.cleaned_data['total_hours']
+#			start_time = OvertimeClaim.objects.get(pk=id)
+#			start = start_time.hours
+#			delta = start.replace(hour=(start.hour + profile.duration_time) % 24)
+#			delta = profile.duration_time
+#			profile.total_hours = datetime.time(delta)
+#			profile.total_hours = datetime.datetime.strptime(profile.duration_time, '%H:%M').time()
+#			profile.total_hours = t
+#			profile.checked_sign_by = form.cleaned_data['checked_sign_by']
+#			profile.verify_by = form.cleaned_data['verify_by']
+#			profile.save()
 			form.save()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 	else:
@@ -670,14 +756,14 @@ def overtime_claim(request, id):
 
 
 @login_required
-def physio_progress_note(request, id):
+def physio_progress_note(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Physiotherapy Progress Note')
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -689,8 +775,8 @@ def physio_progress_note(request, id):
 		if form.is_valid():
 			form.save()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 	else:
@@ -710,14 +796,14 @@ def physio_progress_note(request, id):
 
 
 @login_required
-def physiotherapy_general_assessment(request, id):
+def physiotherapy_general_assessment(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Physiotherapy General Assessment Form')
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -729,8 +815,8 @@ def physiotherapy_general_assessment(request, id):
 		if form.is_valid():
 			form.save()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 	else:
@@ -750,14 +836,14 @@ def physiotherapy_general_assessment(request, id):
 
 
 @login_required
-def staff_records(request, id):
+def staff_records(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Staff Records')
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -769,8 +855,8 @@ def staff_records(request, id):
 		if form.is_valid():
 			form.save()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 	else:
@@ -790,14 +876,14 @@ def staff_records(request, id):
 
 
 @login_required
-def stool(request, id):
+def stool(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Stool Chart')
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -809,8 +895,8 @@ def stool(request, id):
 		if form.is_valid():
 			form.save()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 	else:
@@ -830,14 +916,14 @@ def stool(request, id):
 
 
 @login_required
-def visiting_consultant_records(request, id):
+def visiting_consultant_records(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Visiting Consultant Records')
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -849,8 +935,8 @@ def visiting_consultant_records(request, id):
 		if form.is_valid():
 			form.save()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 	else:
@@ -870,14 +956,14 @@ def visiting_consultant_records(request, id):
 
 
 @login_required
-def vital_sign_flow(request, id):
+def vital_sign_flow(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Vital Sign Flow Sheet')
-	patients = get_object_or_404(PatientProfile, pk=id)
-	profiles = PatientProfile.objects.filter(pk=id)
-	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(PatientProfile, username=username)
+	profiles = PatientProfile.objects.filter(username=username)
+	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -889,8 +975,8 @@ def vital_sign_flow(request, id):
 		if form.is_valid():
 			form.save()
 
-			messages.success(request, _('Your form has been save successfully.'))
-			return redirect('patient_data:patientdata_detail', id=patients.id)
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 	else:

@@ -81,7 +81,7 @@
 			</table>
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 			{% for item in profiles %}
-			<a class="btn btn-danger" href="{% url 'patient_data:patientdata_detail' item.id %}">{% trans "Cancel" %}</a>
+			<a class="btn btn-danger" href="{% url 'patient_data:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
 			{% endfor %}
 		</form>
 

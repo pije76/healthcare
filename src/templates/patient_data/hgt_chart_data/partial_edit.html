@@ -1,11 +1,11 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 
-<form method="post" action="{% url 'patient_data:appointment_data_edit' form.instance.pk %}" class="appointment-update-form">
+<form method="post" action="{% url 'patient_data:hgt_chart_data_edit' form.instance.pk %}" class="hgt_chart-update-form">
 {% csrf_token %}
 
 	<div class="modal-header">
-		<h4 class="modal-title" id="rowEditModalLabel1">Edit Appointment</h4>
+		<h4 class="modal-title" id="rowEditModalLabel1">Edit HGT Chart</h4>
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 	</div>
 

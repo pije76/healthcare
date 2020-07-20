@@ -30,12 +30,12 @@ def save_intake_output_data_form(request, form, template_name):
 
     if request.method == 'POST':
         if form.is_valid():
-            patients = Appointment()
+            patients = IntakeOutputChart()
             patients = form.save(commit=False)
             patients.patient = request.user
             patients.save()
             data['form_is_valid'] = True
-            patients = Appointment.objects.all()
+            patients = IntakeOutputChart.objects.all()
             data['html_intake_output_list'] = render_to_string('patient_data/intake_output_data/intake_output_data.html', {'patients': patients})
         else:
             data['form_is_valid'] = False
@@ -50,31 +50,32 @@ def save_intake_output_data_form(request, form, template_name):
 
 
 @login_required
-def intake_output_data(request, id):
+def intake_output_data(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Intake Output Chart')
-    patients = IntakeOutputChart.objects.filter(patient=id)
-    profiles = PatientProfile.objects.filter(pk=id)
+    patientid = PatientProfile.objects.get(username=username).id
+    patients = IntakeOutputChart.objects.filter(patient=patientid)
+    profiles = PatientProfile.objects.filter(pk=patientid)
 
-    total_oral_day = IntakeOutputChart.objects.filter(patient=id, date__range=[startdate, enddate], time_intake__range=(start_time_day, end_time_day)).aggregate(Sum('intake_oral_ml'))
-    total_parental_day = IntakeOutputChart.objects.filter(patient=id, date__range=[startdate, enddate], time_intake__range=(start_time_day, end_time_day)).aggregate(Sum('intake_parenteral_ml'))
-    total_other_intake_day = IntakeOutputChart.objects.filter(patient=id, date__range=[startdate, enddate], time_intake__range=(start_time_day, end_time_day)).aggregate(Sum('intake_other_ml'))
-    total_cum_day = IntakeOutputChart.objects.filter(patient=id, date__range=[startdate, enddate], time_intake__range=(start_time_day, end_time_day)).aggregate(Sum('output_urine_cum'))
-    total_gastric_day = IntakeOutputChart.objects.filter(patient=id, date__range=[startdate, enddate], time_intake__range=(start_time_day, end_time_day)).aggregate(Sum('output_gastric_ml'))
-    total_other_output_day = IntakeOutputChart.objects.filter(patient=id, date__range=[startdate, enddate], time_intake__range=(start_time_day, end_time_day)).aggregate(Sum('output_other_ml'))
+    total_oral_day = IntakeOutputChart.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_day, end_time_day)).aggregate(Sum('intake_oral_ml'))
+    total_parental_day = IntakeOutputChart.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_day, end_time_day)).aggregate(Sum('intake_parenteral_ml'))
+    total_other_intake_day = IntakeOutputChart.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_day, end_time_day)).aggregate(Sum('intake_other_ml'))
+    total_cum_day = IntakeOutputChart.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_day, end_time_day)).aggregate(Sum('output_urine_cum'))
+    total_gastric_day = IntakeOutputChart.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_day, end_time_day)).aggregate(Sum('output_gastric_ml'))
+    total_other_output_day = IntakeOutputChart.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_day, end_time_day)).aggregate(Sum('output_other_ml'))
 
-    total_oral_night = IntakeOutputChart.objects.filter(patient=id, date__range=[startdate, enddate], time_intake__range=(start_time_night, end_time_night)).aggregate(Sum('intake_oral_ml'))
-    total_parental_night = IntakeOutputChart.objects.filter(patient=id, date__range=[startdate, enddate], time_intake__range=(start_time_night, end_time_night)).aggregate(Sum('intake_parenteral_ml'))
-    total_other_intake_night = IntakeOutputChart.objects.filter(patient=id, date__range=[startdate, enddate], time_intake__range=(start_time_night, end_time_night)).aggregate(Sum('intake_other_ml'))
-    total_cum_night = IntakeOutputChart.objects.filter(patient=id, date__range=[startdate, enddate], time_intake__range=(start_time_night, end_time_night)).aggregate(Sum('output_urine_cum'))
-    total_gastric_night = IntakeOutputChart.objects.filter(patient=id, date__range=[startdate, enddate], time_intake__range=(start_time_night, end_time_night)).aggregate(Sum('output_gastric_ml'))
-    total_other_output_night = IntakeOutputChart.objects.filter(patient=id, date__range=[startdate, enddate], time_intake__range=(start_time_night, end_time_night)).aggregate(Sum('output_other_ml'))
+    total_oral_night = IntakeOutputChart.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_night, end_time_night)).aggregate(Sum('intake_oral_ml'))
+    total_parental_night = IntakeOutputChart.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_night, end_time_night)).aggregate(Sum('intake_parenteral_ml'))
+    total_other_intake_night = IntakeOutputChart.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_night, end_time_night)).aggregate(Sum('intake_other_ml'))
+    total_cum_night = IntakeOutputChart.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_night, end_time_night)).aggregate(Sum('output_urine_cum'))
+    total_gastric_night = IntakeOutputChart.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_night, end_time_night)).aggregate(Sum('output_gastric_ml'))
+    total_other_output_night = IntakeOutputChart.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_night, end_time_night)).aggregate(Sum('output_other_ml'))
 
-    total_oral = IntakeOutputChart.objects.filter(patient=id).aggregate(Sum('intake_oral_ml'))
-    total_parental = IntakeOutputChart.objects.filter(patient=id).aggregate(Sum('intake_parenteral_ml'))
-    total_other_intake = IntakeOutputChart.objects.filter(patient=id,).aggregate(Sum('intake_other_ml'))
+    total_oral = IntakeOutputChart.objects.filter(patient=patientid).aggregate(Sum('intake_oral_ml'))
+    total_parental = IntakeOutputChart.objects.filter(patient=patientid).aggregate(Sum('intake_parenteral_ml'))
+    total_other_intake = IntakeOutputChart.objects.filter(patient=patientid,).aggregate(Sum('intake_other_ml'))
 
     agg_data = IntakeOutputChart.objects.aggregate(total_source1=Count('intake_oral_ml'), total_source2=Count('intake_parenteral_ml'), total_source3=Count('intake_other_ml'))
     total_count = sum(agg_data.values())
@@ -84,13 +85,13 @@ def intake_output_data(request, id):
 
 #   total_intake = IntakeOutputChart.objects.all().aggregate(Sum(F('output_urine_cum') + F('output_gastric_ml') + F('output_other_ml'))
 
-    total_intake = IntakeOutputChart.objects.filter(patient=id).annotate(Count('output_urine_cum')).annotate(Count('output_gastric_ml')).annotate(Count('output_other_ml'))
+    total_intake = IntakeOutputChart.objects.filter(patient=patientid).annotate(Count('output_urine_cum')).annotate(Count('output_gastric_ml')).annotate(Count('output_other_ml'))
 #   total_output = total_cum+total_gastric+total_other_output
 
 #   total_balance = total_intake + total_output
 
-    time_range_day = IntakeOutputChart.objects.filter(patient=id, time_intake__range=(start_time_day, end_time_day))
-    time_range_night = IntakeOutputChart.objects.filter(patient=id, time_intake__range=(start_time_night, end_time_night))
+    time_range_day = IntakeOutputChart.objects.filter(patient=patientid, time_intake__range=(start_time_day, end_time_day))
+    time_range_night = IntakeOutputChart.objects.filter(patient=patientid, time_intake__range=(start_time_night, end_time_night))
 
     context = {
         'logos': logos,
@@ -129,23 +130,23 @@ def intake_output_data(request, id):
 
 @login_required
 def intake_output_data_edit(request, id):
-    intake_outputs = get_object_or_404(Appointment, pk=id)
+    intake_outputs = get_object_or_404(IntakeOutputChart, pk=id)
     if request.method == 'POST':
-        form = AppointmentForm(request.POST or None, instance=intake_outputs)
+        form = IntakeOutputChartForm(request.POST or None, instance=intake_outputs)
     else:
-        form = AppointmentForm(instance=intake_outputs)
+        form = IntakeOutputChartForm(instance=intake_outputs)
     return save_intake_output_data_form(request, form, 'patient_data/intake_output_data/partial_edit.html')
 
 
 @login_required
 def intake_output_data_delete(request, id):
-    intake_outputs = get_object_or_404(Appointment, pk=id)
+    intake_outputs = get_object_or_404(IntakeOutputChart, pk=id)
     data = dict()
 
     if request.method == 'POST':
         intake_outputs.delete()
         data['form_is_valid'] = True
-        patients = Appointment.objects.all()
+        patients = IntakeOutputChart.objects.all()
         data['html_intake_output_list'] = render_to_string('patient_data/intake_output_data/intake_output_data.html', {'patients': patients})
         return JsonResponse(data)
     else:

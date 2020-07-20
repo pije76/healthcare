@@ -29,12 +29,12 @@ def save_staff_records_data_form(request, form, template_name):
 
     if request.method == 'POST':
         if form.is_valid():
-            patients = Appointment()
+            patients = StaffRecords()
             patients = form.save(commit=False)
             patients.patient = request.user
             patients.save()
             data['form_is_valid'] = True
-            patients = Appointment.objects.all()
+            patients = StaffRecords.objects.all()
             data['html_staff_records_list'] = render_to_string('patient_data/staff_records_data/staff_records_data.html', {'patients': patients})
         else:
             data['form_is_valid'] = False
@@ -48,15 +48,16 @@ def save_staff_records_data_form(request, form, template_name):
 
 
 @login_required
-def staff_records(request, id):
+def staff_records(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Staff Records')
-    patients = StaffRecords.objects.filter(patient=id)
-    profiles = PatientProfile.objects.filter(pk=id)
-    total_annual = StaffRecords.objects.filter(patient=id).aggregate(Sum('annual_leave_days'))
-    total_public = StaffRecords.objects.filter(patient=id,).aggregate(Sum('public_holiday_days'))
+    patientid = PatientProfile.objects.get(username=username).id
+    patients = StaffRecords.objects.filter(patient=patientid)
+    profiles = PatientProfile.objects.filter(pk=patientid)
+    total_annual = StaffRecords.objects.filter(patient=patientid).aggregate(Sum('annual_leave_days'))
+    total_public = StaffRecords.objects.filter(patient=patientid,).aggregate(Sum('public_holiday_days'))
 
     context = {
         'logos': logos,
@@ -72,23 +73,23 @@ def staff_records(request, id):
 
 @login_required
 def staff_records_data_edit(request, id):
-    staff_recordss = get_object_or_404(Appointment, pk=id)
+    staff_recordss = get_object_or_404(StaffRecords, pk=id)
     if request.method == 'POST':
-        form = AppointmentForm(request.POST or None, instance=staff_recordss)
+        form = StaffRecordsForm(request.POST or None, instance=staff_recordss)
     else:
-        form = AppointmentForm(instance=staff_recordss)
+        form = StaffRecordsForm(instance=staff_recordss)
     return save_staff_records_data_form(request, form, 'patient_data/staff_records_data/partial_edit.html')
 
 
 @login_required
 def staff_records_data_delete(request, id):
-    staff_recordss = get_object_or_404(Appointment, pk=id)
+    staff_recordss = get_object_or_404(StaffRecords, pk=id)
     data = dict()
 
     if request.method == 'POST':
         staff_recordss.delete()
         data['form_is_valid'] = True
-        patients = Appointment.objects.all()
+        patients = StaffRecords.objects.all()
         data['html_staff_records_list'] = render_to_string('patient_data/staff_records_data/staff_records_data.html', {'patients': patients})
         return JsonResponse(data)
     else:

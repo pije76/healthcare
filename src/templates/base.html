@@ -17,9 +17,12 @@
 	<link rel="stylesheet" href="{% static 'css/navmenu.css' %}" type="text/css">
 	<link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
 	<link rel="stylesheet" href="{% static 'css/sprite-flags-16x16.css' %}" type="text/css">
-	<link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
-	<link rel="stylesheet" href="{% static 'css/dataTables.bootstrap4.min.css' %}">
-	<link rel="stylesheet" href="{% static 'css/rowGroup.bootstrap4.min.css' %}">
+	<link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}" type="text/css">
+	<link rel="stylesheet" href="{% static 'css/dataTables.bootstrap4.min.css' %}" type="text/css">
+	<link rel="stylesheet" href="{% static 'css/rowGroup.bootstrap4.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'selectable/css/dj.selectable.css' %}" type="text/css">
+
 
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap">
 	<link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
@@ -37,6 +40,8 @@
 	<script src="{% static 'js/moment.min.js' %}"></script>                    
 	<script src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
 	<script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.js' %}"></script>
+    <script src="{% static 'selectable/js/jquery.dj.selectable.js' %}"></script>
 
 {% block extrahead %}
 {% endblock %}
@@ -62,8 +67,10 @@
 		{% endblock %}
 	</div>
 
+	{% block javascript %}
+	{% endblock %}
 
-	{% block script %}
+	{% block js %}
 	<script type="text/javascript">
 		window.CSRF_TOKEN = "{{ csrf_token }}";
 	</script>
@@ -86,9 +93,6 @@
 		});
 	});
 	</script>
-	{% endblock %}
-
-	{% block javascript %}
 	{% endblock %}
 
 </body>

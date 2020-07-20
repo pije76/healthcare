@@ -47,13 +47,14 @@ def save_homeleave_data_form(request, form, template_name):
 
 
 @login_required
-def homeleave_data(request, id):
+def homeleave_data(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Application For Home Leave')
-    patients = ApplicationForHomeLeave.objects.filter(patient=id)
-    profiles = PatientProfile.objects.filter(pk=id)
+    patientid = PatientProfile.objects.get(username=username).id
+    patients = ApplicationForHomeLeave.objects.filter(patient=patientid)
+    profiles = PatientProfile.objects.filter(pk=patientid)
 
     context = {
         'logos': logos,

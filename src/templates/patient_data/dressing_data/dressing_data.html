@@ -16,41 +16,7 @@
 {% endblock %}
 
 {% block javascript %}
-
-<script type="text/javascript">
-$(document).ready(function()
-{
-	$('#t_add_row').DataTable(
-	{
-		"order": [[ 0, "desc" ]]
-	});
-});
-</script>
-
-<script type="text/javascript">
-$(document).ready(function()
-{
-	var hoverSize = [500, 400];
-
-	$('img').hover(function()
-	{
-
-		$(this).css(
-		{
-			height: hoverSize[0],
-			width: hoverSize[1]
-		});​
-	}, function()
-	{
-		$(this).css(
-		{
-			height: "",
-			width: ""
-		});
-	});
-});
-</script>
-
+	<script src="{% static 'js/dressing.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -105,36 +71,15 @@ $(document).ready(function()
 											<th class="text-center">{% trans "Done By" %}</th>
 											<th class="text-center">{% trans "Action" %}</th>
 											</tr>
-										</thead>
-										<tbody>
-										{% for item in patients %}
-										<tr>
-											<td>{{ item.date|date:"d-m-Y" }}</td>
-											<td>{{ item.time|date:"H:i" }}</td>
-											<td>{{ item.frequency_dressing }}</td>
-											<td>{{ item.type_dressing }}</td>
-											<td>{{ item.wound_location }}</td>
-											<td>{{ item.wound_condition }}</td>
-											<td>
-												<a href="{{ item.photos_url }}">
-													<img class="image_dressing" src="{{ item.photos_url }}">
-												</a>
-											</td>
-											<td>{{ item.done_by }}</td>
-											<td>
-												<button type="button" class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn" data-url="{% url 'patient_data:dressing_data_edit' item.id %}"data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
-												</button>
-												<button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-url="{% url 'patient_data:dressing_data_delete' item.id %}"data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
-												</button>
-											</td>
-										</tr>
-										{% endfor %}
+									</thead>
+									<tbody>
+										{% include 'patient_data/dressing_data/partial_list.html' %}
 									</tfoot>
 								</table>
 							</form>
 						</div>
 						{% for item in profiles %}
-						<a class="btn btn-outline-primary" href="{% url 'patient_data:patientdata_detail' item.id %}">{% trans "Back" %}</a>
+						<a class="btn btn-outline-primary" href="{% url 'patient_data:patientdata_detail' item.username %}">{% trans "Back" %}</a>
 						{% endfor %}
 
 					</div>

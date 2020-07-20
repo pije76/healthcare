@@ -1,11 +1,11 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 
-<form method="post" action="{% url 'patient_data:appointment_data_edit' form.instance.pk %}" class="appointment-update-form">
+<form method="post" action="{% url 'patient_data:physio_progress_note_data_edit' form.instance.pk %}" class="physio_progress_note-update-form">
 {% csrf_token %}
 
 	<div class="modal-header">
-		<h4 class="modal-title" id="rowEditModalLabel1">Edit Appointment</h4>
+		<h4 class="modal-title" id="rowEditModalLabel1">Edit Physio Progress Note</h4>
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 	</div>
 

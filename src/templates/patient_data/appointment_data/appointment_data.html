@@ -56,8 +56,10 @@
 					<div class="card-body">
 
 						<div class="table-responsive">
-							<form method="post" id="dataForm" data-url="" novalidate>
+							{% for item in patients %}
+							<form method="post" id="dataForm" data-url="{% url 'patient_data:appointment_data_edit' item.id %}" novalidate>
 							{% csrf_token %}
+							{% endfor %}
 								<table id="t_add_row" class="table table-striped table-bordered display" style="width:100%">
 									<thead>
 										<tr>
@@ -72,29 +74,18 @@
 									</thead>
 
 									<tbody>
-										{% for item in patients %}
-										<tr>
-											<td>{{ item.date|date:"d-m-Y" }}</td>
-											<td>{{ item.time|date:"H:i" }}</td>
-											<td>{{ item.hospital_clinic_center }}</td>
-											<td>{{ item.department }}</td>
-											<td>{{ item.planning_investigation }}</td>
-											<td>{{ item.treatment_order }}</td>
-											<td>
-												<button type="button" class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn" data-url="{% url 'patient_data:appointment_data_edit' item.id %}"data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
-												</button>
-												<button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-url="{% url 'patient_data:appointment_data_delete' item.id %}"data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
-												</button>
-											</td>
-										</tr>
-										{% endfor %}
-									</tfoot>
+										{% include 'patient_data/appointment_data/partial_list.html' %}
+									</tbody>
 								</table>
-								{% for item in profiles %}
-								<a class="btn btn-outline-primary" href="{% url 'patient_data:patientdata_detail' item.id %}">{% trans "Back" %}</a>
-								{% endfor %}
+								<br />
+								<br />
+								* REQUEST TO PUT IN CALENDER FOR REMINDER.POP UP IN SYSTEM TO REMIND NURSE
 							</form>
 						</div>
+						<br />
+						{% for item in profiles %}
+						<a class="btn btn-outline-primary" href="{% url 'patient_data:patientdata_detail' item.username %}">{% trans "Back" %}</a>
+						{% endfor %}
 
 					</div>
 

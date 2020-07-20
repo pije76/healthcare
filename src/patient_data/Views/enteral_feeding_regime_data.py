@@ -28,12 +28,12 @@ def save_enteral_feeding_regime_data_form(request, form, template_name):
 
     if request.method == 'POST':
         if form.is_valid():
-            patients = Appointment()
+            patients = EnteralFeedingRegime()
             patients = form.save(commit=False)
             patients.patient = request.user
             patients.save()
             data['form_is_valid'] = True
-            patients = Appointment.objects.all()
+            patients = EnteralFeedingRegime.objects.all()
             data['html_enteral_feeding_regime_list'] = render_to_string('patient_data/enteral_feeding_regime_data/enteral_feeding_regime_data.html', {'patients': patients})
         else:
             data['form_is_valid'] = False
@@ -47,17 +47,18 @@ def save_enteral_feeding_regime_data_form(request, form, template_name):
 
 
 @login_required
-def enteral_feeding_regime_data(request, id):
+def enteral_feeding_regime_data(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Enteral Feeding Regime')
-    patients = EnteralFeedingRegime.objects.filter(patient=id)
+    patientid = PatientProfile.objects.get(username=username).id
+    patients = EnteralFeedingRegime.objects.filter(patient=patientid)
+    profiles = PatientProfile.objects.filter(pk=patientid)
     total = EnteralFeedingRegime.objects.aggregate(Sum('amount'))
-    profiles = PatientProfile.objects.filter(pk=id)
-    total_feeding = EnteralFeedingRegime.objects.aggregate(Sum('amount'))
-    total_fluids = EnteralFeedingRegime.objects.filter(patient=id).values_list('total_fluids', flat=True).first()
-    all_total_fluids = EnteralFeedingRegime.objects.aggregate(Sum('total_fluids'))
+    total_feeding = EnteralFeedingRegime.objects.filter(patient=patientid).aggregate(Sum('amount'))
+    total_fluids = EnteralFeedingRegime.objects.filter(patient=patientid).values_list('total_fluids', flat=True).first()
+    all_total_fluids = EnteralFeedingRegime.objects.filter(patient=patientid).aggregate(Sum('total_fluids'))
 
     context = {
         'logos': logos,
@@ -76,23 +77,23 @@ def enteral_feeding_regime_data(request, id):
 
 @login_required
 def enteral_feeding_regime_data_edit(request, id):
-    enteral_feeding_regimes = get_object_or_404(Appointment, pk=id)
+    enteral_feeding_regimes = get_object_or_404(EnteralFeedingRegime, pk=id)
     if request.method == 'POST':
-        form = AppointmentForm(request.POST or None, instance=enteral_feeding_regimes)
+        form = EnteralFeedingRegimeForm(request.POST or None, instance=enteral_feeding_regimes)
     else:
-        form = AppointmentForm(instance=enteral_feeding_regimes)
+        form = EnteralFeedingRegimeForm(instance=enteral_feeding_regimes)
     return save_enteral_feeding_regime_data_form(request, form, 'patient_data/enteral_feeding_regime_data/partial_edit.html')
 
 
 @login_required
 def enteral_feeding_regime_data_delete(request, id):
-    enteral_feeding_regimes = get_object_or_404(Appointment, pk=id)
+    enteral_feeding_regimes = get_object_or_404(EnteralFeedingRegime, pk=id)
     data = dict()
 
     if request.method == 'POST':
         enteral_feeding_regimes.delete()
         data['form_is_valid'] = True
-        patients = Appointment.objects.all()
+        patients = EnteralFeedingRegime.objects.all()
         data['html_enteral_feeding_regime_list'] = render_to_string('patient_data/enteral_feeding_regime_data/enteral_feeding_regime_data.html', {'patients': patients})
         return JsonResponse(data)
     else:

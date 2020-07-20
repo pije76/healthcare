@@ -28,12 +28,12 @@ def save_medication_data_form(request, form, template_name):
 
     if request.method == 'POST':
         if form.is_valid():
-            patients = Appointment()
+            patients = MedicationRecord()
             patients = form.save(commit=False)
             patients.patient = request.user
             patients.save()
             data['form_is_valid'] = True
-            patients = Appointment.objects.all()
+            patients = MedicationRecord.objects.all()
             data['html_medication_list'] = render_to_string('patient_data/medication_data/medication_data.html', {'patients': patients})
         else:
             data['form_is_valid'] = False
@@ -48,13 +48,14 @@ def save_medication_data_form(request, form, template_name):
 
 
 @login_required
-def medication_data(request, id):
+def medication_data(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Medication Records')
-    patients = MedicationRecord.objects.filter(patient=id)
-    profiles = PatientProfile.objects.filter(pk=id)
+    patientid = PatientProfile.objects.get(username=username).id
+    patients = MedicationRecord.objects.filter(patient=patientid)
+    profiles = PatientProfile.objects.filter(pk=patientid)
 
     context = {
         'logos': logos,
@@ -69,23 +70,23 @@ def medication_data(request, id):
 
 @login_required
 def medication_data_edit(request, id):
-    medications = get_object_or_404(Appointment, pk=id)
+    medications = get_object_or_404(MedicationRecord, pk=id)
     if request.method == 'POST':
-        form = AppointmentForm(request.POST or None, instance=medications)
+        form = MedicationRecordForm(request.POST or None, instance=medications)
     else:
-        form = AppointmentForm(instance=medications)
+        form = MedicationRecordForm(instance=medications)
     return save_medication_data_form(request, form, 'patient_data/medication_data/partial_edit.html')
 
 
 @login_required
 def medication_data_delete(request, id):
-    medications = get_object_or_404(Appointment, pk=id)
+    medications = get_object_or_404(MedicationRecord, pk=id)
     data = dict()
 
     if request.method == 'POST':
         medications.delete()
         data['form_is_valid'] = True
-        patients = Appointment.objects.all()
+        patients = MedicationRecord.objects.all()
         data['html_medication_list'] = render_to_string('patient_data/medication_data/medication_data.html', {'patients': patients})
         return JsonResponse(data)
     else:

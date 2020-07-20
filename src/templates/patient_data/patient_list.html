@@ -6,7 +6,7 @@
 {% load widget_tweaks %}
 
 {% block javascript %}
-    <script src="{% static 'js/patient_list.js' %}"></script>
+    <script src="{% static 'js/patient_data/patient_list.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -44,7 +44,7 @@
                                     {% for item in tables %}
                                     <tr>
                                         <td>{{ item.id }}</td>
-                                        <td><a href="{% url 'patient_data:patientdata_detail' item.id %}" title="{% trans "View Detail" %}" >{{ item }}</a></td>
+                                        <td><a href="{% url 'patient_data:patientdata_detail' item.username %}" title="{% trans "View Detail" %}" >{{ item }}</a></td>
                                         <td>{{ item.ic_number }}</td>
                                         <td>{{ item.jkl }}</td>
                                         <td>{{ item.eth }}</td>
@@ -55,7 +55,7 @@
                                     {% for item in tables %}
                                     <tr>
                                         <td>{{ item.id }}</td>
-                                        <td><a href="{% url 'patient_data:patientdata_detail' item.id %}" title="{% trans "View Detail" %}" >{{ item }}</a></td>
+                                        <td><a href="{% url 'patient_data:patientdata_detail' item.username %}" title="{% trans "View Detail" %}" >{{ item }}</a></td>
                                         <td>{{ item.ic_number }}</td>
                                         <td>{{ item.jkl }}</td>
                                         <td>{{ item.eth }}</td>

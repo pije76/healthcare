@@ -28,12 +28,12 @@ def save_charges_sheet_data_form(request, form, template_name):
 
     if request.method == 'POST':
         if form.is_valid():
-            patients = Appointment()
+            patients = Charges()
             patients = form.save(commit=False)
             patients.patient = request.user
             patients.save()
             data['form_is_valid'] = True
-            patients = Appointment.objects.all()
+            patients = Charges.objects.all()
             data['html_charges_sheet_list'] = render_to_string('patient_data/charges_sheet_data/charges_sheet_data.html', {'patients': patients})
         else:
             data['form_is_valid'] = False
@@ -47,13 +47,14 @@ def save_charges_sheet_data_form(request, form, template_name):
 
 
 @login_required
-def charges_sheet_data(request, id):
+def charges_sheet_data(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Charges Sheet')
-    patients = Charges.objects.filter(patient=id)
-    profiles = PatientProfile.objects.filter(pk=id)
+    patientid = PatientProfile.objects.get(username=username).id
+    patients = Charges.objects.filter(patient=patientid)
+    profiles = PatientProfile.objects.filter(pk=patientid)
 
     context = {
         'logos': logos,
@@ -68,23 +69,23 @@ def charges_sheet_data(request, id):
 
 @login_required
 def charges_sheet_data_edit(request, id):
-    charges_sheets = get_object_or_404(Appointment, pk=id)
+    charges_sheets = get_object_or_404(Charges, pk=id)
     if request.method == 'POST':
-        form = AppointmentForm(request.POST or None, instance=charges_sheets)
+        form = ChargesForm(request.POST or None, instance=charges_sheets)
     else:
-        form = AppointmentForm(instance=charges_sheets)
+        form = ChargesForm(instance=charges_sheets)
     return save_charges_sheet_data_form(request, form, 'patient_data/charges_sheet_data/partial_edit.html')
 
 
 @login_required
 def charges_sheet_data_delete(request, id):
-    charges_sheets = get_object_or_404(Appointment, pk=id)
+    charges_sheets = get_object_or_404(Charges, pk=id)
     data = dict()
 
     if request.method == 'POST':
         charges_sheets.delete()
         data['form_is_valid'] = True
-        patients = Appointment.objects.all()
+        patients = Charges.objects.all()
         data['html_charges_sheet_list'] = render_to_string('patient_data/charges_sheet_data/charges_sheet_data.html', {'patients': patients})
         return JsonResponse(data)
     else:

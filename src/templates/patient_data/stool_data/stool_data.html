@@ -16,17 +16,7 @@
 {% endblock %}
 
 {% block javascript %}
-
-	<script type="text/javascript">
-	$(document).ready(function()
-	{
-		$('#t_add_row').DataTable(
-		{
-			"order": [[ 0, "desc" ]]
-		});
-	});
-	</script>
-
+	<script src="{% static 'js/stool.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -82,29 +72,13 @@
 										</tr>
 									</thead>
 									<tbody>
-										{% for item in patients %}
-										<tr>
-											<td>{{ item.date|date:"d-m-y" }}</td>
-											<td>{{ item.time|date:"H:i" }}</td>
-											<td>{{ item.get_frequency_display }}</td>
-											<td>{{ item.get_consistency_display }}</td>
-											<td>{{ item.get_amount_display }}</td>
-											<td>{{ item.remark }}</td>
-											<td>{{ item.name }}</td>
-											<td>
-												<button type="button" class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn" data-url="{% url 'patient_data:stool_data_edit' item.id %}"data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
-												</button>
-												<button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-url="{% url 'patient_data:stool_data_delete' item.id %}"data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
-												</button>
-											</td>
-										</tr>
-										{% endfor %}
+										{% include 'patient_data/stool_data/partial_list.html' %}										
 									</tfoot>
 								</table>
 							</form>
 						</div>
 						{% for item in profiles %}
-						<a class="btn btn-outline-primary" href="{% url 'patient_data:patientdata_detail' item.id %}">{% trans "Back" %}</a>
+						<a class="btn btn-outline-primary" href="{% url 'patient_data:patientdata_detail' item.username %}">{% trans "Back" %}</a>
 						{% endfor %}
 
 					</div>

@@ -2,8 +2,9 @@
 
 {% load static %}
 {% load staticfiles %}
-{% load crispy_forms_tags %}
 {% load i18n %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
 
 {% block headtitle %}
     {{ page_title }} | {{ titles.title }}
@@ -15,10 +16,14 @@
 
 {% block styles %}
 	<link href="{% static 'css/patient_form/admission.css' %}" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="{% static 'css/jquery.checkbox.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/jquery.safari-checkbox.css' %}" type="text/css">
 {% endblock %}
 
 {% block javascript %}
-	<script src="{% static 'js/admission.js' %}"></script>
+	<script src="{% static 'js/patient_form/admission.js' %}" type="text/javascript"></script>
+	<script src="{% static 'js/jquery.checkbox.min.js' %}" type="text/javascript"></script>
+	<script src="{% static 'js/jquery.formset.js' %}" type="text/javascript"></script>
 {% endblock %}
 
 {% block content %}
@@ -29,207 +34,485 @@
 		{{ page_title }}
 	</div>
 
-	<p style="font-size:12px">{% include 'messages.html' %}</p>
+	<p style="font-size:12px">
+		{% include 'messages.html' %}
+	</p>
 
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 		<form method="post">
 			{% csrf_token %}
-			<table class="table table-bordered">
-				<tbody>
-					<tr>
-						<td>{% trans "Admission:" %}</td>
-						<td colspan="2">{{ form.date|as_crispy_field }}</td>
-						<td colspan="2">{{ form.time|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Admitted through" %}:</td>
-						<td colspan="3">{{ form.admitted|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Mode of admission" %}:</td>
-						<td colspan="3">{{ form.mode|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Full name  (as per IC)" %}:</td>
-						<td><b>{{ patients }}</b>{{ form.patient|as_crispy_field }}</td>
-						<td>{% trans "IC No" %}:</td>
-						<td><b>{{ icnumbers }}</b></td>
-					</tr>
-					<tr>
-						<td>{% trans "Age" %}:</td>
-						<td>{{ form.age|as_crispy_field }}</td>
-						<td>{% trans "Date of birth" %}:</td>
-						<td>{{ form.birth_date|as_crispy_field }}</td>
-						Total = <input id="grand_total" disabled="">
-					</tr>
-					<tr>
-						<td>{% trans "Sex / Gender" %}:</td>
-						<td colspan="3">{{ form.gender|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Marital Status" %}:</td>
-						<td colspan="3">{{ form.marital_status|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Religion" %}:</td>
-						<td colspan="3">{{ form.religion|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Occupation" %}:</td>
-						<td colspan="3">{{ form.occupation|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Communication" %}:</td>
-						<td colspan="3">
+
+			<div class="container-fluid" id="admissionform">
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Admission" %}:
+					</div>
+					<div class="col-6 col">
+						{{ form.date|as_crispy_field }}
+					</div>
+					<div class="col-4 col">
+						{{ form.time|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Admitted through" %}:
+					</div>
+					<div class="col-4 col">
+<!--						{% render_field form.admitted class="form-check-inline" %} -->
+						{{ form.admitted|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+						{{ form.admitted_others|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Mode of admission" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.mode|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Full name  (as per IC)" %}:
+					</div>
+					<div class="col-4 col">
+						<b>{{ patients }}</b>{{ form.patient|as_crispy_field }}</b>
+					</div>
+					<div class="col-2 col">
+						{% trans "IC No" %}:
+					</div>
+					<div class="col-4 col">
+						<b>{{ icnumbers }}</b>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Date of birth" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.birth_date|as_crispy_field }}
+					</div>
+					<div class="col-2 col">
+						{% trans "Age" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.age|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Sex / Gender" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.gender|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Marital Status" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.marital_status|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+						{{ form.marital_status_others|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Religion" %}:
+					</div>
+					<div class="col-6 col">
+						{{ form.religion|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+						{{ form.religion_others|as_crispy_field }}
+					</div>
+					<div class="col-1 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Occupation" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.occupation|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+						{{ form.occupation_others|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Communication" %}:
+					</div>
+					<div class="col-10 col">
 						{{ form.communication_sight|as_crispy_field }}
-						<br />
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col" style="border-top:none;">
+					</div>
+					<div class="col-4 col">
 						{{ form.communication_hearing|as_crispy_field }}
-						<br />
-						{{ form.communication_others|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Address" %}:</td>
-						<td colspan="3">{{ form.address|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Tel No" %}:</td>
-						<td colspan="3">{{ form.phone|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Emergency contact" %}:</td>
-						<td colspan="3">{{ form.ec_name|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td colspan="3">{{ form.ec_ic_number|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td colspan="3">{{ form.ec_relationship|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td colspan="3">{{ form.ec_phone|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td colspan="3">{{ form.ec_address|as_crispy_field }}</td>
-					</tr>
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+						{{ form.communication_hearing_others|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
 
-					<tr>
-						<td>{% trans "General condition" %}:</td>
-						<td colspan="3">{{ form.general_condition|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Vital sign" %}:</td>
-						<td colspan="3">
-							<table style="width: -webkit-fill-available;">
-								<tbody>
-									<tr>
-										<td>{% trans "Temp (ºC)" %}:</td>
-										<td style="padding-left: 15px; display: inline-flex; width: -webkit-fill-available;">{{ form.vital_sign_temperature|as_crispy_field }}<p style="margin-top:5px;">ºC</p></td>
-									</tr>
-									<tr>
-										<td>{% trans "Pulse (bpm)" %}:</td>
-										<td>{{ form.vital_sign_pulse|as_crispy_field }}</td>
-									</tr>
-									<tr>
-										<td>{% trans "BP (mmHg)" %}:</td>
-										<td>{{ form.vital_sign_bp|as_crispy_field }}</td>
-									</tr>
-									<tr>
-										<td>{% trans "Resp (min)" %}:</td>
-										<td>{{ form.vital_sign_resp|as_crispy_field }}</td>
-									</tr>
-									<tr>
-										<td>{% trans "SPO2 (%)" %}:</td>
-										<td style="padding-left: 15px; display: inline-flex; width: -webkit-fill-available;">{{ form.vital_sign_spo2|as_crispy_field }}<p style="margin-top:5px;">{% trans "% (RA)" %}</p></td>
-									</tr>
-									<tr>
-										<td>{% trans "On Oxygen therapy" %}:</td>
-										<td style="display:inline-flex">{{ form.vital_sign_on_oxygen_therapy|as_crispy_field }}  {% trans "flow rate" %}  &nbsp;{{ form.vital_sign_on_oxygen_therapy_flow_rate|as_crispy_field }} {% trans "L/min" %}</td>
-									</tr>
-									<tr>
-										<td>{% trans "HGT(mmol/L)" %}:</td>
-										<td>{{ form.vital_sign_hgt|as_crispy_field }}</td>
-									</tr>
-								</tbody>
-							</table>
-						</td>
-					</tr>
-					<tr>
-						<td>{% trans "Allergy" %}:</td>
-						<td>{{ form.allergy_drug|as_crispy_field }}</td>
-						<td>{{ form.allergy_food|as_crispy_field }}</td>
-						<td>{{ form.allergy_others|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Biohazard/ infectious disease" %}:</td>
-						<td colspan="3">{{ form.biohazard_infectious_disease|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Invasive line insitu" %}:</td>
-						<td colspan="3">{{ form.invasive_line_insitu|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Medical history" %}:</td>
-						<td colspan="3">{{ form.medical_history|as_crispy_field }}</td>
-					</tr>					<tr>
-						<td>{% trans "Surgical history" %}:</td>
-						<td colspan="3">{{ form.surgical_history|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Date" %}:<br />{{ form.date_diagnosis|as_crispy_field }}</td>
-						<td>{% trans "Diagnosis" %}:<br />{{ form.diagnosis|as_crispy_field }}</td>
-						<td>{% trans "Date" %}:<br />{{ form.date_operation|as_crispy_field }}</td>
-						<td>{% trans "Operation" %}:<br />{{ form.operation|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Own medication" %}:</td>
-						<td colspan="3">{{ form.own_medication|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td colspan="4">
-							<table style="width: -webkit-fill-available;">
-								<tbody>
-									<tr>
-										<td>{% trans "Drug name" %}<br />
-										{{ form.own_medication_drug_name|as_crispy_field }}</td>
-										<td>{% trans "Dosage" %}<br />
-										{{ form.own_medication_dosage|as_crispy_field }}</td>
-										<td>{% trans "Tablet/Capsule/mls" %}<br />
-										{{ form.own_medication_tablet_capsule|as_crispy_field }}</td>
-										<td>{% trans "Frequency" %}<br />
-										{{ form.own_medication_frequency|as_crispy_field }}</td>
-									</tr>
-								</tbody>
-							</table>							
-						</td>
-					</tr>
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Address" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.address|as_crispy_field }}
+					</div>
+				</div>
 
-					<tr>
-						<td>{% trans "Adaptive aids with patient on admission" %}:</td>
-						<td colspan="3">{{ form.adaptive_aids_with_patient|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Orientation" %}:</td>
-						<td colspan="3">{{ form.orientation|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Special information" %}:</td>
-						<td colspan="3">{{ form.special_information|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Admission done by" %}:</td>
-						<td colspan="3">{{ form.special_information|as_crispy_field }}</td>
-					</tr>
-				</tbody>
-			</table>
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Tel No" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.phone|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Emergency contact" %}:
+					</div>
+
+					{{ formset.management_form }}
+					{% for item in formset %}
+					<div class="col-5 col form-row">
+						{% trans "Name" %}:
+						{% render_field item.ec_name class="form-control" %}
+						{% trans "IC No" %}:
+						{% render_field item.ec_ic_number class="form-control" %}
+						{% trans "Relationship" %}:
+						{% render_field item.ec_relationship class="form-control" %}
+						{% trans "Contact No" %}:
+						{% render_field item.ec_phone class="form-control" %}
+						{% trans "Address" %}:
+						{% render_field item.ec_address class="form-control" %}
+
+						<button type="button" style="margin-top:5px;" class="btn btn-success add-form-row">
+							<i class="fas fa-plus"></i>
+						</button>
+					</div>
+
+					{% endfor %}
+				</div>
+
+				<div class="row">
+					<div class="col-4 col" style="border-right:none;">
+					</div>
+					<div class="col-4 col" style="border-left:none;">
+						<b>{% trans "General Observation on Admission" %}</b>
+					</div>
+					<div class="col-4 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "General condition" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.general_condition|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Vital sign" %}:
+					</div>
+					<div class="col-3 col">
+						{% trans "Temp (ºC)" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.vital_sign_temperature|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col" style="border-top:none;">
+					</div>
+					<div class="col-3 col">
+						{% trans "Pulse (bpm)" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.vital_sign_pulse|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col" style="border-top:none;">
+					</div>
+					<div class="col-3 col">
+						{% trans "BP (mmHg)" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.vital_sign_bp|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col" style="border-top:none;">
+					</div>
+					<div class="col-3 col">
+						{% trans "Resp (min)" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.vital_sign_resp|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+					</div>
+					<div class="col-3 col">
+						{% trans "SPO2 (%)" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.vital_sign_spo2|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+					</div>
+					<div class="col-3 col">
+						{% trans "On Oxygen therapy" %}:
+					</div>
+					<div class="col-2 col">
+						{{ form.vital_sign_on_oxygen_therapy|as_crispy_field }}
+					</div>
+					<div class="col-5 col" style="border-left:none; display:inline-flex;">
+						{% trans "Flow rate" %}:&nbsp;{{ form.vital_sign_on_oxygen_therapy_flow_rate|as_crispy_field }}&nbsp;{% trans "L/min" %}
+
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+					</div>
+					<div class="col-3 col">
+						{% trans "HGT (mmol/L)" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.vital_sign_hgt|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Allergy" %}:
+					</div>
+					<div class="col-3 col">
+						{{ form.allergy_drug|as_crispy_field }}
+					</div>
+					<div class="col-3 col">
+						{{ form.allergy_food|as_crispy_field }}
+					</div>
+					<div class="col-4 col">
+						{{ form.allergy_others|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Biohazard/ infectious disease" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.biohazard_infectious_disease|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Invasive line insitu" %}:
+					</div>
+					<div class="col-7 col">
+						{{ form.invasive_line_insitu|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none; display:inline-flex;">
+						{{ form.invasive_line_insitu_others|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Medical history" %}:
+					</div>
+					<div class="col-7 col">
+						{{ form.medical_history|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none; display:inline-flex;">
+						{{ form.medical_history_others|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Surgical history" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.surgical_history_none|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col" style="border-top:none;">
+					</div>
+					<div class="col-10 col" style="border-top:none;">
+						{{ form.surgical_history|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Date" %}:
+						{{ form.date_diagnosis|as_crispy_field }}
+					</div>
+					<div class="col-4 col">
+						{% trans "Diagnosis" %}:
+						{{ form.diagnosis|as_crispy_field }}
+					</div>
+					<div class="col-2 col">
+						{% trans "Date" %}:
+						{{ form.date_operation|as_crispy_field }}
+					</div>
+					<div class="col-4 col">
+						{% trans "Operation" %}:
+						{{ form.operation|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Own medication" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.own_medication|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col" style="border-top:none;">
+					</div>
+					<div class="col-3 col">
+						{% trans "Drug name" %}:
+					</div>
+					<div class="col-2 col">
+						{% trans "Dosage" %}:
+					</div>
+					<div class="col-3 col">
+						{% trans "Tablet/Capsule/mls" %}:
+					</div>
+					<div class="col-2 col">
+						{% trans "Frequency" %}:
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col" style="border-top:none;">
+					</div>
+					<div class="col-3 col">
+						{{ form.own_medication_drug_name|as_crispy_field }}
+					</div>
+					<div class="col-2 col">
+						{{ form.own_medication_dosage|as_crispy_field }}
+					</div>
+					<div class="col-3 col">
+						{{ form.own_medication_tablet_capsule|as_crispy_field }}
+					</div>
+					<div class="col-2 col">
+						{{ form.own_medication_frequency|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Adaptive aids with patient on admission" %}:
+					</div>
+					<div class="col-7 col">
+						{{ form.adaptive_aids_with_patient|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none; display:inline-flex;">
+						{{ form.adaptive_aids_with_patient_others|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Orientation" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.orientation|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Special information" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.special_information|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Admission done by" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.admission_by|as_crispy_field }}
+					</div>
+				</div>
+
+			</div>
+
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 			{% for item in profiles %}
-			<a class="btn btn-danger" href="{% url 'patient_data:patientdata_detail' item.id %}">{% trans "Cancel" %}</a>
+			<a class="btn btn-danger" href="{% url 'patient_data:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
 			{% endfor %}
 		</form>
 
@@ -237,5 +520,88 @@
 
 </div>
 
+{% endblock %}
 
+{% block js %}
+	<script type='text/javascript'>
+	function cloneMore(selector, prefix)
+	{
+		var newElement = $(selector).clone(true);
+		var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+
+		newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function()
+		{
+			var name = $(this).attr('name').replace('-' + (total-1) + '-', '-' + total + '-');
+			var id = 'id_' + name;
+			$(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+		});
+
+		newElement.find('label').each(function()
+		{
+			var forValue = $(this).attr('for');
+			if (forValue)
+			{
+				forValue = forValue.replace('-' + (total-1) + '-', '-' + total + '-');
+				$(this).attr({'for': forValue});
+			}
+		});
+		total++;
+
+		$('#id_' + prefix + '-TOTAL_FORMS').val(total);		
+		$(selector).after(newElement);
+		var insertColumn = $('.form-row');
+		insertColumn.last().before('<div class="col-2 col" style="border-top:none;"></div>');
+//		$('.container .row:last-child .col-md-5').length;
+		var conditionRow = $('.form-row:not(:last)');
+		conditionRow.find('.btn.add-form-row')
+		.removeClass('btn-success').addClass('btn-danger')
+		.removeClass('add-form-row').addClass('remove-form-row')
+		.html('<i class="fas fa-minus"></i>');
+		console.log(selector);
+		return false;
+	}
+
+	$(document).on('click', '.add-form-row', function(e)
+	{
+		e.preventDefault();
+		cloneMore('.form-row:last', 'form');
+		return false;
+	});
+
+	function updateElementIndex(el, prefix, ndx)
+	{
+		var id_regex = new RegExp('(' + prefix + '-\\d+)');
+		var replacement = prefix + '-' + ndx;
+		if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+		if (el.id) el.id = el.id.replace(id_regex, replacement);
+		if (el.name) el.name = el.name.replace(id_regex, replacement);
+	}
+
+	function deleteForm(prefix, btn)
+	{
+		var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+		if (total > 1)
+		{
+			btn.closest('.form-row').remove();
+			var forms = $('.form-row');
+			$('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+			for (var i=0, formCount=forms.length; i<formCount; i++)
+			{
+				$(forms.get(i)).find(':input').each(function()
+				{
+					updateElementIndex(this, prefix, i);
+				});
+			}
+		}
+		return false;
+	}
+
+	$(document).on('click', '.remove-form-row', function(e)
+	{
+		e.preventDefault();
+		deleteForm('form', $(this));
+		return false;
+	});
+
+	</script>
 {% endblock %}

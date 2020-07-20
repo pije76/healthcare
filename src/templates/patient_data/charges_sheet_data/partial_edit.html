@@ -1,22 +1,24 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 
-<form method="post" action="{% url 'patient_data:appointment_data_edit' form.instance.pk %}" class="appointment-update-form">
+{% block extrahead %}
+    {{ form.media }}
+{% endblock %}
+
+<form method="post" action="{% url 'patient_data:charges_sheet_data_edit' form.instance.pk %}" class="charges_sheet-update-form">
 {% csrf_token %}
 
 	<div class="modal-header">
-		<h4 class="modal-title" id="rowEditModalLabel1">Edit Appointment</h4>
+		<h4 class="modal-title" id="rowEditModalLabel1">Edit Charges Sheet</h4>
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 	</div>
 
 	<div class="modal-body">
         <div class="form-group">
             {{ form.date|as_crispy_field }}
-            {{ form.time|as_crispy_field }}
-            {{ form.hospital_clinic_center|as_crispy_field }}
-            {{ form.department|as_crispy_field }}
-            {{ form.planning_investigation|as_crispy_field }}
-            {{ form.treatment_order|as_crispy_field }}
+            {{ form.items|as_crispy_field }}
+            {{ form.amount_unit|as_crispy_field }}
+            {{ form.given_by|as_crispy_field }}
         </div>
 	</div>
 

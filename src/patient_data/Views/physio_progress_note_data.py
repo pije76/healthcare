@@ -28,12 +28,12 @@ def save_physio_progress_note_data_form(request, form, template_name):
 
     if request.method == 'POST':
         if form.is_valid():
-            patients = Appointment()
+            patients = PhysioProgressNote()
             patients = form.save(commit=False)
             patients.patient = request.user
             patients.save()
             data['form_is_valid'] = True
-            patients = Appointment.objects.all()
+            patients = PhysioProgressNote.objects.all()
             data['html_physio_progress_note_list'] = render_to_string('patient_data/physio_progress_note_data/physio_progress_note_data.html', {'patients': patients})
         else:
             data['form_is_valid'] = False
@@ -47,13 +47,14 @@ def save_physio_progress_note_data_form(request, form, template_name):
 
 
 @login_required
-def physio_progress_note_data(request, id):
+def physio_progress_note_data(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Physiotherapy Progress Note')
-    patients = PhysioProgressNote.objects.filter(patient=id)
-    profiles = PatientProfile.objects.filter(pk=id)
+    patientid = PatientProfile.objects.get(username=username).id
+    patients = PhysioProgressNote.objects.filter(patient=patientid)
+    profiles = PatientProfile.objects.filter(pk=patientid)
 
     context = {
         'logos': logos,
@@ -67,23 +68,23 @@ def physio_progress_note_data(request, id):
 
 @login_required
 def physio_progress_note_data_edit(request, id):
-    physio_progress_notes = get_object_or_404(Appointment, pk=id)
+    physio_progress_notes = get_object_or_404(PhysioProgressNote, pk=id)
     if request.method == 'POST':
-        form = AppointmentForm(request.POST or None, instance=physio_progress_notes)
+        form = PhysioProgressNoteForm(request.POST or None, instance=physio_progress_notes)
     else:
-        form = AppointmentForm(instance=physio_progress_notes)
+        form = PhysioProgressNoteForm(instance=physio_progress_notes)
     return save_physio_progress_note_data_form(request, form, 'patient_data/physio_progress_note_data/partial_edit.html')
 
 
 @login_required
 def physio_progress_note_data_delete(request, id):
-    physio_progress_notes = get_object_or_404(Appointment, pk=id)
+    physio_progress_notes = get_object_or_404(PhysioProgressNote, pk=id)
     data = dict()
 
     if request.method == 'POST':
         physio_progress_notes.delete()
         data['form_is_valid'] = True
-        patients = Appointment.objects.all()
+        patients = PhysioProgressNote.objects.all()
         data['html_physio_progress_note_list'] = render_to_string('patient_data/physio_progress_note_data/physio_progress_note_data.html', {'patients': patients})
         return JsonResponse(data)
     else:

@@ -1,0 +1,575 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load formset_tags %}
+
+{% block headtitle %}
+    {{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block extrahead %}
+	{{ form.media }}
+{% endblock %}
+
+{% block styles %}
+	<link href="{% static 'css/patient_form/admission.css' %}" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="{% static 'css/jquery.checkbox.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/jquery.safari-checkbox.css' %}" type="text/css">
+{% endblock %}
+
+{% block javascript %}
+	<script src="{% static 'js/admission.js' %}"></script>
+	<script src="{% static 'js/jquery.checkbox.min.js' %}"></script>
+	<script src="{% static 'js/jquery.formset.js' %}" type="text/javascript"></script>
+
+	<script type="text/javascript">
+//    $('.formset_row-{{ formset.prefix }}').formset(
+//    {
+//        addText: 'add another',
+//        deleteText: 'remove',
+//        prefix: '{{ formset.prefix }}',
+//    });
+    </script>
+
+    <script type="text/javascript">
+    $(function ()
+    {
+    	$('#formset-id fieldset').formset();
+    });
+    </script>
+
+    <script type="text/javascript">
+//    $(document).ready(function()
+//    {
+//    	$(':radio[id^="id_admitted_"]').checkbox({cls:'jquery-safari-checkbox'});
+//    });
+	</script>
+
+	<script type="text/javascript">
+	</script>
+
+	<script type='text/javascript'>
+	</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="row isi">
+
+	<div class="formtitle clearfix">
+		{{ page_title }}
+	</div>
+
+	<p style="font-size:12px">{% include 'messages.html' %}</p>
+
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+		<form id="myForm" method="post">
+			{% csrf_token %}
+
+			<div class="container-fluid" id="admissionform">
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Admission" %}:
+					</div>
+					<div class="col-6 col">
+						{{ form.date|as_crispy_field }}
+					</div>
+					<div class="col-4 col">
+						{{ form.time|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Admitted through" %}:
+					</div>
+					<div class="col-4 col">
+<!--						{% render_field form.admitted class="form-check-inline" %} -->
+						{{ form.admitted|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+						{{ form.admitted_others|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Mode of admission" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.mode|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Full name  (as per IC)" %}:
+					</div>
+					<div class="col-4 col">
+						<b>{{ patients }}</b>{{ form.patient|as_crispy_field }}</b>
+					</div>
+					<div class="col-2 col">
+						{% trans "IC No" %}:
+					</div>
+					<div class="col-4 col">
+						<b>{{ icnumbers }}</b>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Date of birth" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.birth_date|as_crispy_field }}
+					</div>
+					<div class="col-2 col">
+						{% trans "Age" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.age|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Sex / Gender" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.gender|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Marital Status" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.marital_status|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+						{{ form.marital_status_others|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Religion" %}:
+					</div>
+					<div class="col-6 col">
+						{{ form.religion|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+						{{ form.religion_others|as_crispy_field }}
+					</div>
+					<div class="col-1 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Occupation" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.occupation|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+						{{ form.occupation_others|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Communication" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.communication_sight|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col" style="border-top:none;">
+					</div>
+					<div class="col-4 col">
+						{{ form.communication_hearing|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+						{{ form.communication_hearing_others|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Address" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.address|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Tel No" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.phone|as_crispy_field }}
+					</div>
+				</div>
+
+				<div id="formset" data-formset-prefix="{{ formset.prefix }}">
+    {{ formset.management_form }}
+
+    <div data-formset-body>
+        <!-- New forms will be inserted in here -->
+        {% for form in formset %}
+            <div data-formset-form>
+                {{ form }}
+                <button type="button" data-formset-delete-button>Delete form</button>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- The empty form template. By wrapping this in a <script> tag, the
+    __prefix__ placeholder can easily be replaced in both attributes and
+    any scripts -->
+    <script type="form-template" data-formset-empty-form>
+        {% escapescript %}
+            <div data-formset-form>
+                {{ formset.empty_form }}
+                <button type="button" data-formset-delete-button>Delete form</button>
+            </div>
+        {% endescapescript %}
+    </script>
+
+    <!-- This button will add a new form when clicked -->
+    <input type="button" value="Add another" data-formset-add>
+
+    <script>jQuery(function($) {
+        $("#formset").formset({
+            animateForms: true
+        });
+    });</script>
+
+</div>
+
+				<div class="row">
+					<div class="col-4 col" style="border-right:none;">
+					</div>
+					<div class="col-4 col" style="border-left:none;">
+						<b>{% trans "General Observation on Admission" %}</b>
+					</div>
+					<div class="col-4 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "General condition" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.general_condition|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Vital sign" %}:
+					</div>
+					<div class="col-3 col">
+						{% trans "Temp (ºC)" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.vital_sign_temperature|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col" style="border-top:none;">
+					</div>
+					<div class="col-3 col">
+						{% trans "Pulse (bpm)" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.vital_sign_pulse|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col" style="border-top:none;">
+					</div>
+					<div class="col-3 col">
+						{% trans "BP (mmHg)" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.vital_sign_bp|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col" style="border-top:none;">
+					</div>
+					<div class="col-3 col">
+						{% trans "Resp (min)" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.vital_sign_resp|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+					</div>
+					<div class="col-3 col">
+						{% trans "SPO2 (%)" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.vital_sign_spo2|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+					</div>
+					<div class="col-3 col">
+						{% trans "On Oxygen therapy" %}:
+					</div>
+					<div class="col-2 col">
+						{{ form.vital_sign_on_oxygen_therapy|as_crispy_field }}
+					</div>
+					<div class="col-5 col" style="border-left:none; display:inline-flex;">
+						{% trans "Flow rate" %}:&nbsp;{{ form.vital_sign_on_oxygen_therapy_flow_rate|as_crispy_field }}&nbsp;{% trans "L/min" %}
+
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+					</div>
+					<div class="col-3 col">
+						{% trans "HGT (mmol/L)" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.vital_sign_hgt|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Allergy" %}:
+					</div>
+					<div class="col-3 col">
+						{{ form.allergy_drug|as_crispy_field }}
+					</div>
+					<div class="col-3 col">
+						{{ form.allergy_food|as_crispy_field }}
+					</div>
+					<div class="col-4 col">
+						{{ form.allergy_others|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Biohazard/ infectious disease" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.biohazard_infectious_disease|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Invasive line insitu" %}:
+					</div>
+					<div class="col-7 col">
+						{{ form.invasive_line_insitu|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none; display:inline-flex;">
+						{{ form.invasive_line_insitu_others|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Medical history" %}:
+					</div>
+					<div class="col-7 col">
+						{{ form.medical_history|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none; display:inline-flex;">
+						{{ form.medical_history_others|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Surgical history" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.surgical_history_none|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col" style="border-top:none;">
+					</div>
+					<div class="col-10 col" style="border-top:none;">
+						{{ form.surgical_history|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Date" %}:
+						{{ form.date_diagnosis|as_crispy_field }}
+					</div>
+					<div class="col-4 col">
+						{% trans "Diagnosis" %}:
+						{{ form.diagnosis|as_crispy_field }}
+					</div>
+					<div class="col-2 col">
+						{% trans "Date" %}:
+						{{ form.date_operation|as_crispy_field }}
+					</div>
+					<div class="col-4 col">
+						{% trans "Operation" %}:
+						{{ form.operation|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Own medication" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.own_medication|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col" style="border-top:none;">
+					</div>
+					<div class="col-3 col">
+						{% trans "Drug name" %}:
+					</div>
+					<div class="col-2 col">
+						{% trans "Dosage" %}:
+					</div>
+					<div class="col-3 col">
+						{% trans "Tablet/Capsule/mls" %}:
+					</div>
+					<div class="col-2 col">
+						{% trans "Frequency" %}:
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col" style="border-top:none;">
+					</div>
+					<div class="col-3 col">
+						{{ form.own_medication_drug_name|as_crispy_field }}
+					</div>
+					<div class="col-2 col">
+						{{ form.own_medication_dosage|as_crispy_field }}
+					</div>
+					<div class="col-3 col">
+						{{ form.own_medication_tablet_capsule|as_crispy_field }}
+					</div>
+					<div class="col-2 col">
+						{{ form.own_medication_frequency|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Adaptive aids with patient on admission" %}:
+					</div>
+					<div class="col-7 col">
+						{{ form.adaptive_aids_with_patient|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none; display:inline-flex;">
+						{{ form.adaptive_aids_with_patient_others|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Orientation" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.orientation|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Special information" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.special_information|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Admission done by" %}:
+					</div>
+					<div class="col-10 col">
+						{{ form.admission_by|as_crispy_field }}
+					</div>
+				</div>
+
+			</div>
+
+			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+			{% for item in profiles %}
+			<a class="btn btn-danger" href="{% url 'patient_data:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+			{% endfor %}
+		</form>
+
+	</div>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block js %}
+{{ formset.media }}
+<script>jQuery(function($)
+{
+	$("#formset").formset(
+	{
+		animateForms: true,
+		reorderMode: 'dom',
+	});
+});
+</script>
+{% endblock %}

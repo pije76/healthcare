@@ -24,86 +24,120 @@ end_time_night = datetime.strptime('23:59', '%H:%M').time()
 
 @login_required
 def save_appointment_data_form(request, form, template_name):
-    data = dict()
+	data = dict()
 
-    if request.method == 'POST':
-        if form.is_valid():
-            patients = Appointment()
-            patients = form.save(commit=False)
-            patients.patient = request.user
-            patients.save()
-            data['form_is_valid'] = True
-            patients = Appointment.objects.all()
-            data['html_appointment_list'] = render_to_string('patient_data/appointment_data/appointment_data.html', {'patients': patients})
-        else:
-            data['form_is_valid'] = False
+	if request.method == 'POST':
+		if form.is_valid():
+			patients = Appointment()
+			patients = form.save(commit=False)
+			patients.patient = request.user
+			patients.save()
+			data['form_is_valid'] = True
+			patients = Appointment.objects.all()
+			data['html_appointment_list'] = render_to_string('patient_data/appointment_data/partial_list.html', {'patients': patients})
+		else:
+			data['form_is_valid'] = False
 
-    context = {
-        'form': form,
-    }
-    data['html_form'] = render_to_string(template_name, context, request=request)
+	context = {
+		'form': form,
+	}
+	data['html_form'] = render_to_string(template_name, context, request=request)
 
-    return JsonResponse(data)
+	return JsonResponse(data)
 
 
 @login_required
-def appointment_data(request, id):
-    schema_name = connection.schema_name
-    logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-    page_title = _('Appointment Data')
-    patients = Appointment.objects.filter(patient=id)
-    profiles = PatientProfile.objects.filter(pk=id)
-    event_date = Appointment.objects.filter(patient=id).values_list('date', flat=True)
+def appointment_data(request, username):
+	schema_name = connection.schema_name
+	logos = Client.objects.filter(schema_name=schema_name)
+	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+	page_title = _('Appointment Data')
+	patientid = PatientProfile.objects.get(username=username).id
+	patients = Appointment.objects.filter(patient=patientid)
+	profiles = PatientProfile.objects.filter(pk=patientid)
+#    event_date = Appointment.objects.filter(patient=id).values_list('date', flat=True)
 #   event_time = Appointment.objects.filter(patient=id).values_list('time', flat=True)
-    timenow = datetime.time(datetime.now())
-    event_time = Appointment.objects.filter(patient=id, time='12:59')
+#    timenow = datetime.time(datetime.now())
+#    event_time = Appointment.objects.filter(patient=id, time='12:59')
 
-    print("event_date: ", event_date)
-    print("event_time: ", event_time)
+#    print("event_date: ", event_date)
+#    print("event_time: ", event_time)
 
-    today = date.today()
+#    today = date.today()
 #   difference = today - event_date
 #   event_date_new = event_date + difference
 
-    if event_date == today:
-        messages.warning(request, form.errors)
+#    if event_date == today:
+#        messages.warning(request, form.errors)
 
-    context = {
-        'logos': logos,
-        'titles': titles,
-        'page_title': page_title,
-        'patients': patients,
-        'profiles': profiles,
-    }
+	context = {
+		'logos': logos,
+		'titles': titles,
+		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+	}
 
-    return render(request, 'patient_data/appointment_data/appointment_data.html', context)
+	return render(request, 'patient_data/appointment_data/appointment_data.html', context)
 
 
 @login_required
 def appointment_data_edit(request, id):
-    appointments = get_object_or_404(Appointment, pk=id)
-    if request.method == 'POST':
-        form = AppointmentForm(request.POST or None, instance=appointments)
-    else:
-        form = AppointmentForm(instance=appointments)
-    return save_appointment_data_form(request, form, 'patient_data/appointment_data/partial_edit.html')
+	appointments = get_object_or_404(Appointment, pk=id)
+	schema_name = connection.schema_name
+	logos = Client.objects.filter(schema_name=schema_name)
+	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+	page_title = _('Appointment Data')
+#	patientid = PatientProfile.objects.get(username=username).id
+#	patients = Appointment.objects.filter(patient=patientid)
+#	profiles = PatientProfile.objects.filter(pk=patientid)
+	icnumbers = PatientProfile.objects.filter(pk=id).values_list('ic_number', flat=True).first()
+
+	if request.method == 'POST':
+		form = AppointmentForm(request.POST or None, instance=appointments)
+		if form.is_valid():
+			profile = form.save(commit=False)
+			profile.patient = form.cleaned_data['patient']
+			profile.date = form.cleaned_data['date']
+			profile.time = form.cleaned_data['time']
+			profile.hospital_clinic_center = form.cleaned_data['hospital_clinic_center']
+			profile.department = form.cleaned_data['department']
+			profile.planning_investigation = form.cleaned_data['planning_investigation']
+			profile.treatment_order = form.cleaned_data['treatment_order']
+			profile.save()
+#		return redirect('patient_data:patientdata_detail', username=patients.username)
+		return render(request, 'patient_data/appointment_data/appointment_data.html', {'form': form})
+	else:
+		form = AppointmentForm(instance=appointments)
+
+	context = {
+		'logos': logos,
+		'titles': titles,
+		'page_title': page_title,
+#		'patients': patients,
+#		'profiles': profiles,
+		'icnumbers': icnumbers,
+		'form': form,
+	}
+
+#    return save_appointment_data_form(request, form, 'patient_data/appointment_data/partial_edit.html')
+	return render(request, 'patient_data/appointment_data/partial_edit.html', context)
 
 
 @login_required
 def appointment_data_delete(request, id):
-    appointments = get_object_or_404(Appointment, pk=id)
-    data = dict()
+	appointments = get_object_or_404(Appointment, pk=id)
+	data = dict()
 
-    if request.method == 'POST':
-        appointments.delete()
-        data['form_is_valid'] = True
-        patients = Appointment.objects.all()
-        data['html_appointment_list'] = render_to_string('patient_data/appointment_data/appointment_data.html', {'patients': patients})
-        return JsonResponse(data)
-    else:
-        context = {'appointments': appointments}
-        data['html_form'] = render_to_string('patient_data/appointment_data/partial_delete.html', context, request=request)
-        return JsonResponse(data)
+	if request.method == 'POST':
+		appointments.delete()
+		data['form_is_valid'] = True
+		patients = Appointment.objects.all()
+		data['html_appointment_list'] = render_to_string('patient_data/appointment_data/partial_list.html', {'patients': patients})
+		return JsonResponse(data)
+	else:
+		context = {'appointments': appointments}
+		data['html_form'] = render_to_string('patient_data/appointment_data/partial_delete.html', context, request=request)
+		return JsonResponse(data)
 
-    return JsonResponse(data)
+	return JsonResponse(data)

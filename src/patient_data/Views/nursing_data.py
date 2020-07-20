@@ -28,12 +28,12 @@ def save_nursing_data_form(request, form, template_name):
 
     if request.method == 'POST':
         if form.is_valid():
-            patients = Appointment()
+            patients = Nursing()
             patients = form.save(commit=False)
             patients.patient = request.user
             patients.save()
             data['form_is_valid'] = True
-            patients = Appointment.objects.all()
+            patients = Nursing.objects.all()
             data['html_nursing_list'] = render_to_string('patient_data/nursing_data/nursing_data.html', {'patients': patients})
         else:
             data['form_is_valid'] = False
@@ -46,13 +46,14 @@ def save_nursing_data_form(request, form, template_name):
     return JsonResponse(data)
 
 @login_required
-def nursing_data(request, id):
+def nursing_data(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Nursing Report')
-    patients = Nursing.objects.filter(patient=id)
-    profiles = PatientProfile.objects.filter(pk=id)
+    patientid = PatientProfile.objects.get(username=username).id
+    patients = Nursing.objects.filter(patient=patientid)
+    profiles = PatientProfile.objects.filter(pk=patientid)
 
     context = {
         'logos': logos,
@@ -67,23 +68,23 @@ def nursing_data(request, id):
 
 @login_required
 def nursing_data_edit(request, id):
-    nursings = get_object_or_404(Appointment, pk=id)
+    nursings = get_object_or_404(Nursing, pk=id)
     if request.method == 'POST':
-        form = AppointmentForm(request.POST or None, instance=nursings)
+        form = NursingForm(request.POST or None, instance=nursings)
     else:
-        form = AppointmentForm(instance=nursings)
+        form = NursingForm(instance=nursings)
     return save_nursing_data_form(request, form, 'patient_data/nursing_data/partial_edit.html')
 
 
 @login_required
 def nursing_data_delete(request, id):
-    nursings = get_object_or_404(Appointment, pk=id)
+    nursings = get_object_or_404(Nursing, pk=id)
     data = dict()
 
     if request.method == 'POST':
         nursings.delete()
         data['form_is_valid'] = True
-        patients = Appointment.objects.all()
+        patients = Nursing.objects.all()
         data['html_nursing_list'] = render_to_string('patient_data/nursing_data/nursing_data.html', {'patients': patients})
         return JsonResponse(data)
     else:

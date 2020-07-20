@@ -15,6 +15,7 @@ USER_TYPE_CHOICES = (
 
 ic_number_validator = RegexValidator("\d{6}\-\d{2}\-\d{4}", "IC Number format needs to be yymmdd-xx-zzzz.")
 
+
 class PatientProfile(AbstractUser):
 	first_name = models.CharField(default="First", max_length=255, blank=False, null=True)
 	last_name = models.CharField(default="Last", max_length=255, blank=True, null=True)

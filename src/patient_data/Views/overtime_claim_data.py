@@ -47,16 +47,46 @@ def save_overtime_claim_form(request, form, template_name):
 
 
 @login_required
-def overtime_claim(request, id):
+def overtime_claim(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Overtime Claim Form')
-    patients = OvertimeClaim.objects.filter(patient=id)
-    profiles = PatientProfile.objects.filter(pk=id)
+    patientid = PatientProfile.objects.get(username=username).id
+    patients = OvertimeClaim.objects.filter(patient=patientid)
+    profiles = PatientProfile.objects.filter(pk=patientid)
+#    experiments_per_hour = OvertimeClaim.objects.annotate(hour=TruncHour('date', output_field=TimeField()),).values('hours').annotate(experiments=Count('id'))
 #   durations = OvertimeClaim.objects.filter(patient=id).order_by('duration_time').values_list('duration_time', flat=True).first()
+#    tanggal = OvertimeClaim.objects.filter(patient=id).values_list('date', flat=True)
+#    waktu = OvertimeClaim.objects.filter(patient=id).values_list('hours', flat=True)
+#    durations = OvertimeClaim.objects.filter(patient=id).values_list('duration_time', flat=True)
 #   durations = datetime.time(h, m, s)
 #   model.time_field = t
+#    delta = waktu - durations
+#    hours = (delta.days * 24) + (delta.seconds // 3600)
+#    profile = OvertimeClaim()
+#    start_time = OvertimeClaim.objects.get(pk=id)
+#    start = profile.hours
+#    delta = profile.hours.strftime(profile.duration_time)
+#    delta = profile.hours + profile.duration_time
+#    print("delta:", delta)
+
+#    profile.duration_time = form.cleaned_data['duration_time']
+#    delta = datetime.time(profile.duration_time)
+#    delta = datetime.time(profile.duration_time)
+#    delta = datetime.strptime(profile.duration_time, '%H:%M:%S').time()
+#    delta = profile.duration_time
+#    delta = (datetime.combine(datetime.date(1, 1, 1), start_time) + timedelta(minutes=30)).time()
+#    today = datetime.datetime.today()
+#    delta = OvertimeClaim.objects.all()
+#    delta = datetime.datetime(event_date.year, event_date.month, event_date.day, event_time.hour, event_time.minute, event_time.second)
+#    print(type(delta))
+
+#    profile.hours = form.cleaned_data['hours']
+#    profile.hours = datetime.datetime.strptime(duration_time, '%H:%M').time()
+#    profile.total_hours = form.cleaned_data['total_hours']
+#    profile.total_hours = datetime.time(profile.duration_time)
+#    profile.total_hours = datetime.datetime.strptime(profile.duration_time, '%H:%M').time()
 
     context = {
         'logos': logos,
@@ -64,7 +94,9 @@ def overtime_claim(request, id):
         'page_title': page_title,
         'patients': patients,
         'profiles': profiles,
-#       'durations': durations,
+#        'tanggal': tanggal,
+#        'waktu': waktu,
+#        'delta': delta,
     }
 
     return render(request, 'patient_data/overtime_claim_data/overtime_claim_data.html', context)
@@ -72,7 +104,7 @@ def overtime_claim(request, id):
 
 @login_required
 def overtime_claim_data_edit(request, id):
-    overtime_claims = get_object_or_404(OvertimeClaim, pk=id)
+    overtime_claims = get_object_or_404(timeClaim, pk=id)
     if request.method == 'POST':
         form = OvertimeClaimForm(request.POST or None, instance=overtime_claims)
     else:
@@ -82,7 +114,7 @@ def overtime_claim_data_edit(request, id):
 
 @login_required
 def overtime_claim_data_delete(request, id):
-    overtime_claims = get_object_or_404(OvertimeClaim, pk=id)
+    overtime_claims = get_object_or_404(timeClaim, pk=id)
     data = dict()
 
     if request.method == 'POST':

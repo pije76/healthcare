@@ -24,13 +24,38 @@ end_time_night = datetime.strptime('23:59', '%H:%M').time()
 
 
 @login_required
-def visiting_consultant_records(request, id):
+def save_visiting_consultant_records_data_form(request, form, template_name):
+    data = dict()
+
+    if request.method == 'POST':
+        if form.is_valid():
+            patients = VisitingConsultant()
+            patients = form.save(commit=False)
+            patients.patient = request.user
+            patients.save()
+            data['form_is_valid'] = True
+            patients = VisitingConsultant.objects.all()
+            data['html_stool_list'] = render_to_string('patient_data/stool_data/stool_data.html', {'patients': patients})
+        else:
+            data['form_is_valid'] = False
+
+    context = {
+        'form': form,
+    }
+    data['html_form'] = render_to_string(template_name, context, request=request)
+
+    return JsonResponse(data)
+
+
+@login_required
+def visiting_consultant_records(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Visiting Consultant Records')
-    patients = VisitingConsultant.objects.filter(patient=id)
-    profiles = PatientProfile.objects.filter(pk=id)
+    patientid = PatientProfile.objects.get(username=username).id
+    patients = VisitingConsultant.objects.filter(patient=patientid)
+    profiles = PatientProfile.objects.filter(pk=patientid)
 
     context = {
         'logos': logos,
@@ -44,23 +69,23 @@ def visiting_consultant_records(request, id):
 
 @login_required
 def visiting_consultant_records_data_edit(request, id):
-    visiting_consultant_recordss = get_object_or_404(Appointment, pk=id)
+    visiting_consultant_recordss = get_object_or_404(VisitingConsultant, pk=id)
     if request.method == 'POST':
-        form = AppointmentForm(request.POST or None, instance=visiting_consultant_recordss)
+        form = VisitingConsultantForm(request.POST or None, instance=visiting_consultant_recordss)
     else:
-        form = AppointmentForm(instance=visiting_consultant_recordss)
+        form = VisitingConsultantForm(instance=visiting_consultant_recordss)
     return save_visiting_consultant_records_data_form(request, form, 'patient_data/visiting_consultant_records_data/partial_edit.html')
 
 
 @login_required
 def visiting_consultant_records_data_delete(request, id):
-    visiting_consultant_recordss = get_object_or_404(Appointment, pk=id)
+    visiting_consultant_recordss = get_object_or_404(VisitingConsultant, pk=id)
     data = dict()
 
     if request.method == 'POST':
         visiting_consultant_recordss.delete()
         data['form_is_valid'] = True
-        patients = Appointment.objects.all()
+        patients = VisitingConsultant.objects.all()
         data['html_visiting_consultant_records_list'] = render_to_string('patient_data/visiting_consultant_records_data/visiting_consultant_records_data.html', {'patients': patients})
         return JsonResponse(data)
     else:

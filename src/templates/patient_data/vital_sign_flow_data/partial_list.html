@@ -1,0 +1,22 @@
+{% for item in patients %}
+
+                                        <tr>
+                                            <td>{{ item.date|date:"d-m-Y" }}</td>
+                                            <td>{{ item.time|date:"H:i" }}</td>
+                                            <td>{{ item.temp }}</td>
+                                            <td>{{ item.pulse }}</td>
+                                            <td>{{ item.blood_pressure_systolic }}</td>
+                                            <td>{{ item.blood_pressure_diastolic }}</td>
+                                            <td>{{ item.respiration }}</td>
+                                            <td>{{ item.spo2_percentage }}</td>
+                                            <td>{{ item.spo2_o2 }}</td>
+                                            <td>{{ item.hgt_liter }}</td>
+                                            <td>{{ item.hgt_remarks }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn" data-url="{% url 'patient_data:vital_sign_flow_data_edit' item.id %}"data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-url="{% url 'patient_data:vital_sign_flow_data_delete' item.id %}"data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}

@@ -28,12 +28,12 @@ def save_physiotherapy_general_assessment_data_form(request, form, template_name
 
     if request.method == 'POST':
         if form.is_valid():
-            patients = Appointment()
+            patients = PhysiotherapyGeneralAssessment()
             patients = form.save(commit=False)
             patients.patient = request.user
             patients.save()
             data['form_is_valid'] = True
-            patients = Appointment.objects.all()
+            patients = PhysiotherapyGeneralAssessment.objects.all()
             data['html_physiotherapy_general_assessment_list'] = render_to_string('patient_data/physiotherapy_general_assessment_data/physiotherapy_general_assessment_data.html', {'patients': patients})
         else:
             data['form_is_valid'] = False
@@ -48,13 +48,14 @@ def save_physiotherapy_general_assessment_data_form(request, form, template_name
 
 
 @login_required
-def physiotherapy_general_assessment_data(request, id):
+def physiotherapy_general_assessment_data(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Physiotherapy General Assessment Form')
-    patients = PhysiotherapyGeneralAssessment.objects.filter(patient=id)
-    profiles = PatientProfile.objects.filter(pk=id)
+    patientid = PatientProfile.objects.get(username=username).id
+    patients = PhysiotherapyGeneralAssessment.objects.filter(patient=patientid)
+    profiles = PatientProfile.objects.filter(pk=patientid)
 
     context = {
         'logos': logos,
@@ -70,23 +71,23 @@ def physiotherapy_general_assessment_data(request, id):
 
 @login_required
 def physiotherapy_general_assessment_data_edit(request, id):
-    physiotherapy_general_assessments = get_object_or_404(Appointment, pk=id)
+    physiotherapy_general_assessments = get_object_or_404(PhysiotherapyGeneralAssessment, pk=id)
     if request.method == 'POST':
-        form = AppointmentForm(request.POST or None, instance=physiotherapy_general_assessments)
+        form = PhysiotherapyGeneralAssessmentForm(request.POST or None, instance=physiotherapy_general_assessments)
     else:
-        form = AppointmentForm(instance=physiotherapy_general_assessments)
+        form = PhysiotherapyGeneralAssessmentForm(instance=physiotherapy_general_assessments)
     return save_physiotherapy_general_assessment_data_form(request, form, 'patient_data/physiotherapy_general_assessment_data/partial_edit.html')
 
 
 @login_required
 def physiotherapy_general_assessment_data_delete(request, id):
-    physiotherapy_general_assessments = get_object_or_404(Appointment, pk=id)
+    physiotherapy_general_assessments = get_object_or_404(PhysiotherapyGeneralAssessment, pk=id)
     data = dict()
 
     if request.method == 'POST':
         physiotherapy_general_assessments.delete()
         data['form_is_valid'] = True
-        patients = Appointment.objects.all()
+        patients = PhysiotherapyGeneralAssessment.objects.all()
         data['html_physiotherapy_general_assessment_list'] = render_to_string('patient_data/physiotherapy_general_assessment_data/physiotherapy_general_assessment_data.html', {'patients': patients})
         return JsonResponse(data)
     else:

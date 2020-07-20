@@ -51,17 +51,15 @@ SHARED_APPS = (
 	'django.contrib.staticfiles',
 
 	'accounts',  # Custom app that contains the new User Model. Must NOT exist in TENANT_APPS
-	'bootstrapform',
 	'allauth',
 	'allauth.account',
 	'allauth.socialaccount',
 
+	'post_office',
+	'phonenumber_field',
+
 	'mptt',
 	'massadmin',
-	'bootstrap_datepicker_plus',
-	'phonenumber_field',
-	'bootstrap_modal_forms',
-	'durationwidget',
 )
 
 TENANT_APPS = (
@@ -73,34 +71,32 @@ TENANT_APPS = (
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
+	'django.forms',
 
 	'patient_form',
 	'patient_data',
 
-	# your tenant-specific apps
-#    'avatar',
-#    'userprofiles2',
-
 	'post_office',
+	'phonenumber_field',
 
-#    'jquery',
-#    'bootstrap_themes',
-#    'bootstrap_submenu',
-
+	'bootstrap_modal_forms',
+	'bootstrapform',
+#	'formset_bootstrap',
+	'jquery',
+	'djangoformsetjs',
 	'crispy_forms',
-#    'jsignature',
 	'widget_tweaks',
-#    'django_select2',
-	'ajax_select',
+#	'floppyforms',
 	'selectable',
 
-	'mptt',
-	'massadmin',
 	'bootstrap_datepicker_plus',
-	'phonenumber_field',
-	'bootstrap_modal_forms',
 	'durationwidget',
+
+	'massadmin',
+	'mptt',
 )
+
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 INSTALLED_APPS = list(SHARED_APPS) + \
 	[app for app in TENANT_APPS if app not in SHARED_APPS]
@@ -172,10 +168,10 @@ TEMPLATES = [
 			],
 		},
 	},
-#    {
-#        'BACKEND': 'accounts.pdf.PdftkEngine',
-#        'APP_DIRS': True,
-#    },
+	#    {
+	#        'BACKEND': 'accounts.pdf.PdftkEngine',
+	#        'APP_DIRS': True,
+	#    },
 ]
 
 
@@ -222,7 +218,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+#TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kuala_Lumpur'
 
 USE_I18N = True
 
@@ -246,20 +243,20 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-#AJAX_LOOKUP_CHANNELS = {
+# AJAX_LOOKUP_CHANNELS = {
 #    'fullname': {'model': 'patient_form.full_name', 'search_field': 'full_name'},
 #    'fullname': ('patient_form.lookups', 'FullnameLookup'),
 #}
 
 
 LANGUAGES = [
-    ('en', _('English')),
-#    ('my', _('Malaysia')),
-    ('id', _('Indonesia')),
+	('en', _('English')),
+	#    ('my', _('Malaysia')),
+	('id', _('Indonesia')),
 ]
 
 LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'locale'),
+	os.path.join(BASE_DIR, 'locale'),
 )
 
 #SOLID_I18N_USE_REDIRECTS = False
@@ -343,8 +340,18 @@ CACHES = {
 	'default': {
 		'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
 	},
+
+	"select2": {
+		"BACKEND": "django_redis.cache.RedisCache",
+		"LOCATION": "redis://127.0.0.1:6379/2",
+		"OPTIONS": {
+			"CLIENT_CLASS": "django_redis.client.DefaultClient",
+		}
+	}
 }
 
+SELECT2_CACHE_BACKEND = "select2"
+SELECT2_USE_BUNDLED_JQUERY = False
 # Override settings here
 
 try:
@@ -400,8 +407,8 @@ if DEBUG:
 				"string_if_invalid": '<< MISSING VARIABLE "%s" >>' if DEBUG else "",
 			},
 		},
-	#    {
-	#        'BACKEND': 'accounts.pdf.PdftkEngine',
-	#        'APP_DIRS': True,
-	#    },
+			#    {
+			#        'BACKEND': 'accounts.pdf.PdftkEngine',
+			#        'APP_DIRS': True,
+			#    },
 	]

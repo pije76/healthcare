@@ -44,18 +44,18 @@
 			<table class="table table-bordered">
 				<tr>
 					<th class="text-center" rowspan="3">{% trans "Date" %}</th>
-					<th class="text-center" colspan="7">{% trans "INTAKE" %}</th>
-					<th class="text-center" colspan="7">{% trans "OUTPUT" %}</th>
+					<th class="text-center" colspan="7">{% trans "Intake" %}</th>
+					<th class="text-center" colspan="7">{% trans "Output" %}</th>
 				</tr>
 				<tr>
 					<th class="text-center" rowspan="2">{% trans "Time" %}</th>
-					<th class="text-center" colspan="2">{% trans "ORAL" %}</th>
-					<th class="text-center" colspan="2">{% trans "PARENTERAL" %}</th>
-					<th class="text-center" colspan="2">{% trans "OTHER" %}</th>
+					<th class="text-center" colspan="2">{% trans "Oral" %}</th>
+					<th class="text-center" colspan="2">{% trans "Parenteral" %}</th>
+					<th class="text-center" colspan="2">{% trans "Other" %}</th>
 					<th class="text-center" rowspan="2">{% trans "Time" %}</th>
-					<th class="text-center" colspan="2">{% trans "URINE" %}</th>
-					<th class="text-center">{% trans "GAS-TRIC" %}</th>
-					<th class="text-center" colspan="2">{% trans "OTHER" %}</th>
+					<th class="text-center" colspan="2">{% trans "Urine" %}</th>
+					<th class="text-center">{% trans "Gas-Tric" %}</th>
+					<th class="text-center" colspan="2">{% trans "Other" %}</th>
 				</tr>
 				<tr>
 					<th class="text-center">{% trans "Type" %}</th>
@@ -89,7 +89,7 @@
 			</table>
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 			{% for item in profiles %}
-			<a class="btn btn-danger" href="{% url 'patient_data:patientdata_detail' item.id %}">{% trans "Cancel" %}</a>
+			<a class="btn btn-danger" href="{% url 'patient_data:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
 			{% endfor %}
 		</form>
 

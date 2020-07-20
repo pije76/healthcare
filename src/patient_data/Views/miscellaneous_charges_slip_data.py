@@ -28,12 +28,12 @@ def save_miscellaneous_charges_slip_data_form(request, form, template_name):
 
     if request.method == 'POST':
         if form.is_valid():
-            patients = Appointment()
+            patients = MiscellaneousChargesSlip()
             patients = form.save(commit=False)
             patients.patient = request.user
             patients.save()
             data['form_is_valid'] = True
-            patients = Appointment.objects.all()
+            patients = MiscellaneousChargesSlip.objects.all()
             data['html_miscellaneous_charges_slip_list'] = render_to_string('patient_data/miscellaneous_charges_slip_data/miscellaneous_charges_slip_data.html', {'patients': patients})
         else:
             data['form_is_valid'] = False
@@ -47,13 +47,14 @@ def save_miscellaneous_charges_slip_data_form(request, form, template_name):
 
 
 @login_required
-def miscellaneous_charges_slip(request, id):
+def miscellaneous_charges_slip(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Miscellaneous Charges Slip')
-    patients = MiscellaneousChargesSlip.objects.filter(patient=id)
-    profiles = PatientProfile.objects.filter(pk=id)
+    patientid = PatientProfile.objects.get(username=username).id
+    patients = MiscellaneousChargesSlip.objects.filter(patient=patientid)
+    profiles = PatientProfile.objects.filter(pk=patientid)
 
     context = {
         'logos': logos,
@@ -67,23 +68,23 @@ def miscellaneous_charges_slip(request, id):
 
 @login_required
 def miscellaneous_charges_slip_data_edit(request, id):
-    miscellaneous_charges_slips = get_object_or_404(Appointment, pk=id)
+    miscellaneous_charges_slips = get_object_or_404(MiscellaneousChargesSlip, pk=id)
     if request.method == 'POST':
-        form = AppointmentForm(request.POST or None, instance=miscellaneous_charges_slips)
+        form = MiscellaneousChargesSlipForm(request.POST or None, instance=miscellaneous_charges_slips)
     else:
-        form = AppointmentForm(instance=miscellaneous_charges_slips)
+        form = MiscellaneousChargesSlipForm(instance=miscellaneous_charges_slips)
     return save_miscellaneous_charges_slip_data_form(request, form, 'patient_data/miscellaneous_charges_slip_data/partial_edit.html')
 
 
 @login_required
 def miscellaneous_charges_slip_data_delete(request, id):
-    miscellaneous_charges_slips = get_object_or_404(Appointment, pk=id)
+    miscellaneous_charges_slips = get_object_or_404(MiscellaneousChargesSlip, pk=id)
     data = dict()
 
     if request.method == 'POST':
         miscellaneous_charges_slips.delete()
         data['form_is_valid'] = True
-        patients = Appointment.objects.all()
+        patients = MiscellaneousChargesSlip.objects.all()
         data['html_miscellaneous_charges_slip_list'] = render_to_string('patient_data/miscellaneous_charges_slip_data/miscellaneous_charges_slip_data.html', {'patients': patients})
         return JsonResponse(data)
     else:

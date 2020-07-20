@@ -28,12 +28,12 @@ def save_cannulation_data_form(request, form, template_name):
 
     if request.method == 'POST':
         if form.is_valid():
-            patients = Appointment()
+            patients = CatheterizationCannulation()
             patients = form.save(commit=False)
             patients.patient = request.user
             patients.save()
             data['form_is_valid'] = True
-            patients = Appointment.objects.all()
+            patients = CatheterizationCannulation.objects.all()
             data['html_cannulation_list'] = render_to_string('patient_data/cannulation_data/cannulation_data.html', {'patients': patients})
         else:
             data['form_is_valid'] = False
@@ -47,13 +47,14 @@ def save_cannulation_data_form(request, form, template_name):
 
 
 @login_required
-def cannulation_data(request, id):
+def cannulation_data(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Catheterization and Cannulation Chart')
-    patients = CatheterizationCannulation.objects.filter(patient=id)
-    profiles = PatientProfile.objects.filter(pk=id)
+    patientid = PatientProfile.objects.get(username=username).id
+    patients = CatheterizationCannulation.objects.filter(patient=patientid)
+    profiles = PatientProfile.objects.filter(pk=patientid)
 
     context = {
         'logos': logos,
@@ -68,23 +69,23 @@ def cannulation_data(request, id):
 
 @login_required
 def cannulation_data_edit(request, id):
-    cannulations = get_object_or_404(Appointment, pk=id)
+    cannulations = get_object_or_404(CatheterizationCannulation, pk=id)
     if request.method == 'POST':
-        form = AppointmentForm(request.POST or None, instance=cannulations)
+        form = CannulationForm(request.POST or None, instance=cannulations)
     else:
-        form = AppointmentForm(instance=cannulations)
+        form = CannulationForm(instance=cannulations)
     return save_cannulation_data_form(request, form, 'patient_data/cannulation_data/partial_edit.html')
 
 
 @login_required
 def cannulation_data_delete(request, id):
-    cannulations = get_object_or_404(Appointment, pk=id)
+    cannulations = get_object_or_404(CatheterizationCannulation, pk=id)
     data = dict()
 
     if request.method == 'POST':
         cannulations.delete()
         data['form_is_valid'] = True
-        patients = Appointment.objects.all()
+        patients = CatheterizationCannulation.objects.all()
         data['html_cannulation_list'] = render_to_string('patient_data/cannulation_data/cannulation_data.html', {'patients': patients})
         return JsonResponse(data)
     else:

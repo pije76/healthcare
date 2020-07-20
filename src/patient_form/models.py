@@ -1,9 +1,17 @@
+from __future__ import unicode_literals
+
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import F
 from django.utils.safestring import mark_safe
+from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
+from django.utils import six
+from django.utils.functional import lazy
+from django.utils.encoding import force_text
+
+mark_safe_lazy = lazy(mark_safe, six.text_type)
 
 #from jsignature.mixins import JSignatureFieldsMixin
 
@@ -15,6 +23,7 @@ from phonenumber_field.modelfields import PhoneNumber, PhoneNumberField
 #from phonenumber_field.validators import validate_international_phonenumber
 from phonenumber_field.phonenumber import to_python
 
+
 messageserror = _('IC Number format needs to be yymmdd-xx-zzzz.')
 ic_number_validator = RegexValidator(regex='\d{6}\-\d{2}\-\d{4}', message=messageserror, code="invalid")
 
@@ -22,10 +31,11 @@ ic_number_validator = RegexValidator(regex='\d{6}\-\d{2}\-\d{4}', message=messag
 #import select2
 
 #from datetime import timedelta
-import datetime
+#import datetime
 from datetime import *
 
-now = date.today
+#now = date.today
+#now = datetime.now()
 
 
 def validate_international_phonenumber(value):
@@ -36,323 +46,191 @@ def validate_international_phonenumber(value):
 		)
 
 
-WOUND_FREQUENCY_CHOICES = (
-	('od', 'OD'),
-	('bd', 'BD'),
-	('tds', 'TDS'),
-	('stat', 'STAT'),
-)
-
-ADMITTED_CHOICES = (
-	('hospital', _('Hospital')),
-	('home', _('Home')),
-	('others', _('Others')),
-)
-
-MODE_CHOICES = (
-	('walkedin', _('Walked-in')),
-	('wheelchair', _('Wheelchair')),
-	('stretcher', _('Stretcher')),
-)
-
-GENDER_CHOICES = (
-	('male', _('Male')),
-	('female', _('Female')),
-)
-
-MARITAL_CHOICES = (
-	('single', _('Single')),
-	('married', _('Married')),
-	('others', _('Others')),
-)
-
-RELIGION_CHOICES = (
-	('buddhist', _('Buddhist')),
-	('christian', _('Christian')),
-	('hinduism', _('Hinduism')),
-	('islam', _('Islam')),
-	('others', _('Others')),
-)
-
-OCCUPATION_CHOICES = (
-	('retired', _('Retired')),
-	('housewife', _('Housewife')),
-	('others', _('Others')),
-)
-
-COMMUNICATION_SIGHT_CHOICES = (
-	('good', _('Good')),
-	('poor', _('Poor')),
-	('glasses', _('Glasses')),
-	('blind', _('Blind')),
-)
-
-COMMUNICATION_HEARING_CHOICES = (
-	('good', _('Good')),
-	('poor', _('Poor')),
-	('aid', _('Aid')),
-)
-
-GENERAL_CONDITION_CHOICES = (
-	('stable', _('Stable')),
-	('ill', _('Ill')),
-	('lethargic', _('Lethargic')),
-	('weak', _('Weak')),
-	('cachexic', _('Cachexic')),
-	('coma', _('Coma')),
-	('restless', _('Restless')),
-	('depress', _('Depress')),
-	('agitated', _('Agitated')),
-)
-
-INVASIVE_LINE_INSITU_CHOICES = (
-	('-', _('None')),
-	('ett', _('ETT')),
-	('nasogastric_tube', _('Nasogastric tube')),
-	('urinary_catheter', _('Urinary catheter')),
-	('pacemaker', _('Pacemaker')),
-	('others', _('Others')),
-)
-
-MEDICAL_HISTORY_CHOICES = (
-	('nochronicillness', _('NO Chronic Illness')),
-	('asthma', _('Asthma')),
-	('diabetes_mellitus', _('Diabetes Mellitus')),
-	('hypertension', _('Hypertension')),
-	('heart_disease', _('Heart Disease')),
-	('others', _('Others')),
-)
-
-ADAPTIVE_AIDS_WITH_PATIENT_CHOICES = (
-	('denture', _('Denture')),
-	('upperset', _('Upper set')),
-	('lowerset', _('Lower set')),
-	('walkingaid', _('Walking aid')),
-	('hearingaid', _('Hearing aid')),
-	('glasses', _('Glasses')),
-	('others', _('Others')),
-)
-
-ORIENTATION_CHOICES = (
-	('nursecallsystem', _('Nurse call system')),
-	('bedmechanic', _('Bed Mechanic')),
-	('bathroom', _('Bathroom')),
-	('visiting_hours', _('Visiting hours')),
-	('careofvaluables', _('Care of Valuables')),
-	('fireexits', _('Fire Exits')),
-	('nosmokingpolicy', _('No Smoking policy')),
-	('patientrightresponsibilities', _('Patient Right/ Responsibilities')),
-	('informnurseifpatientleavingthe_center', _('Inform nurse if patient leaving the center')),
-)
-
-WOUND_LOCATION_CHOICES = (
-	('head', _('Head')),
-	('face', _('Face')),
-	('neck', _('Neck')),
-	('chest', _('Chest')),
-	('abdomen', _('Abdomen')),
-	('back', _('Back')),
-	('sacral', _('Sacral')),
-	('buttock', _('Buttock')),
-	('hand', _('Hand')),
-	('leg', _('Leg')),
-	('others', _('Others')),
-)
-
-WOUND_CONDITION_CHOICES = (
-	('clean', _('Clean')),
-	('slough', _('Slough')),
-	('eschar', _('Eschar')),
-	('Others', (
-		('Exudate', (
-			('sanguineous', _('Sanguineous')),
-			('serous', _('Serous')),
-			('haemoserous', _('Haemoserous')),
-			('purulent', _('Purulent')),
-		)),
-		('Amount', (
-			('scant', _('Scant')),
-			('minimal', _('Minimal')),
-			('moderate', _('Moderate')),
-			('large', _('Large')),
-		)),
-	)),
-)
-
-PHYSICAL_EXAMINATION_MOVEMENT_CHOICES = (
-	('joint', _('Joint')),
-	('active', _('Active')),
-	('passive', _('Passive')),
-)
-
-STATUS_CHOICES = (
-	('-', '-'),
-	('done', _('Done')),
-	('pending', _('Pending')),
-	('cancel', _('Cancel')),
-)
-
-NEUROLOGICAL_CHOICES = (
-	('reflexes', _('Reflexes')),
-	('motor', _('Motor')),
-	('sensation', _('Sensation')),
-)
-
-STOOL_FREQUENCY_CHOICES = (
-	('-', '-'),
-	('bo', 'BO'),
-	('bno', 'BNO'),
-)
-
-CONSISTENCY_CHOICES = (
-	('-', '-'),
-	('normal', _('Normal')),
-	('hard', _('Hard')),
-	('loose', _('Loose')),
-	('watery', _('Watery')),
-)
-
-AMOUNT_CHOICES = (
-	('-', '-'),
-	('scanty', _('Scanty')),
-	('minimal', _('Minimal')),
-	('moderate', _('Moderate')),
-	('large', _('Large')),
-)
-
-BOOLEAN_CHOICES = (
-	(False, _('No')),
-	(True, _('Yes')),
-)
-
-YES_NO_CHOICES = (
-	('no', _('No')),
-	('yes', _('Yes')),
-)
-
-PAIN_SCALE_CHOICES = (
-	('1', '1'),
-	('2', '2'),
-	('3', '3'),
-	('4', '4'),
-	('5', '5'),
-	('6', '6'),
-	('7', '7'),
-	('8', '8'),
-	('9', '9'),
-	('10', '10'),
-)
-
-ROUTE_CHOICES = (
-	('oral', _('Oral')),
-	('iv', 'IV'),
-	('im', 'IM'),
-	('s', 'S'),
-	('c', 'C'),
-	('sl', 'SL'),
-	('rt', 'RT'),
-	('pr', 'PR'),
-	('la', 'LA'),
-	('neb', 'Neb'),
-)
-
-MEDICATION_ADMINISTRATION_FREQUENCY_CHOICES = (
-	('od', 'OD'),
-	('om', 'OM'),
-	('pm', 'PM'),
-	('on', 'ON'),
-	('bd', 'BD'),
-	('tds', 'TDS'),
-	('qid', 'QID'),
-	('eod', 'EOD'),
-	('prn', 'PRN'),
-	('others', _('OTHERS')),
-)
-
-MEDICATION_ADMINISTRATION_STAT_CHOICES = (
-	('n', 'N-NBM'),
-	('o', 'O-Omit'),
-	('r', 'R-Refused'),
-	('ta', 'TA-Take Away'),
-	('t', 'T-Taken'),
-	('w', 'W-Withold'),
-)
-
-TAB_CHOICES = (
-	('1', _('1/1 = 1 Tab')),
-	('2', _('11/11 = 2 Tabs')),
-	('3', _('111/111 = 3 Tabs')),
-	('half', _('1/2 = Half Tab')),
-	('others', _('1 1/2 = Others')),
-	('4', _('4 Tabs')),
-)
-
-SIGNATURE_CHOICES = (
-	('od', 'LSS'),
-	('om', 'LPC'),
-	('pm', 'SYA'),
-)
-
-
 messageserror = "IC Number format needs to be yymmdd-xx-zzzz."
 ic_number_validator = RegexValidator(regex='\d{6}\-\d{2}\-\d{4}', message=messageserror, code="invalid")
 
 
 def get_now():
-	return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+	return datetime.now().strftime("%d-%m-%Y %H:%M")
 
 
 class Admission(models.Model):
+	ADMITTED_CHOICES = (
+		('Hospital', _('Hospital')),
+		('Home', _('Home')),
+		('Others', _('Others')),
+#		('Others', mark_safe_lazy('Others <input type="text" style="font-size: 1rem;font-weight: 400;line-height: 1.5;color: #495057;background-color: #fff;background-clip:padding-box;border: 1px solid #ced4da;border-radius: .25rem;transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;display:none;">')),
+	)
+
+	MODE_CHOICES = (
+		('Walked-in', _('Walked-in')),
+		('Wheelchair', _('Wheelchair')),
+		('Stretcher', _('Stretcher')),
+	)
+
+	GENDER_CHOICES = (
+		('Male', _('Male')),
+		('Female', _('Female')),
+	)
+
+	MARITAL_CHOICES = (
+		('Single', _('Single')),
+		('Married', _('Married')),
+		('Others', _('Others')),
+	)
+
+	RELIGION_CHOICES = (
+		('Buddhist', _('Buddhist')),
+		('Christian', _('Christian')),
+		('Hinduism', _('Hinduism')),
+		('Islam', _('Islam')),
+		('Others', _('Others')),
+	)
+
+	OCCUPATION_CHOICES = (
+		('Retired', _('Retired')),
+		('Housewife', _('Housewife')),
+		('Others', _('Others')),
+	)
+
+	COMMUNICATION_SIGHT_CHOICES = (
+		('Good', _('Good')),
+		('Poor', _('Poor')),
+		('Glasses', _('Glasses')),
+		('Blind', _('Blind')),
+	)
+
+	COMMUNICATION_HEARING_CHOICES = (
+		('Good', _('Good')),
+		('Poor', _('Poor')),
+		('Aid', _('Aid')),
+		('Others', _('Others')),
+	)
+
+	GENERAL_CONDITION_CHOICES = (
+		('Stable', _('Stable')),
+		('Ill', _('Ill')),
+		('Lethargic', _('Lethargic')),
+		('Weak', _('Weak')),
+		('Cachexic', _('Cachexic')),
+		('Coma', _('Coma')),
+		('Restless', _('Restless')),
+		('Depress', _('Depress')),
+		('Agitated', _('Agitated')),
+	)
+
+	INVASIVE_LINE_INSITU_CHOICES = (
+		('None', _('None')),
+		('ETT', _('ETT')),
+		('Nasogastric tube', _('Nasogastric tube')),
+		('Urinary catheter', _('Urinary catheter')),
+		('Others', _('Others')),
+		('Pacemaker', _('Pacemaker')),
+	)
+
+	MEDICAL_HISTORY_CHOICES = (
+		('No Chronic Illness', _('No Chronic Illness')),
+		('Asthma', _('Asthma')),
+		('Diabetes Mellitus', _('Diabetes Mellitus')),
+		('Others', _('Others')),
+		('Hypertension', _('Hypertension')),
+		('Heart Disease', _('Heart Disease')),
+	)
+
+	ADAPTIVE_AIDS_WITH_PATIENT_CHOICES = (
+		('Denture', _('Denture')),
+		('Upper set', _('Upper set')),
+		('Lower set', _('Lower set')),
+		('Walking aid', _('Walking aid')),
+		('Glasses', _('Glasses')),
+		('Others', _('Others')),
+		('Hearing aid', _('Hearing aid')),
+	)
+
+	ORIENTATION_CHOICES = (
+		('Nurse call system', _('Nurse call system')),
+		('Bed Mechanic', _('Bed Mechanic')),
+		('Bathroom', _('Bathroom')),
+		('Visiting', _('Visiting hours')),
+		('Care of Valuables', _('Care of Valuables')),
+		('Fire Exits', _('Fire Exits')),
+		('No Smoking policy', _('No Smoking policy')),
+		('Patient Right/ Responsibilities', _('Patient Right/ Responsibilities')),
+		('Inform nurse if patient leaving the center', _('Inform nurse if patient leaving the center')),
+	)
+
+	BOOLEAN_CHOICES = (
+		(False, _('No')),
+		(True, _('Yes')),
+	)
+
+	YES_NO_CHOICES = (
+		('No', _('No')),
+		('Yes', _('Yes')),
+	)
+
+	SURGICAL_CHOICES = (
+		('None', _('None')),
+	)
+
 	patient = models.OneToOneField(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(default=now, blank=True, null=True)
 	time = models.TimeField(blank=True, null=True)
-	admitted = models.CharField(choices=ADMITTED_CHOICES, max_length=255, blank=True, null=True)
-	mode = models.CharField(choices=MODE_CHOICES, max_length=255, blank=True, null=True)
+	admitted = models.CharField(max_length=255, blank=True, null=True)
+	admitted_others = models.CharField(max_length=255, blank=True, null=True)
+	mode = models.CharField(max_length=255, blank=True, null=True)
 	birth_date = models.DateField(default=now, blank=True, null=True)
-	age = models.PositiveIntegerField(default='0', blank=True, null=True)
-	gender = models.CharField(choices=GENDER_CHOICES, max_length=255, blank=True, null=True)
-	marital_status = models.CharField(choices=MARITAL_CHOICES, max_length=255, blank=True, null=True)
+	age = models.IntegerField(default='0', blank=True, null=True)
+	gender = models.CharField(max_length=255, blank=True, null=True)
+	marital_status = models.CharField(max_length=255, blank=True, null=True)
+	marital_status_others = models.CharField(max_length=255, blank=True, null=True)
 	phone = PhoneNumberField(blank=True, default="+600000000000", validators=[validate_international_phonenumber])
-	religion = models.CharField(choices=RELIGION_CHOICES, max_length=255, blank=True, null=True)
-	occupation = models.CharField(choices=OCCUPATION_CHOICES, max_length=255, blank=True, null=True)
-	communication_sight = models.CharField(choices=COMMUNICATION_SIGHT_CHOICES, max_length=255, blank=True, null=True)
-	communication_hearing = models.CharField(choices=COMMUNICATION_HEARING_CHOICES, max_length=255, blank=True, null=True)
-	communication_others = models.CharField(max_length=255, blank=True, null=True)
+	religion = models.CharField(max_length=255, blank=True, null=True)
+	religion_others = models.CharField(max_length=255, blank=True, null=True)
+	occupation = models.CharField(max_length=255, blank=True, null=True)
+	occupation_others = models.CharField(max_length=255, blank=True, null=True)
+	communication_sight = models.CharField(max_length=255, blank=True, null=True)
+	communication_hearing = models.CharField(max_length=255, blank=True, null=True)
+	communication_hearing_others = models.CharField(max_length=255, blank=True, null=True)
 	address = models.CharField(max_length=255, blank=True, null=True)
 	ec_name = models.CharField(_('Name'), max_length=255, blank=True, null=True)
+#	ec_name = models.OneToOneField(PatientProfile, related_name='emergencycontact_name', on_delete=models.CASCADE, blank=False, null=True)
 	ec_ic_number = models.CharField(max_length=14, validators=[ic_number_validator], unique=True, blank=True, null=True)
 	ec_relationship = models.CharField(_('Relationship'), max_length=255, blank=True, null=True)
 	ec_phone = models.CharField(_('Contact Number'), max_length=255, blank=True, null=True)
 	ec_address = models.CharField(_('Address'), max_length=255, blank=True, null=True)
 
-	general_condition = models.CharField(choices=GENERAL_CONDITION_CHOICES, max_length=255, blank=True, null=True)
+	general_condition = models.CharField(max_length=255, blank=True, null=True)
 	vital_sign_temperature = models.PositiveIntegerField(default='0', blank=True, null=True)
 	vital_sign_pulse = models.PositiveIntegerField(default='0', blank=True, null=True)
 	vital_sign_bp = models.PositiveIntegerField(default='0', blank=True, null=True)
 	vital_sign_resp = models.PositiveIntegerField(default='0', blank=True, null=True)
 	vital_sign_spo2 = models.PositiveIntegerField(default='0', blank=True, null=True)
-	vital_sign_on_oxygen_therapy = models.BooleanField(choices=BOOLEAN_CHOICES, max_length=255, default=False, blank=True,)
+	vital_sign_on_oxygen_therapy = models.CharField(max_length=255, default=False, blank=True,)
 	vital_sign_on_oxygen_therapy_flow_rate = models.PositiveIntegerField(default='0', blank=True, null=True)
 	vital_sign_hgt = models.PositiveIntegerField(default='0', blank=True, null=True)
 	allergy_drug = models.CharField(max_length=255, blank=True, null=True)
 	allergy_food = models.CharField(max_length=255, blank=True, null=True)
 	allergy_others = models.CharField(max_length=255, blank=True, null=True)
-	biohazard_infectious_disease = models.BooleanField(choices=BOOLEAN_CHOICES, max_length=255, blank=True, null=True)
-	invasive_line_insitu = models.CharField(choices=INVASIVE_LINE_INSITU_CHOICES, max_length=255, blank=True, null=True)
-	medical_history = models.CharField(choices=MEDICAL_HISTORY_CHOICES, max_length=255, blank=True, null=True)
-	surgical_history_none = models.BooleanField(choices=BOOLEAN_CHOICES, max_length=255, blank=True, null=True)
+	biohazard_infectious_disease = models.CharField(max_length=255, blank=True, null=True)
+	invasive_line_insitu = models.CharField(max_length=255, blank=True, null=True)
+	invasive_line_insitu_others = models.CharField(max_length=255, blank=True, null=True)
+	medical_history = models.CharField(max_length=255, blank=True, null=True)
+	medical_history_others = models.CharField(max_length=255, blank=True, null=True)
+	surgical_history_none = models.CharField(max_length=255, blank=True, null=True)
 	surgical_history = models.CharField(max_length=255, blank=True, null=True)
 	date_diagnosis = models.DateField(default=now, blank=True, null=True)
 	diagnosis = models.CharField(max_length=255, blank=True, null=True)
 	date_operation = models.DateField(default=now, blank=True, null=True)
 	operation = models.CharField(max_length=255, blank=True, null=True)
-	own_medication = models.BooleanField(choices=BOOLEAN_CHOICES, max_length=255, blank=True, null=True)
+	own_medication = models.CharField(max_length=255, blank=True, null=True)
 	own_medication_drug_name = models.CharField(max_length=255, blank=True, null=True)
 	own_medication_dosage = models.PositiveIntegerField(default='0', blank=True, null=True)
 	own_medication_tablet_capsule = models.CharField(max_length=255, blank=True, null=True)
 	own_medication_frequency = models.PositiveIntegerField(default='0', blank=True, null=True)
-	adaptive_aids_with_patient = models.CharField(choices=ADAPTIVE_AIDS_WITH_PATIENT_CHOICES, max_length=255, blank=True, null=True)
-	orientation = models.CharField(choices=ORIENTATION_CHOICES, max_length=255, blank=True, null=True)
+	adaptive_aids_with_patient = models.CharField(max_length=255, blank=True, null=True)
+	adaptive_aids_with_patient_others = models.CharField(max_length=255, blank=True, null=True)
+	orientation = models.CharField(max_length=255, blank=True, null=True)
 	special_information = models.CharField(max_length=255, blank=True, null=True)
 	admission_by = models.CharField(max_length=255, blank=True, null=True)
 
@@ -362,6 +240,15 @@ class Admission(models.Model):
 	@property
 	def age(self):
 		return int((datetime.now().date() - self.birth_date).days / 365.25)
+
+#	def _get_mode_display(self, field):
+#		value = getattr(self, field.attname)
+#		return force_text(dict(field.flatchoices).get(value, value), strings_only=True)
+
+#	def mode_display(self):
+#		for c in MODE_CHOICES:
+#			if c[0] == self.mode:
+#				return c[1]
 
 	class Meta:
 		verbose_name = _('Admission')
@@ -470,13 +357,55 @@ def upload_path(instance, filename):
 
 
 class Dressing(models.Model):
+	WOUND_FREQUENCY_CHOICES = (
+		('OD', 'OD'),
+		('BD', 'BD'),
+		('TDS', 'TDS'),
+		('STAT', 'STAT'),
+	)
+
+	WOUND_LOCATION_CHOICES = (
+		('head', _('Head')),
+		('face', _('Face')),
+		('neck', _('Neck')),
+		('chest', _('Chest')),
+		('abdomen', _('Abdomen')),
+		('back', _('Back')),
+		('sacral', _('Sacral')),
+		('buttock', _('Buttock')),
+		('hand', _('Hand')),
+		('leg', _('Leg')),
+		('Others', _('Others')),
+	)
+
+	WOUND_CONDITION_CHOICES = (
+		('clean', _('Clean')),
+		('slough', _('Slough')),
+		('eschar', _('Eschar')),
+		('Others', (
+			('Exudate', (
+				('sanguineous', _('Sanguineous')),
+				('serous', _('Serous')),
+				('haemoserous', _('Haemoserous')),
+				('purulent', _('Purulent')),
+			)),
+			('Amount', (
+				('scant', _('Scant')),
+				('minimal', _('Minimal')),
+				('moderate', _('Moderate')),
+				('large', _('Large')),
+			)),
+		)),
+	)
+
 	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(default=now, blank=True, null=True)
 	time = models.TimeField(blank=True, null=True)
-	frequency_dressing = models.CharField(choices=WOUND_FREQUENCY_CHOICES, max_length=255, blank=True, null=True)
+	frequency_dressing = models.CharField(max_length=255, blank=True, null=True)
 	type_dressing = models.CharField(max_length=255, blank=True, null=True)
-	wound_location = models.CharField(choices=WOUND_LOCATION_CHOICES, max_length=255, blank=True, null=True)
-	wound_condition = TreeForeignKey(WoundCondition, related_name='wound_conditions', null=True, blank=True, on_delete=models.CASCADE)
+	wound_location = models.CharField(max_length=255, blank=True, null=True)
+#	wound_condition = TreeForeignKey(WoundCondition, related_name='wound_conditions', null=True, blank=True, on_delete=models.CASCADE)
+	wound_condition = models.CharField(max_length=255, blank=True, null=True)
 	photos = models.FileField(upload_to=upload_path, blank=True, null=True)
 	done_by = models.CharField(max_length=255, blank=True, null=True)
 
@@ -519,7 +448,7 @@ class EnteralFeedingRegime(models.Model):
 	_total_fluids = None
 
 	objects = AnnotationManager(
-			total_fluids=F('warm_water_before') + F('warm_water_after'),
+		total_fluids=F('warm_water_before') + F('warm_water_after'),
 	)
 
 	def __str__(self):
@@ -572,6 +501,13 @@ class IntakeOutputChart(models.Model):
 
 
 class Maintainance(models.Model):
+	STATUS_CHOICES = (
+		('-', '-'),
+		('done', _('Done')),
+		('pending', _('Pending')),
+		('cancel', _('Cancel')),
+	)
+
 	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(default=now, blank=True, null=True)
 	items = models.CharField(max_length=255, blank=True, null=True)
@@ -610,17 +546,68 @@ class MedicationRecord(models.Model):
 
 
 class MedicationAdministrationRecord(models.Model):
+	TAB_CHOICES = (
+		('1', _('1/1 = 1 Tab')),
+		('2', _('11/11 = 2 Tabs')),
+		('3', _('111/111 = 3 Tabs')),
+		('half', _('1/2 = Half Tab')),
+		('others', _('1 1/2 = Others')),
+		('4', _('4 Tabs')),
+	)
+
+	MEDICATION_ADMINISTRATION_FREQUENCY_CHOICES = (
+		('od', 'OD'),
+		('om', 'OM'),
+		('pm', 'PM'),
+		('on', 'ON'),
+		('bd', 'BD'),
+		('tds', 'TDS'),
+		('qid', 'QID'),
+		('eod', 'EOD'),
+		('prn', 'PRN'),
+		('others', _('OTHERS')),
+	)
+
+	ROUTE_CHOICES = (
+		('oral', _('Oral')),
+		('iv', 'IV'),
+		('im', 'IM'),
+		('s', 'S'),
+		('c', 'C'),
+		('sl', 'SL'),
+		('rt', 'RT'),
+		('pr', 'PR'),
+		('la', 'LA'),
+		('neb', 'Neb'),
+	)
+
+	SIGNATURE_CHOICES = (
+		('od', 'LSS'),
+		('om', 'LPC'),
+		('pm', 'SYA'),
+	)
+
+	MEDICATION_ADMINISTRATION_STAT_CHOICES = (
+		('n', 'N-NBM'),
+		('o', 'O-Omit'),
+		('r', 'R-Refused'),
+		('ta', 'TA-Take Away'),
+		('t', 'T-Taken'),
+		('w', 'W-Withold'),
+	)
+
 	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
 	allergy = models.CharField(max_length=255, blank=True, null=True)
 	medication_name = models.CharField(max_length=255, blank=True, null=True)
 	medication_dosage = models.PositiveIntegerField(default='0', blank=True, null=True)
-	medication_tab = models.CharField(choices=TAB_CHOICES, max_length=255, blank=True, null=True)
-	medication_frequency = models.CharField(choices=MEDICATION_ADMINISTRATION_FREQUENCY_CHOICES, max_length=255, blank=True, null=True)
-	medication_route = models.CharField(choices=ROUTE_CHOICES, max_length=255, blank=True, null=True)
-	medication_date_time = models.DateTimeField(default=get_now, blank=True, null=True)
-	signature_nurse = models.CharField(choices=SIGNATURE_CHOICES, max_length=255, blank=True, null=True)
-	stat = models.CharField(choices=MEDICATION_ADMINISTRATION_STAT_CHOICES, max_length=255, blank=True, null=True)
-	date_time = models.DateTimeField(default=get_now, blank=True, null=True)
+	medication_tab = models.CharField(max_length=255, blank=True, null=True)
+	medication_frequency = models.CharField(max_length=255, blank=True, null=True)
+	medication_route = models.CharField(max_length=255, blank=True, null=True)
+	medication_date = models.DateField(default=now, blank=True, null=True)
+	medication_time = models.TimeField(blank=True, null=True)
+	signature_nurse = models.CharField(max_length=255, blank=True, null=True)
+	stat = models.CharField(max_length=255, blank=True, null=True)
+	medicationstat_date_time = models.DateTimeField(default=get_now, blank=True, null=True)
 	given_by = models.CharField(max_length=255, blank=True, null=True)
 
 	def __str__(self):
@@ -662,8 +649,10 @@ class Nursing(models.Model):
 class OvertimeClaim(models.Model):
 	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(default=now, blank=True, null=True)
+#	date = models.DateTimeField(default=get_now, blank=False, null=True)
 	duration_time = models.DurationField(default='00:05:00', blank=True, null=True)
 	hours = models.TimeField(blank=True, null=True)
+	total_hours = models.TimeField(blank=True, null=True)
 	checked_sign_by = models.CharField(max_length=255, blank=True, null=True)
 	verify_by = models.CharField(max_length=255, blank=True, null=True)
 
@@ -674,26 +663,38 @@ class OvertimeClaim(models.Model):
 		sec = self.duration_time.total_seconds()
 		return '%02d:%02d' % (int((sec / 3600) % 3600), int((sec / 60) % 60))
 
-	def to_timedelta(self, value):
-		if not value or value == '0':
-			return TimeDelta(microseconds=0)
+	def convert_duration_hour(self):
+		sec = self.duration_time.total_seconds()
+		return '%02d' % (int((sec / 3600) % 3600))
 
-		pairs = []
-		for b in value.lower().split():
-			for index, char in enumerate(b):
-				if not char.isdigit():
-					pairs.append((b[:index], b[index:])) #digits, letters
-					break
-		if not pairs:
-			raise ValidationError(self.error_messages['invalid'])
+	def convert_duration_minute(self):
+		sec = self.duration_time.total_seconds()
+		return '%02d' % (int((sec / 60) % 60))
 
-		microseconds = 0
-		for digits, chars in pairs:
-			if not digits or not chars:
-				raise ValidationError(self.error_messages['invalid'])
-			microseconds += int(digits) * TimeDelta.values_in_microseconds[chars]
+	def count_hours(self):
+		t = datetime.time(convert_duration_hour, convert_duration_minute)
+		OvertimeClaim().hours = t
 
-		return TimeDelta(microseconds=microseconds)
+#	def to_timedelta(self, value):
+#		if not value or value == '0':
+#			return TimeDelta(microseconds=0)
+
+#		pairs = []
+#		for b in value.lower().split():
+#			for index, char in enumerate(b):
+#				if not char.isdigit():
+#					pairs.append((b[:index], b[index:])) #digits, letters
+#					break
+#		if not pairs:
+#			raise ValidationError(self.error_messages['invalid'])
+
+#		microseconds = 0
+#		for digits, chars in pairs:
+#			if not digits or not chars:
+#				raise ValidationError(self.error_messages['invalid'])
+#			microseconds += int(digits) * TimeDelta.values_in_microseconds[chars]
+
+#		return TimeDelta(microseconds=microseconds)
 
 #	def get_duration(self):
 #		return self.datetime.time(convert_duration_time)
@@ -717,11 +718,37 @@ class PhysioProgressNote(models.Model):
 
 
 class PhysiotherapyGeneralAssessment(models.Model):
+
+	PAIN_SCALE_CHOICES = (
+		('1', '1'),
+		('2', '2'),
+		('3', '3'),
+		('4', '4'),
+		('5', '5'),
+		('6', '6'),
+		('7', '7'),
+		('8', '8'),
+		('9', '9'),
+		('10', '10'),
+	)
+
+	PHYSICAL_EXAMINATION_MOVEMENT_CHOICES = (
+		('joint', _('Joint')),
+		('active', _('Active')),
+		('passive', _('Passive')),
+	)
+
+	NEUROLOGICAL_CHOICES = (
+		('reflexes', _('Reflexes')),
+		('motor', _('Motor')),
+		('sensation', _('Sensation')),
+	)
+
 	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
 	doctor_diagnosis = models.CharField(max_length=255, blank=True, null=True)
 	doctor_management = models.CharField(max_length=255, blank=True, null=True)
 	problem = models.CharField(max_length=255, blank=True, null=True)
-	pain_scale = models.CharField(choices=PAIN_SCALE_CHOICES, max_length=255, blank=True, null=True)
+	pain_scale = models.CharField(max_length=255, blank=True, null=True)
 	comments = models.CharField(max_length=255, blank=True, null=True)
 	current_history = models.CharField(max_length=255, blank=True, null=True)
 	past_history = models.CharField(max_length=255, blank=True, null=True)
@@ -734,8 +761,8 @@ class PhysiotherapyGeneralAssessment(models.Model):
 	pacemaker_hearing_aid = models.CharField(max_length=255, blank=True, null=True)
 	splinting = models.CharField(max_length=255, blank=True, null=True)
 
-	physical_examination_movement = models.CharField(choices=PHYSICAL_EXAMINATION_MOVEMENT_CHOICES, max_length=255, blank=True, null=True)
-	neurological = models.CharField(choices=NEUROLOGICAL_CHOICES, max_length=255, blank=True, null=True)
+	physical_examination_movement = models.CharField(max_length=255, blank=True, null=True)
+	neurological = models.CharField(max_length=255, blank=True, null=True)
 
 	muscle_power = models.CharField(max_length=255, blank=True, null=True)
 	clearing_test_other_joint = models.CharField(max_length=255, blank=True, null=True)
@@ -759,6 +786,7 @@ class PhysiotherapyGeneralAssessment(models.Model):
 
 class StaffRecords(models.Model):
 	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	date = models.DateField(blank=True, null=True)
 	annual_leave_days = models.PositiveIntegerField(default='0', blank=True, null=True)
 	public_holiday_days = models.PositiveIntegerField(default='0', blank=True, null=True)
 	replacement_public_holiday = models.CharField(max_length=255, blank=True, null=True)
@@ -779,12 +807,33 @@ class StaffRecords(models.Model):
 
 
 class Stool(models.Model):
+	STOOL_FREQUENCY_CHOICES = (
+		('-', '-'),
+		('bo', 'BO'),
+		('bno', 'BNO'),
+	)
+	CONSISTENCY_CHOICES = (
+		('-', '-'),
+		('normal', _('Normal')),
+		('hard', _('Hard')),
+		('loose', _('Loose')),
+		('watery', _('Watery')),
+	)
+
+	AMOUNT_CHOICES = (
+		('-', '-'),
+		('scanty', _('Scanty')),
+		('minimal', _('Minimal')),
+		('moderate', _('Moderate')),
+		('large', _('Large')),
+	)
+
 	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(default=now, blank=True, null=True)
 	time = models.TimeField(blank=True, null=True)
-	frequency = models.CharField(choices=STOOL_FREQUENCY_CHOICES, max_length=255, blank=True, null=True)
-	consistency = models.CharField(choices=CONSISTENCY_CHOICES, max_length=255, blank=True, null=True)
-	amount = models.CharField(choices=AMOUNT_CHOICES, max_length=255, blank=True, null=True)
+	frequency = models.CharField(max_length=255, blank=True, null=True)
+	consistency = models.CharField(max_length=255, blank=True, null=True)
+	amount = models.CharField(max_length=255, blank=True, null=True)
 	remark = models.CharField(max_length=255, blank=True, null=True)
 	name = models.CharField(max_length=255, blank=True, null=True)
 

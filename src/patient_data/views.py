@@ -56,11 +56,11 @@ def patientdata_list(request):
 
 
 @login_required
-def patientdata_detail(request, id):
+def patientdata_detail(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	patients = PatientProfile.objects.filter(pk=id)
+	patients = PatientProfile.objects.filter(username=username)
 #	patients = PatientProfile.objects.filter(patient=id)
 #	patients = PatientProfile.objects.filter(pk=id).values_list('patient', flat=True).first()
 	page_title = _('Patient Detail')
@@ -75,6 +75,3 @@ def patientdata_detail(request, id):
 	}
 
 	return render(request, 'patient_data/patient_detail.html', context)
-
-
-

@@ -28,12 +28,12 @@ def save_vital_sign_flow_data_form(request, form, template_name):
 
     if request.method == 'POST':
         if form.is_valid():
-            patients = Appointment()
+            patients = VitalSignFlow()
             patients = form.save(commit=False)
             patients.patient = request.user
             patients.save()
             data['form_is_valid'] = True
-            patients = Appointment.objects.all()
+            patients = VitalSignFlow.objects.all()
             data['html_vital_sign_flow_list'] = render_to_string('patient_data/vital_sign_flow_data/vital_sign_flow_data.html', {'patients': patients})
         else:
             data['form_is_valid'] = False
@@ -46,13 +46,14 @@ def save_vital_sign_flow_data_form(request, form, template_name):
     return JsonResponse(data)
 
 @login_required
-def vital_sign_flow_data(request, id):
+def vital_sign_flow_data(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Vital Sign Flow Sheet')
-    patients = VitalSignFlow.objects.filter(patient=id)
-    profiles = PatientProfile.objects.filter(pk=id)
+    patientid = PatientProfile.objects.get(username=username).id
+    patients = VitalSignFlow.objects.filter(patient=patientid)
+    profiles = PatientProfile.objects.filter(pk=patientid)
 
     context = {
         'logos': logos,
@@ -67,23 +68,23 @@ def vital_sign_flow_data(request, id):
 
 @login_required
 def vital_sign_flow_data_edit(request, id):
-    vital_sign_flows = get_object_or_404(Appointment, pk=id)
+    vital_sign_flows = get_object_or_404(VitalSignFlow, pk=id)
     if request.method == 'POST':
-        form = AppointmentForm(request.POST or None, instance=vital_sign_flows)
+        form = VitalSignFlowForm(request.POST or None, instance=vital_sign_flows)
     else:
-        form = AppointmentForm(instance=vital_sign_flows)
+        form = VitalSignFlowForm(instance=vital_sign_flows)
     return save_vital_sign_flow_data_form(request, form, 'patient_data/vital_sign_flow_data/partial_edit.html')
 
 
 @login_required
 def vital_sign_flow_data_delete(request, id):
-    vital_sign_flows = get_object_or_404(Appointment, pk=id)
+    vital_sign_flows = get_object_or_404(VitalSignFlow, pk=id)
     data = dict()
 
     if request.method == 'POST':
         vital_sign_flows.delete()
         data['form_is_valid'] = True
-        patients = Appointment.objects.all()
+        patients = VitalSignFlow.objects.all()
         data['html_vital_sign_flow_list'] = render_to_string('patient_data/vital_sign_flow_data/vital_sign_flow_data.html', {'patients': patients})
         return JsonResponse(data)
     else:

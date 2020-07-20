@@ -2,8 +2,9 @@
 
 {% load static %}
 {% load staticfiles %}
-{% load crispy_forms_tags %}
 {% load i18n %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
 
 {% block headtitle %}
     {{ page_title }} | {{ titles.title }}
@@ -19,6 +20,11 @@
 	<link href="{% static 'css/patient_form/medication_administration.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
+{% block javascript %}
+	<script src="{% static 'js/patient_form/medication_administration.js' %}" type="text/javascript"></script>
+	<script src="{% static 'js/jquery.formset.js' %}" type="text/javascript"></script>
+{% endblock %}
+
 <div class="row isi">
 
 	<div class="formtitle">
@@ -27,70 +33,145 @@
 
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-		<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" novalidate>
-			{% csrf_token %}
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<td>{% trans "Name" %}:</td>
-						<td>{{ patients }}{{ form.patient|as_crispy_field }}</td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>{% trans "I/C No" %}:</td>
-						<td>{{ icnumbers }}</td>
-						<td>
-							{% trans "ALERGY" %}:
-							<br />
-							{{ form.allergy|as_crispy_field }}
-						</td>
-					</tr>
-				</tbody>
-			</table>
+		<form method="post">
+		{% csrf_token %}
+		{{ formset.management_form }}
 
-			<table class="table table-bordered">
-				<tr>
-					<th class="text-center" colspan="5">{% trans "Medication" %}</th>
-					<th class="text-center" rowspan="2">{% trans "Date/Time" %}</th>
-					<th class="text-center" rowspan="2">{% trans "Signature" %}</th>
-				</tr>
-				<tr>
-					<th class="text-center">{% trans "Name" %}</th>
-					<th class="text-center">{% trans "Dosage" %}</th>
-					<th class="text-center">{% trans "Tab/MLS" %}</th>
-					<th class="text-center">{% trans "Frequency" %}</th>
-					<th class="text-center">{% trans "Route" %}</th>
-				</tr>
-				<tbody>
-					<tr>
-						<td>{{ form.medication_name|as_crispy_field }}</td>
-						<td>{{ form.medication_dosage|as_crispy_field }}</td>
-						<td>{{ form.medication_tab|as_crispy_field }}</td>
-						<td>{{ form.medication_frequency|as_crispy_field }}</td>
-						<td>{{ form.medication_route|as_crispy_field }}</td>
-						<td>{{ form.medication_date_time|as_crispy_field }}</td>
-						<td>{{ form.signature_nurse|as_crispy_field }}</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="container-fluid" id="medication_administration">
 
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th class="text-center">{% trans "STAT Medication" %}</th>
-						<th class="text-center">{% trans "Date & Time" %}</th>
-						<th class="text-center">{% trans "Given By" %}</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>{{ form.stat|as_crispy_field }}</td>
-						<td>{{ form.date_time|as_crispy_field }}</td>
-						<td>{{ form.given_by|as_crispy_field }}</td>
-					</tr>
-				</tbody>
-			</table>
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Name" %}:
+					</div>
+					<div class="col-4 col">
+						{{ patients }}{{ form.patient|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "I/C No" %}:
+					</div>
+					<div class="col-4 col">
+						{{ icnumbers }}
+					</div>
+					<div class="col-6 col">
+						{{ form.allergy|as_crispy_field }}
+					</div>
+				</div>
+
+			</div>
+
+			<div class="container-fluid" id="medication_administration">
+
+				<div class="row">
+					<div class="col-7 col text-center">
+						{% trans "Medication" %}
+					</div>
+					<div class="col-2 col text-center">
+						{% trans "Date" %}
+					</div>
+					<div class="col-1 col text-center">
+						{% trans "Time" %}
+					</div>
+					<div class="col-1 col text-center">
+						{% trans "Signature" %}
+					</div>
+					<div class="col-1 col" style="border-top:none;border-right:none;border-bottom:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-3 col text-center">
+						{% trans "Name" %}
+					</div>
+					<div class="col-1 col text-center">
+						{% trans "Dosage" %}
+					</div>
+					<div class="col-1 col text-center">
+						{% trans "Tab/MLS	" %}
+					</div>
+					<div class="col-1 col text-center">
+						{% trans "Frequency" %}
+					</div>
+					<div class="col-1 col text-center">
+						{% trans "Route" %}
+					</div>
+					<div class="col-2 col">
+					</div>
+					<div class="col-1 col">
+					</div>
+					<div class="col-1 col">
+					</div>
+					<div class="col-1 col" style="border-top:none;border-right:none;border-bottom:none;">
+					</div>
+				</div>
+
+				{% for item in formset %}
+				<div class="row form-row">
+					<div class="col-3 col">
+						{{ form.medication_name|as_crispy_field }}
+					</div>
+					<div class="col-1 col">
+						{{ form.medication_dosage|as_crispy_field }}
+					</div>
+					<div class="col-1 col">
+						{{ form.medication_tab|as_crispy_field }}
+					</div>
+					<div class="col-1 col">
+						{{ form.medication_frequency|as_crispy_field }}
+					</div>
+					<div class="col-1 col">
+						{{ form.medication_route|as_crispy_field }}
+					</div>
+					<div class="col-2 col">
+						{{ form.medication_date|as_crispy_field }}
+					</div>
+					<div class="col-1 col">
+						{{ form.medication_time|as_crispy_field }}
+					</div>
+					<div class="col-1 col">
+						{{ form.signature_nurse|as_crispy_field }}
+					</div>
+					<div class="col-1 col" style="border-top:none;border-right:none;border-bottom:none;">
+						<button type="button" class="btn btn-success add-form-row">
+							<i class="fas fa-plus"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+
+			<div class="container-fluid" id="medication_administration">
+
+				<div class="row">
+					<div class="col-4 col">
+						{% trans "STAT Medication" %}
+					</div>
+					<div class="col-4 col">
+						{% trans "Date & Time" %}
+					</div>
+					<div class="col-4 col">
+						{% trans "Given By" %}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-4 col">
+						{{ form.stat|as_crispy_field }}
+					</div>
+					<div class="col-4 col">
+						{{ form.medicationstat_date_time|as_crispy_field }}
+					</div>
+					<div class="col-4 col">
+						{{ form.given_by|as_crispy_field }}
+					</div>
+				</div>
+
+			</div>
+
+
+
 			N-NBM          O- Omit          R-Refused        TA- Take Away      T-Taken        W-Withold
 			<br /><br />
 			* Blue colour row is for date –auto fill
@@ -115,7 +196,7 @@
 			<br />
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 			{% for item in profiles %}
-			<a class="btn btn-danger" href="{% url 'patient_data:patientdata_detail' item.id %}">{% trans "Cancel" %}</a>
+			<a class="btn btn-danger" href="{% url 'patient_data:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
 			{% endfor %}
 		</form>
 

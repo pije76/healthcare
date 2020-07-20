@@ -28,12 +28,12 @@ def save_maintainance_data_form(request, form, template_name):
 
     if request.method == 'POST':
         if form.is_valid():
-            patients = Appointment()
+            patients = Maintainance()
             patients = form.save(commit=False)
             patients.patient = request.user
             patients.save()
             data['form_is_valid'] = True
-            patients = Appointment.objects.all()
+            patients = Maintainance.objects.all()
             data['html_maintainance_list'] = render_to_string('patient_data/maintainance_data/maintainance_data.html', {'patients': patients})
         else:
             data['form_is_valid'] = False
@@ -47,13 +47,14 @@ def save_maintainance_data_form(request, form, template_name):
 
 
 @login_required
-def maintainance_data(request, id):
+def maintainance_data(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Maintainance Form')
-    patients = Maintainance.objects.filter(patient=id)
-    profiles = PatientProfile.objects.filter(pk=id)
+    patientid = PatientProfile.objects.get(username=username).id
+    patients = Maintainance.objects.filter(patient=patientid)
+    profiles = PatientProfile.objects.filter(pk=patientid)
 
     context = {
         'logos': logos,
@@ -69,23 +70,23 @@ def maintainance_data(request, id):
 
 @login_required
 def maintainance_data_edit(request, id):
-    maintainances = get_object_or_404(Appointment, pk=id)
+    maintainances = get_object_or_404(Maintainance, pk=id)
     if request.method == 'POST':
-        form = AppointmentForm(request.POST or None, instance=maintainances)
+        form = MaintainanceForm(request.POST or None, instance=maintainances)
     else:
-        form = AppointmentForm(instance=maintainances)
+        form = MaintainanceForm(instance=maintainances)
     return save_maintainance_data_form(request, form, 'patient_data/maintainance_data/partial_edit.html')
 
 
 @login_required
 def maintainance_data_delete(request, id):
-    maintainances = get_object_or_404(Appointment, pk=id)
+    maintainances = get_object_or_404(Maintainance, pk=id)
     data = dict()
 
     if request.method == 'POST':
         maintainances.delete()
         data['form_is_valid'] = True
-        patients = Appointment.objects.all()
+        patients = Maintainance.objects.all()
         data['html_maintainance_list'] = render_to_string('patient_data/maintainance_data/maintainance_data.html', {'patients': patients})
         return JsonResponse(data)
     else:

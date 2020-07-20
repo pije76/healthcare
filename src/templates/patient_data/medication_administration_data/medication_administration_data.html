@@ -87,26 +87,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										{% for item in patients %}
-										<tr>
-											<td>{{ item.medication_name }}</td>
-											<td>{{ item.medication_dosage }}</td>
-											<td>{{ item.get_medication_tab_display }}</td>
-											<td>{{ item.get_medication_frequency_display }}</td>
-											<td>{{ item.get_medication_route_display }}</td>
-											<td>{{ item.medication_date_time|date:"H:i" }}</td>
-											<td>{{ item.medication_date_time|date:"d-m-Y" }}</td>
-											<td>{{ item.get_stat_display }}</td>
-											<td>{{ item.date_time|date:"d-m-Y g:i A" }}</td>
-											<td>{{ item.given_by }}</td>
-											<td>
-												<button type="button" class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn" data-url="{% url 'patient_data:medication_administration_data_edit' item.id %}"data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
-												</button>
-												<button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-url="{% url 'patient_data:medication_administration_data_delete' item.id %}"data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
-												</button>
-											</td>
-										</tr>
-										{% endfor %}
+										{% include 'patient_data/medication_administration_data/partial_list.html' %}										
 									</tbody>
 									<tfoot>
 									</tfoot>
@@ -114,7 +95,7 @@
 							</form>
 						</div>
 						{% for item in profiles %}
-						<a class="btn btn-outline-primary" href="{% url 'patient_data:patientdata_detail' item.id %}">{% trans "Back" %}</a>
+						<a class="btn btn-outline-primary" href="{% url 'patient_data:patientdata_detail' item.username %}">{% trans "Back" %}</a>
 						{% endfor %}
 
 					</div>

@@ -71,22 +71,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										{% for item in patients %}
-										<tr>
-											<td>{{ item.time|date:"H:i" }}</td>
-											<td>{{ item.type_of_milk }}</td>
-											<td>{{ item.amount }}</td>
-											<td>{{ item.warm_water_before }}</td>
-											<td>{{ item.warm_water_after }}</td>
-											<td>{{ item.total_fluids }}</td>
-											<td>
-												<button type="button" class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn" data-url="{% url 'patient_data:enteral_feeding_regime_data_edit' item.id %}"data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
-												</button>
-												<button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-url="{% url 'patient_data:enteral_feeding_regime_data_delete' item.id %}"data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
-												</button>
-											</td>
-										</tr>
-										{% endfor %}
+										{% include 'patient_data/enteral_feeding_regime_data/partial_list.html' %}
 									</tbody>
 									<tfoot>
 										<tr>
@@ -101,7 +86,7 @@
 							</form>
 						</div>
 						{% for item in profiles %}
-						<a class="btn btn-outline-primary" href="{% url 'patient_data:patientdata_detail' item.id %}">{% trans "Back" %}</a>
+						<a class="btn btn-outline-primary" href="{% url 'patient_data:patientdata_detail' item.username %}">{% trans "Back" %}</a>
 						{% endfor %}
 
 					</div>

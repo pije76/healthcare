@@ -87,6 +87,17 @@ class AppointmentAdmin(admin.ModelAdmin):
 #        form = super(AppointmentAdmin, self).get_form(request, obj, **kwargs)
 #        form.base_fields['patient'].label_from_instance = lambda obj: "{} {}".format(obj.id, obj.ic_number)
 #        return form
+class ChargesAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'patient',
+        'date',
+        'items',
+        'amount_unit',
+        'given_by',
+    ]
+    ModelAdmin.ordering = ('id',)
+
 
 class DressingAdmin(admin.ModelAdmin):
     list_display = [
@@ -103,6 +114,7 @@ class DressingAdmin(admin.ModelAdmin):
         'image_img',
         'done_by',
     ]
+    ModelAdmin.ordering = ('id',)
 
 
 class EnteralFeedingRegimeAdmin(admin.ModelAdmin):
@@ -116,6 +128,7 @@ class EnteralFeedingRegimeAdmin(admin.ModelAdmin):
         'warm_water_after',
 #        'total_fluids',
     ]
+    ModelAdmin.ordering = ('id',)
 
 
 class MaintainanceAdmin(admin.ModelAdmin):
@@ -140,10 +153,11 @@ class MedicationAdministrationRecordAdmin(admin.ModelAdmin):
         'medication_tab',
         'medication_frequency',
         'medication_route',
-        'medication_date_time',
+        'medication_date',
+        'medication_time',
         'signature_nurse',
         'stat',
-        'date_time',
+        'medicationstat_date_time',
         'given_by',
     ]
     ModelAdmin.ordering = ('id',)
@@ -181,7 +195,6 @@ class OvertimeClaimAdmin(admin.ModelAdmin):
         'checked_sign_by',
         'verify_by',
     ]
-    autocomplete_fields = ['patient', ]
     ModelAdmin.ordering = ('id',)
 
 
@@ -189,8 +202,8 @@ admin.site.register(Admission, AdmissionAdmin)
 admin.site.register(ApplicationForHomeLeave, ApplicationForHomeLeaveAdmin)
 admin.site.register(Appointment, AppointmentAdmin)
 admin.site.register(CatheterizationCannulation)
-admin.site.register(Charges)
-admin.site.register(WoundCondition , MPTTModelAdmin)
+admin.site.register(Charges, ChargesAdmin)
+admin.site.register(WoundCondition, MPTTModelAdmin)
 #admin.site.register(WoundCondition, DraggableMPTTAdmin)
 admin.site.register(Dressing, DressingAdmin)
 admin.site.register(EnteralFeedingRegime, EnteralFeedingRegimeAdmin)

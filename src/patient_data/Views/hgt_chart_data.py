@@ -28,12 +28,12 @@ def save_hgt_chart_data_form(request, form, template_name):
 
     if request.method == 'POST':
         if form.is_valid():
-            patients = Appointment()
+            patients = HGTChart()
             patients = form.save(commit=False)
             patients.patient = request.user
             patients.save()
             data['form_is_valid'] = True
-            patients = Appointment.objects.all()
+            patients = HGTChart.objects.all()
             data['html_hgt_chart_list'] = render_to_string('patient_data/hgt_chart_data/hgt_chart_data.html', {'patients': patients})
         else:
             data['form_is_valid'] = False
@@ -47,13 +47,14 @@ def save_hgt_chart_data_form(request, form, template_name):
 
 
 @login_required
-def hgt_chart_data(request, id):
+def hgt_chart_data(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('HGT Chart')
-    patients = HGTChart.objects.filter(patient=id)
-    profiles = PatientProfile.objects.filter(pk=id)
+    patientid = PatientProfile.objects.get(username=username).id
+    patients = HGTChart.objects.filter(patient=patientid)
+    profiles = PatientProfile.objects.filter(pk=patientid)
 
     context = {
         'logos': logos,
@@ -68,23 +69,23 @@ def hgt_chart_data(request, id):
 
 @login_required
 def hgt_chart_data_edit(request, id):
-    hgt_charts = get_object_or_404(Appointment, pk=id)
+    hgt_charts = get_object_or_404(HGTChart, pk=id)
     if request.method == 'POST':
-        form = AppointmentForm(request.POST or None, instance=hgt_charts)
+        form = HGTChartForm(request.POST or None, instance=hgt_charts)
     else:
-        form = AppointmentForm(instance=hgt_charts)
+        form = HGTChartForm(instance=hgt_charts)
     return save_hgt_chart_data_form(request, form, 'patient_data/hgt_chart_data/partial_edit.html')
 
 
 @login_required
 def hgt_chart_data_delete(request, id):
-    hgt_charts = get_object_or_404(Appointment, pk=id)
+    hgt_charts = get_object_or_404(HGTChart, pk=id)
     data = dict()
 
     if request.method == 'POST':
         hgt_charts.delete()
         data['form_is_valid'] = True
-        patients = Appointment.objects.all()
+        patients = HGTChart.objects.all()
         data['html_hgt_chart_list'] = render_to_string('patient_data/hgt_chart_data/hgt_chart_data.html', {'patients': patients})
         return JsonResponse(data)
     else:

@@ -22,3 +22,26 @@
 .table-sm {
   margin-bottom: 10px;
 }
+
+#medication_administration {
+  padding: 20px;
+}
+
+#medication_administration .col {
+  border: 1px solid #c9c9c9;
+  padding-top: 12px;
+  padding-bottom: 10px;
+}
+
+#medication_administration .col:not(:last-child) {
+  border-right-width: 0;
+}
+
+#medication_administration .row:not(:last-child) .col {
+  border-bottom-width: 0;
+}
+
+.form-row {
+  margin-right: -15px !important;
+  margin-left: -15px !important;
+}

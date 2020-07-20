@@ -28,12 +28,12 @@ def save_dressing_data_form(request, form, template_name):
 
     if request.method == 'POST':
         if form.is_valid():
-            patients = Appointment()
+            patients = Dressing()
             patients = form.save(commit=False)
             patients.patient = request.user
             patients.save()
             data['form_is_valid'] = True
-            patients = Appointment.objects.all()
+            patients = Dressing.objects.all()
             data['html_dressing_list'] = render_to_string('patient_data/dressing_data/dressing_data.html', {'patients': patients})
         else:
             data['form_is_valid'] = False
@@ -47,13 +47,14 @@ def save_dressing_data_form(request, form, template_name):
 
 
 @login_required
-def dressing_data(request, id):
+def dressing_data(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Dressing Chart')
-    patients = Dressing.objects.filter(patient=id)
-    profiles = PatientProfile.objects.filter(pk=id)
+    patientid = PatientProfile.objects.get(username=username).id
+    patients = Dressing.objects.filter(patient=patientid)
+    profiles = PatientProfile.objects.filter(pk=patientid)
 
     context = {
         'logos': logos,
@@ -67,23 +68,23 @@ def dressing_data(request, id):
 
 @login_required
 def dressing_data_edit(request, id):
-    dressings = get_object_or_404(Appointment, pk=id)
+    dressings = get_object_or_404(Dressing, pk=id)
     if request.method == 'POST':
-        form = AppointmentForm(request.POST or None, instance=dressings)
+        form = DressingForm(request.POST or None, instance=dressings)
     else:
-        form = AppointmentForm(instance=dressings)
+        form = DressingForm(instance=dressings)
     return save_dressing_data_form(request, form, 'patient_data/dressing_data/partial_edit.html')
 
 
 @login_required
 def dressing_data_delete(request, id):
-    dressings = get_object_or_404(Appointment, pk=id)
+    dressings = get_object_or_404(Dressing, pk=id)
     data = dict()
 
     if request.method == 'POST':
         dressings.delete()
         data['form_is_valid'] = True
-        patients = Appointment.objects.all()
+        patients = Dressing.objects.all()
         data['html_dressing_list'] = render_to_string('patient_data/dressing_data/dressing_data.html', {'patients': patients})
         return JsonResponse(data)
     else:

@@ -5,6 +5,7 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 {% load widget_tweaks %}
+{% load display_choice %}
 
 {% block headtitle %}
 	{{ page_title }} | {{ titles.title }}
@@ -111,69 +112,14 @@
 									</thead>
 
 									<tbody>
-										{% for item in patients %}
-										<tr>
-											<td>{{ item.date|date:"d-m-Y" }}</td>
-											<td>{{ item.time|date:"H:i" }}</td>
-											<td>{{ item.get_admitted_display }}</td>
-											<td>{{ item.get_mode_display }}</td>
-											<td>{{ item.age }}</td>
-											<td>{{ item.birth_date|date:"d-m-Y" }}</td>
-											<td>{{ item.get_gender_display }}</td>
-											<td>{{ item.get_marital_status_display }}</td>
-											<td>{{ item.get_religion_display }}</td>
-											<td>{{ item.get_occupation_display }}</td>
-											<td>{{ item.get_communication_sight_display }}</td>
-											<td>{{ item.get_communication_hearing_display }}</td>
-											<td>{{ item.communication_others }}</td>
-											<td>{{ item.address }}</td>
-											<td>{{ item.phone }}</td>
-											<td>{{ item.ec_name }}</td>
-											<td>{{ item.ec_ic_number }}</td>
-											<td>{{ item.ec_relationship }}</td>
-											<td>{{ item.ec_phone }}</td>
-											<td>{{ item.ec_address }}</td>
-											<td>{{ item.get_general_condition_display }}</td>
-											<td>{{ item.vital_sign_temperature }} ºC</td>
-											<td>{{ item.vital_sign_pulse }} bpm</td>
-											<td>{{ item.vital_sign_bp }} mmHg</td>
-											<td>{{ item.vital_sign_resp }} min</td>
-											<td>{{ item.vital_sign_spo2 }} %</td>
-											<td>{{ item.get_vital_sign_on_oxygen_therapy_display }}</td>
-											<td>{{ item.vital_sign_on_oxygen_therapy_flow_rate }}</td>
-											<td>{{ item.vital_sign_hgt }}</td>
-											<td>{{ item.allergy_drug }}</td>
-											<td>{{ item.allergy_food }}</td>
-											<td>{{ item.allergy_others }}</td>
-											<td>{{ item.get_biohazard_infectious_disease_display }}</td>
-											<td>{{ item.get_invasive_line_insitu_display }}</td>
-											<td>{{ item.get_medical_history_display }}</td>
-											<td>{{ item.surgical_history }}</td>
-											<td>{{ item.date_diagnosis|date:"d-m-Y" }}</td>
-											<td>{{ item.diagnosis }}</td>
-											<td>{{ item.date_operation|date:"d-m-Y" }}</td>
-											<td>{{ item.operation }}</td>
-											<td>{{ item.get_own_medication_display }}</td>
-											<td>{{ item.get_adaptive_aids_with_patient_display }}</td>
-											<td>{{ item.get_orientation_display }}</td>
-											<td>{{ item.special_information }}</td>
-											<td>{{ item.admission_by }}</td>
-											<td>
-												<button type="button" class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn" data-url="{% url 'patient_data:admission_data_edit' item.id %}"data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
-												</button>
-												<button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-url="{% url 'patient_data:admission_data_delete' item.id %}"data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
-												</button>
-											</td>
-										</tr>
-										{% endfor %}
-									</tfoot>
+										{% include 'patient_data/admission_data/partial_list.html' %}
+									</tbody>
 								</table>
 							</form>
 						</div>
 						{% for item in profiles %}
-						<a class="btn btn-outline-primary" href="{% url 'patient_data:patientdata_detail' item.id %}">{% trans "Back" %}</a>
+						<a class="btn btn-outline-primary" href="{% url 'patient_data:patientdata_detail' item.username %}">{% trans "Back" %}</a>
 						{% endfor %}
-
 					</div>
 
                 </div>

@@ -46,12 +46,12 @@
 					<tr>
 						<th class="text-center">{% trans "Date" %}</th>
 						<th class="text-center">{% trans "Time" %}</th>
-						<th class="text-center">{% trans "FREQUENCY" %}</th>
-						<th class="text-center">{% trans "TYPE" %}</th>
-						<th class="text-center">{% trans "WOUND'S LOCATION" %}</th>
-						<th class="text-center">{% trans "WOUND'S CONDITION" %}</th>
-						<th class="text-center">{% trans "IMAGES" %}</th>
-						<th class="text-center">{% trans "DONE BY:" %}</th>
+						<th class="text-center">{% trans "Frequency" %}</th>
+						<th class="text-center">{% trans "Type" %}</th>
+						<th class="text-center">{% trans "Wound's Location" %}</th>
+						<th class="text-center">{% trans "Wound's Condition" %}</th>
+						<th class="text-center">{% trans "Images" %}</th>
+						<th class="text-center">{% trans "Done By:" %}</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -69,7 +69,7 @@
 			</table>
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 			{% for item in profiles %}
-			<a class="btn btn-danger" href="{% url 'patient_data:patientdata_detail' item.id %}">{% trans "Cancel" %}</a>
+			<a class="btn btn-danger" href="{% url 'patient_data:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
 			{% endfor %}
 		</form>
 

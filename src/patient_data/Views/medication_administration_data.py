@@ -54,14 +54,15 @@ def save_medication_administration_data_form(request, form, template_name):
 
 
 @login_required
-def medication_administration_data(request, id):
+def medication_administration_data(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Medication Administration Record')
-    patients = MedicationAdministrationRecord.objects.filter(patient=id)
-    profiles = PatientProfile.objects.filter(pk=id)
-    allergies = MedicationAdministrationRecord.objects.filter(patient=id).values_list('allergy', flat=True).first()
+    patientid = PatientProfile.objects.get(username=username).id
+    patients = MedicationAdministrationRecord.objects.filter(patient=patientid)
+    profiles = PatientProfile.objects.filter(pk=patientid)
+    allergies = MedicationAdministrationRecord.objects.filter(patient=patientid).values_list('allergy', flat=True).first()
 
     context = {
         'logos': logos,

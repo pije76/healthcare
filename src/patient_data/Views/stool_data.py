@@ -28,12 +28,12 @@ def save_stool_data_form(request, form, template_name):
 
     if request.method == 'POST':
         if form.is_valid():
-            patients = Appointment()
+            patients = Stool()
             patients = form.save(commit=False)
             patients.patient = request.user
             patients.save()
             data['form_is_valid'] = True
-            patients = Appointment.objects.all()
+            patients = Stool.objects.all()
             data['html_stool_list'] = render_to_string('patient_data/stool_data/stool_data.html', {'patients': patients})
         else:
             data['form_is_valid'] = False
@@ -47,13 +47,14 @@ def save_stool_data_form(request, form, template_name):
 
 
 @login_required
-def stool_data(request, id):
+def stool_data(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Stool Chart')
-    patients = Stool.objects.filter(patient=id)
-    profiles = PatientProfile.objects.filter(pk=id)
+    patientid = PatientProfile.objects.get(username=username).id
+    patients = Stool.objects.filter(patient=patientid)
+    profiles = PatientProfile.objects.filter(pk=patientid)
 
     context = {
         'logos': logos,
@@ -68,23 +69,23 @@ def stool_data(request, id):
 
 @login_required
 def stool_data_edit(request, id):
-    stools = get_object_or_404(Appointment, pk=id)
+    stools = get_object_or_404(Stool, pk=id)
     if request.method == 'POST':
-        form = AppointmentForm(request.POST or None, instance=stools)
+        form = StoolForm(request.POST or None, instance=stools)
     else:
-        form = AppointmentForm(instance=stools)
+        form = StoolForm(instance=stools)
     return save_stool_data_form(request, form, 'patient_data/stool_data/partial_edit.html')
 
 
 @login_required
 def stool_data_delete(request, id):
-    stools = get_object_or_404(Appointment, pk=id)
+    stools = get_object_or_404(Stool, pk=id)
     data = dict()
 
     if request.method == 'POST':
         stools.delete()
         data['form_is_valid'] = True
-        patients = Appointment.objects.all()
+        patients = Stool.objects.all()
         data['html_stool_list'] = render_to_string('patient_data/stool_data/stool_data.html', {'patients': patients})
         return JsonResponse(data)
     else:
