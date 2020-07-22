@@ -55,15 +55,12 @@
 					<th class="text-center"colspan="2" scope="colgroup">{% trans "Blood Pressure (mmHg)" %}</th>
 					<th class="text-center"rowspan="2">{% trans "Respiration (min)" %}</th>
 					<th class="text-center"colspan="2" scope="colgroup">{% trans "SPO2" %}</th>
-					<th class="text-center"colspan="2" scope="colgroup">{% trans "HGT" %}</th>
 				</tr>
 				<tr>
 					<th class="text-center"scope="col">{% trans "Systolic" %}</th>
 					<th class="text-center"scope="col">{% trans "Diastolic" %}</th>
 					<th class="text-center"scope="col">{% trans "(%)" %}</th>
 					<th class="text-center"scope="col">{% trans "O2/min" %}</th>
-					<th class="text-center"scope="col">{% trans "(mmol/L)" %}</th>
-					<th class="text-center"scope="col">{% trans "Remarks" %}</th>
 				</tr>
 				<tr>
 					<td>{{ form.date|as_crispy_field }}</td>
@@ -75,8 +72,6 @@
 					<td>{{ form.respiration|as_crispy_field }}</td>
 					<td>{{ form.spo2_percentage|as_crispy_field }}</td>
 					<td>{{ form.spo2_o2|as_crispy_field }}</td>
-					<td>{{ form.hgt_liter|as_crispy_field }}</td>
-					<td>{{ form.hgt_remarks|as_crispy_field }}</td>
 				</tr>
 			</table>
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>

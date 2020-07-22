@@ -11,6 +11,11 @@ urlpatterns = [
 #    path('login/', RedirectView.as_view(url='accounts/login/', permanent=False), name='index'),
     path('login/', index, name='index'),
     re_path(r'^signup/$', signup_view, name='signup_view'),
+#    re_path(r'^signup/', SignUpView.as_view(), name='signup_view'),
+    re_path(r'^signup/patient/$', PatientSignUpView.as_view(), name='patient_signup'),
+    re_path(r'^signup/family/$', FamilySignUpView.as_view(), name='family_signup'),
+    re_path(r'^signup/staff/$', StaffSignUpView.as_view(), name='staff_signup'),
+
 #    re_path(r'^setlang/$', set_language, name='set_language'),
 #    re_path(r'^i18n/', include('django.conf.urls.i18n')),
 #    re_path(r'^i18n/$', set_language, name='set_language'),

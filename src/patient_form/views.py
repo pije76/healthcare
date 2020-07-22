@@ -32,7 +32,7 @@ now = date.today
 
 def index(request):
 	schema_name = connection.schema_name
-	patients = PatientProfile.objects.filter(username=request.user.username)
+	patients = UserProfile.objects.filter(username=request.user.username)
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Home')
@@ -52,28 +52,29 @@ def admission(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Admission Form')
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
 		'ic_number': icnumbers,
 	}
 
-	if request.method == 'GET':
-		form = AdmissionForm(request.GET or None)
-		formset = AdmissionFormSet(queryset=Admission.objects.none())
-		helper = MyFormSetHelper()
+#	if request.method == 'GET':
+#		form = AdmissionForm(request.GET or None)
+#		formset = AdmissionFormSet(queryset=Admission.objects.none())
+#		helper = MyFormSetHelper()
 
-#	if request.method == 'POST':
-	elif request.method == 'POST':
-#		form = AdmissionForm(request.POST)
+	if request.method == 'POST':
+#	elif request.method == 'POST':
+		form = AdmissionForm(request.POST or None)
 #		form = AdmissionForm(request.POST or None, prefix='forma')
-		formset = AdmissionFormSet(request.POST)
+#		formset = AdmissionFormSet(request.POST)
 #		formset = AdmissionFormSet(request.POST or None, prefix='formb')
 #		formset = AdmissionFormSet(request.POST or None, queryset=None)
-		formset = AdmissionFormSet(request.POST)
+		formset = AdmissionFormSet(request.POST or None)
+#		formset = AdmissionFormSet(queryset=ProjectPage.objects.filter(page_project__id=proj), initial =[{'page_project': proj}, {'page_project': proj}, {'page_project': proj}])
 		helper = MyFormSetHelper()
 
 #		if form.is_valid():
@@ -85,17 +86,26 @@ def admission(request, username):
 #			int((datetime.now().date() - self.birth_date).days / 365.25)
 #			profile.age = delta
 #			print(delta.days)
+			form.save()
+#			profile = formset.save(commit=False)
+#			profile.patient = patients
+#			profile.ec_name = formset.cleaned_data['ec_name']
+#			profile.ec_ic_number = formset.cleaned_data['ec_ic_number']
+#			profile.ec_relationship = formset.cleaned_data['ec_relationship']
+#			profile.ec_phone = formset.cleaned_data['ec_phone']
+#			profile.ec_address = formset.cleaned_data['ec_address']
 #			profile.save()
-			admissionform = form.save()
+			formset.save()
+#			admissionform = form.save()
 
-			for form in formset:
-				profile = form.save(commit=False)
-				profile.ec_name = admissionform
-				profile.ec_ic_number = admissionform
-				profile.ec_relationship = admissionform
-				profile.ec_phone = admissionform
-				profile.ec_address = admissionform
-				profile.save()
+#			for form in formset:
+#				profile = form.save(commit=False)
+#				profile.ec_name = admissionform
+#				profile.ec_ic_number = admissionform
+#				profile.ec_relationship = admissionform
+#				profile.ec_phone = admissionform
+#				profile.ec_address = admissionform
+#				profile.save()
 
 			messages.success(request, _(page_title + ' form has been save successfully.'))
 			return redirect('patient_data:patientdata_detail', username=patients.username)
@@ -106,6 +116,7 @@ def admission(request, username):
 		form = AdmissionForm(initial=initial)
 #		form = AdmissionForm(initial=initial, prefix='forma')
 #		formset = AdmissionFormSet(queryset=None)
+#		formset = AdmissionFormSet(initial=initial)
 		formset = AdmissionFormSet()
 #		formset = AdmissionFormSet(initial=initial, prefix='formb')
 		helper = MyFormSetHelper()
@@ -131,9 +142,9 @@ def application_homeleave(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Application For Home Leave')
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -192,9 +203,9 @@ def appointment(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Appointment Records')
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -234,9 +245,9 @@ def catheterization_cannulation(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Catheterization and Cannulation Chart')
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -275,9 +286,9 @@ def charges_sheet(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Charges Sheet')
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -315,9 +326,9 @@ def dressing(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Dressing Chart')
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -357,9 +368,9 @@ def enteral_feeding_regime(request, username):
 	page_title = _('Enteral Feeding Regime')
 #	total_flush = EnteralFeedingRegime.objects.all().annotate(total_food=F('warm_water_before ') + F('warm_water_after'))
 #    total = EnteralFeedingRegime.objects.aggregate(total_population=Sum('amount'))
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -397,9 +408,9 @@ def hgt_chart(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('HGT Chart')
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -437,9 +448,12 @@ def intake_output(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Intake Output Chart')
-	profiles = PatientProfile.objects.filter(username=username)
-	patients = get_object_or_404(PatientProfile, username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	profiles = UserProfile.objects.filter(username=username)
+	patientid = UserProfile.objects.get(username=username).id
+	patients = get_object_or_404(UserProfile, username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	intakeoutput = IntakeOutputChart.objects.filter(patient=patientid)
+
 
 	initial = {
 		'patient': patients,
@@ -447,6 +461,8 @@ def intake_output(request, username):
 	}
 	if request.method == 'POST':
 		form = IntakeOutputChartForm(request.POST or None)
+		formset = IntakeOutputChartFormSet(request.POST, queryset=IntakeOutputChart.objects.filter(patient=patientid))
+
 		if form.is_valid():
 			form.save()
 
@@ -456,6 +472,7 @@ def intake_output(request, username):
 			messages.warning(request, form.errors)
 	else:
 		form = IntakeOutputChartForm(initial=initial)
+		formset = IntakeOutputChartFormSet(queryset=IntakeOutputChart.objects.filter(patient=patientid))
 
 	context = {
 		'logos': logos,
@@ -465,6 +482,7 @@ def intake_output(request, username):
 		'profiles': profiles,
 		'icnumbers': icnumbers,
 		'form': form,
+		'formset': formset,
 	}
 
 	return render(request, 'patient_form/intake_output_form.html', context)
@@ -476,9 +494,9 @@ def maintainance(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Maintainance Form')
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -516,9 +534,9 @@ def medication_record(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Medication Records')
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -556,11 +574,12 @@ def medication_administration(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Medication Administration Record')
-	patientid = PatientProfile.objects.get(username=username).id
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patientid = UserProfile.objects.get(username=username).id
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 	allergies = MedicationAdministrationRecord.objects.filter(patient=patientid).values_list('allergy', flat=True).first()
+	medicationadministration = MedicationAdministrationRecord.objects.filter(patient=patientid)
 
 	initial = {
 		'patient': patients,
@@ -574,27 +593,34 @@ def medication_administration(request, username):
 
 	elif request.method == 'POST':
 		form = MedicationAdministrationRecordForm(request.POST)
-		formset = MedicationAdministrationRecordFormSet(request.POST)
+		formset = MedicationAdministrationRecordFormSet(request.POST, queryset=MedicationAdministrationRecord.objects.filter(patient=patientid))
 
-		if form.is_valid() and formset.is_valid():
-			medicationadministrationform = form.save()
+		if form.is_valid():
+#			medicationadministration = form.save()
+			form.save()
 
-			for form in formset:
-				profile = form.save(commit=False)
-				profile.medication_name = medicationadministrationform
-				profile.medication_dosage = medicationadministrationform
-				profile.medication_tab = medicationadministrationform
-				profile.medication_frequency = medicationadministrationform
-				profile.medication_route = medicationadministrationform
-				profile.save()
+		if formset.is_valid():
+#			instances = formset.save(commit=False)
+#			for instance in instances:
+#			for form in formset:
+#				profile = form.save(commit=False)
+#				profile.patient = medicationadministration.username
+#				profile.medication_name = medicationadministration.medication_name
+#				profile.medication_dosage = medicationadministration.medication_dosage
+#				profile.medication_tab = medicationadministration.medication_tab
+#				profile.medication_frequency = medicationadministration.medication_frequency
+#				profile.medication_route = medicationadministration.medication_route
+#				profile.save()
+			formset.save()
 
 			messages.success(request, _(page_title + ' form has been save successfully.'))
 			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
+			messages.warning(request, formset.errors)
 	else:
 		form = MedicationAdministrationRecordForm(initial=initial)
-		formset = MedicationAdministrationRecordFormSet()
+		formset = MedicationAdministrationRecordFormSet(initial=initial)
 
 	context = {
 		'logos': logos,
@@ -616,9 +642,9 @@ def miscellaneous_charges_slip(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Miscellaneous Charges Slip')
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -656,9 +682,9 @@ def nursing(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Nursing Report')
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -696,9 +722,9 @@ def overtime_claim(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Overtime Claim Form')
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 #	durations = OvertimeClaim.objects.filter(patient=id).values_list('duration_time', flat=True).
 #	d = dict()
 #	d['duration_time'] = a.duration_time
@@ -761,9 +787,9 @@ def physio_progress_note(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Physiotherapy Progress Note')
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -801,9 +827,9 @@ def physiotherapy_general_assessment(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Physiotherapy General Assessment Form')
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -841,9 +867,9 @@ def staff_records(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Staff Records')
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -881,9 +907,9 @@ def stool(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Stool Chart')
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -921,9 +947,9 @@ def visiting_consultant_records(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Visiting Consultant Records')
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,
@@ -961,9 +987,9 @@ def vital_sign_flow(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Vital Sign Flow Sheet')
-	patients = get_object_or_404(PatientProfile, username=username)
-	profiles = PatientProfile.objects.filter(username=username)
-	icnumbers = PatientProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	patients = get_object_or_404(UserProfile, username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
 		'patient': patients,

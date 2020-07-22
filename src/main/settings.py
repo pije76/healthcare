@@ -53,12 +53,12 @@ SHARED_APPS = (
 	'accounts',  # Custom app that contains the new User Model. Must NOT exist in TENANT_APPS
 	'allauth',
 	'allauth.account',
-	'allauth.socialaccount',
+#	'allauth.socialaccount',
 
 	'post_office',
 	'phonenumber_field',
 
-	'mptt',
+#	'mptt',
 	'massadmin',
 )
 
@@ -79,21 +79,22 @@ TENANT_APPS = (
 	'post_office',
 	'phonenumber_field',
 
-	'bootstrap_modal_forms',
-	'bootstrapform',
+#	'bootstrap_modal_forms',
+#	'bootstrapform',
 #	'formset_bootstrap',
-	'jquery',
-	'djangoformsetjs',
+#	'jquery',
+#	'djangoformsetjs',
 	'crispy_forms',
 	'widget_tweaks',
 #	'floppyforms',
-	'selectable',
 
+	'selectable',
 	'bootstrap_datepicker_plus',
-	'durationwidget',
+#	'bootstrap4_datetime',
+#	'durationwidget',
 
 	'massadmin',
-	'mptt',
+#	'mptt',
 )
 
 FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
@@ -130,8 +131,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Allauth settings
-AUTH_USER_MODEL = 'accounts.PatientProfile'
-AUTH_PROFILE_MODULE = 'accounts.PatientProfile'
+AUTH_USER_MODEL = 'accounts.UserProfile'
+AUTH_PROFILE_MODULE = 'accounts.UserProfile'
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = False
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_EMAIL_VERIFICATION = False
@@ -184,7 +185,7 @@ WSGI_APPLICATION = 'main.wsgi.application'
 DATABASES = {
 	'default': {
 		'ENGINE': 'django_tenants.postgresql_backend',
-		'NAME': 'heathcare',
+		'NAME': 'healthcare',
 		'USER': 'pije76',
 		'PASSWORD': 'tratap60',
 	}
@@ -381,7 +382,7 @@ if DEBUG:
 	)
 	INSTALLED_APPS += (
 		'debug_toolbar',
-		'debug_permissions',
+#		'debug_permissions',
 	)
 	INTERNAL_IPS = ('127.0.0.1', )
 	DEBUG_TOOLBAR_CONFIG = {

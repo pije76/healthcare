@@ -2,7 +2,6 @@
 
 {% load static %}
 {% load i18n %}
-{% load account socialaccount %}
 {% load crispy_forms_tags %}
 
 {% block styles %}
@@ -25,7 +24,13 @@
         </div>
 
         <div class="col-sm-8 col-md-8 col-lg-8">
+
             <h1>{% trans "Sign Up" %}</h1>
+            <p class="lead">Select below the type of account you want to create</p>
+
+            <a href="{% url 'patient_signup' %}" class="btn btn-patient btn-lg" role="button">I'm a patient</a>
+            <a href="{% url 'family_signup' %}" class="btn btn-family btn-lg" role="button">I'm a family of patient</a>
+            <a href="{% url 'staff_signup' %}" class="btn btn-staff btn-lg" role="button">I'm a staff</a>
 
             <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
 

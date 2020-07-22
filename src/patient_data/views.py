@@ -32,16 +32,16 @@ end_time_night = datetime.strptime('23:59', '%H:%M').time()
 @login_required
 def patientdata_list(request):
 	schema_name = connection.schema_name
-	patients = PatientProfile.objects.filter(username=request.user.username)
+	patients = UserProfile.objects.filter(username=request.user.username)
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Patient List')
 #	patient_data = Appointment.objects.filter(patient=id)
-#	table = PatientProfileTable(PatientProfile.objects.all())
+#	table = UserProfileTable(UserProfile.objects.all())
 	if request.user.is_superuser:
-		tables = PatientProfile.objects.all()
+		tables = UserProfile.objects.all()
 	else:
-		tables = PatientProfile.objects.filter(full_name=request.user)
+		tables = UserProfile.objects.filter(full_name=request.user)
 
 	context = {
 		'patients': patients,
@@ -60,9 +60,9 @@ def patientdata_detail(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	patients = PatientProfile.objects.filter(username=username)
-#	patients = PatientProfile.objects.filter(patient=id)
-#	patients = PatientProfile.objects.filter(pk=id).values_list('patient', flat=True).first()
+	patients = UserProfile.objects.filter(username=username)
+#	patients = UserProfile.objects.filter(patient=id)
+#	patients = UserProfile.objects.filter(pk=id).values_list('patient', flat=True).first()
 	page_title = _('Patient Detail')
 	icnumbers = Admission.objects.filter(patient=request.user)
 

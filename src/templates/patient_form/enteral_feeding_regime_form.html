@@ -43,6 +43,10 @@
 						<td>{% trans "I/C No" %}:</td>
 						<td>{{ icnumbers }}</td>
 					</tr>
+					<tr>
+						<td>{% trans "Date" %}:</td>
+						<td>{{ form.date|as_crispy_field }}</td>
+					</tr>
 				</tbody>
 			</table>
 			<table class="table table-bordered">

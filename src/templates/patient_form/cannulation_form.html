@@ -47,7 +47,7 @@
 				</col>
 				<tr>
 					<th class="text-center" colspan="6" scope="colgroup">{% trans "Nasogastric Tube" %}</th>
-					<th class="text-center" colspan="6" scope="colgroup">{% trans "Urinary Catheter" %}</th>
+					<th class="text-center" colspan="5" scope="colgroup">{% trans "Urinary Catheter" %}</th>
 					<th class="text-center" colspan="6" scope="colgroup">{% trans "Cannula" %}</th>
 				</tr>
 				<tr>
@@ -60,15 +60,12 @@
 					<th class="text-center" scope="col">{% trans "Date" %}</th>
 					<th class="text-center" scope="col">{% trans "Size (Fr)" %}</th>
 					<th class="text-center" scope="col">{% trans "Type" %}</th>
-					<th class="text-center" scope="col">{% trans "Location" %}</th>
 					<th class="text-center" scope="col">{% trans "Due date" %}</th>
 					<th class="text-center" scope="col">{% trans "Inserted by" %}</th>
 					<th class="text-center" scope="col">{% trans "Date" %}</th>
 					<th class="text-center" scope="col">{% trans "Size (Fr)" %}</th>
-					<th class="text-center" scope="col">{% trans "Type" %}</th>
 					<th class="text-center" scope="col">{% trans "Location" %}</th>
 					<th class="text-center" scope="col">{% trans "Due date" %}</th>
-					<th class="text-center" scope="col">{% trans "Inserted by" %}</th>
 				</tr>
 
 				<tr>
@@ -81,15 +78,12 @@
 					<th class="text-center" scope="row">{{ form.urinary_catheter_date|as_crispy_field }}</th>
 					<td>{{ form.urinary_catheter_size|as_crispy_field }}</td>
 					<td>{{ form.urinary_catheter_type|as_crispy_field }}</td>
-					<td>{{ form.urinary_catheter_location|as_crispy_field }}</td>
 					<td>{{ form.urinary_catheter_due_date|as_crispy_field }}</td>
 					<td>{{ form.urinary_catheter_inserted_by|as_crispy_field }}</td>
 					<th class="text-center" scope="row">{{ form.cannula_date|as_crispy_field }}</th>
 					<td>{{ form.cannula_size|as_crispy_field }}</td>
-					<td>{{ form.cannula_type|as_crispy_field }}</td>
 					<td>{{ form.cannula_location|as_crispy_field }}</td>
 					<td>{{ form.cannula_due_date|as_crispy_field }}</td>
-					<td>{{ form.cannula_inserted_by|as_crispy_field }}</td>
 				</tr>
 			</table>
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>

@@ -1,14 +1,13 @@
 from django import forms
 from django.core.validators import RegexValidator
-from django.utils.translation import ugettext_lazy as _
 from django.db.models.functions import Now
+from django.forms import ModelForm, modelformset_factory, renderers, RadioSelect
 from django.forms.formsets import formset_factory
-from django.utils.safestring import mark_safe
-from django.utils.functional import lazy
-from django.forms import modelformset_factory
 from django.forms.models import inlineformset_factory
 from django.forms.widgets import ChoiceWidget
-from django.forms import renderers, RadioSelect
+from django.utils.functional import lazy
+from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
 from djangoformsetjs.utils import formset_media_js
 
 from crispy_forms.bootstrap import *
@@ -16,24 +15,25 @@ from crispy_forms.helper import *
 from crispy_forms.layout import *
 
 
-from mptt.forms import TreeNodeChoiceField
+#from mptt.forms import TreeNodeChoiceField
 from bootstrap_datepicker_plus import DatePickerInput, TimePickerInput, DateTimePickerInput, MonthPickerInput, YearPickerInput
+from selectable.forms import AutoCompleteWidget
+#from durationwidget.widgets import TimeDurationWidget
+from bootstrap4_datetime.widgets import DateTimePicker
 #from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
 #from django_select2 import forms as s2forms
 #from django_select2.forms import *
 #from easy_select2 import select2_modelform, select2_modelform_meta
 #from easy_select2.utils import apply_select2
-from selectable.forms import AutoCompleteWidget
-
-
 #from jsignature.forms import JSignatureField
-from durationwidget.widgets import TimeDurationWidget
+
 
 from .models import *
 from .lookups import *
 from .custom_layout import *
 from accounts.models import *
 
+from functools import partial
 #import datetime
 from datetime import *
 messageserror = _("*IC Number format needs to be yymmdd-xx-zzzz.")
@@ -53,7 +53,7 @@ def time_now():
 
 
 def get_now():
-	return datetime.now().strftime("%d-%m-%Y %H:%M")
+	return datetime.now().strftime("%d/%m/%Y %H:%M")
 
 
 mark_safe_lazy = lazy(mark_safe, six.text_type)
@@ -107,7 +107,7 @@ class AdmissionForm(forms.ModelForm):
 	marital_status = forms.ChoiceField(required=False, label="", initial=_("Single"), widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=Admission.MARITAL_CHOICES)
 	marital_status_others = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	address = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 4, 'cols': 15}))
-	phone = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+#	phone = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	religion = forms.ChoiceField(required=False, label="", initial=_("Buddhist"), widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=Admission.RELIGION_CHOICES)
 	religion_others = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	occupation = forms.ChoiceField(required=False, label="", initial=_("Retired"), widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=Admission.OCCUPATION_CHOICES)
@@ -118,6 +118,7 @@ class AdmissionForm(forms.ModelForm):
 	ec_name = forms.CharField(required=False, label=_("Name:"), widget=forms.TextInput(attrs={'class': "form-control"}))
 	ec_ic_number = forms.CharField(max_length=14, required=False, label=_("IC No:"), widget=forms.TextInput(attrs={'class': "form-control"}))
 	ec_relationship = forms.CharField(required=False, label=_("Relationship:"), widget=forms.TextInput(attrs={'class': "form-control"}))
+#	ec_phone = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	ec_phone = forms.CharField(required=False, label=_("Contact No:"), widget=forms.TextInput(attrs={'class': "form-control"}))
 	ec_address = forms.CharField(required=False, label=_("Address:"), widget=forms.Textarea(attrs={'class': "form-control", 'rows': 4, 'cols': 15}))
 	general_condition = forms.ChoiceField(required=False, label="", initial=_("Stable"), widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=Admission.GENERAL_CONDITION_CHOICES)
@@ -133,6 +134,7 @@ class AdmissionForm(forms.ModelForm):
 	allergy_food = forms.CharField(required=False, label=_("Food:"), widget=forms.TextInput(attrs={'class': "form-control"}))
 	allergy_others = forms.CharField(required=False, label=_("Others:"), widget=forms.TextInput(attrs={'class': "form-control"}))
 	biohazard_infectious_disease = forms.ChoiceField(required=False, label="", initial=False, widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=Admission.BOOLEAN_CHOICES)
+	biohazard_infectious_disease_others = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	invasive_line_insitu = forms.ChoiceField(required=False, label="", initial=_("None"), widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=Admission.INVASIVE_LINE_INSITU_CHOICES)
 	invasive_line_insitu_others = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	medical_history = forms.ChoiceField(required=False, label="", initial=_("No Chronic Illness"), widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=Admission.MEDICAL_HISTORY_CHOICES)
@@ -146,9 +148,9 @@ class AdmissionForm(forms.ModelForm):
 	date_operation = forms.DateField(required=False, label="", initial=get_now, input_formats=['%d/%m/%Y'], widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': 'form-control'}))
 	operation = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 4, 'cols': 15}))
 	own_medication = forms.ChoiceField(required=False, label="", initial=False, widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=Admission.BOOLEAN_CHOICES)
-	own_medication_drug_name = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 4, 'cols': 15}))
+	own_medication_drug_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	own_medication_dosage = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
-	own_medication_tablet_capsule = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 4, 'cols': 15}))
+	own_medication_tablet_capsule = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
 	own_medication_frequency = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
 	adaptive_aids_with_patient = forms.ChoiceField(required=False, label="", initial=_("Denture"), widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=Admission.ADAPTIVE_AIDS_WITH_PATIENT_CHOICES)
 	adaptive_aids_with_patient_others = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
@@ -198,6 +200,7 @@ class AdmissionForm(forms.ModelForm):
 		occupation_others = cleaned_data.get('occupation_others')
 		communication_hearing_others = cleaned_data.get('communication_hearing_others')
 		vital_sign_on_oxygen_therapy_flow_rate = cleaned_data.get('vital_sign_on_oxygen_therapy_flow_rate')
+		biohazard_infectious_disease_others = cleaned_data.get('biohazard_infectious_disease_others')
 		invasive_line_insitu_others = cleaned_data.get('invasive_line_insitu_others')
 		medical_history_others = cleaned_data.get('medical_history_others')
 		adaptive_aids_with_patient_others = cleaned_data.get('adaptive_aids_with_patient_others')
@@ -215,6 +218,8 @@ class AdmissionForm(forms.ModelForm):
 			cleaned_data['communication_hearing'] = communication_hearing_others
 		if vital_sign_on_oxygen_therapy_flow_rate:
 			cleaned_data['vital_sign_on_oxygen_therapy'] = vital_sign_on_oxygen_therapy_flow_rate
+		if biohazard_infectious_disease_others:
+			cleaned_data['biohazard_infectious_disease'] = biohazard_infectious_disease_others
 		if invasive_line_insitu_others:
 			cleaned_data['invasive_line_insitu'] = invasive_line_insitu_others
 		if medical_history_others:
@@ -263,10 +268,25 @@ class EmergencyForm(forms.ModelForm):
 #	AdmissionFormSet = inlineformset_factory(Admission, form=AdmissionForm, fields=['ec_name', 'ec_ic_number', 'ec_relationship', 'ec_phone', 'ec_address'], extra=1, can_delete=True)
 AdmissionFormSet = modelformset_factory(
 	Admission,
+	form=AdmissionForm,
 #	form=EmergencyForm,
-	fields=('ec_name', 'ec_ic_number', 'ec_relationship', 'ec_phone', 'ec_address'),
-	extra=2,
-#	max_num=2,
+	fields=(
+		'ec_name',
+		'ec_ic_number',
+		'ec_relationship',
+		'ec_phone',
+		'ec_address',
+		'date_diagnosis',
+		'diagnosis',
+		'date_operation',
+		'operation',
+		'own_medication_drug_name',
+		'own_medication_dosage',
+		'own_medication_tablet_capsule',
+		'own_medication_frequency',
+	),
+	extra=1,
+	max_num=2,
 #	can_delete=True,
 
 )
@@ -340,22 +360,21 @@ class CannulationForm(forms.ModelForm):
 
 	nasogastric_tube_date = forms.DateField(required=False, label="", initial=get_now, input_formats=['%d/%m/%Y'], widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': 'form-control'}))
 	nasogastric_tube_size = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
-	nasogastric_tube_type = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 4}))
+#	nasogastric_tube_type = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 4}))
+	nasogastric_tube_type = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=CatheterizationCannulation.NASOGASTRIC_TUBE_TYPE_CHOICES)	
 	nasogastric_tube_location = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 4}))
 	nasogastric_tube_due_date = forms.DateField(required=False, label="", initial=get_now, input_formats=['%d/%m/%Y'], widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': 'form-control'}))
 	nasogastric_tube_inserted_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	urinary_catheter_date = forms.DateField(required=False, label="", initial=get_now, input_formats=['%d/%m/%Y'], widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': 'form-control'}))
 	urinary_catheter_size = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
-	urinary_catheter_type = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 4}))
-	urinary_catheter_location = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 4}))
+#	urinary_catheter_type = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 4}))
+	urinary_catheter_type = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=CatheterizationCannulation.URINARY_CATHETER_TYPE_CHOICES)	
 	urinary_catheter_due_date = forms.DateField(required=False, label="", initial=get_now, input_formats=['%d/%m/%Y'], widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': 'form-control'}))
 	urinary_catheter_inserted_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	cannula_date = forms.DateField(required=False, label="", initial=get_now, input_formats=['%d/%m/%Y'], widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': 'form-control'}))
 	cannula_size = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
-	cannula_type = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 4}))
 	cannula_location = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 4}))
 	cannula_due_date = forms.DateField(required=False, label="", initial=get_now, input_formats=['%d/%m/%Y'], widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': 'form-control'}))
-	cannula_inserted_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 
 
 class ChargesForm(forms.ModelForm):
@@ -455,6 +474,36 @@ class IntakeOutputChartForm(forms.ModelForm):
 	output_other_type = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	output_other_ml = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
 
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+#		if not self.instance.time_intake:
+#			self.initial['time_intake'] = self.instance.time_intake
+
+
+IntakeOutputChartFormSet = modelformset_factory(
+	IntakeOutputChart,
+	form=IntakeOutputChartForm,
+#	form=EmergencyForm,
+	fields=(
+		'time_intake',
+		'intake_oral_type',
+		'intake_oral_ml',
+		'intake_parenteral_type',
+		'intake_parenteral_ml',
+		'intake_other_type',
+		'intake_other_ml',
+		'time_output',
+		'output_urine_ml',
+		'output_urine_cum',
+		'output_gastric_ml',
+		'output_other_type',
+		'output_other_ml',
+	),
+	extra=1,
+	max_num=1,
+#	can_delete=True,
+
+)
 
 class MaintainanceForm(forms.ModelForm):
 
@@ -481,6 +530,8 @@ class MedicationAdministrationRecordForm(forms.ModelForm):
 			'patient': forms.HiddenInput(),
 		}
 
+	DateInput = partial(forms.DateInput, {'class': 'datepicker'})
+
 	allergy = forms.CharField(required=False, label="Allergy", widget=forms.TextInput(attrs={'class': "form-control"}))
 	medication_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	medication_dosage = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
@@ -488,16 +539,22 @@ class MedicationAdministrationRecordForm(forms.ModelForm):
 	medication_frequency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.MEDICATION_ADMINISTRATION_FREQUENCY_CHOICES)
 	medication_route = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.ROUTE_CHOICES)
 	medication_date = forms.DateField(required=False, label="", initial=get_now, input_formats=['%d/%m/%Y'], widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': 'form-control'}))
+#	medication_date = forms.DateField(required=False, label="", initial=get_now, input_formats=['%d/%m/%Y'], widget=DateTimePicker(options={"format": "%d/%m/%Y", "pickSeconds": False}, attrs={'class': 'form-control'}))
+#	medication_date = forms.DateField(required=False, label="", initial=get_now, input_formats=['%d/%m/%Y'], widget=DateInput())
 	medication_time = forms.TimeField(required=False, label="", initial=time_now, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
-#	medication_date_time = forms.DateTimeField(required=False, label="", initial=get_now, input_formats=['%d-%m-%Y %H:%M'], widget=DatePickerInput(format="%d-%m-%Y %H:%M", attrs={'class': 'form-control'}))
 	signature_nurse = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.SIGNATURE_CHOICES)
 	stat = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.MEDICATION_ADMINISTRATION_STAT_CHOICES)
-	medicationstat_date_time = forms.DateTimeField(required=False, label="", initial=get_now, input_formats=['%d-%m-%Y %H:%M'], widget=DatePickerInput(format="%d-%m-%Y %H:%M", attrs={'class': 'form-control'}))
+	medicationstat_date_time = forms.DateTimeField(required=False, label="", initial=get_now, input_formats=['%d/%m/%Y %H:%M'], widget=DatePickerInput(format="%d/%m/%Y %H:%M", attrs={'class': 'form-control'}))
+#	medicationstat_date_time = forms.DateTimeField(required=False, label="", initial=get_now, input_formats=['%d/%m/%Y'], widget=DateTimePicker(options={"format": "%d/%m/%Y %H:%M", "pickSeconds": False}, attrs={'class': 'form-control'}))
 	given_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+
+#	def __init__(self, *args, **kwargs):
+#		super().__init__(*args, **kwargs)
 
 
 MedicationAdministrationRecordFormSet = modelformset_factory(
 	MedicationAdministrationRecord,
+	form = MedicationAdministrationRecordForm,
 	fields=(
 		'medication_name',
 		'medication_dosage',
@@ -507,13 +564,30 @@ MedicationAdministrationRecordFormSet = modelformset_factory(
 		'medication_date',
 		'medication_time',
 		'signature_nurse',
-		'stat',
-		'medicationstat_date_time',
-		'given_by'
+#		'stat',
+#		'medicationstat_date_time',
+#		'given_by'
 	),
+#	formset=BaseModelFormSet,
 	extra=1,
 #	max_num=1,
 #	can_delete=True,
+#	labels = {
+#		'medication_name': _('Writer'),
+#	},
+#	help_texts = {
+#		'medication_name': _('Some useful help text.'),
+#	},
+#	widgets={
+#		'medication_name': forms.TextInput(attrs={'class': "form-control"}),
+#		'medication_dosage': forms.NumberInput(attrs={'class': "form-control"}),
+#		'medication_tab': forms.Select(attrs={'class': "form-control"}, choices=MedicationAdministrationRecord.TAB_CHOICES),
+#		'medication_frequency': forms.Select(attrs={'class': "form-control"}, choices=MedicationAdministrationRecord.MEDICATION_ADMINISTRATION_FREQUENCY_CHOICES),
+#		'medication_route': forms.Select(attrs={'class': "form-control"}, choices=MedicationAdministrationRecord.ROUTE_CHOICES),
+#		'medication_date': DatePickerInput(attrs={'class': 'form-control'}),
+#		'medication_time': TimePickerInput(attrs={'class': 'form-control'}),
+#		'signature_nurse': forms.TextInput(attrs={'class': "form-control"}),
+#	}
 )
 
 
@@ -560,7 +634,7 @@ class NursingForm(forms.ModelForm):
 			'patient': forms.HiddenInput(),
 		}
 
-	date_time = forms.DateTimeField(required=False, label="", initial=get_now, input_formats=['%d-%m-%Y %H:%M'], widget=DatePickerInput(format="%d-%m-%Y %H:%M", attrs={'class': 'form-control'}))
+	date_time = forms.DateTimeField(required=False, label="", initial=get_now, input_formats=['%d/%m/%Y %H:%M'], widget=DatePickerInput(format="%d/%m/%Y %H:%M", attrs={'class': 'form-control'}))
 	report = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 6, 'cols': 15}))
 
 
@@ -576,7 +650,7 @@ class OvertimeClaimForm(forms.ModelForm):
 	date = forms.DateField(required=False, label="", initial=now, input_formats=['%d/%m/%Y'], widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': "form-control"}))
 #	date = forms.DateTimeField(required=False, label="", widget=DatePickerInput(attrs={'class': "form-control"}))
 #	date = forms.DateTimeField(required=False, label="", initial=get_now, input_formats=['%d/%m/%Y'], widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': 'form-control'}))
-	duration_time = forms.DurationField(required=False, label="", initial="00:00:00", widget=TimeDurationWidget(show_days=False, show_hours=True, show_minutes=True, show_seconds=False))
+#	duration_time = forms.DurationField(required=False, label="", initial="00:00:00", widget=TimeDurationWidget(show_days=False, show_hours=True, show_minutes=True, show_seconds=False))
 	hours = forms.TimeField(required=False, label="", initial=time_now, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
 #	hours = forms.DateTimeField(required=False, label="", initial=time_now, input_formats=['%H:%M'], widget=DatePickerInput(format="%H:%M", attrs={'class': 'form-control'}))
 	total_hours = forms.TimeField(required=False, label="", widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
@@ -622,11 +696,13 @@ class PhysiotherapyGeneralAssessmentForm(forms.ModelForm):
 	muscle_power = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 5, 'cols': 10}))
 	functional_activities = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 5, 'cols': 10}))
 	special_test = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 5, 'cols': 10}))
-	date_time = forms.DateTimeField(required=False, label="", initial=get_now, input_formats=['%d-%m-%Y %H:%M'], widget=DatePickerInput(format="%d-%m-%Y %H:%M", attrs={'class': 'form-control'}))
+	date_time = forms.DateTimeField(required=False, label="", initial=get_now, input_formats=['%d/%m/%Y %H:%M'], widget=DatePickerInput(format="%d/%m/%Y %H:%M", attrs={'class': 'form-control'}))
 	attending_physiotherapist = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 5, 'cols': 10}))
 	current_history = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 5, 'cols': 10}))
 	past_history = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 5, 'cols': 10}))
-	neurological = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=PhysiotherapyGeneralAssessment.NEUROLOGICAL_CHOICES)
+	neurological_reflexes = forms.CharField(required=False, label=_("Reflexes"), widget=forms.Textarea(attrs={'class': "form-control", 'rows': 5, 'cols': 10}))
+	neurological_motor = forms.CharField(required=False, label=_("Motor"), widget=forms.Textarea(attrs={'class': "form-control", 'rows': 5, 'cols': 10}))
+	neurological_sensation = forms.CharField(required=False, label=_("Sensation"), widget=forms.Textarea(attrs={'class': "form-control", 'rows': 5, 'cols': 10}))
 	clearing_test_other_joint = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 5, 'cols': 10}))
 	physiotherapists_impression = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 5, 'cols': 10}))
 	short_term_goals = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 5, 'cols': 10}))
@@ -651,7 +727,7 @@ class StaffRecordsForm(forms.ModelForm):
 			'patient': forms.HiddenInput(),
 		}
 
-	date = forms.DateField(required=False, label="", initial=now, widget=YearPickerInput(attrs={'class': "form-control"}))
+	date = forms.DateField(required=False, label="", initial=now, widget=YearPickerInput(format="%Y", attrs={'class': "form-control"}))
 	annual_leave_days = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
 	public_holiday_days = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
 	replacement_public_holiday = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
@@ -690,7 +766,7 @@ class VisitingConsultantForm(forms.ModelForm):
 			'patient': forms.HiddenInput(),
 		}
 
-	date_time = forms.DateTimeField(required=False, label="", initial=get_now, input_formats=['%d-%m-%Y %H:%M'], widget=DatePickerInput(format="%d-%m-%Y %H:%M", attrs={'class': 'form-control'}))
+	date_time = forms.DateTimeField(required=False, label="", initial=get_now, input_formats=['%d/%m/%Y %H:%M'], widget=DatePickerInput(format="%d/%m/%Y %H:%M", attrs={'class': 'form-control'}))
 	complaints = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	treatment_orders = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	consultant = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
@@ -714,5 +790,3 @@ class VitalSignFlowForm(forms.ModelForm):
 	respiration = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
 	spo2_percentage = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
 	spo2_o2 = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
-	hgt_liter = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
-	hgt_remarks = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))

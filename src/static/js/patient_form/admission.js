@@ -6,6 +6,7 @@ $(document).ready(function()
 	$("#id_occupation_others").prop("disabled", true);
 	$("#id_communication_hearing_others").prop("disabled", true);
 	$("#id_vital_sign_on_oxygen_therapy_flow_rate").prop("disabled", true);
+	$("#id_biohazard_infectious_disease_others").prop("disabled", true);
 	$("#id_invasive_line_insitu_others").prop("disabled", true);
 	$("#id_medical_history_others").prop("disabled", true);
 	$("#id_adaptive_aids_with_patient_others").prop("disabled", true);
@@ -743,8 +744,40 @@ $(document).ready(function()
 			}
 			else
 			{
-				$("#id_vital_sign_on_oxygen_therapy_flow_rate_1").prop("disabled", false);
+				$("#id_vital_sign_on_oxygen_therapy_1").prop("disabled", false);
 				$("#id_vital_sign_on_oxygen_therapy_flow_rate").prop("disabled", true);
+			}
+		}
+	});
+
+
+	$(':radio[id^="id_biohazard_infectious_disease_"]').click(function()
+	{
+		var $this = $(this);
+		if ($this.is("#id_biohazard_infectious_disease_1"))
+		{
+			if ($("#id_biohazard_infectious_disease_1:checked").length > 0)
+			{
+				$("#id_biohazard_infectious_disease_2").prop({ checked: false });
+				$("#id_biohazard_infectious_disease_others").prop("disabled", true);
+			}
+			else
+			{
+				$("#id_biohazard_infectious_disease_2").prop("disabled", false);
+				$("#id_biohazard_infectious_disease_others").prop("disabled", false);
+			}
+		}
+		else if ($this.is("#id_biohazard_infectious_disease_2"))
+		{
+			if ($("#id_biohazard_infectious_disease_2:checked").length > 0)
+			{
+				$("#id_biohazard_infectious_disease_1").prop({ checked: false });
+				$("#id_biohazard_infectious_disease_others").prop("disabled", false);
+			}
+			else
+			{
+				$("#id_biohazard_infectious_disease_1").prop("disabled", false);
+				$("#id_biohazard_infectious_disease_others").prop("disabled", true);
 			}
 		}
 	});

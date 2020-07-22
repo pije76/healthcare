@@ -11,7 +11,7 @@ from accounts.models import *
 
 
 class FullnameLookup(ModelLookup):
-	model = PatientProfile
+	model = UserProfile
 	search_fields = ('full_name__icontains', )
 
 
@@ -19,7 +19,7 @@ registry.register(FullnameLookup)
 
 #@register('full_name')
 #class FullnameLookup(LookupChannel):
-#	model = PatientProfile
+#	model = UserProfile
 #	plugin_options = {
 #		'render_in_input': True,
 #	}

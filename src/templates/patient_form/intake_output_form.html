@@ -28,7 +28,7 @@
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 		<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" novalidate>
-			{% csrf_token %}
+		{% csrf_token %}
 			<table class="table-sm table-bordered">
 				<tbody>
 					<tr>
@@ -43,9 +43,9 @@
 			</table>
 			<table class="table table-bordered">
 				<tr>
-					<th class="text-center" rowspan="3">{% trans "Date" %}</th>
+					<th class="text-center" rowspan="2">{% trans "Date" %}</th>
 					<th class="text-center" colspan="7">{% trans "Intake" %}</th>
-					<th class="text-center" colspan="7">{% trans "Output" %}</th>
+					<th class="text-center" colspan="6">{% trans "Output" %}</th>
 				</tr>
 				<tr>
 					<th class="text-center" rowspan="2">{% trans "Time" %}</th>
@@ -58,6 +58,7 @@
 					<th class="text-center" colspan="2">{% trans "Other" %}</th>
 				</tr>
 				<tr>
+					<th>{{ form.date|as_crispy_field }}</th>
 					<th class="text-center">{% trans "Type" %}</th>
 					<th class="text-center">{% trans "ml." %}</th>
 					<th class="text-center">{% trans "Type" %}</th>
@@ -70,22 +71,30 @@
 					<th class="text-center">{% trans "Type" %}</th>
 					<th class="text-center">{% trans "ml." %}</th>
 				</tr>
-				<tr>
-					<td>{{ form.date|as_crispy_field }}</td>
-					<td>{{ form.time_intake|as_crispy_field }}</td>
-					<td>{{ form.intake_oral_type|as_crispy_field }}</td>
-					<td>{{ form.intake_oral_ml|as_crispy_field }}</td>
-					<td>{{ form.intake_parenteral_type|as_crispy_field }}</td>
-					<td>{{ form.intake_parenteral_ml|as_crispy_field }}</td>
-					<td>{{ form.intake_other_type|as_crispy_field }}</td>
-					<td>{{ form.intake_other_ml|as_crispy_field }}</td>
-					<td>{{ form.time_output|as_crispy_field }}</td>
-					<td>{{ form.output_urine_ml|as_crispy_field }}</td>
-					<td>{{ form.output_urine_cum|as_crispy_field }}</td>
-					<td>{{ form.output_gastric_ml|as_crispy_field }}</td>
-					<td>{{ form.output_other_type|as_crispy_field }}</td>
-					<td>{{ form.output_other_ml|as_crispy_field }}</td>
+
+				{{ formset.management_form }}
+				{% for item in formset %}
+				<tr class="form_row">
+					<td>
+						<button type="button" class="btn btn-success add_form_row">
+						<i class="fas fa-plus"></i>
+						</button>
+					</td>
+					<td>{{ item.time_intake|as_crispy_field }}</td>
+					<td>{{ item.intake_oral_type|as_crispy_field }}</td>
+					<td>{{ item.intake_oral_ml|as_crispy_field }}</td>
+					<td>{{ item.intake_parenteral_type|as_crispy_field }}</td>
+					<td>{{ item.intake_parenteral_ml|as_crispy_field }}</td>
+					<td>{{ item.intake_other_type|as_crispy_field }}</td>
+					<td>{{ item.intake_other_ml|as_crispy_field }}</td>
+					<td>{{ item.time_output|as_crispy_field }}</td>
+					<td>{{ item.output_urine_ml|as_crispy_field }}</td>
+					<td>{{ item.output_urine_cum|as_crispy_field }}</td>
+					<td>{{ item.output_gastric_ml|as_crispy_field }}</td>
+					<td>{{ item.output_other_type|as_crispy_field }}</td>
+					<td>{{ item.output_other_ml|as_crispy_field }}</td>
 				</tr>
+				{% endfor %}
 			</table>
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 			{% for item in profiles %}
@@ -97,4 +106,85 @@
 
 </div>
 
+{% endblock %}
+
+{% block js %}
+	<script type='text/javascript'>
+	function cloneMore(selector, prefix)
+	{
+		var newElement = $(selector).clone(true);
+		var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+
+		newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function()
+		{
+			var name = $(this).attr('name').replace('-' + (total-1) + '-', '-' + total + '-');
+			var id = 'id_' + name;
+			$(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+		});
+
+		newElement.find('label').each(function()
+		{
+			var forValue = $(this).attr('for');
+			if (forValue)
+			{
+				forValue = forValue.replace('-' + (total-1) + '-', '-' + total + '-');
+				$(this).attr({'for': forValue});
+			}
+		});
+		total++;
+
+		$('#id_' + prefix + '-TOTAL_FORMS').val(total);
+		$(selector).after(newElement);
+		var conditionRow = $('.form_row:not(:last)');
+		conditionRow.find('.btn.add_form_row')
+		.removeClass('btn-success').addClass('btn-danger')
+		.removeClass('add_form_row').addClass('remove_form_row')
+		.html('<i class="fas fa-minus"></i>');
+		console.log(selector);
+		return false;
+	}
+
+	$(document).on('click', '.add_form_row', function(e)
+	{
+		e.preventDefault();
+		cloneMore('.form_row:last', 'form');
+		return false;
+	});
+
+	function updateElementIndex(el, prefix, ndx)
+	{
+		var id_regex = new RegExp('(' + prefix + '-\\d+)');
+		var replacement = prefix + '-' + ndx;
+		if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+		if (el.id) el.id = el.id.replace(id_regex, replacement);
+		if (el.name) el.name = el.name.replace(id_regex, replacement);
+	}
+
+	function deleteForm(prefix, btn)
+	{
+		var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+		if (total > 1)
+		{
+			btn.closest('.form_row').remove();
+			var forms = $('.form_row');
+			$('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+			for (var i=0, formCount=forms.length; i<formCount; i++)
+			{
+				$(forms.get(i)).find(':input').each(function()
+				{
+					updateElementIndex(this, prefix, i);
+				});
+			}
+		}
+		return false;
+	}
+
+	$(document).on('click', '.remove_form_row', function(e)
+	{
+		e.preventDefault();
+		deleteForm('form', $(this));
+		return false;
+	});
+
+	</script>
 {% endblock %}

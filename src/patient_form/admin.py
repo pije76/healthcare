@@ -3,7 +3,7 @@ from django import forms
 from django.contrib import admin
 from django.contrib.admin.options import ModelAdmin
 from django.contrib.admin.widgets import AutocompleteSelect
-from mptt.admin import MPTTModelAdmin, DraggableMPTTAdmin
+#from mptt.admin import MPTTModelAdmin, DraggableMPTTAdmin
 
 #from django_tenants.admin import TenantAdminMixin
 # from ajax_select.admin import AjaxSelectAdmin
@@ -32,11 +32,11 @@ class AdmissionAdmin(admin.ModelAdmin):
         'gender',
         'marital_status',
         'address',
-        'phone',
+#        'phone',
         'religion',
         'occupation',
     ]
-    autocomplete_fields = ['patient', ]
+#    autocomplete_fields = ['patient', ]
     ModelAdmin.ordering = ('id',)
 
 
@@ -52,7 +52,7 @@ class ApplicationForHomeLeaveAdmin(admin.ModelAdmin):
         'signature',
         'date',
     ]
-    autocomplete_fields = ['patient', ]
+#    autocomplete_fields = ['patient', ]
     ModelAdmin.ordering = ('id',)
 
 class AppointmentAdmin(admin.ModelAdmin):
@@ -74,7 +74,7 @@ class AppointmentAdmin(admin.ModelAdmin):
 #    readonly_fields = ('patient', 'appointment',)
 #   autocomplete_except = []  # disable adding autocomplete_fields for listed fields
 #   autocomplete_all = False  # disable automatic adding of autocomplete_fields at all
-    autocomplete_fields = ['patient', ]  # must be a foreign key or a many-to-many field.
+#    autocomplete_fields = ['patient', ]  # must be a foreign key or a many-to-many field.
     ModelAdmin.ordering = ('id',)
 
 #    def save_model(self, request, obj, form, change):
@@ -203,7 +203,7 @@ admin.site.register(ApplicationForHomeLeave, ApplicationForHomeLeaveAdmin)
 admin.site.register(Appointment, AppointmentAdmin)
 admin.site.register(CatheterizationCannulation)
 admin.site.register(Charges, ChargesAdmin)
-admin.site.register(WoundCondition, MPTTModelAdmin)
+#admin.site.register(WoundCondition, MPTTModelAdmin)
 #admin.site.register(WoundCondition, DraggableMPTTAdmin)
 admin.site.register(Dressing, DressingAdmin)
 admin.site.register(EnteralFeedingRegime, EnteralFeedingRegimeAdmin)

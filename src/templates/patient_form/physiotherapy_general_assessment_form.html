@@ -66,18 +66,23 @@
 						{{ form.problem|as_crispy_field }}
 					</div>
 
-					<div class="col-4 col">
-						<figure>
-							<img src="{% static "images/left_body.png" %}" alt="Left Body"/>
-							<figcaption>{% trans "RIGHT" %}&emsp;&emsp;{% trans "LEFT" %}</figcaption>
+					<div class="col-1 col">
+					</div>
+					<div class="col-3 col" style="border-left:1px solid #fff;">
+							<img src="{% static "images/left_body.png" %}" class="figure-img img-fluid rounded mx-auto d-block" alt="Left Body"/>
+							<div style="display:block;">{% trans "RIGHT" %}
+							<p style="float:right">{% trans "LEFT" %}</p></div>
+					</div>
+
+					<div class="col-3 col" style="border-left:1px solid #fff;">
+						<figure class="figure">
+							<img src="{% static "images/right_body.png" %}" class="figure-img img-fluid rounded mx-auto d-block" alt="Right Body"/>
+							<div style="display:block;">{% trans "LEFT" %}
+							<p style="float:right">{% trans "RIGHT" %}</p></div>
 						</figure>
 					</div>
 
-					<div class="col-4 col">
-						<figure>
-							<img src="{% static "images/right_body.png" %}" alt="Right Body"/>
-							<figcaption>{% trans "RIGHT" %}&emsp;&emsp;{% trans "LEFT" %}</figcaption>
-						</figure>
+					<div class="col-1 col" style="border-left:1px solid #fff;">
 					</div>
 				</div>
 
@@ -97,6 +102,7 @@
 				<div class="row">
 					<div class="col-4 col">
 						{% trans "Special Question" %}
+						{{ form.special_question|as_crispy_field }}
 					</div>
 
 					<div class="col-8 col">
@@ -117,6 +123,7 @@
 				<div class="row">
 					<div class="col-4 col">
 						{% trans "PMX / Surgery" %}
+						{{ form.pmx_surgery|as_crispy_field }}
 					</div>
 
 					<div class="col-8 col">
@@ -149,11 +156,12 @@
 				<div class="row">
 					<div class="col-4 col">
 						{% trans "Occupation/Recreation" %}
+						{{ form.occupation_recreation|as_crispy_field }}
 					</div>
 
 					<div class="col-8 col">
 						{% trans "Palpation" %}
-						{{ form.occupation_recreation|as_crispy_field }}
+						{{ form.palpation|as_crispy_field }}
 					</div>
 				</div>
 
@@ -186,7 +194,9 @@
 
 					<div class="col-8 col">
 						{% trans "Neurological" %}:
-						{{ form.neurological|as_crispy_field }}
+						{{ form.neurological_reflexes|as_crispy_field }}
+						{{ form.neurological_motor|as_crispy_field }}
+						{{ form.neurological_sensation|as_crispy_field }}
 					</div>
 				</div>
 

@@ -5,7 +5,7 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 {% load widget_tweaks %}
-
+ge
 {% block headtitle %}
     {{ page_title }} | {{ titles.title }}
 {% endblock %}
@@ -42,6 +42,7 @@
 
 		<form method="post">
 			{% csrf_token %}
+			{{ formset.management_form }}
 
 			<div class="container-fluid" id="admissionform">
 
@@ -98,16 +99,16 @@
 
 				<div class="row">
 					<div class="col-2 col">
-						{% trans "Date of birth" %}:
-					</div>
-					<div class="col-4 col">
-						{{ form.birth_date|as_crispy_field }}
-					</div>
-					<div class="col-2 col">
 						{% trans "Age" %}:
 					</div>
 					<div class="col-4 col">
 						{{ form.age|as_crispy_field }}
+					</div>
+					<div class="col-2 col">
+						{% trans "Date of birth" %}:
+					</div>
+					<div class="col-4 col">
+						{{ form.birth_date|as_crispy_field }}
 					</div>
 				</div>
 
@@ -193,23 +194,13 @@
 					</div>
 				</div>
 
-				<div class="row">
-					<div class="col-2 col">
-						{% trans "Tel No" %}:
-					</div>
-					<div class="col-10 col">
-						{{ form.phone|as_crispy_field }}
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-2 col">
+				<div class="row" style="border-right:1px solid #c9c9c9;">
+					<div class="col-2 col anchorcol">
 						{% trans "Emergency contact" %}:
 					</div>
 
-					{{ formset.management_form }}
 					{% for item in formset %}
-					<div class="col-5 col form-row">
+					<div class="col-5 col form_Emergency">
 						{% trans "Name" %}:
 						{% render_field item.ec_name class="form-control" %}
 						{% trans "IC No" %}:
@@ -221,12 +212,12 @@
 						{% trans "Address" %}:
 						{% render_field item.ec_address class="form-control" %}
 
-						<button type="button" style="margin-top:5px;" class="btn btn-success add-form-row">
+						<button type="button" style="margin-top:5px;" class="btn btn-success add_formEmergency">
 							<i class="fas fa-plus"></i>
 						</button>
 					</div>
-
 					{% endfor %}
+
 				</div>
 
 				<div class="row">
@@ -361,8 +352,13 @@
 					<div class="col-2 col">
 						{% trans "Biohazard/ infectious disease" %}:
 					</div>
-					<div class="col-10 col">
+					<div class="col-2 col">
 						{{ form.biohazard_infectious_disease|as_crispy_field }}
+					</div>
+					<div class="col-3 col" style="border-left:none; display:inline-flex;">
+						{{ form.biohazard_infectious_disease_others|as_crispy_field }}
+					</div>
+					<div class="col-5 col" style="border-left:none;">
 					</div>
 				</div>
 
@@ -408,23 +404,43 @@
 				</div>
 
 				<div class="row">
-					<div class="col-2 col">
+					<div class="col-2 col text-center">
 						{% trans "Date" %}:
-						{{ form.date_diagnosis|as_crispy_field }}
 					</div>
-					<div class="col-4 col">
+					<div class="col-4 col text-center">
 						{% trans "Diagnosis" %}:
-						{{ form.diagnosis|as_crispy_field }}
 					</div>
-					<div class="col-2 col">
+					<div class="col-2 col text-center">
 						{% trans "Date" %}:
-						{{ form.date_operation|as_crispy_field }}
 					</div>
-					<div class="col-4 col">
+					<div class="col-3 col text-center">
 						{% trans "Operation" %}:
-						{{ form.operation|as_crispy_field }}
+					</div>
+					<div class="col-1 col">
 					</div>
 				</div>
+
+				{% for item in formset %}
+				<div class="row insertform_diag">
+					<div class="col-2 col">
+						{% render_field item.date_diagnosis class="form-control" %}
+					</div>
+					<div class="col-4 col">
+						{% render_field item.diagnosis class="form-control" %}
+					</div>
+					<div class="col-2 col">
+						{% render_field item.date_operation class="form-control" %}
+					</div>
+					<div class="col-3 col">
+						{% render_field item.operation class="form-control" %}
+					</div>
+					<div class="col-1 col">
+						<button type="button" style="margin-top:5px;" class="btn btn-success addform_diag">
+							<i class="fas fa-plus"></i>
+						</button>
+					</div>
+				</div>
+				{% endfor %}
 
 				<div class="row">
 					<div class="col-2 col">
@@ -438,35 +454,44 @@
 				<div class="row">
 					<div class="col-2 col" style="border-top:none;">
 					</div>
-					<div class="col-3 col">
+					<div class="col-3 col text-center">
 						{% trans "Drug name" %}:
 					</div>
-					<div class="col-2 col">
+					<div class="col-2 col text-center">
 						{% trans "Dosage" %}:
 					</div>
-					<div class="col-3 col">
+					<div class="col-2 col text-center">
 						{% trans "Tablet/Capsule/mls" %}:
 					</div>
-					<div class="col-2 col">
+					<div class="col-2 col text-center">
 						{% trans "Frequency" %}:
+					</div>
+					<div class="col-1 col">
 					</div>
 				</div>
 
 				<div class="row">
+					{% for item in formset %}
 					<div class="col-2 col" style="border-top:none;">
 					</div>
-					<div class="col-3 col">
-						{{ form.own_medication_drug_name|as_crispy_field }}
+					<div class="col-3 col insertform_own">
+						{% render_field item.own_medication_drug_name class="form-control" %}
 					</div>
 					<div class="col-2 col">
-						{{ form.own_medication_dosage|as_crispy_field }}
-					</div>
-					<div class="col-3 col">
-						{{ form.own_medication_tablet_capsule|as_crispy_field }}
+						{% render_field item.own_medication_dosage class="form-control" %}
 					</div>
 					<div class="col-2 col">
-						{{ form.own_medication_frequency|as_crispy_field }}
+						{% render_field item.own_medication_tablet_capsule class="form-control" %}
 					</div>
+					<div class="col-2 col">
+						{% render_field item.own_medication_frequency class="form-control" %}
+					</div>
+					<div class="col-1 col">
+						<button type="button" style="margin-top:5px;" class="btn btn-success addform_diag">
+							<i class="fas fa-plus"></i>
+						</button>
+					</div>
+					{% endfor %}
 				</div>
 
 				<div class="row">
@@ -549,22 +574,39 @@
 
 		$('#id_' + prefix + '-TOTAL_FORMS').val(total);		
 		$(selector).after(newElement);
-		var insertColumn = $('.form-row');
-		insertColumn.last().before('<div class="col-2 col" style="border-top:none;"></div>');
-//		$('.container .row:last-child .col-md-5').length;
-		var conditionRow = $('.form-row:not(:last)');
-		conditionRow.find('.btn.add-form-row')
+		var conditionRow = $('.form_Emergency:not(:last)');
+		if(conditionRow.length == 1)
+		{
+			$(selector).after(newElement);
+		}
+		else if(conditionRow.length == 2)
+		{
+			$(selector).after(newElement).before('<div class="col-2 col anchorcol" style="border-top:none;"></div>');
+		}
+		else if(conditionRow.length == 3)
+		{
+			$(selector).after(newElement);
+		}
+		else if(conditionRow.length == 4)
+		{
+			$(selector).after(newElement).before('<div class="col-2 col anchorcol" style="border-top:none;"></div>');
+		}
+		else if(conditionRow.length == 5)
+		{
+			$(selector).after(newElement);
+		};
+
+		conditionRow.find('.btn.add_formEmergency')
 		.removeClass('btn-success').addClass('btn-danger')
-		.removeClass('add-form-row').addClass('remove-form-row')
+		.removeClass('add_formEmergency').addClass('remove_formEmergency')
 		.html('<i class="fas fa-minus"></i>');
-		console.log(selector);
 		return false;
 	}
 
-	$(document).on('click', '.add-form-row', function(e)
+	$(document).on('click', '.add_formEmergency', function(e)
 	{
 		e.preventDefault();
-		cloneMore('.form-row:last', 'form');
+		cloneMore('.form_Emergency:last', 'form');
 		return false;
 	});
 
@@ -582,8 +624,8 @@
 		var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
 		if (total > 1)
 		{
-			btn.closest('.form-row').remove();
-			var forms = $('.form-row');
+			btn.closest('.form_Emergency').remove();
+			var forms = $('.form_Emergency');
 			$('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
 			for (var i=0, formCount=forms.length; i<formCount; i++)
 			{
@@ -596,7 +638,7 @@
 		return false;
 	}
 
-	$(document).on('click', '.remove-form-row', function(e)
+	$(document).on('click', '.remove_formEmergency', function(e)
 	{
 		e.preventDefault();
 		deleteForm('form', $(this));

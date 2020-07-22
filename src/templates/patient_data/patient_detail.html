@@ -71,7 +71,7 @@
 								<a class="btn btn-primary"href="{% url 'patient_form:charges_sheet' item.username %}">{% trans "Charges Sheet" %}</a>
 							</div>
 							<div class="link_detail">
-								<a class="btn btn-primary"href="{% url 'patient_form:dressing' item.username %}">{% trans "Dressing Chart" %}</a>
+								<a class="btn btn-danger"href="{% url 'patient_form:dressing' item.username %}">{% trans "Dressing Chart" %}</a>
 							</div>
 							<div class="link_detail">
 								<a class="btn btn-primary"href="{% url 'patient_form:enteral_feeding_regime' item.username %}">{% trans "Enteral Feeding Regime" %}</a>
@@ -80,7 +80,7 @@
 								<a class="btn btn-primary"href="{% url 'patient_form:hgt_chart' item.username %}">{% trans "HGT Chart" %}</a>
 							</div>
 							<div class="link_detail">
-								<a class="btn btn-primary"href="{% url 'patient_form:intake_output' item.username %}">{% trans "Intake Output Chart" %}</a>
+								<a class="btn btn-danger"href="{% url 'patient_form:intake_output' item.username %}">{% trans "Intake Output Chart" %}</a>
 							</div>
 							<div class="link_detail">
 								<a class="btn btn-primary"href="{% url 'patient_form:maintainance' item.username %}">{% trans "Maintainance Form" %}</a>
@@ -151,7 +151,7 @@
 							<a class="btn btn-outline-primary"href="{% url 'patient_data:dressing_data' item.username %}">{% trans "Dressing Chart" %}</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient_data:enteral_feeding_regime_data' item.username %}">{% trans "Enteral Feeding Regime" %}</a>
+							<a class="btn btn-outline-danger"href="{% url 'patient_data:enteral_feeding_regime_data' item.username %}">{% trans "Enteral Feeding Regime" %}</a>
 						</div>
 						<div class="link_detail">
 							<a class="btn btn-outline-primary"href="{% url 'patient_data:hgt_chart_data' item.username %}">{% trans "HGT Chart" %}</a>

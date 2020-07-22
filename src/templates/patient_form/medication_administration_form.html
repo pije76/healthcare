@@ -17,7 +17,7 @@
 {% block content %}
 
 {% block styles %}
-	<link href="{% static 'css/patient_form/medication_administration.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/patient_form/medication_administration.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block javascript %}
@@ -34,8 +34,7 @@
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 		<form method="post">
-		{% csrf_token %}
-		{{ formset.management_form }}
+		{% csrf_token %}		
 
 			<div class="container-fluid" id="medication_administration">
 
@@ -97,41 +96,42 @@
 					<div class="col-1 col text-center">
 						{% trans "Route" %}
 					</div>
-					<div class="col-2 col">
+					<div class="col-2 col" style="border-top:none;">
 					</div>
-					<div class="col-1 col">
+					<div class="col-1 col" style="border-top:none;">
 					</div>
-					<div class="col-1 col">
+					<div class="col-1 col" style="border-top:none;">
 					</div>
 					<div class="col-1 col" style="border-top:none;border-right:none;border-bottom:none;">
 					</div>
 				</div>
 
+				{{ formset.management_form }}
 				{% for item in formset %}
 				<div class="row form-row">
 					<div class="col-3 col">
-						{{ form.medication_name|as_crispy_field }}
+						{% render_field item.medication_name class="form-control" %}
 					</div>
 					<div class="col-1 col">
-						{{ form.medication_dosage|as_crispy_field }}
+						{% render_field item.medication_dosage class="form-control" %}
 					</div>
 					<div class="col-1 col">
-						{{ form.medication_tab|as_crispy_field }}
+						{% render_field item.medication_tab class="form-control" %}
 					</div>
 					<div class="col-1 col">
-						{{ form.medication_frequency|as_crispy_field }}
+						{% render_field item.medication_frequency class="form-control" %}
 					</div>
 					<div class="col-1 col">
-						{{ form.medication_route|as_crispy_field }}
+						{% render_field item.medication_route class="form-control" %}
 					</div>
 					<div class="col-2 col">
-						{{ form.medication_date|as_crispy_field }}
+						{% render_field item.medication_date class="form-control" %}
 					</div>
 					<div class="col-1 col">
-						{{ form.medication_time|as_crispy_field }}
+						{% render_field item.medication_time class="form-control" %}
 					</div>
 					<div class="col-1 col">
-						{{ form.signature_nurse|as_crispy_field }}
+						{% render_field item.signature_nurse class="form-control" %}
 					</div>
 					<div class="col-1 col" style="border-top:none;border-right:none;border-bottom:none;">
 						<button type="button" class="btn btn-success add-form-row">
@@ -145,13 +145,13 @@
 			<div class="container-fluid" id="medication_administration">
 
 				<div class="row">
-					<div class="col-4 col">
+					<div class="col-4 col text-center">
 						{% trans "STAT Medication" %}
 					</div>
-					<div class="col-4 col">
+					<div class="col-4 col text-center">
 						{% trans "Date & Time" %}
 					</div>
-					<div class="col-4 col">
+					<div class="col-4 col text-center">
 						{% trans "Given By" %}
 					</div>
 				</div>
@@ -204,4 +204,121 @@
 
 </div>
 
+{% endblock %}
+
+{% block js %}
+	<script type='text/javascript'>
+	function renewDatePickers()
+	{
+//		$('.datepicker').datepicker('destroy');
+//		$('#id_form-0-medication_date').datepicker('destroy');
+//		$(".datepicker").datepicker({dateFormat: 'd/m/Y'});
+//		$("medication_date").datepicker({dateFormat: 'd/m/Y'});
+	}
+
+//	$(renewDatePickers);
+
+	$(function()
+	{
+//		$('#id_form-0-medication_date').formset(
+//		$("[id$='medication_date']").formset(
+//		{
+//			added: renewDatePickers // Event -- read inline docs
+//		});
+	})
+
+	$(document).ready(function()
+	{
+//		$('#id_form-0-medication_date').datepicker();
+//		$('.form-row').formset(
+//		{
+//			added: function(row)
+//			{
+//				row.find("#id_form-0-medication_date").datepicker();
+//			}
+//		});
+//		$("[id$='medication_date']").each(function(i)
+//		$("[class$='form-row']").each(function(i)
+//		{
+//			$(this).datepicker();
+//		})
+	});
+
+	function cloneMore(selector, prefix)
+	{
+		var newElement = $(selector).clone(true);
+		var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+
+		newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function()
+		{
+			var name = $(this).attr('name').replace('-' + (total-1) + '-', '-' + total + '-');
+			var id = 'id_' + name;
+			$(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+		});
+
+		newElement.find('label').each(function()
+		{
+			var forValue = $(this).attr('for');
+			if (forValue)
+			{
+				forValue = forValue.replace('-' + (total-1) + '-', '-' + total + '-');
+				$(this).attr({'for': forValue});
+			}
+		});
+		total++;
+
+		$('#id_' + prefix + '-TOTAL_FORMS').val(total);
+		$(selector).after(newElement);
+		var conditionRow = $('.form-row:not(:last)');
+		conditionRow.find('.btn.add-form-row')
+		.removeClass('btn-success').addClass('btn-danger')
+		.removeClass('add-form-row').addClass('remove-form-row')
+		.html('<i class="fas fa-minus"></i>');
+		console.log(selector);
+		return false;
+	}
+
+	$(document).on('click', '.add-form-row', function(e)
+	{
+		e.preventDefault();
+		cloneMore('.form-row:last', 'form');
+		return false;
+	});
+
+	function updateElementIndex(el, prefix, ndx)
+	{
+		var id_regex = new RegExp('(' + prefix + '-\\d+)');
+		var replacement = prefix + '-' + ndx;
+		if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+		if (el.id) el.id = el.id.replace(id_regex, replacement);
+		if (el.name) el.name = el.name.replace(id_regex, replacement);
+	}
+
+	function deleteForm(prefix, btn)
+	{
+		var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+		if (total > 1)
+		{
+			btn.closest('.form-row').remove();
+			var forms = $('.form-row');
+			$('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+			for (var i=0, formCount=forms.length; i<formCount; i++)
+			{
+				$(forms.get(i)).find(':input').each(function()
+				{
+					updateElementIndex(this, prefix, i);
+				});
+			}
+		}
+		return false;
+	}
+
+	$(document).on('click', '.remove-form-row', function(e)
+	{
+		e.preventDefault();
+		deleteForm('form', $(this));
+		return false;
+	});
+
+	</script>
 {% endblock %}

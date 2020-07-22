@@ -15,10 +15,10 @@ mark_safe_lazy = lazy(mark_safe, six.text_type)
 
 #from jsignature.mixins import JSignatureFieldsMixin
 
-from accounts.models import PatientProfile
+from accounts.models import UserProfile
 
 #from select2 import fields
-from mptt.models import MPTTModel, TreeForeignKey
+#from mptt.models import MPTTModel, TreeForeignKey
 from phonenumber_field.modelfields import PhoneNumber, PhoneNumberField
 #from phonenumber_field.validators import validate_international_phonenumber
 from phonenumber_field.phonenumber import to_python
@@ -42,7 +42,7 @@ def validate_international_phonenumber(value):
 	phone_number = to_python(value)
 	if phone_number and not phone_number.is_valid():
 		raise ValidationError(
-			_("Please enter valid phone number with following format: +[country code][area code][phone number]"), code="invalid_phone_number"
+			_("Please enter valid phone number with following format: +[countrycode][areacode][phonenumber]"), code="invalid_phone_number"
 		)
 
 
@@ -173,7 +173,7 @@ class Admission(models.Model):
 		('None', _('None')),
 	)
 
-	patient = models.OneToOneField(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	patient = models.OneToOneField(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(default=now, blank=True, null=True)
 	time = models.TimeField(blank=True, null=True)
 	admitted = models.CharField(max_length=255, blank=True, null=True)
@@ -184,7 +184,7 @@ class Admission(models.Model):
 	gender = models.CharField(max_length=255, blank=True, null=True)
 	marital_status = models.CharField(max_length=255, blank=True, null=True)
 	marital_status_others = models.CharField(max_length=255, blank=True, null=True)
-	phone = PhoneNumberField(blank=True, default="+600000000000", validators=[validate_international_phonenumber])
+#	phone = PhoneNumberField(blank=True, default="+600000000000", validators=[validate_international_phonenumber])
 	religion = models.CharField(max_length=255, blank=True, null=True)
 	religion_others = models.CharField(max_length=255, blank=True, null=True)
 	occupation = models.CharField(max_length=255, blank=True, null=True)
@@ -194,10 +194,11 @@ class Admission(models.Model):
 	communication_hearing_others = models.CharField(max_length=255, blank=True, null=True)
 	address = models.CharField(max_length=255, blank=True, null=True)
 	ec_name = models.CharField(_('Name'), max_length=255, blank=True, null=True)
-#	ec_name = models.OneToOneField(PatientProfile, related_name='emergencycontact_name', on_delete=models.CASCADE, blank=False, null=True)
+#	ec_name = models.OneToOneField(UserProfile, related_name='emergencycontact_name', on_delete=models.CASCADE, blank=False, null=True)
 	ec_ic_number = models.CharField(max_length=14, validators=[ic_number_validator], unique=True, blank=True, null=True)
 	ec_relationship = models.CharField(_('Relationship'), max_length=255, blank=True, null=True)
-	ec_phone = models.CharField(_('Contact Number'), max_length=255, blank=True, null=True)
+#	ec_phone = models.CharField(_('Contact Number'), max_length=255, blank=True, null=True)
+	ec_phone = PhoneNumberField(_('Contact Number'), validators=[validate_international_phonenumber], blank=True, null=True)
 	ec_address = models.CharField(_('Address'), max_length=255, blank=True, null=True)
 
 	general_condition = models.CharField(max_length=255, blank=True, null=True)
@@ -213,6 +214,7 @@ class Admission(models.Model):
 	allergy_food = models.CharField(max_length=255, blank=True, null=True)
 	allergy_others = models.CharField(max_length=255, blank=True, null=True)
 	biohazard_infectious_disease = models.CharField(max_length=255, blank=True, null=True)
+	biohazard_infectious_disease_others = models.CharField(max_length=255, blank=True, null=True)
 	invasive_line_insitu = models.CharField(max_length=255, blank=True, null=True)
 	invasive_line_insitu_others = models.CharField(max_length=255, blank=True, null=True)
 	medical_history = models.CharField(max_length=255, blank=True, null=True)
@@ -226,7 +228,7 @@ class Admission(models.Model):
 	own_medication = models.CharField(max_length=255, blank=True, null=True)
 	own_medication_drug_name = models.CharField(max_length=255, blank=True, null=True)
 	own_medication_dosage = models.PositiveIntegerField(default='0', blank=True, null=True)
-	own_medication_tablet_capsule = models.CharField(max_length=255, blank=True, null=True)
+	own_medication_tablet_capsule = models.PositiveIntegerField(default='0', blank=True, null=True)
 	own_medication_frequency = models.PositiveIntegerField(default='0', blank=True, null=True)
 	adaptive_aids_with_patient = models.CharField(max_length=255, blank=True, null=True)
 	adaptive_aids_with_patient_others = models.CharField(max_length=255, blank=True, null=True)
@@ -256,7 +258,7 @@ class Admission(models.Model):
 
 
 class ApplicationForHomeLeave(models.Model):
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	patient_family_name = models.CharField(_('Patient/Family Name'), max_length=255, blank=True, null=True)
 	nric_number = models.CharField(_('NRIC Number'), validators=[ic_number_validator], max_length=14, blank=True, null=True)
 	patient_family_relationship = models.CharField(_('Patient/Family Relationship'), max_length=255, blank=True, null=True)
@@ -274,7 +276,7 @@ class ApplicationForHomeLeave(models.Model):
 
 
 class Appointment(models.Model):
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(default=now, blank=True, null=True)
 	time = models.TimeField(blank=True, null=True)
 	hospital_clinic_center = models.CharField(max_length=255, blank=True, null=True)
@@ -291,7 +293,17 @@ class Appointment(models.Model):
 
 
 class CatheterizationCannulation(models.Model):
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	NASOGASTRIC_TUBE_TYPE_CHOICES = (
+		('PVC', _('PVC')),
+		('Silicone coated', _('Silicone coated')),
+		('Silicone', _('Silicone')),
+	)
+	URINARY_CATHETER_TYPE_CHOICES = (
+		('Latex', _('Latex')),
+		('Silicone', _('Silicone')),
+	)
+
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	nasogastric_tube_date = models.DateField(default=now, blank=True, null=True)
 	nasogastric_tube_size = models.PositiveIntegerField(default='0', blank=True, null=True)
 	nasogastric_tube_type = models.CharField(max_length=255, blank=True, null=True)
@@ -301,15 +313,12 @@ class CatheterizationCannulation(models.Model):
 	urinary_catheter_date = models.DateField(default=now, blank=True, null=True)
 	urinary_catheter_size = models.PositiveIntegerField(default='0', blank=True, null=True)
 	urinary_catheter_type = models.CharField(max_length=255, blank=True, null=True)
-	urinary_catheter_location = models.CharField(max_length=255, blank=True, null=True)
 	urinary_catheter_due_date = models.DateField(default=now, blank=True, null=True)
 	urinary_catheter_inserted_by = models.CharField(max_length=255, blank=True, null=True)
 	cannula_date = models.DateField(default=now, blank=True, null=True)
 	cannula_size = models.PositiveIntegerField(default='0', blank=True, null=True)
-	cannula_type = models.CharField(max_length=255, blank=True, null=True)
 	cannula_location = models.CharField(max_length=255, blank=True, null=True)
 	cannula_due_date = models.DateField(default=now, blank=True, null=True)
-	cannula_inserted_by = models.CharField(max_length=255, blank=True, null=True)
 
 	def __str__(self):
 		return str(self.patient)
@@ -320,7 +329,7 @@ class CatheterizationCannulation(models.Model):
 
 
 class Charges(models.Model):
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(default=now, blank=True, null=True)
 	items = models.CharField(max_length=255, blank=True, null=True)
 	amount_unit = models.PositiveIntegerField(default='0', blank=True, null=True)
@@ -334,22 +343,22 @@ class Charges(models.Model):
 		verbose_name_plural = _("Charges")
 
 
-class WoundCondition(MPTTModel):
-	name = models.CharField(max_length=255, blank=True, null=True)
-	parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True, on_delete=models.CASCADE)
+#class WoundCondition(MPTTModel):
+#	name = models.CharField(max_length=255, blank=True, null=True)
+#	parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True, on_delete=models.CASCADE)
 
-	class MPTTMeta:
-		order_insertion_by = ['name']
+#	class MPTTMeta:
+#		order_insertion_by = ['name']
 
-	class Meta:
-		verbose_name = _('Wound Condition')
-		verbose_name_plural = _('Wound Condition')
+#	class Meta:
+#		verbose_name = _('Wound Condition')
+#		verbose_name_plural = _('Wound Condition')
 
-	def indented_title(self):
-		return ("-" * 4) * self.get_level() + self.name
+#	def indented_title(self):
+#		return ("-" * 4) * self.get_level() + self.name
 
-	def __str__(self):
-		return self.name
+#	def __str__(self):
+#		return self.name
 
 
 def upload_path(instance, filename):
@@ -398,7 +407,7 @@ class Dressing(models.Model):
 		)),
 	)
 
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(default=now, blank=True, null=True)
 	time = models.TimeField(blank=True, null=True)
 	frequency_dressing = models.CharField(max_length=255, blank=True, null=True)
@@ -439,7 +448,8 @@ class AnnotationManager(models.Manager):
 
 
 class EnteralFeedingRegime(models.Model):
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
+	date = models.DateField(default=now, blank=True, null=True)
 	time = models.TimeField(blank=True, null=True)
 	type_of_milk = models.CharField(max_length=255, blank=True, null=True)
 	amount = models.PositiveIntegerField(default='0', blank=True, null=True)
@@ -460,7 +470,7 @@ class EnteralFeedingRegime(models.Model):
 
 
 class HGTChart(models.Model):
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(default=now, blank=True, null=True)
 	time = models.TimeField(blank=True, null=True)
 	blood_glucose_reading = models.PositiveIntegerField(default='0', blank=True, null=True)
@@ -476,7 +486,7 @@ class HGTChart(models.Model):
 
 
 class IntakeOutputChart(models.Model):
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(default=now, blank=True, null=True)
 	time_intake = models.TimeField(blank=True, null=True)
 	intake_oral_type = models.CharField(max_length=255, blank=True, null=True)
@@ -508,7 +518,7 @@ class Maintainance(models.Model):
 		('cancel', _('Cancel')),
 	)
 
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(default=now, blank=True, null=True)
 	items = models.CharField(max_length=255, blank=True, null=True)
 	location_room = models.CharField(max_length=255, blank=True, null=True)
@@ -527,7 +537,7 @@ class Maintainance(models.Model):
 
 
 class MedicationRecord(models.Model):
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(default=now, blank=True, null=True)
 	time = models.TimeField(blank=True, null=True)
 	medication = models.CharField(max_length=255, blank=True, null=True)
@@ -596,7 +606,7 @@ class MedicationAdministrationRecord(models.Model):
 		('w', 'W-Withold'),
 	)
 
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	allergy = models.CharField(max_length=255, blank=True, null=True)
 	medication_name = models.CharField(max_length=255, blank=True, null=True)
 	medication_dosage = models.PositiveIntegerField(default='0', blank=True, null=True)
@@ -619,7 +629,7 @@ class MedicationAdministrationRecord(models.Model):
 
 
 class MiscellaneousChargesSlip(models.Model):
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(default=now, blank=True, null=True)
 	items_procedures = models.CharField(max_length=255, blank=True, null=True)
 	amount_unit = models.PositiveIntegerField(default='0', blank=True, null=True)
@@ -634,8 +644,8 @@ class MiscellaneousChargesSlip(models.Model):
 
 
 class Nursing(models.Model):
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
-	date_time = models.DateTimeField(default=get_now, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
+	date_time = models.DateTimeField(default=get_now, blank=True, null=True)
 	report = models.CharField(max_length=255, blank=True, null=True)
 
 	def __str__(self):
@@ -647,9 +657,9 @@ class Nursing(models.Model):
 
 
 class OvertimeClaim(models.Model):
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(default=now, blank=True, null=True)
-#	date = models.DateTimeField(default=get_now, blank=False, null=True)
+#	date = models.DateTimeField(default=get_now, blank=True, null=True)
 	duration_time = models.DurationField(default='00:05:00', blank=True, null=True)
 	hours = models.TimeField(blank=True, null=True)
 	total_hours = models.TimeField(blank=True, null=True)
@@ -706,7 +716,7 @@ class OvertimeClaim(models.Model):
 
 
 class PhysioProgressNote(models.Model):
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	report = models.CharField(max_length=255, blank=True, null=True)
 
 	def __str__(self):
@@ -738,13 +748,7 @@ class PhysiotherapyGeneralAssessment(models.Model):
 		('passive', _('Passive')),
 	)
 
-	NEUROLOGICAL_CHOICES = (
-		('reflexes', _('Reflexes')),
-		('motor', _('Motor')),
-		('sensation', _('Sensation')),
-	)
-
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	doctor_diagnosis = models.CharField(max_length=255, blank=True, null=True)
 	doctor_management = models.CharField(max_length=255, blank=True, null=True)
 	problem = models.CharField(max_length=255, blank=True, null=True)
@@ -758,11 +762,14 @@ class PhysiotherapyGeneralAssessment(models.Model):
 	ix_mri_x_ray = models.CharField(max_length=255, blank=True, null=True)
 	medications_steroids = models.CharField(max_length=255, blank=True, null=True)
 	occupation_recreation = models.CharField(max_length=255, blank=True, null=True)
+	palpation = models.CharField(max_length=255, blank=True, null=True)
 	pacemaker_hearing_aid = models.CharField(max_length=255, blank=True, null=True)
 	splinting = models.CharField(max_length=255, blank=True, null=True)
 
 	physical_examination_movement = models.CharField(max_length=255, blank=True, null=True)
-	neurological = models.CharField(max_length=255, blank=True, null=True)
+	neurological_reflexes = models.CharField(max_length=255, blank=True, null=True)
+	neurological_motor = models.CharField(max_length=255, blank=True, null=True)
+	neurological_sensation = models.CharField(max_length=255, blank=True, null=True)
 
 	muscle_power = models.CharField(max_length=255, blank=True, null=True)
 	clearing_test_other_joint = models.CharField(max_length=255, blank=True, null=True)
@@ -773,7 +780,7 @@ class PhysiotherapyGeneralAssessment(models.Model):
 	long_term_goals = models.CharField(max_length=255, blank=True, null=True)
 	special_test = models.CharField(max_length=255, blank=True, null=True)
 	plan_treatment = models.CharField(max_length=255, blank=True, null=True)
-	date_time = models.DateTimeField(default=get_now, blank=False, null=True)
+	date_time = models.DateTimeField(default=get_now, blank=True, null=True)
 	attending_physiotherapist = models.CharField(max_length=255, blank=True, null=True)
 
 	def __str__(self):
@@ -785,7 +792,7 @@ class PhysiotherapyGeneralAssessment(models.Model):
 
 
 class StaffRecords(models.Model):
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(blank=True, null=True)
 	annual_leave_days = models.PositiveIntegerField(default='0', blank=True, null=True)
 	public_holiday_days = models.PositiveIntegerField(default='0', blank=True, null=True)
@@ -828,7 +835,7 @@ class Stool(models.Model):
 		('large', _('Large')),
 	)
 
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(default=now, blank=True, null=True)
 	time = models.TimeField(blank=True, null=True)
 	frequency = models.CharField(max_length=255, blank=True, null=True)
@@ -846,8 +853,8 @@ class Stool(models.Model):
 
 
 class VisitingConsultant(models.Model):
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
-	date_time = models.DateTimeField(default=get_now, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
+	date_time = models.DateTimeField(default=get_now, blank=True, null=True)
 	complaints = models.CharField(max_length=255, blank=True, null=True)
 	treatment_orders = models.CharField(max_length=255, blank=True, null=True)
 	consultant = models.CharField(max_length=255, blank=True, null=True)
@@ -861,7 +868,7 @@ class VisitingConsultant(models.Model):
 
 
 class VitalSignFlow(models.Model):
-	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(default=now, blank=True, null=True)
 	time = models.TimeField(blank=True, null=True)
 	temp = models.PositiveIntegerField(default='0', blank=True, null=True)
@@ -871,8 +878,6 @@ class VitalSignFlow(models.Model):
 	respiration = models.PositiveIntegerField(default='0', blank=True, null=True)
 	spo2_percentage = models.PositiveIntegerField(default='0', blank=True, null=True)
 	spo2_o2 = models.PositiveIntegerField(default='0', blank=True, null=True)
-	hgt_liter = models.PositiveIntegerField(default='0', blank=True, null=True)
-	hgt_remarks = models.CharField(max_length=255, blank=True, null=True)
 
 	def __str__(self):
 		return str(self.patient)

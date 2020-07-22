@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.models import *
 from django.urls import reverse
 from django.utils.translation import ugettext as _
+from django.contrib.auth.forms import UserCreationForm
+from django.db import transaction
 
 from allauth.account.forms import LoginForm
 from allauth.account.forms import SignupForm
@@ -59,22 +61,36 @@ class MySignUpForm(SignupForm):
 	last_name = forms.CharField(max_length=100, required=False, label=_('Last Name (optional)'))
 
 	class Meta:
-		model = PatientProfile
+		model = UserProfile
 #		fields = '__all__'
 		fields = ('first_name', 'last_name')
 
 	def custom_signup(self, request, user):
-		#	user = PatientProfile.objects.all()
+		#	user = UserProfile.objects.all()
 		user.first_name = self.cleaned_data['first_name']
 		user.last_name = self.cleaned_data['last_name']
 #		user.ic_number = self.cleaned_data['ic_number']
 		user.is_staff = True
-
+		user.is_active = False
 		user.save()
 		return user
 
+class PatientSignUpForm(UserCreationForm):
+#    interests = forms.ModelMultipleChoiceField(queryset=Subject.objects.all(),widget=forms.CheckboxSelectMultiple,required=True    )
 
-class ChangePatientProfile(forms.ModelForm):
+    class Meta(UserCreationForm.Meta):
+        model = UserProfile
+
+    @transaction.atomic
+    def save(self):
+        user = super().save(commit=False)
+#        user.is_student = True
+        user.save()
+        student = PatientProfile.objects.create(user=user)
+#        student.interests.add(*self.cleaned_data.get('interests'))
+        return user
+
+class ChangeUserProfile(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 
@@ -88,7 +104,7 @@ class ChangePatientProfile(forms.ModelForm):
 	eth = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 
 	class Meta:
-		model = PatientProfile
+		model = UserProfile
 		fields = ('first_name', 'last_name', 'email', 'ic_number', 'jkl', 'eth')
 
 
