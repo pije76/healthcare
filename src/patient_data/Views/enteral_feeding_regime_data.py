@@ -52,9 +52,9 @@ def enteral_feeding_regime_data(request, username):
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Enteral Feeding Regime')
-    patientid = PatientProfile.objects.get(username=username).id
+    patientid = UserProfile.objects.get(username=username).id
     patients = EnteralFeedingRegime.objects.filter(patient=patientid)
-    profiles = PatientProfile.objects.filter(pk=patientid)
+    profiles = UserProfile.objects.filter(pk=patientid)
     total = EnteralFeedingRegime.objects.aggregate(Sum('amount'))
     total_feeding = EnteralFeedingRegime.objects.filter(patient=patientid).aggregate(Sum('amount'))
     total_fluids = EnteralFeedingRegime.objects.filter(patient=patientid).values_list('total_fluids', flat=True).first()

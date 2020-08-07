@@ -1,4 +1,4 @@
-var t = $('#t_add_row').DataTable(
+var t = $('#t_add_row.display').DataTable(
 	{
 		"order": [[ 0, "desc" ]]
 	});

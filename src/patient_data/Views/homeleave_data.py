@@ -52,9 +52,9 @@ def homeleave_data(request, username):
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Application For Home Leave')
-    patientid = PatientProfile.objects.get(username=username).id
+    patientid = UserProfile.objects.get(username=username).id
     patients = ApplicationForHomeLeave.objects.filter(patient=patientid)
-    profiles = PatientProfile.objects.filter(pk=patientid)
+    profiles = UserProfile.objects.filter(pk=patientid)
 
     context = {
         'logos': logos,

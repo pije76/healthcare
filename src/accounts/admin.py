@@ -43,7 +43,9 @@ class UserProfileAdmin(admin.ModelAdmin):
         'eth',
 #        'roles',
         'is_active',
-        'is_staff'
+        'is_patient',
+        'is_staff',
+        'is_superuser',
     ]
 #    list_filter = ['user']
     ModelAdmin.ordering = ('id',)
@@ -59,9 +61,16 @@ class UserProfileAdmin(admin.ModelAdmin):
 #    class Meta:
 #        model = UserProfile
 
+class RoleAdmin(admin.ModelAdmin):
 
-admin.site.register(Role)
+    list_display = [
+        'id',
+        'name'
+    ]
+    ModelAdmin.ordering = ('id',)
+
+#admin.site.register(Role, RoleAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
-admin.site.register(PatientProfile)
-admin.site.register(FamilyProfile)
-admin.site.register(StaffProfile)
+#admin.site.register(PatientProfile)
+#admin.site.register(StaffProfile)
+#admin.site.register(AdminProfile)

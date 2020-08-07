@@ -52,3 +52,9 @@
 .custom-control-label {
   margin-right: 10px;
 }
+
+.modal-dialog {
+  min-width: 576px;
+  max-width: 600px;
+  margin: 1.75rem auto;
+}

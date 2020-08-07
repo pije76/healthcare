@@ -53,9 +53,9 @@ def staff_records(request, username):
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Staff Records')
-    patientid = PatientProfile.objects.get(username=username).id
+    patientid = UserProfile.objects.get(username=username).id
     patients = StaffRecords.objects.filter(patient=patientid)
-    profiles = PatientProfile.objects.filter(pk=patientid)
+    profiles = UserProfile.objects.filter(pk=patientid)
     total_annual = StaffRecords.objects.filter(patient=patientid).aggregate(Sum('annual_leave_days'))
     total_public = StaffRecords.objects.filter(patient=patientid,).aggregate(Sum('public_holiday_days'))
 

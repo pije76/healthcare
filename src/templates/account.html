@@ -6,7 +6,7 @@
 {% load i18n %}
 
 {% block styles %}
-		<link href="{% static 'css/account.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/account.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block headtitle %}
@@ -15,72 +15,96 @@
 
 {% block content %}
 
-	<div class="row isi">
+	<div class="row isi dataaccount">
 
-		<div class="col-md-10">
-			<div class="card">
-				<div class="card-body">
-					<div class="row">
-						<div class="col-md-12">
-							<h4>{% trans "Your Profile" %}</h4>
-							<hr>
-						</div>
+		<div class="col-12">
+			<form action="{% url 'change_profile' %}">
+
+				<div class="row">
+					<div class="col-12">
+						<h4>{% trans "My Profile" %}</h4>
+						<hr>
 					</div>
-					
-					<div class="row">
-					{% if patients %}
-					{% for item in patients %}
-						<div class="col-md-12">
-							<form action="{% url 'change_profile' %}">
-							  <div class="form-group row">
-								<label for="lastname" class="col-4 col-form-label">{% trans "Username" %}</label> 
-								<div class="col-8">
-								  {{ item.username }}
+				</div>
+				
+				<div class="row">
+				{% if patients %}
+				{% for item in patients %}
+					<div class="col-12">
+
+							<div class="form-group row">
+								<label for="lastname" class="col-4 col-form-label">{% trans "Username" %}</label>
+								<div class="col-6">
+									{{ item.username }}
 								</div>
-							  </div>
-							  <div class="form-group row">
+							</div>
+
+							<div class="form-group row">
 								<label for="lastname" class="col-4 col-form-label">{% trans "Full Name" %}</label> 
-								<div class="col-8">
-								  {{ item.full_name }}
+								<div class="col-6">
+									{{ item.full_name }}
 								</div>
-							  </div>
-							  <div class="form-group row">
+							</div>
+
+							<div class="form-group row">
 								<label for="email" class="col-4 col-form-label">{% trans "Email*" %}</label> 
-								<div class="col-8">
-								  {{ item.email }}
+								<div class="col-6">
+									{{ item.email }}
+
 								</div>
-							  </div>
-							  <div class="form-group row">
+							</div>
+
+							<div class="form-group row">
 								<label for="icnumber" class="col-4 col-form-label">{% trans "IC Number" %}</label> 
-								<div class="col-8">
+								<div class="col-6">
 									{{ item.ic_number }}
 								</div>
-							  </div>
-							  <div class="form-group row">
+							</div>
+
+							{% if user.is_staff %}
+							<div class="form-group row">
+								<label for="icnumber" class="col-4 col-form-label">{% trans "Position" %}</label> 
+								<div class="col-6">
+									Staff
+								</div>
+							</div>
+							{% endif %}
+
+							{% if user.is_patient %}
+							<div class="form-group row">
+								<label for="icnumber" class="col-4 col-form-label">{% trans "Status" %}</label> 
+								<div class="col-6">
+									Patient
+								</div>
+							</div>
+							{% endif %}
+
+							<div class="form-group row">
 								<label for="icnumber" class="col-4 col-form-label">{% trans "JKL" %}</label> 
-								<div class="col-8">
+								<div class="col-6">
 									{{ item.jkl }}
 								</div>
-							  </div>
-							  <div class="form-group row">
+							</div>
+
+							<div class="form-group row">
 								<label for="icnumber" class="col-4 col-form-label">{% trans "ETH" %}</label> 
-								<div class="col-8">
+								<div class="col-6">
 									{{ item.eth }}
 								</div>
-							  </div>
-								<div class="offset-4 col-8">
-								  <button type="submit" class="btn btn-primary">{% trans "Change My Profile" %}</button>                                  
-								</div>
-							  </div>
-							</form>
-						</div>
-						{% endfor %}
-						{% endif %}
+							</div>
+
 					</div>
-					
+				{% endfor %}
+				{% endif %}
 				</div>
-			</div>
+
+				<div class="row">
+					<div class="col-12">
+						<button type="submit" class="btn btn-primary">{% trans "Change My Profile" %}</button>
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
-
+		
 {% endblock %}

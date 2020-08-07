@@ -52,7 +52,10 @@
 				<tbody>
 					<tr>
 						<td>{{ form.date|as_crispy_field }}</td>
-						<td>{{ form.duration_time|as_crispy_field }}</td>
+						<td>
+							{{ form.duration_time|as_crispy_field }}
+							{{ form.total_hours|as_crispy_field }}
+						</td>
 						<td>{{ form.hours|as_crispy_field }}</td>
 					</tr>
 				</tbody>

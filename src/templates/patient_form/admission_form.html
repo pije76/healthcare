@@ -5,13 +5,13 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 {% load widget_tweaks %}
-ge
+
 {% block headtitle %}
     {{ page_title }} | {{ titles.title }}
 {% endblock %}
 
 {% block extrahead %}
-	{{ form.media }}
+	{{ formset.media }}
 {% endblock %}
 
 {% block styles %}
@@ -22,8 +22,10 @@ ge
 
 {% block javascript %}
 	<script src="{% static 'js/patient_form/admission.js' %}" type="text/javascript"></script>
+<!--
 	<script src="{% static 'js/jquery.checkbox.min.js' %}" type="text/javascript"></script>
 	<script src="{% static 'js/jquery.formset.js' %}" type="text/javascript"></script>
+-->
 {% endblock %}
 
 {% block content %}
@@ -43,18 +45,20 @@ ge
 		<form method="post">
 			{% csrf_token %}
 			{{ formset.management_form }}
-
+			
 			<div class="container-fluid" id="admissionform">
 
+				{% if formset %}
+				{% for item in formset %}
 				<div class="row">
 					<div class="col-2 col">
 						{% trans "Admission" %}:
 					</div>
 					<div class="col-6 col">
-						{{ form.date|as_crispy_field }}
+						{{ item.date|as_crispy_field }}
 					</div>
 					<div class="col-4 col">
-						{{ form.time|as_crispy_field }}
+						{{ item.time|as_crispy_field }}
 					</div>
 				</div>
 
@@ -63,11 +67,10 @@ ge
 						{% trans "Admitted through" %}:
 					</div>
 					<div class="col-4 col">
-<!--						{% render_field form.admitted class="form-check-inline" %} -->
-						{{ form.admitted|as_crispy_field }}
+						{{ item.admitted|as_crispy_field }}
 					</div>
 					<div class="col-3 col" style="border-left:none;">
-						{{ form.admitted_others|as_crispy_field }}
+						{{ item.admitted_others|as_crispy_field }}
 					</div>
 					<div class="col-3 col" style="border-left:none;">
 					</div>
@@ -78,7 +81,7 @@ ge
 						{% trans "Mode of admission" %}:
 					</div>
 					<div class="col-10 col">
-						{{ form.mode|as_crispy_field }}
+						{{ item.mode|as_crispy_field }}
 					</div>
 				</div>
 
@@ -87,7 +90,7 @@ ge
 						{% trans "Full name  (as per IC)" %}:
 					</div>
 					<div class="col-4 col">
-						<b>{{ patients }}</b>{{ form.patient|as_crispy_field }}</b>
+						<b>{{ patients }}</b>{{ item.patient|as_crispy_field }}</b>
 					</div>
 					<div class="col-2 col">
 						{% trans "IC No" %}:
@@ -102,13 +105,13 @@ ge
 						{% trans "Age" %}:
 					</div>
 					<div class="col-4 col">
-						{{ form.age|as_crispy_field }}
+						{{ item.age|as_crispy_field }}
 					</div>
 					<div class="col-2 col">
 						{% trans "Date of birth" %}:
 					</div>
 					<div class="col-4 col">
-						{{ form.birth_date|as_crispy_field }}
+						{{ item.birth_date|as_crispy_field }}
 					</div>
 				</div>
 
@@ -117,7 +120,7 @@ ge
 						{% trans "Sex / Gender" %}:
 					</div>
 					<div class="col-10 col">
-						{{ form.gender|as_crispy_field }}
+						{{ item.gender|as_crispy_field }}
 					</div>
 				</div>
 
@@ -126,10 +129,10 @@ ge
 						{% trans "Marital Status" %}:
 					</div>
 					<div class="col-4 col">
-						{{ form.marital_status|as_crispy_field }}
+						{{ item.marital_status|as_crispy_field }}
 					</div>
 					<div class="col-3 col" style="border-left:none;">
-						{{ form.marital_status_others|as_crispy_field }}
+						{{ item.marital_status_others|as_crispy_field }}
 					</div>
 					<div class="col-3 col" style="border-left:none;">
 					</div>
@@ -140,10 +143,10 @@ ge
 						{% trans "Religion" %}:
 					</div>
 					<div class="col-6 col">
-						{{ form.religion|as_crispy_field }}
+						{{ item.religion|as_crispy_field }}
 					</div>
 					<div class="col-3 col" style="border-left:none;">
-						{{ form.religion_others|as_crispy_field }}
+						{{ item.religion_others|as_crispy_field }}
 					</div>
 					<div class="col-1 col" style="border-left:none;">
 					</div>
@@ -154,10 +157,10 @@ ge
 						{% trans "Occupation" %}:
 					</div>
 					<div class="col-4 col">
-						{{ form.occupation|as_crispy_field }}
+						{{ item.occupation|as_crispy_field }}
 					</div>
 					<div class="col-3 col" style="border-left:none;">
-						{{ form.occupation_others|as_crispy_field }}
+						{{ item.occupation_others|as_crispy_field }}
 					</div>
 					<div class="col-3 col" style="border-left:none;">
 					</div>
@@ -168,7 +171,7 @@ ge
 						{% trans "Communication" %}:
 					</div>
 					<div class="col-10 col">
-						{{ form.communication_sight|as_crispy_field }}
+						{{ item.communication_sight|as_crispy_field }}
 					</div>
 				</div>
 
@@ -176,10 +179,10 @@ ge
 					<div class="col-2 col" style="border-top:none;">
 					</div>
 					<div class="col-4 col">
-						{{ form.communication_hearing|as_crispy_field }}
+						{{ item.communication_hearing|as_crispy_field }}
 					</div>
 					<div class="col-3 col" style="border-left:none;">
-						{{ form.communication_hearing_others|as_crispy_field }}
+						{{ item.communication_hearing_others|as_crispy_field }}
 					</div>
 					<div class="col-3 col" style="border-left:none;">
 					</div>
@@ -190,9 +193,11 @@ ge
 						{% trans "Address" %}:
 					</div>
 					<div class="col-10 col">
-						{{ form.address|as_crispy_field }}
+						{{ item.address|as_crispy_field }}
 					</div>
 				</div>
+				{% endfor %}
+				{% endif %}
 
 				<div class="row" style="border-right:1px solid #c9c9c9;">
 					<div class="col-2 col anchorcol">
@@ -200,19 +205,19 @@ ge
 					</div>
 
 					{% for item in formset %}
-					<div class="col-5 col form_Emergency">
+					<div class="col-5 col formSet_Emerg">
 						{% trans "Name" %}:
-						{% render_field item.ec_name class="form-control" %}
+						{{ item.ec_name|as_crispy_field }}
 						{% trans "IC No" %}:
-						{% render_field item.ec_ic_number class="form-control" %}
+						{{ item.ec_ic_number|as_crispy_field }}
 						{% trans "Relationship" %}:
-						{% render_field item.ec_relationship class="form-control" %}
+						{{ item.ec_relationship|as_crispy_field }}
 						{% trans "Contact No" %}:
-						{% render_field item.ec_phone class="form-control" %}
+						{{ item.ec_phone|as_crispy_field }}
 						{% trans "Address" %}:
-						{% render_field item.ec_address class="form-control" %}
+						{{ item.ec_address|as_crispy_field }}
 
-						<button type="button" style="margin-top:5px;" class="btn btn-success add_formEmergency">
+						<button type="button" style="margin-top:5px;" class="btn btn-success add_formSet_Emerg">
 							<i class="fas fa-plus"></i>
 						</button>
 					</div>
@@ -220,6 +225,8 @@ ge
 
 				</div>
 
+				{% if formset %}
+				{% for item in formset %}
 				<div class="row">
 					<div class="col-4 col" style="border-right:none;">
 					</div>
@@ -235,7 +242,7 @@ ge
 						{% trans "General condition" %}:
 					</div>
 					<div class="col-10 col">
-						{{ form.general_condition|as_crispy_field }}
+						{{ item.general_condition|as_crispy_field }}
 					</div>
 				</div>
 
@@ -247,7 +254,7 @@ ge
 						{% trans "Temp (ºC)" %}:
 					</div>
 					<div class="col-4 col">
-						{{ form.vital_sign_temperature|as_crispy_field }}
+						{{ item.vital_sign_temperature|as_crispy_field }}
 					</div>
 					<div class="col-3 col" style="border-left:none;">
 					</div>
@@ -260,7 +267,7 @@ ge
 						{% trans "Pulse (bpm)" %}:
 					</div>
 					<div class="col-4 col">
-						{{ form.vital_sign_pulse|as_crispy_field }}
+						{{ item.vital_sign_pulse|as_crispy_field }}
 					</div>
 					<div class="col-3 col" style="border-left:none;">
 					</div>
@@ -273,7 +280,7 @@ ge
 						{% trans "BP (mmHg)" %}:
 					</div>
 					<div class="col-4 col">
-						{{ form.vital_sign_bp|as_crispy_field }}
+						{{ item.vital_sign_bp|as_crispy_field }}
 					</div>
 					<div class="col-3 col" style="border-left:none;">
 					</div>
@@ -286,7 +293,7 @@ ge
 						{% trans "Resp (min)" %}:
 					</div>
 					<div class="col-4 col">
-						{{ form.vital_sign_resp|as_crispy_field }}
+						{{ item.vital_sign_resp|as_crispy_field }}
 					</div>
 					<div class="col-3 col" style="border-left:none;">
 					</div>
@@ -299,7 +306,7 @@ ge
 						{% trans "SPO2 (%)" %}:
 					</div>
 					<div class="col-4 col">
-						{{ form.vital_sign_spo2|as_crispy_field }}
+						{{ item.vital_sign_spo2|as_crispy_field }}
 					</div>
 					<div class="col-3 col" style="border-left:none;">
 					</div>
@@ -312,10 +319,10 @@ ge
 						{% trans "On Oxygen therapy" %}:
 					</div>
 					<div class="col-2 col">
-						{{ form.vital_sign_on_oxygen_therapy|as_crispy_field }}
+						{{ item.vital_sign_on_oxygen_therapy|as_crispy_field }}
 					</div>
 					<div class="col-5 col" style="border-left:none; display:inline-flex;">
-						{% trans "Flow rate" %}:&nbsp;{{ form.vital_sign_on_oxygen_therapy_flow_rate|as_crispy_field }}&nbsp;{% trans "L/min" %}
+						{% trans "Flow rate" %}:&nbsp;{{ item.vital_sign_on_oxygen_therapy_flow_rate|as_crispy_field }}&nbsp;{% trans "L/min" %}
 
 					</div>
 				</div>
@@ -327,7 +334,7 @@ ge
 						{% trans "HGT (mmol/L)" %}:
 					</div>
 					<div class="col-4 col">
-						{{ form.vital_sign_hgt|as_crispy_field }}
+						{{ item.vital_sign_hgt|as_crispy_field }}
 					</div>
 					<div class="col-3 col" style="border-left:none;">
 					</div>
@@ -338,13 +345,13 @@ ge
 						{% trans "Allergy" %}:
 					</div>
 					<div class="col-3 col">
-						{{ form.allergy_drug|as_crispy_field }}
+						{{ item.allergy_drug|as_crispy_field }}
 					</div>
 					<div class="col-3 col">
-						{{ form.allergy_food|as_crispy_field }}
+						{{ item.allergy_food|as_crispy_field }}
 					</div>
 					<div class="col-4 col">
-						{{ form.allergy_others|as_crispy_field }}
+						{{ item.allergy_others|as_crispy_field }}
 					</div>
 				</div>
 
@@ -353,10 +360,10 @@ ge
 						{% trans "Biohazard/ infectious disease" %}:
 					</div>
 					<div class="col-2 col">
-						{{ form.biohazard_infectious_disease|as_crispy_field }}
+						{{ item.biohazard_infectious_disease|as_crispy_field }}
 					</div>
 					<div class="col-3 col" style="border-left:none; display:inline-flex;">
-						{{ form.biohazard_infectious_disease_others|as_crispy_field }}
+						{{ item.biohazard_infectious_disease_others|as_crispy_field }}
 					</div>
 					<div class="col-5 col" style="border-left:none;">
 					</div>
@@ -367,10 +374,10 @@ ge
 						{% trans "Invasive line insitu" %}:
 					</div>
 					<div class="col-7 col">
-						{{ form.invasive_line_insitu|as_crispy_field }}
+						{{ item.invasive_line_insitu|as_crispy_field }}
 					</div>
 					<div class="col-3 col" style="border-left:none; display:inline-flex;">
-						{{ form.invasive_line_insitu_others|as_crispy_field }}
+						{{ item.invasive_line_insitu_others|as_crispy_field }}
 					</div>
 				</div>
 
@@ -379,10 +386,10 @@ ge
 						{% trans "Medical history" %}:
 					</div>
 					<div class="col-7 col">
-						{{ form.medical_history|as_crispy_field }}
+						{{ item.medical_history|as_crispy_field }}
 					</div>
 					<div class="col-3 col" style="border-left:none; display:inline-flex;">
-						{{ form.medical_history_others|as_crispy_field }}
+						{{ item.medical_history_others|as_crispy_field }}
 					</div>
 				</div>
 
@@ -391,7 +398,7 @@ ge
 						{% trans "Surgical history" %}:
 					</div>
 					<div class="col-10 col">
-						{{ form.surgical_history_none|as_crispy_field }}
+						{{ item.surgical_history_none|as_crispy_field }}
 					</div>
 				</div>
 
@@ -399,9 +406,11 @@ ge
 					<div class="col-2 col" style="border-top:none;">
 					</div>
 					<div class="col-10 col" style="border-top:none;">
-						{{ form.surgical_history|as_crispy_field }}
+						{{ item.surgical_history|as_crispy_field }}
 					</div>
 				</div>
+				{% endfor %}
+				{% endif %}
 
 				<div class="row">
 					<div class="col-2 col text-center">
@@ -421,35 +430,40 @@ ge
 				</div>
 
 				{% for item in formset %}
-				<div class="row insertform_diag">
+				<div class="row formSet_Diag">
 					<div class="col-2 col">
-						{% render_field item.date_diagnosis class="form-control" %}
+						{{ item.date_diagnosis|as_crispy_field }}
 					</div>
 					<div class="col-4 col">
-						{% render_field item.diagnosis class="form-control" %}
+						{{ item.diagnosis|as_crispy_field }}
 					</div>
 					<div class="col-2 col">
-						{% render_field item.date_operation class="form-control" %}
+						{{ item.date_operation|as_crispy_field }}
 					</div>
 					<div class="col-3 col">
-						{% render_field item.operation class="form-control" %}
+						{{ item.operation|as_crispy_field }}
 					</div>
 					<div class="col-1 col">
-						<button type="button" style="margin-top:5px;" class="btn btn-success addform_diag">
+						<button type="button" style="margin-top:5px;" class="btn btn-success add_formSet_Diag">
 							<i class="fas fa-plus"></i>
 						</button>
 					</div>
 				</div>
 				{% endfor %}
 
+				{% if formset %}
+				{% for item in formset %}
 				<div class="row">
 					<div class="col-2 col">
 						{% trans "Own medication" %}:
 					</div>
 					<div class="col-10 col">
-						{{ form.own_medication|as_crispy_field }}
+						{{ item.own_medication|as_crispy_field }}
 					</div>
 				</div>
+				{% endfor %}
+				{% endif %}
+
 
 				<div class="row">
 					<div class="col-2 col" style="border-top:none;">
@@ -470,39 +484,41 @@ ge
 					</div>
 				</div>
 
-				<div class="row">
-					{% for item in formset %}
+				{% for item in formset %}
+				<div class="row formSet_Own">
 					<div class="col-2 col" style="border-top:none;">
 					</div>
-					<div class="col-3 col insertform_own">
-						{% render_field item.own_medication_drug_name class="form-control" %}
+					<div class="col-3 col">
+						{{ item.own_medication_drug_name|as_crispy_field }}
 					</div>
 					<div class="col-2 col">
-						{% render_field item.own_medication_dosage class="form-control" %}
+						{{ item.own_medication_dosage|as_crispy_field }}
 					</div>
 					<div class="col-2 col">
-						{% render_field item.own_medication_tablet_capsule class="form-control" %}
+						{{ item.own_medication_tablet_capsule|as_crispy_field }}
 					</div>
 					<div class="col-2 col">
-						{% render_field item.own_medication_frequency class="form-control" %}
+						{{ item.own_medication_frequency|as_crispy_field }}
 					</div>
 					<div class="col-1 col">
-						<button type="button" style="margin-top:5px;" class="btn btn-success addform_diag">
+						<button type="button" style="margin-top:5px;" class="btn btn-success add_formSet_Own">
 							<i class="fas fa-plus"></i>
 						</button>
 					</div>
-					{% endfor %}
 				</div>
+				{% endfor %}
 
+				{% if formset %}
+				{% for item in formset %}
 				<div class="row">
 					<div class="col-2 col">
 						{% trans "Adaptive aids with patient on admission" %}:
 					</div>
 					<div class="col-7 col">
-						{{ form.adaptive_aids_with_patient|as_crispy_field }}
+						{{ item.adaptive_aids_with_patient|as_crispy_field }}
 					</div>
 					<div class="col-3 col" style="border-left:none; display:inline-flex;">
-						{{ form.adaptive_aids_with_patient_others|as_crispy_field }}
+						{{ item.adaptive_aids_with_patient_others|as_crispy_field }}
 					</div>
 				</div>
 
@@ -511,7 +527,7 @@ ge
 						{% trans "Orientation" %}:
 					</div>
 					<div class="col-10 col">
-						{{ form.orientation|as_crispy_field }}
+						{{ item.orientation|as_crispy_field }}
 					</div>
 				</div>
 
@@ -520,7 +536,7 @@ ge
 						{% trans "Special information" %}:
 					</div>
 					<div class="col-10 col">
-						{{ form.special_information|as_crispy_field }}
+						{{ item.special_information|as_crispy_field }}
 					</div>
 				</div>
 
@@ -529,9 +545,11 @@ ge
 						{% trans "Admission done by" %}:
 					</div>
 					<div class="col-10 col">
-						{{ form.admission_by|as_crispy_field }}
+						{{ item.admission_by|as_crispy_field }}
 					</div>
 				</div>
+				{% endfor %}
+				{% endif %}
 
 			</div>
 
@@ -540,6 +558,7 @@ ge
 			<a class="btn btn-danger" href="{% url 'patient_data:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
 			{% endfor %}
 		</form>
+
 
 	</div>
 
@@ -554,14 +573,14 @@ ge
 		var newElement = $(selector).clone(true);
 		var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
 
-		newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function()
+		$(newElement).find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function()
 		{
 			var name = $(this).attr('name').replace('-' + (total-1) + '-', '-' + total + '-');
 			var id = 'id_' + name;
 			$(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
 		});
 
-		newElement.find('label').each(function()
+		$(newElement).find('label').each(function()
 		{
 			var forValue = $(this).attr('for');
 			if (forValue)
@@ -570,45 +589,74 @@ ge
 				$(this).attr({'for': forValue});
 			}
 		});
+
+		$(newElement).find('[id$="date_diagnosis"]')
+			.removeClass('datepickerinput').removeAttr('#id_form-0-date_diagnosis').removeData('DateTimePicker')
+			.unbind().datetimepicker(
+				options={
+					"format": "DD/MM/YYYY",
+				}
+			);
+
+		$(newElement).find('[id$="date_operation"]')
+			.removeClass('datepickerinput').removeAttr('#id_form-0-date_operation').removeData('DateTimePicker')
+			.unbind().datetimepicker(
+				options={
+					"format": "DD/MM/YYYY",
+				}
+			);
+		if($('.formSet_Emerg').length >= 4)
+		{
+			return false;
+		};
+
 		total++;
 
 		$('#id_' + prefix + '-TOTAL_FORMS').val(total);		
 		$(selector).after(newElement);
-		var conditionRow = $('.form_Emergency:not(:last)');
-		if(conditionRow.length == 1)
+
+		var conditionRowEmerg = $('.formSet_Emerg:not(:last)');
+		var conditionRowDiag = $('.formSet_Diag:not(:last)');
+		var conditionRowOwn = $('.formSet_Own:not(:last)');
+
+		if(conditionRowEmerg.length == 1)
 		{
 			$(selector).after(newElement);
 		}
-		else if(conditionRow.length == 2)
+		else if(conditionRowEmerg.length == 2)
 		{
 			$(selector).after(newElement).before('<div class="col-2 col anchorcol" style="border-top:none;"></div>');
 		}
-		else if(conditionRow.length == 3)
+		else if(conditionRowEmerg.length == 3)
 		{
 			$(selector).after(newElement);
 		}
-		else if(conditionRow.length == 4)
+		else if(conditionRowEmerg.length == 4)
 		{
 			$(selector).after(newElement).before('<div class="col-2 col anchorcol" style="border-top:none;"></div>');
 		}
-		else if(conditionRow.length == 5)
+		else if(conditionRowEmerg.length == 5)
 		{
 			$(selector).after(newElement);
 		};
 
-		conditionRow.find('.btn.add_formEmergency')
+		conditionRowEmerg.find('.btn.add_formSet_Emerg')
 		.removeClass('btn-success').addClass('btn-danger')
-		.removeClass('add_formEmergency').addClass('remove_formEmergency')
+		.removeClass('add_formSet_Emerg').addClass('remove_formSet_Emerg')
 		.html('<i class="fas fa-minus"></i>');
+
+		conditionRowDiag.find('.btn.add_formSet_Diag')
+		.removeClass('btn-success').addClass('btn-danger')
+		.removeClass('add_formSet_Diag').addClass('remove_formSet_Diag')
+		.html('<i class="fas fa-minus"></i>');
+
+		conditionRowOwn.find('.btn.add_formSet_Own')
+		.removeClass('btn-success').addClass('btn-danger')
+		.removeClass('add_formSet_Own').addClass('remove_formSet_Own')
+		.html('<i class="fas fa-minus"></i>');
+
 		return false;
 	}
-
-	$(document).on('click', '.add_formEmergency', function(e)
-	{
-		e.preventDefault();
-		cloneMore('.form_Emergency:last', 'form');
-		return false;
-	});
 
 	function updateElementIndex(el, prefix, ndx)
 	{
@@ -619,13 +667,15 @@ ge
 		if (el.name) el.name = el.name.replace(id_regex, replacement);
 	}
 
-	function deleteForm(prefix, btn)
+	//============================================================//
+
+	function deleteFormEmerg(prefix, btn)
 	{
 		var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
 		if (total > 1)
 		{
-			btn.closest('.form_Emergency').remove();
-			var forms = $('.form_Emergency');
+			btn.closest('.formSet_Emerg').remove();
+			var forms = $('.formSet_Emerg');
 			$('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
 			for (var i=0, formCount=forms.length; i<formCount; i++)
 			{
@@ -638,12 +688,95 @@ ge
 		return false;
 	}
 
-	$(document).on('click', '.remove_formEmergency', function(e)
+	$(document).on('click', '.add_formSet_Emerg', function(e)
 	{
 		e.preventDefault();
-		deleteForm('form', $(this));
+		cloneMore('.formSet_Emerg:last', 'form');
+	});
+
+	$(document).on('click', '.remove_formSet_Emerg', function(e)
+	{
+		e.preventDefault();
+		deleteFormEmerg('form', $(this));
 		return false;
 	});
 
+	//============================================================//
+
+	function deleteFormDiag(prefix, btn)
+	{
+		var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+		if (total > 1)
+		{
+			btn.closest('.formSet_Diag').remove();
+			var forms = $('.formSet_Diag');
+			$('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+			for (var i=0, formCount=forms.length; i<formCount; i++)
+			{
+				$(forms.get(i)).find(':input').each(function()
+				{
+					updateElementIndex(this, prefix, i);
+				});
+			}
+		}
+		return false;
+	}
+
+	$(document).on('click', '.add_formSet_Diag', function(e)
+	{
+		e.preventDefault();
+		cloneMore('.formSet_Diag:last', 'form');
+		return false;
+	});
+
+	$(document).on('click', '.remove_formSet_Diag', function(e)
+	{
+		e.preventDefault();
+		deleteFormDiag('form', $(this));
+		return false;
+	});
+
+	//============================================================//
+
+	function deleteFormOwn(prefix, btn)
+	{
+		var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+		if (total > 1)
+		{
+			btn.closest('.formSet_Own').remove();
+			var forms = $('.formSet_Own');
+			$('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+			for (var i=0, formCount=forms.length; i<formCount; i++)
+			{
+				$(forms.get(i)).find(':input').each(function()
+				{
+					updateElementIndex(this, prefix, i);
+				});
+			}
+		}
+		return false;
+	}
+
+	$(document).on('click', '.add_formSet_Own', function(e)
+	{
+		e.preventDefault();
+		cloneMore('.formSet_Own:last', 'form');
+		return false;
+	});
+
+	$(document).on('click', '.remove_formSet_Own', function(e)
+	{
+		e.preventDefault();
+		deleteFormOwn('form', $(this));
+		return false;
+	});
+
+	$(document).ready(function()
+	{
+		$("#id_form-0-birth_date").change(function()
+		{
+			alert("The");
+		})
+	});
 	</script>
 {% endblock %}

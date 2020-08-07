@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
 
-{% load static %}
-{% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
+{% load static %}
+{% load staticfiles %}
 {% load widget_tweaks %}
-{% load display_choice %}
 
 {% block headtitle %}
 	{{ page_title }} | {{ titles.title }}
@@ -14,10 +13,18 @@
 {% block styles %}
 	<link href="{% static 'css/patient_data/admission.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/patient_data/patient_data.css' %}" rel="stylesheet" type="text/css">
+	<style>
+	@media (min-width: 576px)
+	.modal-dialog {
+		max-width: 500px;
+		margin: 1.75rem auto;
+	}
+	</style>
 {% endblock %}
 
 {% block javascript %}
-	<script src="{% static 'js/admission.js' %}"></script>
+	<script src="{% static 'js/patient_data/admission.js' %}"></script>
+	<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -74,9 +81,7 @@
 											<th class="text-center">{% trans "Occupation" %}</th>
 											<th class="text-center">{% trans "Communication Sight" %}</th>
 											<th class="text-center">{% trans "Communication Hearing" %}</th>
-											<th class="text-center">{% trans "Communication Other" %}</th>
 											<th class="text-center">{% trans "Address" %}</th>
-											<th class="text-center">{% trans "Phone" %}</th>
 											<th class="text-center">{% trans "EC Name" %}</th>
 											<th class="text-center">{% trans "EC IC Number" %}</th>
 											<th class="text-center">{% trans "EC Relationship" %}</th>
@@ -112,33 +117,50 @@
 									</thead>
 
 									<tbody>
-										{% include 'patient_data/admission_data/partial_list.html' %}
+										{% include 'patient_data/admission_data/partial_list.html' %}										
 									</tbody>
 								</table>
 							</form>
 						</div>
+						<br />
 						{% for item in profiles %}
 						<a class="btn btn-outline-primary" href="{% url 'patient_data:patientdata_detail' item.username %}">{% trans "Back" %}</a>
 						{% endfor %}
 					</div>
 
-                </div>
-            </div>
+				</div>
+			</div>
 
-        </div>
+		</div>
 
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-
-                <div class="modal-content">
-
-                </div>
-
-            </div>
-        </div>
-
-    </div>
+	</div>
 
 </div>
 
+{% endblock %} 
+
+{% block js %}
+<script type="text/javascript">
+$(document).ready(function()
+{
+	$(".trigger_modal").each(function()
+	{
+		$(this).modalForm(
+		{
+			formURL: $(this).data('form-url')
+		});
+	});
+});
+
+$(function()
+{
+	$(".trigger_modal").each(function()
+	{
+		$(this).modalForm(
+		{
+			formURL: $(this).data('form-url')
+		});
+	});
+});
+</script>
 {% endblock %} 

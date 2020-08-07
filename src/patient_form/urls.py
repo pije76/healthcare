@@ -3,6 +3,8 @@ from django.urls import path, re_path
 from .models import *
 from .views import *
 
+from dal import autocomplete
+
 app_name = 'patient_form'
 
 urlpatterns = [
@@ -11,6 +13,7 @@ urlpatterns = [
 #    re_path(r'^admission/(?P<username>\w+)/$', admission, name='admission'),
     re_path(r'^admission/(?P<username>\w+)/$', admission, name='admission'),
     re_path(r'^application-homeleave/(?P<username>\w+)/$', application_homeleave, name='application_homeleave'),
+#    re_path(r'^application-homeleave/(?P<username>\w+)/autocomplete/$', autocomplete.Select2QuerySetView.as_view(), name='autocomplete_application_homeleave'),
     re_path(r'^appointment/(?P<username>\w+)/$', appointment, name='appointment'),
     re_path(r'^catheterization-cannulation/(?P<username>\w+)/$', catheterization_cannulation, name='catheterization_cannulation'),
     re_path(r'^charges/(?P<username>\w+)/$', charges_sheet, name='charges_sheet'),
@@ -30,6 +33,6 @@ urlpatterns = [
     re_path(r'^stool/(?P<username>\w+)/$', stool, name='stool'),
     re_path(r'^visiting-consultant-records/(?P<username>\w+)/$', visiting_consultant_records, name='visiting_consultant_records'),
     re_path(r'^vital-sign-flow/(?P<username>\w+)/$', vital_sign_flow, name='vital_sign_flow'),
-    path('load_ic_number/', load_ic_number, name='load_ic_number'),
+    re_path(r'^load_ic_number/$', load_ic_number, name='load_ic_number'),
 ]
 

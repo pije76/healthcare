@@ -1,35 +1,27 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
-from django.db import connection
-from django.db.models import F, Sum
+from django.db import connection, transaction, IntegrityError
+from django.db.models import F, Sum, Q, signals
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
-from django.urls import reverse, reverse_lazy
+from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django.views.generic import ListView, CreateView, UpdateView
-from django.forms import modelformset_factory
-from django.forms.models import inlineformset_factory
 
 #from jsignature.utils import draw_signature
 from crispy_forms.helper import *
+from dal import autocomplete
 
 from .models import *
 from .forms import *
 #from accounts.models import *
 from customers.models import *
 
-from datetime import *
-#import datetime
-
-#nowtime = datetime.time(datetime.now())
-#now = datetime.date.today
-#now = datetime.now()
-now = date.today
+import datetime
+now = timezone.now()
 
 # Create your views here.
-
-
 def index(request):
 	schema_name = connection.schema_name
 	patients = UserProfile.objects.filter(username=request.user.username)
@@ -53,73 +45,169 @@ def admission(request, username):
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Admission Form')
 	patients = get_object_or_404(UserProfile, username=username)
+	patientusername = UserProfile.objects.get(username=username)
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
-	initial = {
+	initial_form = {
 		'patient': patients,
 		'ic_number': icnumbers,
 	}
 
-#	if request.method == 'GET':
-#		form = AdmissionForm(request.GET or None)
-#		formset = AdmissionFormSet(queryset=Admission.objects.none())
-#		helper = MyFormSetHelper()
+	initial_formset_factory = [{
+		'patient': patients,
+		'medication_date': get_today,
+		'medication_time': get_time,
+		'medicationstat_date_time': get_datetime,
+		},
+	]
 
+	
 	if request.method == 'POST':
-#	elif request.method == 'POST':
-		form = AdmissionForm(request.POST or None)
-#		form = AdmissionForm(request.POST or None, prefix='forma')
-#		formset = AdmissionFormSet(request.POST)
-#		formset = AdmissionFormSet(request.POST or None, prefix='formb')
-#		formset = AdmissionFormSet(request.POST or None, queryset=None)
 		formset = AdmissionFormSet(request.POST or None)
-#		formset = AdmissionFormSet(queryset=ProjectPage.objects.filter(page_project__id=proj), initial =[{'page_project': proj}, {'page_project': proj}, {'page_project': proj}])
-		helper = MyFormSetHelper()
 
-#		if form.is_valid():
-		if form.is_valid() and formset.is_valid():
-#			profile = form.save(commit=False)
-#			profile.patient = form.cleaned_data['patient']
-#			profile.birth_date = form.cleaned_data['birth_date']
-#			delta = datetime.now().date() - profile.birth_date
-#			int((datetime.now().date() - self.birth_date).days / 365.25)
-#			profile.age = delta
-#			print(delta.days)
-			form.save()
-#			profile = formset.save(commit=False)
-#			profile.patient = patients
-#			profile.ec_name = formset.cleaned_data['ec_name']
-#			profile.ec_ic_number = formset.cleaned_data['ec_ic_number']
-#			profile.ec_relationship = formset.cleaned_data['ec_relationship']
-#			profile.ec_phone = formset.cleaned_data['ec_phone']
-#			profile.ec_address = formset.cleaned_data['ec_address']
-#			profile.save()
-			formset.save()
-#			admissionform = form.save()
+		if formset.is_valid():
+			for item in formset:
+				patient = patients
+				date = item.cleaned_data['date']
+				time = item.cleaned_data['time']
+				admitted = item.cleaned_data['admitted']
+				admitted_others = item.cleaned_data['admitted_others']
+				mode = item.cleaned_data['mode']
+				birth_date = item.cleaned_data['birth_date']
+				today = datetime.date.today()
+				delta_day = int((datetime.datetime.now().date() - birth_date).days / 365.24219)
+				age = delta_day
+#				age = item.cleaned_data['age']
+				gender = item.cleaned_data['gender']
+				marital_status = item.cleaned_data['marital_status']
+				marital_status_others = item.cleaned_data['marital_status_others']
+				religion = item.cleaned_data['religion']
+				religion_others = item.cleaned_data['religion_others']
+				occupation = item.cleaned_data['occupation']
+				occupation_others = item.cleaned_data['occupation_others']
+				communication_sight = item.cleaned_data['communication_sight']
+				communication_hearing = item.cleaned_data['communication_hearing']
+				communication_hearing_others = item.cleaned_data['communication_hearing_others']
+				address = item.cleaned_data['address']
 
-#			for form in formset:
-#				profile = form.save(commit=False)
-#				profile.ec_name = admissionform
-#				profile.ec_ic_number = admissionform
-#				profile.ec_relationship = admissionform
-#				profile.ec_phone = admissionform
-#				profile.ec_address = admissionform
-#				profile.save()
+				ec_name = item.cleaned_data['ec_name']
+				ec_ic_number = item.cleaned_data['ec_ic_number']
+				ec_relationship = item.cleaned_data['ec_relationship']
+				ec_phone = item.cleaned_data['ec_phone']
+				ec_address = item.cleaned_data['ec_address']
+
+				general_condition = item.cleaned_data['general_condition']
+				vital_sign_temperature = item.cleaned_data['vital_sign_temperature']
+				vital_sign_pulse = item.cleaned_data['vital_sign_pulse']
+				vital_sign_bp = item.cleaned_data['vital_sign_bp']
+				vital_sign_resp = item.cleaned_data['vital_sign_resp']
+				vital_sign_spo2 = item.cleaned_data['vital_sign_spo2']
+				vital_sign_on_oxygen_therapy = item.cleaned_data['vital_sign_on_oxygen_therapy']
+				vital_sign_on_oxygen_therapy_flow_rate = item.cleaned_data['vital_sign_on_oxygen_therapy_flow_rate']
+				vital_sign_hgt = item.cleaned_data['vital_sign_hgt']
+				allergy_drug = item.cleaned_data['allergy_drug']
+				allergy_food = item.cleaned_data['allergy_food']
+				allergy_others = item.cleaned_data['allergy_others']
+				biohazard_infectious_disease = item.cleaned_data['biohazard_infectious_disease']
+				biohazard_infectious_disease_others = item.cleaned_data['biohazard_infectious_disease_others']
+				invasive_line_insitu = item.cleaned_data['invasive_line_insitu']
+				invasive_line_insitu_others = item.cleaned_data['invasive_line_insitu_others']
+				medical_history = item.cleaned_data['medical_history']
+				medical_history_others = item.cleaned_data['medical_history_others']
+				surgical_history_none = item.cleaned_data['surgical_history_none']
+				surgical_history = item.cleaned_data['surgical_history']
+
+				date_diagnosis = item.cleaned_data['date_diagnosis']
+				diagnosis = item.cleaned_data['diagnosis']
+				date_operation = item.cleaned_data['date_operation']
+				operation = item.cleaned_data['operation']
+				own_medication = item.cleaned_data['own_medication']
+				own_medication_drug_name = item.cleaned_data['own_medication_drug_name']
+				own_medication_dosage = item.cleaned_data['own_medication_dosage']
+				own_medication_tablet_capsule = item.cleaned_data['own_medication_tablet_capsule']
+				own_medication_frequency = item.cleaned_data['own_medication_frequency']
+
+				adaptive_aids_with_patient = item.cleaned_data['adaptive_aids_with_patient']
+				adaptive_aids_with_patient_others = item.cleaned_data['adaptive_aids_with_patient_others']
+				orientation = item.cleaned_data['orientation']
+				special_information = item.cleaned_data['special_information']
+				admission_by = item.cleaned_data['admission_by']
+
+				patientdata = Admission(
+					patient = patient,
+					date = date,
+					time = time,
+					admitted = admitted,
+					admitted_others = admitted_others,
+					mode = mode,
+
+					birth_date = birth_date,
+					age = age,
+					gender = gender,
+					marital_status = marital_status,
+					marital_status_others = marital_status_others,
+					religion = religion,
+					religion_others = religion_others,
+					occupation = occupation,
+					occupation_others = occupation_others,
+					communication_sight = communication_sight,
+					communication_hearing = communication_hearing,
+					communication_hearing_others = communication_hearing_others,
+					address = address,
+
+					ec_name = ec_name,
+					ec_ic_number = ec_ic_number,
+					ec_relationship = ec_relationship,
+					ec_phone = ec_phone,
+					ec_address = ec_address,
+
+					general_condition = general_condition,
+					vital_sign_temperature = vital_sign_temperature,
+					vital_sign_pulse = vital_sign_pulse,
+					vital_sign_bp = vital_sign_bp,
+					vital_sign_resp = vital_sign_resp,
+					vital_sign_spo2 = vital_sign_spo2,
+					vital_sign_on_oxygen_therapy = vital_sign_on_oxygen_therapy,
+					vital_sign_on_oxygen_therapy_flow_rate = vital_sign_on_oxygen_therapy_flow_rate,
+					vital_sign_hgt = vital_sign_hgt,
+					allergy_drug = allergy_drug,
+					allergy_food = allergy_food,
+					allergy_others = allergy_others,
+					biohazard_infectious_disease = biohazard_infectious_disease,
+					biohazard_infectious_disease_others = biohazard_infectious_disease_others,
+					invasive_line_insitu = invasive_line_insitu,
+					invasive_line_insitu_others = invasive_line_insitu_others,
+					medical_history = medical_history,
+					medical_history_others = medical_history_others,
+					surgical_history_none = surgical_history_none,
+					surgical_history = surgical_history,
+
+					date_diagnosis = date_diagnosis,
+					diagnosis = diagnosis,
+					date_operation = date_operation,
+					operation = operation,
+					own_medication = own_medication,
+					own_medication_drug_name = own_medication_drug_name,
+					own_medication_dosage = own_medication_dosage,
+					own_medication_tablet_capsule = own_medication_tablet_capsule,
+					own_medication_frequency = own_medication_frequency,
+
+					adaptive_aids_with_patient = adaptive_aids_with_patient,
+					adaptive_aids_with_patient_others = adaptive_aids_with_patient_others,
+					orientation = orientation,
+					special_information = special_information,
+					admission_by = admission_by,
+				)
+				patientdata.save()
+
 
 			messages.success(request, _(page_title + ' form has been save successfully.'))
 			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
-			messages.warning(request, form.errors)
 			messages.warning(request, formset.errors)
 	else:
-		form = AdmissionForm(initial=initial)
-#		form = AdmissionForm(initial=initial, prefix='forma')
-#		formset = AdmissionFormSet(queryset=None)
-#		formset = AdmissionFormSet(initial=initial)
-		formset = AdmissionFormSet()
-#		formset = AdmissionFormSet(initial=initial, prefix='formb')
-		helper = MyFormSetHelper()
+		formset = AdmissionFormSet(initial=initial_formset_factory)
 
 	context = {
 		'logos': logos,
@@ -128,13 +216,21 @@ def admission(request, username):
 		'patients': patients,
 		'profiles': profiles,
 		'icnumbers': icnumbers,
-		'form': form,
 		'formset': formset,
-#		'helper': helper,
 	}
 
 	return render(request, 'patient_form/admission_form.html', context)
 
+
+#class Select2QuerySetView(autocomplete.Select2QuerySetView):
+#	def get_queryset(self):
+#		if not self.request.user.is_authenticated:
+#			return ApplicationForHomeLeave.objects.none()
+#		qs = ApplicationForHomeLeave.objects.all()
+
+#		if self.q:
+#			qs = qs.filter(ec_name__istartswith=self.q)
+#		return qs
 
 @login_required
 def application_homeleave(request, username):
@@ -147,8 +243,8 @@ def application_homeleave(request, username):
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
-		'patient': patients,
-		'ic_number': icnumbers,
+#		'patient': patients,
+#		'ic_number': icnumbers,
 	}
 
 	if request.method == 'POST':
@@ -156,24 +252,24 @@ def application_homeleave(request, username):
 		if form.is_valid():
 			profile = form.save(commit=False)
 			profile.patient = form.cleaned_data['patient']
-			profile.patient_family_name = form.cleaned_data['patient_family_name']
-			profile.nric_number = form.cleaned_data['nric_number']
-			profile.patient_family_relationship = form.cleaned_data['patient_family_relationship']
-			profile.patient_family_phone = form.cleaned_data['patient_family_phone']
+			profile.family_name = form.cleaned_data['family_name']
+			profile.family_ic_number = form.cleaned_data['family_ic_number']
+			profile.family_relationship = form.cleaned_data['family_relationship']
+			profile.family_phone = form.cleaned_data['family_phone']
 			profile.designation = form.cleaned_data['designation']
 			profile.signature = form.cleaned_data['signature']
 			profile.date = form.cleaned_data['date']
 			profile.save()
-#			form.save()
 
 			messages.success(request, _(page_title + ' form has been save successfully.'))
 			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
 			messages.warning(request, form.errors)
 	else:
-		#		form = ApplicationForHomeLeaveForm(initial=initial)
-		#		form = ApplicationForHomeLeaveForm(instance=request.user)
-		form = ApplicationForHomeLeaveForm(initial=initial, instance=request.user)
+		form = ApplicationForHomeLeaveForm(initial=initial)
+#		form = ApplicationForHomeLeaveForm(instance=request.user)
+#		form = ApplicationForHomeLeaveForm(initial=initial, instance=request.user)
+#		form = ApplicationForHomeLeaveForm()
 
 	context = {
 		'logos': logos,
@@ -189,12 +285,33 @@ def application_homeleave(request, username):
 
 
 def load_ic_number(request):
-	query = request.GET.get('full_name')
-	results = Admission.objects.filter(full_name=query)
+	fullname_data = request.GET.get('full_name')
+	patient_data = request.GET.get('patient')
+	family_data = request.GET.get('ec_name')
+	fullname_results = UserProfile.objects.filter(full_name=fullname_data).order_by('full_name')
+#	fullname_results = UserProfile.objects.filter(full_name=request.user)
+	patient_results = Admission.objects.filter(patient=patient_data)
 	context = {
-		'results': results,
+		'fullname_results': fullname_results,
+		'patient_results': patient_results,
 	}
 	return render(request, 'patient_form/dropdown_list.html', context)
+
+
+def load_family_name(request):
+	
+
+	query_data = request.GET.get('family_name')
+
+	data = model.objects.filter(email__startswith=query_data).values_list('email',flat=True)
+	data = M.objects.filter(title__istartswith=query_data)
+	results = [ x.title for x in data ]
+
+	json = list(data)
+	json = simplejson.dumps(results)
+
+	return JsonResponse(json, safe=False)
+#	return HttpResponse(json, mimetype="application/json")
 
 
 @login_required
@@ -205,7 +322,11 @@ def appointment(request, username):
 	page_title = _('Appointment Records')
 	patients = get_object_or_404(UserProfile, username=username)
 	profiles = UserProfile.objects.filter(username=username)
+	user_profile = UserProfile.objects.filter(username=username).values_list('full_name', flat=True)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	appointments = Appointment.objects.all()
+	query = request.GET.get('q')
+#	appointments = appointments.filter(date__lte=now).filter(Q(title__icontains=query) | Q(content__icontains=query)).distinct()
 
 	initial = {
 		'patient': patients,
@@ -216,7 +337,14 @@ def appointment(request, username):
 		form = AppointmentForm(request.POST or None)
 
 		if form.is_valid():
-			form.save()
+			profile = form.save(commit=False)
+			profile.patient = form.cleaned_data['patient']
+			profile.date_time = form.cleaned_data['date_time']
+			profile.hospital_clinic_center = form.cleaned_data['hospital_clinic_center']
+			profile.department = form.cleaned_data['department']
+			profile.planning_investigation = form.cleaned_data['planning_investigation']
+			profile.treatment_order = form.cleaned_data['treatment_order']
+			profile.save()
 
 			messages.success(request, _(page_title + ' form has been save successfully.'))
 			return redirect('patient_data:patientdata_detail', username=patients.username)
@@ -237,7 +365,6 @@ def appointment(request, username):
 	}
 
 	return render(request, 'patient_form/appointment_form.html', context)
-
 
 @login_required
 def catheterization_cannulation(request, username):
@@ -336,7 +463,7 @@ def dressing(request, username):
 	}
 
 	if request.method == 'POST':
-		form = DressingForm(request.POST, request.FILES)
+		form = DressingForm(request.POST or None, request.FILES)
 		if form.is_valid():
 			form.save()
 
@@ -459,20 +586,62 @@ def intake_output(request, username):
 		'patient': patients,
 		'ic_number': icnumbers,
 	}
-	if request.method == 'POST':
-		form = IntakeOutputChartForm(request.POST or None)
-		formset = IntakeOutputChartFormSet(request.POST, queryset=IntakeOutputChart.objects.filter(patient=patientid))
 
-		if form.is_valid():
-			form.save()
+	initial_formset_factory = [{
+		'patient': patients,
+		'ic_number': icnumbers,
+		},
+	]
+
+	if request.method == 'POST':
+		formset = IntakeOutputChart_FormSet_Factory(request.POST or None)
+
+		if formset.is_valid():
+			for item in formset:
+				patient = patients
+				date = item.cleaned_data['date']
+				time_intake = item.cleaned_data['time_intake']
+				intake_oral_type = item.cleaned_data['intake_oral_type']
+				intake_oral_ml = item.cleaned_data['intake_oral_ml']
+				intake_parenteral_type = item.cleaned_data['intake_parenteral_type']
+				intake_parenteral_ml = item.cleaned_data['intake_parenteral_ml']
+				intake_other_type = item.cleaned_data['intake_other_type']
+				intake_other_ml = item.cleaned_data['intake_other_ml']
+				time_output = item.cleaned_data['time_output']
+				output_urine_ml = item.cleaned_data['output_urine_ml']
+				output_urine_cum = item.cleaned_data['output_urine_cum']
+				output_gastric_ml = item.cleaned_data['output_gastric_ml']
+				output_other_type = item.cleaned_data['output_other_type']
+				output_other_ml = item.cleaned_data['output_other_ml']
+
+				patientdata = IntakeOutputChart(
+					patient=patient,
+					date=date,
+					time_intake=time_intake,
+					intake_oral_type=intake_oral_type,
+					intake_oral_ml=intake_oral_ml,
+					intake_parenteral_type=intake_parenteral_type,
+					intake_parenteral_ml=intake_parenteral_ml,
+					intake_other_type=intake_other_type,
+					intake_other_ml=intake_other_ml,
+					time_output=time_output,
+					output_urine_ml=output_urine_ml,
+					output_urine_cum=output_urine_cum,
+					output_gastric_ml=output_gastric_ml,
+					output_other_type=output_other_type,
+					output_other_ml=output_other_ml,
+				)
+				patientdata.save()
+
 
 			messages.success(request, _(page_title + ' form has been save successfully.'))
 			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
-			messages.warning(request, form.errors)
+#			messages.warning(request, form.errors)
+			messages.warning(request, formset.errors)
 	else:
-		form = IntakeOutputChartForm(initial=initial)
-		formset = IntakeOutputChartFormSet(queryset=IntakeOutputChart.objects.filter(patient=patientid))
+#		form = IntakeOutputChartForm(initial=initial)
+		formset = IntakeOutputChart_FormSet_Factory(initial=initial_formset_factory)
 
 	context = {
 		'logos': logos,
@@ -481,7 +650,7 @@ def intake_output(request, username):
 		'patients': patients,
 		'profiles': profiles,
 		'icnumbers': icnumbers,
-		'form': form,
+#		'form': form,
 		'formset': formset,
 	}
 
@@ -574,53 +743,100 @@ def medication_administration(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Medication Administration Record')
-	patientid = UserProfile.objects.get(username=username).id
-	patients = get_object_or_404(UserProfile, username=username)
-	profiles = UserProfile.objects.filter(username=username)
-	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
-	allergies = MedicationAdministrationRecord.objects.filter(patient=patientid).values_list('allergy', flat=True).first()
-	medicationadministration = MedicationAdministrationRecord.objects.filter(patient=patientid)
 
-	initial = {
+	patientid = UserProfile.objects.get(username=username).id
+	icnumbers = UserProfile.objects.get(username=username).ic_number
+	patientusername = UserProfile.objects.get(username=username)
+	profiles = UserProfile.objects.filter(username=username)
+	patients = get_object_or_404(UserProfile, username=username)
+
+	allergies = MedicationAdministrationRecord.objects.filter(patient=patientid).values_list('allergy', flat=True).first()
+	stat = MedicationAdministrationRecord.objects.filter(patient=patientid).values_list('stat', flat=True).first()
+	medicationstat_date_time = MedicationAdministrationRecord.objects.filter(patient=patientid).values_list('medicationstat_date_time', flat=True).first()
+	given_by = MedicationAdministrationRecord.objects.filter(patient=patientid).values_list('given_by', flat=True).first()
+
+	queryset = MedicationAdministrationRecord.objects.filter(patient=patientid).values()
+
+	initial_form = {
 		'patient': patients,
 		'ic_number': icnumbers,
 		'allergy': allergies,
+		'stat': stat,
+		'medicationstat_date_time': medicationstat_date_time,
+		'given_by': given_by,
 	}
+	initial_formset_factory = [{
+		'patient': patients,
+		'medication_date': get_today,
+		'medication_time': get_time,
+		'medicationstat_date_time': get_datetime,
+		},
+	]
+	initial_modelform_factory = {
+		'patient': patients,
+		'medication_date': get_today,
+		'medication_time': get_time,
+		'medicationstat_date_time': get_datetime,
+	}
+	initial_modelformset_factory = [{
+		'patient': patients,
+		'medication_date': get_today,
+		'medication_time': get_time,
+		'medicationstat_date_time': get_datetime,
+		},
+	]
+	initial_inlineformset_factory = [{
+#		'patient': patients,
+		'medication_date': get_today,
+		'medication_time': get_time,
+		'medicationstat_date_time': get_datetime,
+		},
+	]
 
-	if request.method == 'GET':
-		form = MedicationAdministrationRecordForm(request.GET or None)
-		formset = MedicationAdministrationRecordFormSet(queryset=MedicationAdministrationRecord.objects.none())
+	GROUP_SIZE = 4
 
-	elif request.method == 'POST':
-		form = MedicationAdministrationRecordForm(request.POST)
-		formset = MedicationAdministrationRecordFormSet(request.POST, queryset=MedicationAdministrationRecord.objects.filter(patient=patientid))
+	if request.method == 'POST':
+		formset_factory = MedicationAdministrationRecord_FormSet_Factory(request.POST or None)
 
-		if form.is_valid():
-#			medicationadministration = form.save()
-			form.save()
-
-		if formset.is_valid():
-#			instances = formset.save(commit=False)
-#			for instance in instances:
-#			for form in formset:
-#				profile = form.save(commit=False)
-#				profile.patient = medicationadministration.username
-#				profile.medication_name = medicationadministration.medication_name
-#				profile.medication_dosage = medicationadministration.medication_dosage
-#				profile.medication_tab = medicationadministration.medication_tab
-#				profile.medication_frequency = medicationadministration.medication_frequency
-#				profile.medication_route = medicationadministration.medication_route
-#				profile.save()
-			formset.save()
+		if formset_factory.is_valid():
+			for item in formset_factory:
+				patient = patients
+				allergy = item.cleaned_data['allergy']
+				medication_name = item.cleaned_data['medication_name']
+				medication_dosage = item.cleaned_data['medication_dosage']
+				medication_tab = item.cleaned_data['medication_tab']
+				medication_frequency = item.cleaned_data['medication_frequency']
+				medication_route = item.cleaned_data['medication_route']
+				medication_date = item.cleaned_data['medication_date']
+				medication_time = item.cleaned_data['medication_time']
+				signature_nurse = item.cleaned_data['signature_nurse']
+				stat = item.cleaned_data['stat']
+				medicationstat_date_time = item.cleaned_data['medicationstat_date_time']
+				given_by = item.cleaned_data['given_by']
+				patientdata = MedicationAdministrationRecord(
+					patient=patient,
+					allergy=allergy,
+					medication_name=medication_name,
+					medication_dosage=medication_dosage,
+					medication_tab=medication_tab,
+					medication_frequency=medication_frequency,
+					medication_route=medication_route,
+					medication_date=medication_date,
+					medication_time=medication_time,
+					signature_nurse=signature_nurse,
+					stat=stat,
+					medicationstat_date_time=medicationstat_date_time,
+					given_by=given_by,
+				)
+				patientdata.save()
 
 			messages.success(request, _(page_title + ' form has been save successfully.'))
 			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:
-			messages.warning(request, form.errors)
-			messages.warning(request, formset.errors)
+			messages.warning(request, formset_factory.errors)
 	else:
-		form = MedicationAdministrationRecordForm(initial=initial)
-		formset = MedicationAdministrationRecordFormSet(initial=initial)
+		formset_factory = MedicationAdministrationRecord_FormSet_Factory(initial=initial_formset_factory)
+#		formset_factory = MedicationAdministrationRecord_FormSet_Factory(initial=[{'medication_date': get_today} for medication_date in queryset])
 
 	context = {
 		'logos': logos,
@@ -629,12 +845,18 @@ def medication_administration(request, username):
 		'patients': patients,
 		'profiles': profiles,
 		'icnumbers': icnumbers,
-		'form': form,
-		'formset': formset,
+#		'form': form,
+		'formset': formset_factory,
+#		'formset1': formset1,
+#		'formset2': formset2,
+#		'helper': helper,
 	}
 
-	return render(request, 'patient_form/medication_administration_form.html', context)
-
+#	return render(request, 'patient_form/medication_administration_form.html', context)
+	return render(request, 'patient_form/medication_administration_formset_factory.html', context)
+#	return render(request, 'patient_form/medication_administration_modelform_factory.html', context)
+#	return render(request, 'patient_form/medication_administration_modelformset_factory.html', context)
+#	return render(request, 'patient_form/medication_administration_inlineformset_factory.html', context)
 
 @login_required
 def miscellaneous_charges_slip(request, username):
@@ -740,27 +962,30 @@ def overtime_claim(request, username):
 	if request.method == 'POST':
 		form = OvertimeClaimForm(request.POST or None)
 		if form.is_valid():
-#			profile = OvertimeClaim()
-#			profile = form.save(commit=False)
-#			profile.patient = form.cleaned_data['patient']
-#			profile.date = form.cleaned_data['date']
-#			profile.duration_time = form.cleaned_data['duration_time']
-#			profile.hours = form.cleaned_data['hours']
-#			profile.hours = profile.hours.strptime(profile.hours.strftime("%H:%M"), "%H:%M")
-#			profile.hours = datetime.datetime.strptime(duration_time, '%H:%M').time()
-#			profile.total_hours = form.cleaned_data['total_hours']
-#			start_time = OvertimeClaim.objects.get(pk=id)
-#			start = start_time.hours
-#			delta = start.replace(hour=(start.hour + profile.duration_time) % 24)
-#			delta = profile.duration_time
-#			profile.total_hours = datetime.time(delta)
-#			profile.total_hours = datetime.datetime.strptime(profile.duration_time, '%H:%M').time()
-#			profile.total_hours = t
-#			profile.checked_sign_by = form.cleaned_data['checked_sign_by']
-#			profile.verify_by = form.cleaned_data['verify_by']
-#			profile.save()
-			form.save()
+			patient = form.cleaned_data['patient']
+			date = form.cleaned_data['date']
+			duration_time = form.cleaned_data['duration_time']
+			hours = form.cleaned_data['hours']
+			sec = duration_time.total_seconds()
+			convert_duration_hour = int((sec / 3600) % 3600)
+			convert_duration_minute = int((sec / 60) % 60)
+			convert_duration_second = int(sec)
+			delta = datetime.timedelta(hours=convert_duration_hour, minutes=convert_duration_minute)
+			total_delta = (datetime.datetime.combine(datetime.date(1,1,1), hours) + delta).time()
+			total_hours = total_delta
+			checked_sign_by = form.cleaned_data['checked_sign_by']
+			verify_by = form.cleaned_data['verify_by']
 
+			patientdata = OvertimeClaim(
+				patient = patient,
+				date = date,
+				duration_time = duration_time,
+				hours = hours,
+				total_hours = total_hours,
+				checked_sign_by = checked_sign_by,
+				verify_by = verify_by,
+			)
+			patientdata.save()
 			messages.success(request, _(page_title + ' form has been save successfully.'))
 			return redirect('patient_data:patientdata_detail', username=patients.username)
 		else:

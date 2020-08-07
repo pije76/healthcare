@@ -59,9 +59,9 @@ def medication_administration_data(request, username):
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Medication Administration Record')
-    patientid = PatientProfile.objects.get(username=username).id
+    patientid = UserProfile.objects.get(username=username).id
     patients = MedicationAdministrationRecord.objects.filter(patient=patientid)
-    profiles = PatientProfile.objects.filter(pk=patientid)
+    profiles = UserProfile.objects.filter(pk=patientid)
     allergies = MedicationAdministrationRecord.objects.filter(patient=patientid).values_list('allergy', flat=True).first()
 
     context = {

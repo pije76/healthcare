@@ -51,9 +51,9 @@ def vital_sign_flow_data(request, username):
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Vital Sign Flow Sheet')
-    patientid = PatientProfile.objects.get(username=username).id
+    patientid = UserProfile.objects.get(username=username).id
     patients = VitalSignFlow.objects.filter(patient=patientid)
-    profiles = PatientProfile.objects.filter(pk=patientid)
+    profiles = UserProfile.objects.filter(pk=patientid)
 
     context = {
         'logos': logos,

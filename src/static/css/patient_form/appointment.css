@@ -19,3 +19,21 @@
 .custom-control-label {
   padding-left: 20px;
 }
+
+#appointment {
+  padding: 20px;
+}
+
+#appointment .col {
+  border: 1px solid #c9c9c9;
+  padding-top: 12px;
+  padding-bottom: 10px;
+}
+
+#appointment .col:not(:last-child) {
+  border-right-width: 0;
+}
+
+#appointment .row:not(:last-child) .col {
+  border-bottom-width: 0;
+}

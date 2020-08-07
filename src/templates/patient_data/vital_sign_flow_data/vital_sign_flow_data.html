@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="{% static 'js/vital_sign_flow.js' %}"></script>
+	<script src="{% static 'js/patient_data/vital_sign_flow.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -68,7 +68,6 @@
 											<th class="text-center" colspan="2">{% trans "Blood Pressure (mmHg)" %}</th>
 											<th class="text-center" rowspan="2">{% trans "Respiration (min)" %}</th>
 											<th class="text-center" colspan="2">{% trans "SPO2" %}</th>
-											<th class="text-center" colspan="2">{% trans "HGT" %}</th>
 											<th class="text-center" style="border: 1px solid #ddd" rowspan="2">{% trans "Action" %}</th>
 										</tr>
 										<tr>
@@ -76,8 +75,6 @@
 											<th class="text-center">{% trans "Diastolic" %}</th>
 											<th class="text-center">{% trans "(%)" %}</th>
 											<th class="text-center">{% trans "O2/min" %}</th>
-											<th class="text-center">{% trans "(mmol/L)" %}</th>
-											<th class="text-center">{% trans "Remarks" %}</th>
 										</tr>
 									</thead>
 									<tbody>

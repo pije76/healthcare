@@ -1,9 +1,23 @@
-.navigation {
-  height: 205px;
+html, body {
+  background-color: #fff !important;
+/*  background-color: #f7f9fb !important; */
+}
+
+.row {
+  background-color: #fff;
 }
 
 .isi {
+/*  height: 810px; */
   height: auto;
+}
+
+.footer {
+  height: 151px;
+}
+
+.navigation {
+  height: 205px;
 }
 
 .footer {

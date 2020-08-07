@@ -5,7 +5,7 @@
 {% load crispy_forms_tags %}
 
 {% block styles %}
-        <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'css/account.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block headtitle %}{% trans "Signup" %}{% endblock %}
@@ -20,28 +20,22 @@
 
     {% else %}
     <div class="row isi">
-        <div class="col-sm-2 col-md-2 col-lg-2">
-        </div>
+        <div class="account_form">
 
-        <div class="col-sm-8 col-md-8 col-lg-8">
+            <h2>{% trans "Signup" %}</h2>
+            <p class="lead">Select below the type of account you want to create:</p>
 
-            <h1>{% trans "Sign Up" %}</h1>
-            <p class="lead">Select below the type of account you want to create</p>
-
-            <a href="{% url 'patient_signup' %}" class="btn btn-patient btn-lg" role="button">I'm a patient</a>
-            <a href="{% url 'family_signup' %}" class="btn btn-family btn-lg" role="button">I'm a family of patient</a>
-            <a href="{% url 'staff_signup' %}" class="btn btn-staff btn-lg" role="button">I'm a staff</a>
-
-            <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
-
-            <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <input type="hidden" name="{{ redirect_field_name }}" value="{% url 'account' %}" />
-                <button type="submit" class="btn btn-primary">{% trans "Sign Up" %} &raquo;</button>
+            <form>
+                <a href="{% url 'patient_signup' %}" class="btn btn-lg btn_patient" role="button"><i class="fas fa-hospital-user"></i> Patient</a>
+                <a href="{% url 'staff_signup' %}" class="btn btn-lg btn_staff" role="button"><i class="fas fa-user-nurse"></i> Staff</a>
             </form>
-        </div>
 
+            <p>
+            {% blocktrans %}
+                Already have an account? Then please <a href="{{ login_url }}">Sign In</a>.
+            {% endblocktrans %}
+            </p>
+        </div>
     </div>
     {% endif %}
 

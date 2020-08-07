@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block extrahead %}
-	{{ form.media }}
+	{{ formset.media }}
 {% endblock %}
 
 <div class="row isi">
@@ -33,7 +33,14 @@
 				<tbody>
 					<tr>
 						<td>{% trans "Name" %}:</td>
-						<td>{{ patients }}{{ form.patient|as_crispy_field }}</td>
+						<td>
+							{{ patients }}
+							{% if formset %}
+							{% for item in formset %}
+							{{ item.patient|as_crispy_field }}
+							{% endfor %}
+							{% endif %}
+						</td>
 					</tr>
 					<tr>
 						<td>{% trans "I/C No" %}:</td>
@@ -58,7 +65,11 @@
 					<th class="text-center" colspan="2">{% trans "Other" %}</th>
 				</tr>
 				<tr>
-					<th>{{ form.date|as_crispy_field }}</th>
+					{% if formset %}
+					{% for item in formset %}
+					<th>{{ item.date|as_crispy_field }}</th>
+					{% endfor %}
+					{% endif %}
 					<th class="text-center">{% trans "Type" %}</th>
 					<th class="text-center">{% trans "ml." %}</th>
 					<th class="text-center">{% trans "Type" %}</th>
@@ -115,14 +126,14 @@
 		var newElement = $(selector).clone(true);
 		var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
 
-		newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function()
+		$(newElement).find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function()
 		{
 			var name = $(this).attr('name').replace('-' + (total-1) + '-', '-' + total + '-');
 			var id = 'id_' + name;
 			$(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
 		});
 
-		newElement.find('label').each(function()
+		$(newElement).find('label').each(function()
 		{
 			var forValue = $(this).attr('for');
 			if (forValue)
@@ -131,6 +142,23 @@
 				$(this).attr({'for': forValue});
 			}
 		});
+
+		$(newElement).find('[id$="time_intake"]')
+			.removeClass('timepickerinput').removeAttr('#id_form-0-time_intake').removeData('DateTimePicker')
+			.unbind().datetimepicker(
+				options={
+					"format": "HH:mm",
+				}
+			);
+
+		$(newElement).find('[id$="time_output"]')
+			.removeClass('timepickerinput').removeAttr('#id_form-0-time_output').removeData('DateTimePicker')
+			.unbind().datetimepicker(
+				options={
+					"format": "HH:mm",
+				}
+			);
+
 		total++;
 
 		$('#id_' + prefix + '-TOTAL_FORMS').val(total);

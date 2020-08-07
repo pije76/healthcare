@@ -15,30 +15,40 @@
     display: inline-block;
 }
 
-#id_ic_number {
-    width: 50% !important;
-    margin-top: 5px;
+#medication_administration {
+  padding: 20px;
 }
 
-#id_full_name_text {
-    margin-top: 5px;
+#medication_administration .col {
+  border: 1px solid #c9c9c9;
+  padding-top: 12px;
+  padding-bottom: 10px;
 }
 
-#id_full_name_on_deck {
-    margin-top: 10px;
-    margin-bottom: -15px;
+#medication_administration .col:not(:last-child) {
+  border-right-width: 0;
 }
 
-#div_id_ic_number > div > span {
-    width: 50% !important;
+#medication_administration .row:not(:last-child) .col {
+  border-bottom-width: 0;
 }
 
-#div_id_full_name > div > span {
-  width: 200px;
+#medication_administration_table {
+  padding: 5px;
 }
 
-#hint_id_full_name {
-  padding-top: 5px;
+#medication_administration_table .col {
+  border: 1px solid #c9c9c9;
+  padding-top: 12px;
+  padding-bottom: 10px;
+}
+
+#medication_administration_table .col:not(:last-child) {
+  border-right-width: 0;
+}
+
+#medication_administration_table .row:not(:last-child) .col {
+  border-bottom-width: 0;
 }
 
 .custom-control-label {
@@ -48,3 +58,4 @@
 .table-sm {
   margin-bottom: 10px;
 }
+

@@ -1,6 +1,7 @@
-var t = $('#t_add_row').DataTable();
-
-
+var t = $('#t_add_row').DataTable(
+    {
+        "order": [[ 0, "asc" ]]
+    });
 
 $(document).ready(function()
 {

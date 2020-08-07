@@ -1,8 +1,3 @@
-{% load static %}
-{% load staticfiles %}
-{% load crispy_forms_tags %}
-{% load i18n %}
-{% load display_choice %}
 
 {% for item in patients %}
 <tr>
@@ -10,7 +5,7 @@
     <td>{{ item.time|date:"H:i" }}</td>
     <td>{{ item.admitted }}</td>
     <td>{{ item.mode }}</td>
-    <td>{{ item.age }}</td>
+    <td>{{ item.get_age }}</td>
     <td>{{ item.birth_date|date:"d-m-Y" }}</td>
     <td>{{ item.gender }}</td>
     <td>{{ item.marital_status }}</td>
@@ -18,11 +13,9 @@
     <td>{{ item.occupation }}</td>
     <td>{{ item.communication_sight }}</td>
     <td>{{ item.communication_hearing }}</td>
-    <td>{{ item.communication_others }}</td>
     <td>{{ item.address }}</td>
-    <td>{{ item.phone }}</td>
     <td>{{ item.ec_name }}</td>
-    <td>{{ item.ec_ic_number }}</td>
+    <td>{{ item.ec_nric_number }}</td>
     <td>{{ item.ec_relationship }}</td>
     <td>{{ item.ec_phone }}</td>
     <td>{{ item.ec_address }}</td>
@@ -52,9 +45,10 @@
     <td>{{ item.special_information }}</td>
     <td>{{ item.admission_by }}</td>
     <td>
-        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn" data-url="{% url 'patient_data:admission_data_edit' item.id %}"data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient_data:admission_data_edit' item.patient.username item.id %}" title="Edit" style="background-color:transparent;">
+            <i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
         </button>
-        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-url="{% url 'patient_data:admission_data_delete' item.id %}"data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient_data:admission_data_delete' item.patient.username item.id %}" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
         </button>
     </td>
 </tr>

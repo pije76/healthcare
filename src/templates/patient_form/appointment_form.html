@@ -2,22 +2,27 @@
 
 {% load static %}
 {% load staticfiles %}
-{% load crispy_forms_tags %}
 {% load i18n %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
 
 {% block headtitle %}
-    {{ page_title }} | {{ titles.title }}
+	{{ page_title }} | {{ titles.title }}
 {% endblock %}
-
-{% block extrahead %}
-	{{ form.media }}
-{% endblock %}
-
-{% block content %}
 
 {% block styles %}
 	<link href="{% static 'css/patient_form/appointment.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
+
+{% block javascript %}
+	<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+{% block extrahead %}
+{% endblock %}
+
+{% block content %}
 
 <div class="row isi">
 
@@ -32,40 +37,72 @@
 
 		<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" novalidate>
 		{% csrf_token %}
-			<table class="table-sm table-bordered">
-				<tbody>
-					<tr>
-						<td>{% trans "Name" %}:</td>
-						<td>{{ patients }}{{ form.patient|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "I/C No" %}:</td>
-						<td>{{ icnumbers }}</td>
-					</tr>
-				</tbody>
-			</table>
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th class="text-center">{% trans "Date" %}</th>
-						<th class="text-center">{% trans "Time" %}</th>
-						<th class="text-center">{% trans "Hospital/Clinic/Center" %}</th>
-						<th class="text-center">{% trans "Department" %}</th>
-						<th class="text-center">{% trans "Planning & Investigation" %}</th>
-						<th class="text-center">{% trans "Treatment/Order" %}</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>{{ form.date|as_crispy_field }}</td>
-						<td>{{ form.time|as_crispy_field }}</td>
-						<td>{{ form.hospital_clinic_center|as_crispy_field }}</td>
-						<td>{{ form.department|as_crispy_field }}</td>
-						<td>{{ form.planning_investigation|as_crispy_field }}</td>
-						<td>{{ form.treatment_order|as_crispy_field }}</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="container-fluid" id="appointment">
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Name" %}:
+					</div>
+					
+					<div class="col-4 col">
+						{{ patients }}
+						{{ form.patient|as_crispy_field }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "I/C No" %}:
+					</div>
+					<div class="col-4 col">
+						{{ icnumbers }}
+					</div>
+				</div>
+			</div>
+
+			<div class="container-fluid" id="appointment">
+
+				<div class="row">
+					<div class="col-2 col text-center">
+						{% trans "Date" %}
+					</div>
+					<div class="col-2 col text-center">
+						{% trans "Time" %}
+					</div>
+					<div class="col-2 col text-center">
+						{% trans "Hospital/Clinic/Center" %}
+					</div>
+					<div class="col-2 col text-center">
+						{% trans "Department" %}
+					</div>
+					<div class="col-2 col text-center">
+						{% trans "Planning & Investigation" %}
+					</div>
+					<div class="col-2 col text-center">
+						{% trans "Treatment/Order" %}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-4 col">
+						{{ form.date_time|as_crispy_field }}
+					</div>
+					<div class="col-2 col">
+						{{ form.hospital_clinic_center|as_crispy_field }}
+					</div>
+					<div class="col-2 col">
+						{{ form.department|as_crispy_field }}
+					</div>
+					<div class="col-2 col">
+						{{ form.planning_investigation|as_crispy_field }}
+					</div>
+					<div class="col-2 col">
+						{{ form.treatment_order|as_crispy_field }}
+					</div>
+				</div>
+			</div>
+
 			<br />
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 			{% for item in profiles %}
@@ -77,4 +114,45 @@
 
 </div>
 
+{% endblock %}
+
+{% block js %}
+	<script type='text/javascript'>
+	$(document).ready(function()
+	{
+
+		$.extend(true, $.fn.datetimepicker.defaults, {
+			icons: {
+				time: 'far fa-clock',
+				date: 'far fa-calendar',
+				up: 'fas fa-arrow-up',
+				down: 'fas fa-arrow-down',
+				previous: 'fas fa-chevron-left',
+				next: 'fas fa-chevron-right',
+				today: 'fas fa-calendar-check',
+				clear: 'far fa-trash-alt',
+				close: 'far fa-times-circle'
+			}
+		});
+
+		$('[id^="id_date_time"]').wrapAll("<div class='row' style='border:none;'></div>");
+		$('[id^="id_date_time"]').wrap("<div class='col' style='border:none;'></div>");
+		$("#id_date_time_0").datetimepicker(
+			{
+//				format: 'L',
+				format:'DD/MM/YYYY',
+//				defaultDate: currentDate,
+				showTodayButton: true,
+				showClear: true,
+				showClose: true,
+			}
+		);
+		$("#id_date_time_1").datetimepicker(
+			{
+//				format: 'LT',
+				format: 'HH:mm'
+			}
+		);
+	});
+	</script>
 {% endblock %}

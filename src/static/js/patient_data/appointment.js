@@ -78,8 +78,8 @@ $(document).ready(function()
 	};
 
 	// Update appointment
-	$("#t_add_row tbody").on("click", ".edit-row-btn", loadForm);
-	$("#exampleModal").on("submit", ".appointment-update-form", saveEditForm);
+//	$("#t_add_row tbody").on("click", ".edit-row-btn", loadForm);
+//	$("#exampleModal").on("submit", ".appointment-update-form", saveEditForm);
 
 	// Delete appointment
 	$("#t_add_row tbody").on("click", ".delete-row-btn", loadForm);

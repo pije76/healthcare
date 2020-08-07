@@ -29,43 +29,61 @@
 
 	<div class="col-12">
 
-		<form method="post">
+		<form method="post" id="dataForm" data-url="{% url 'patient_form:load_ic_number' %}" novalidate>
 			{% csrf_token %}
 			<div class="homeleave_body">
 
 				<div class="row">
-					<div class="col-4 form-inline">
-						{% trans "Name" %}: {{ form.patient|as_crispy_field }}
+					<div class="col-1">
+						{% trans "Name" %}:
+					</div>
+					<div class="col-4">
+						{{ form.patient|as_crispy_field }}
 					</div>
 				</div>
 
 				<br />
 
 				<div class="row">
-					<div class="col-4 form-inline">
-						{% trans "I/C No" %}: {{ form.nric_number|as_crispy_field }}
+					<div class="col-1">
+						{% trans "I/C No" %}:
+					</div>
+					<div class="col-4">
+						{{ form.ic_number|as_crispy_field }}
 					</div>
 				</div>
 
 				<br />
 
 				<div class="row">
-					<div class="col-6 form-inline">
-						{% trans "I" %}, &nbsp;&nbsp;{{ form.patient_family_name|as_crispy_field }} 
+					<div class="col-1">
+						{% trans "I" %},
 					</div>
-					<div class="col-6 form-inline">
-						{% trans "NRIC No." %}: &nbsp;{{ form.nric_number|as_crispy_field }}
+					<div class="col-5">
+						{{ form.family_name|as_crispy_field }} 
+					</div>
+					<div class="col-2">
+						{% trans "NRIC No." %}:
+					</div>
+					<div class="col-4">
+						{{ form.family_ic_number|as_crispy_field }}
 					</div>
 				</div>
 
 				<br />
 
 				<div class="row">
-					<div class="col-6 form-inline">
-						{% trans "of" %} &nbsp;{{ form.patient_family_relationship|as_crispy_field }}
+					<div class="col-1">
+						{% trans "of" %}
 					</div>
-					<div class="col-6 form-inline">
-						{% trans "Tel No." %}: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ form.patient_family_phone|as_crispy_field }}
+					<div class="col-5">
+						{{ form.family_relationship|as_crispy_field }}
+					</div>
+					<div class="col-2">
+						{% trans "Tel No." %}:
+					</div>
+					<div class="col-4">
+						{{ form.family_phone|as_crispy_field }}
 					</div>
 				</div>
 
@@ -98,7 +116,7 @@
 					</div>
 
 					<div class="col-6">
-						{{ form.patient_family_name|as_crispy_field }}
+						{{ form.family_name|as_crispy_field }}
 						<b>({% trans "Patient / Family Responsible" %})</b>
 					</div>
 				</div>
@@ -107,12 +125,12 @@
 
 				<div class="row">
 					<div class="col-6">
-						{{ form.patient_family_relationship|as_crispy_field }}
+						{{ form.family_relationship|as_crispy_field }}
 						<b>({% trans "Relationship" %})</b>
 					</div>
 
 					<div class="col-6">
-						{{ form.nric_number|as_crispy_field }}
+						{{ form.family_ic_number|as_crispy_field }}
 						<b>({% trans "IC No." %})</b>
 					</div>
 				</div>
@@ -130,7 +148,7 @@
 						{% trans "Name" %}: 
 					</div>
 					<div class="col-2">
-						{{ form.patient_family_name|as_crispy_field }}
+						{{ form.family_name|as_crispy_field }}
 					</div>
 				</div>
 				<br />
@@ -172,4 +190,46 @@
 
 </div>
 
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+$(document).ready(function()
+{
+	function newParameters(query)
+	{
+		query.full_name = $('#id_patient').val();
+		console.log("query: ", query.full_name);
+	}
+	$('#id_family_name').djselectable('option', 'prepareQuery', newParameters);
+});
+
+$(document).ready(function()
+{
+	$('#id_patient').djselectable('option', 'minLength', 3);
+	$('#id_family_name').djselectable('option', 'minLength', 3);
+});
+</script>
+
+<script type="text/javascript">
+$("#id_patient").change(function()
+{
+	var url = $("#dataForm").attr("data-url");
+	var fullnameId = $(this).val();
+	console.log("fullnameId: ", fullnameId);
+	$.ajax(
+	{
+		url: url,
+		data:
+		{
+			'full_name': fullnameId,
+		},
+
+		success: function(data)
+		{
+			$("#id_ic_number").val(data);
+		},
+	});
+});
+</script>
 {% endblock %}

@@ -1,0 +1,397 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block headtitle %}
+	{{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block styles %}
+<link href="{% static 'css/patient_form/medication_administration.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block javascript %}
+	<script src="{% static 'js/patient_form/medication_administration.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+{% block extrahead %}
+	{{ formset.media }}
+{% endblock %}
+
+{% block content %}
+
+<div class="row isi">
+
+	<div class="formtitle">
+		{{ page_title }}
+	</div>
+
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+		<form method="post">
+		{% csrf_token %}
+								
+			<div class="container-fluid" id="medication_administration">
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "Name" %}:
+					</div>
+					
+					<div class="col-4 col">
+						{{ patients }}
+						{% if formset %}
+						{% for item in formset %}
+						{{ item.patient|as_crispy_field }}
+						{% endfor %}
+						{% endif %}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-2 col">
+						{% trans "I/C No" %}:
+					</div>
+					<div class="col-4 col">
+						{{ icnumbers }}
+					</div>
+					{% if formset %}
+						{% for item in formset %}
+					<div class="col-6 col">						
+						{{ item.allergy|as_crispy_field }}
+					</div>
+					{% endfor %}
+					{% endif %}
+				</div>
+			</div>			
+
+			<div class="container-fluid" id="medication_administration">
+
+				<div class="row">
+					<div class="col-7 col text-center">
+						{% trans "Medication" %}
+					</div>
+					<div class="col-2 col text-center">
+						{% trans "Date" %}
+					</div>
+					<div class="col-1 col text-center">
+						{% trans "Time" %}
+					</div>
+					<div class="col-1 col text-center">
+						{% trans "Signature" %}
+					</div>
+					<div class="col-1 col" style="border-top:none;border-right:none;border-bottom:none;">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-3 col text-center">
+						{% trans "Name" %}
+					</div>
+					<div class="col-1 col text-center">
+						{% trans "Dosage" %}
+					</div>
+					<div class="col-1 col text-center">
+						{% trans "Tab/MLS	" %}
+					</div>
+					<div class="col-1 col text-center">
+						{% trans "Frequency" %}
+					</div>
+					<div class="col-1 col text-center">
+						{% trans "Route" %}
+					</div>
+					<div class="col-2 col" style="border-top:none;">
+					</div>
+					<div class="col-1 col" style="border-top:none;">
+					</div>
+					<div class="col-1 col" style="border-top:none;">
+					</div>
+					<div class="col-1 col" style="border-top:none;border-right:none;border-bottom:none;">
+					</div>
+				</div>
+
+				{{ formset.management_form }}
+
+				{% for item in formset %}
+				<div class="row new_formrow1">
+					<div class="col-3 col">
+						{{ item.medication_name|as_crispy_field }}
+					</div>
+					<div class="col-1 col">
+						{{ item.medication_dosage|as_crispy_field }}
+					</div>
+					<div class="col-1 col">
+						{{ item.medication_tab|as_crispy_field }}
+					</div>
+					<div class="col-1 col">
+						{{ item.medication_frequency|as_crispy_field }}
+					</div>
+					<div class="col-1 col">
+						{{ item.medication_route|as_crispy_field }}
+					</div>
+					<div class="col-2 col">
+						{{ item.medication_date|as_crispy_field }}
+					</div>
+					<div class="col-1 col">
+						{{ item.medication_time|as_crispy_field }}
+					</div>
+					<div class="col-1 col">
+						{{ item.signature_nurse|as_crispy_field }}
+					</div>
+					<div class="col-1 col" style="border-top:none;border-right:none;border-bottom:none;">
+						<button type="button" class="btn btn-success add_formrow1">
+							<i class="fas fa-plus"></i>
+						</button>
+					</div>
+				</div>
+				{% endfor %}			
+
+				<div class="row">
+					<div class="col-4 col text-center">
+						{% trans "STAT Medication" %}
+					</div>
+					<div class="col-3 col text-center">
+						{% trans "Date & Time" %}
+					</div>
+					<div class="col-5 col text-center">
+						{% trans "Given By" %}
+					</div>
+<!--
+					<div class="col-1 col" style="border-top:none;border-right:none;border-bottom:none;">
+					</div>
+-->
+				</div>
+				
+				<div class="row new_formrow2">
+					{% if formset %}
+					{% for item in formset %}
+					<div class="col-4 col">
+						{{ item.stat|as_crispy_field }}
+					</div>
+					<div class="col-3 col">
+						{{ item.medicationstat_date_time|as_crispy_field }}
+					</div>
+					<div class="col-5 col">
+						{{ item.given_by|as_crispy_field }}
+					</div>
+<!--
+					<div class="col-1 col" style="border-top:none;border-right:none;border-bottom:none;">
+						<button type="button" class="btn btn-success add_formrow2">
+							<i class="fas fa-plus"></i>
+						</button>
+					</div>
+-->
+					{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+
+
+			N-NBM          O- Omit          R-Refused        TA- Take Away      T-Taken        W-Withold
+			<br /><br />
+			* Blue colour row is for date –auto fill
+			<br />
+			*allergy: if written—red colour –auto fill for subsequent records
+			<br />
+			* Yellow column is for time for serving medication
+			<br />
+			Request to put selecting button for the time column –all international timing -0100,0200,0300,0400,0500…….2400
+			<br />
+			*Route: Oral/IV/IM/S/C/SL/ RT/ PR /LA /Neb
+			<br />
+			*Frequency: OD/OM/PM/ON/BD/TDS/QID/EOD/PRN/OTHERS:
+			<br />
+			* 1/1= 1tab, 11/11=2 TABS, 111/111 =3 TABS, ½ =HALF TAB, OTHERS: 1 ½ , 4 TABS
+			<br />
+			* INDICATE THE MEDICATION FROM WHERE= FROM  SK CENTER, HOSPITAL, CLINIC, OWN
+			<br />
+			*THE PERSON WHO GIVE ONLY CAN ENTER THE ABOVE SIGNATURE COLUMN –EXAMPLE LSS,LPC-NAME OF NURSE WHO GIVE.
+			<br />
+			*NEED APPROVAL FOR CHANGES OF THE MEDICATION KEY IN .
+			<br />
+			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+			{% for item in profiles %}
+			<a class="btn btn-danger" href="{% url 'patient_data:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+			{% endfor %}
+		</form>
+
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+	<script type='text/javascript'>
+
+	function cloneMore(selector, prefix)
+	{
+		var currentElement = $(selector);
+		var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+//		var newElement = $(selector).clone(true);
+		var newElement = $(currentElement).clone(true).get(0);
+
+		$(newElement).removeAttr('id').insertAfter($(currentElement)).children('.hidden').removeClass('hidden');
+
+		$(newElement).find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function()
+		{
+//			var name = $(this).attr('name').replace('-' + (total-1) + '-', '-' + total + '-');
+//			var id = 'id_' + name;
+//			if ($(this).attr('prefix') != 'hidden')
+//			{
+//				$(this).val('');
+//			}
+//			$(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+			var name = $(this).attr('name')
+			if(name)
+			{
+				name = name.replace('-' + (total-1) + '-', '-' + total + '-');
+				var id = 'id_' + name;
+				$(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+			}
+		});
+
+		$(newElement).find('label').each(function()
+		{
+//			var forValue = $(this).attr('for');
+//			if (forValue)
+//			{
+//				forValue = forValue.replace('-' + (total-1) + '-', '-' + total + '-');
+//				$(this).attr({'for': forValue});
+//			}
+			var forValue = $(this).attr('for').replace('-' + (total-1) + '-','-' + total + '-');
+			$(this).attr('for', forValue);
+		});
+
+//		$(newElement).find('value').each(function()
+//		{
+//			var name = $(this).attr('name')
+//			var cloneNewRow = $(this).find('[id$="medication_dosage"]').val();
+//			var cloneNewRow = $(this).find('#id_form-0-medication_dosage').val();
+//			var cloneNewRow = $('.new_formrow1').text($('#id_form-0-medication_tab').val())
+//			$(this).closest('.new_formrow1').append(cloneNewRow);
+//			conditionRow1.text($('#id_form-0-medication_dosage').val())
+//			console.log("cloneNewRow: ", cloneNewRow);
+//			$(this).attr('value', cloneNewRow);
+//		});
+
+		$(newElement).find('[id$="medication_date"]')
+			.removeClass('datepickerinput').removeAttr('#id_form-0-medication_date').removeData('DateTimePicker')
+			.unbind().datetimepicker(
+				options={
+					"format": "DD/MM/YYYY",
+				}
+			);
+		$(newElement).find('[id$="medication_time"]')
+			.removeClass('timepickerinput').removeAttr('#id_form-0-medication_time').removeData('DateTimePicker')
+			.unbind().datetimepicker(
+				options={
+					"format": "HH:mm",
+				}
+			);
+		$(newElement).find('[id$="medicationstat_date_time"]')
+			.removeClass('datetimepickerinput').removeAttr('#id_form-0-medicationstat_date_time').removeData('DateTimePicker')
+			.unbind().datetimepicker(
+				options={
+					"format": "DD/MM/YYYY HH:mm",
+				}
+			);
+
+		total++;
+
+		$('#id_' + prefix + '-TOTAL_FORMS').val(total);
+		$(selector).after(newElement);
+		var conditionRow1 = $('.new_formrow1:not(:last)');
+		conditionRow1.find('.btn.add_formrow1')
+		.removeClass('btn-success').addClass('btn-danger')
+		.removeClass('add_formrow1').addClass('remove_formrow1')
+		.html('<i class="fas fa-minus"></i>');
+
+		var conditionRow2 = $('.new_formrow2:not(:last)');
+		conditionRow2.find('.btn.add_formrow2')
+		.removeClass('btn-success').addClass('btn-danger')
+		.removeClass('add_formrow2').addClass('remove_formrow2')
+		.html('<i class="fas fa-minus"></i>');
+		return false;
+	}
+
+	$(document).on('click', '.add_formrow1', function(e)
+	{
+		e.preventDefault();
+		cloneMore('.new_formrow1:last', 'form');
+		return false;
+	});
+
+	$(document).on('click', '.add_formrow2', function(e)
+	{
+		e.preventDefault();
+		cloneMore('.new_formrow2:last', 'form');
+		return false;
+	});
+
+	function updateElementIndex(el, prefix, ndx)
+	{
+		var id_regex = new RegExp('(' + prefix + '-\\d+)');
+		var replacement = prefix + '-' + ndx;
+		if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+		if (el.id) el.id = el.id.replace(id_regex, replacement);
+		if (el.name) el.name = el.name.replace(id_regex, replacement);
+	}
+
+	function deleteForm1(prefix, btn)
+	{
+		var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+		if (total > 1)
+		{
+			btn.closest('.new_formrow1').remove();
+			var forms = $('.new_formrow1');
+			$('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+			for (var i=0, formCount=forms.length; i<formCount; i++)
+			{
+				$(forms.get(i)).find(':input').each(function()
+				{
+					updateElementIndex(this, prefix, i);
+				});
+			}
+		}
+		return false;
+	}
+
+	function deleteForm2(prefix, btn)
+	{
+		var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+		if (total > 1)
+		{
+			btn.closest('.new_formrow2').remove();
+			var forms = $('.new_formrow2');
+			$('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+			for (var i=0, formCount=forms.length; i<formCount; i++)
+			{
+				$(forms.get(i)).find(':input').each(function()
+				{
+					updateElementIndex(this, prefix, i);
+				});
+			}
+		}
+		return false;
+	}
+
+	$(document).on('click', '.remove_formrow1', function(e)
+	{
+		e.preventDefault();
+		deleteForm1('form', $(this));
+		return false;
+	});
+
+	$(document).on('click', '.remove_formrow2', function(e)
+	{
+		e.preventDefault();
+		deleteForm2('form', $(this));
+		return false;
+	});
+	</script>
+{% endblock %}

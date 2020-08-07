@@ -37,6 +37,9 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 SHARED_APPS = (
+	'dal',
+	'dal_select2',
+
 	'django_tenants',  # mandatory
 	'customers',  # Custom defined app that contains the TenantModel. Must NOT exist in TENANT_APPS
 
@@ -63,6 +66,9 @@ SHARED_APPS = (
 )
 
 TENANT_APPS = (
+	'dal',
+	'dal_select2',
+
 	# The following Django contrib apps must be in TENANT_APPS
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
@@ -79,7 +85,7 @@ TENANT_APPS = (
 	'post_office',
 	'phonenumber_field',
 
-#	'bootstrap_modal_forms',
+	'bootstrap_modal_forms',
 #	'bootstrapform',
 #	'formset_bootstrap',
 #	'jquery',
@@ -89,15 +95,19 @@ TENANT_APPS = (
 #	'floppyforms',
 
 	'selectable',
+#	'clever_selects',
+#	'chained_selectbox',
 	'bootstrap_datepicker_plus',
 #	'bootstrap4_datetime',
-#	'durationwidget',
+	'durationwidget',
+	'djangoyearlessdate',
 
 	'massadmin',
-#	'mptt',
+	'mptt',
 )
 
 FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+DJANGO_POPUP_VIEW_FIELD_TEMPLATE_PACK = 'bootstrap4'
 
 INSTALLED_APPS = list(SHARED_APPS) + \
 	[app for app in TENANT_APPS if app not in SHARED_APPS]
@@ -130,6 +140,8 @@ AUTHENTICATION_BACKENDS = (
 	'allauth.account.auth_backends.AuthenticationBackend',
 )
 
+#ANONYMOUS_USER_ID = None
+
 # Allauth settings
 AUTH_USER_MODEL = 'accounts.UserProfile'
 AUTH_PROFILE_MODULE = 'accounts.UserProfile'
@@ -141,7 +153,7 @@ LOGOUT_REDIRECT_URL = 'index'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_FORMS = {
 	'login': 'accounts.forms.MyLoginForm',
-	'signup': 'accounts.forms.MySignUpForm'
+	'signup': 'accounts.forms.MySignUpForm',
 }
 #ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.MySignUpForm'
 ACCOUNT_LOGOUT_ON_GET = True
@@ -220,7 +232,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 
 #TIME_ZONE = 'UTC'
-TIME_ZONE = 'Asia/Kuala_Lumpur'
+TIME_ZONE = 'Asia/Jakarta'
 
 USE_I18N = True
 
@@ -242,13 +254,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "assets")
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
-# AJAX_LOOKUP_CHANNELS = {
-#    'fullname': {'model': 'patient_form.full_name', 'search_field': 'full_name'},
-#    'fullname': ('patient_form.lookups', 'FullnameLookup'),
-#}
-
 
 LANGUAGES = [
 	('en', _('English')),
@@ -310,19 +315,16 @@ LOGGING = {
 # crispy form
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-#DATE_INPUT_FORMATS = 'd/m/Y'
-DATE_INPUT_FORMATS = '%d/%m/%Y'
-#DATE_INPUT_FORMATS = ['%d/%m/%y',]
-#DATE_INPUT_FORMATS = 'd/m/Y'
-#DATE_INPUT_FORMATS = '%d/%B/%Y'
-#DATE_INPUT_FORMATS = ['%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y',]
-
-#DATE_FORMAT = 'd/m/Y'
-DATE_FORMAT = '%d/%m/%Y'
-
-TIME_INPUT_FORMATS = ('%H:%M', '%H:%i')
-#TIME_INPUT_FORMATS = ['%H:%M:%S', '%H:%M:%S.%f', '%H:%M',]
-DATETIME_INPUT_FORMATS = ('%m/%y', '%m/%Y', )
+DATE_INPUT_FORMATS = [
+    '%d/%m/%Y', '%m/%d/%Y', '%m/%d/%y', # '25/10/2006', '10/25/2006', '10/25/06'
+]
+DATE_FORMAT = 'j/N/Y'
+TIME_INPUT_FORMATS = [
+	'%H:%M', # '14:30'
+]
+DATETIME_INPUT_FORMATS = [
+    '%d/%m/%Y %H:%M',        # '10/25/06 14:30'
+]
 
 # Post office email
 EMAIL_BACKEND = 'post_office.EmailBackend'
@@ -341,20 +343,17 @@ CACHES = {
 	'default': {
 		'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
 	},
-
-	"select2": {
-		"BACKEND": "django_redis.cache.RedisCache",
-		"LOCATION": "redis://127.0.0.1:6379/2",
-		"OPTIONS": {
-			"CLIENT_CLASS": "django_redis.client.DefaultClient",
-		}
-	}
 }
 
-SELECT2_CACHE_BACKEND = "select2"
-SELECT2_USE_BUNDLED_JQUERY = False
-# Override settings here
+#JQUERY_URL = True
+#USE_DJANGO_JQUERY = True
 
+# AJAX_LOOKUP_CHANNELS = {
+#    'fullname': {'model': 'patient_form.full_name', 'search_field': 'full_name'},
+#    'fullname': ('patient_form.lookups', 'FullnameLookup'),
+#}
+
+# Override settings here
 try:
 	from .local_settings import *
 except ImportError:
@@ -382,7 +381,7 @@ if DEBUG:
 	)
 	INSTALLED_APPS += (
 		'debug_toolbar',
-#		'debug_permissions',
+		'debug_permissions',
 	)
 	INTERNAL_IPS = ('127.0.0.1', )
 	DEBUG_TOOLBAR_CONFIG = {
