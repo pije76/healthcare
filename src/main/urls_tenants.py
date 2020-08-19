@@ -10,36 +10,39 @@ from django.utils.translation import gettext_lazy as _
 
 #from solid_i18n.urls import solid_i18n_patterns
 
-from patient_form.views import *
-from patient_data.views import *
+from patient.views import *
 from accounts.views import *
 
 urlpatterns = [
 	path('', index, name='index'),
-#    path('', RedirectView.as_view(url='accounts/login/', permanent=False), name='index'),
-	path('form/', include('patient_form.urls')),
-	path('data/', include('patient_data.urls')),
-#    path('grappelli/', include('grappelli.urls')),
+#	path('', RedirectView.as_view(url='accounts/login/', permanent=False), name='index'),
+#	path('form/', include('patient.urls')),
+#	path('data/', include('patient_data.urls')),
+	path('patient/', include('patient.urls')),
+	path('staff/', include('staff.urls')),
+#	path('grappelli/', include('grappelli.urls')),
 	path('admin/', include('massadmin.urls')),
 	path('admin/', admin.site.urls),
 	path('accounts/', include('allauth.urls')),
 	path(_('account/'), include('accounts.urls')),
-#    path('avatar/', include('avatar.urls')),
-	re_path(r'^selectable/', include('selectable.urls')),	
+#	path('avatar/', include('avatar.urls')),
+	re_path(r'^selectable/', include('selectable.urls')),
+	path('summernote/', include('django_summernote.urls')),
+    path('load_ic_number', load_ic_number, name='load_ic_number'),
 
-#    path("select2/", include("django_select2.urls")),
-#    path('profile/', include('userprofiles2.urls')),
-#    path('i18n/', include('django.conf.urls.i18n')),
-#    re_path(r'^i18n/', include('django.conf.urls.i18n')),
-#    re_path(r'^i18n/$', set_language, name='set_language'),
-#    re_path(r'^i18n/', lambda x: HttpResponse("Testing")),
+
+#	path("select2/", include("django_select2.urls")),
+#	path('profile/', include('userprofiles2.urls')),
+#	path('i18n/', include('django.conf.urls.i18n')),
+#	re_path(r'^i18n/', include('django.conf.urls.i18n')),
+#	re_path(r'^i18n/$', set_language, name='set_language'),
+#	re_path(r'^i18n/', lambda x: HttpResponse("Testing")),
 	re_path(r'(?P<user_language>\w+)/$', set_language_from_url, name="set_language_from_url")
-
 ]
 
-#urlpatterns += i18n_patterns(
+# urlpatterns += i18n_patterns(
 #    path('', index, name='index'),
-#    path(_('form/'), include('patient_form.urls')),
+#    path(_('form/'), include('patient.urls')),
 #    path(_('data/'), include('patient_data.urls')),
 #    path(_('account/'), include('accounts.urls')),
 #    prefix_default_language=False,

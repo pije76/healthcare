@@ -14,24 +14,32 @@
 
 {% block content %}
 
+    {% if user.is_authenticated %}
 
-	<div class="row isi">
+    <div class="row isi">
+        <div class="col-sm-2 col-md-2 col-lg-2">
+        </div>
+    </div>
 
-		<div class="account_form">
-			<h2 class="text-center">{% trans "Login" %}</h2>
-			<form class="login" method="post" action="{% url 'account_login' %}">
+	{% else %}
+
+    <div class="row isi">
+
+        <div class="account_form">
+            <h2 class="text-center">{% trans "Login" %}</h2>
+            <form class="login" method="post" action="{% url 'account_login' %}">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <input type="hidden" name="{{ redirect_field_name }}" value="{% url 'account' %}" />
+                <input type="hidden" name="{{ redirect_field_name }}" value="{% url 'patient:patientdata_list' %}" />
                 <button type="submit" class="btn btn-primary btn_account">{% trans "Login" %}</button>
             </form>
             <p>
-            {% blocktrans %}
-                Need new account? <a href="{{ signup_url }}">Sign Up</a>.
-            {% endblocktrans %}
+                {% trans "Need new account? Please " %} <a href="#">{% trans "contact" %}</a> {% trans " our staff" %}
             </p>
-		</div>
+        </div>
 
-	</div>
-	
+    </div>
+
+    {% endif %}
+
 {% endblock %}

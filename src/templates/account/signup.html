@@ -8,35 +8,43 @@
         <link href="{% static 'css/account.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
-{% block headtitle %}{% trans "Signup" %}{% endblock %}
+{% block headtitle %}{% trans "Register Options" %}{% endblock %}
 
 {% block content %}
 
     {% if user.is_authenticated %}
+
     <div class="row isi">
-        <div class="col-sm-2 col-md-2 col-lg-2">
+        <div class="account_form">
+
+            <h2>{% trans "Register Options" %}</h2>
+            <p class="lead">Select below the type of account you want to create:</p>
+
+            {% if user.is_authenticated and user.is_superuser %}
+
+            <form>
+                <a href="{% url 'accounts:staff_signup' %}" class="btn btn-outline-primary btn_admin" role="button"><i class="fas fa-user-nurse"></i> Staff</a>
+            </form>
+
+            {% elif user.is_authenticated and user.is_staff %}
+
+            <form>
+                <a href="{% url 'accounts:patient_signup' %}" class="btn btn-outline-primary btn_staff" role="button"><i class="fas fa-hospital-user"></i> Patient</a>
+                <a href="{% url 'accounts:staff_signup' %}" class="btn btn-outline-primary btn_staff" role="button"><i class="fas fa-user-nurse"></i> Staff</a>
+            </form>
+
+            {% endif %}
+
         </div>
     </div>
 
     {% else %}
+
     <div class="row isi">
-        <div class="account_form">
-
-            <h2>{% trans "Signup" %}</h2>
-            <p class="lead">Select below the type of account you want to create:</p>
-
-            <form>
-                <a href="{% url 'patient_signup' %}" class="btn btn-lg btn_patient" role="button"><i class="fas fa-hospital-user"></i> Patient</a>
-                <a href="{% url 'staff_signup' %}" class="btn btn-lg btn_staff" role="button"><i class="fas fa-user-nurse"></i> Staff</a>
-            </form>
-
-            <p>
-            {% blocktrans %}
-                Already have an account? Then please <a href="{{ login_url }}">Sign In</a>.
-            {% endblocktrans %}
-            </p>
+        <div class="col-12">
         </div>
     </div>
+
     {% endif %}
 
 

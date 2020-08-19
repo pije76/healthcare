@@ -1,0 +1,47 @@
+.isi {
+  height: auto;
+  padding-bottom: 20px;
+}
+
+.footer {
+  height: 151px;
+}
+
+.table-sm {
+  width: 70%;
+}
+
+.ui-icon-trash {
+    display: inline-block;
+}
+
+.custom-control-label {
+  padding-left: 20px;
+}
+
+.table-sm {
+  margin-bottom: 10px;
+}
+
+#medication_administration {
+  padding: 20px;
+}
+
+#medication_administration .col {
+  border: 1px solid #c9c9c9;
+  padding-top: 12px;
+  padding-bottom: 10px;
+}
+
+#medication_administration .col:not(:last-child) {
+  border-right-width: 0;
+}
+
+#medication_administration .row:not(:last-child) .col {
+  border-bottom-width: 0;
+}
+
+.form-row {
+  margin-right: -15px !important;
+  margin-left: -15px !important;
+}

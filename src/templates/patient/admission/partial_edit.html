@@ -1,0 +1,238 @@
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load static %}
+{% load staticfiles %}
+
+{% block javascript %}
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/moment.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+{% endblock %}
+
+<form method="post" action="">
+{% csrf_token %}
+
+	<div class="modal-header">
+		<h4 class="modal-title">{% trans "Edit Admission" %}</h4>
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+	</div>
+
+	<div class="modal-body">
+		<div class="form-group">
+            <div class="col-12 col">
+			{{ form.date|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.time|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.admitted|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.mode|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.patient|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.age|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.birth_date|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.gender|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.marital_status|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.religion|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.occupation|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.communication_sight|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.communication_hearing|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.communication_hearing_others|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.address|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.ec_name|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.ec_ic_number|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.ec_relationship|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.ec_phone|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.ec_address|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.general_condition|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.vital_sign_pulse|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.vital_sign_bp|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.vital_sign_resp|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.vital_sign_spo2|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.vital_sign_on_oxygen_therapy|as_crispy_field }} 
+			</div>
+            <div class="col-12 col">
+			{{ form.vital_sign_on_oxygen_therapy_flow_rate|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.vital_sign_hgt|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.allergy_drug|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.allergy_food|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.allergy_others|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.biohazard_infectious_disease|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.invasive_line_insitu|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.medical_history|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.surgical_history|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.date_diagnosis|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.diagnosis|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.date_operation|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.operation|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.own_medication|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.own_medication_drug_name|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.own_medication_dosage|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.own_medication_tablet_capsule|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.own_medication_frequency|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.adaptive_aids_with_patient|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.orientation|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.special_information|as_crispy_field }}
+			</div>
+            <div class="col-12 col">
+			{{ form.special_information|as_crispy_field }}
+			</div>
+		</div>
+	</div>
+
+	<div class="modal-footer">
+		<button type="button" class="btn btn-danger" data-dismiss="modal">{% trans "Cancel" %}</button>
+		<button type="submit" class="btn btn-primary">
+			<i class="icon wb-plus" aria-hidden="true"></i>{% trans "Submit" %}
+		</button>
+	</div>
+	
+</form>
+
+{% block js %}
+	<script type='text/javascript'>
+	$(document).ready(function()
+	{
+
+		$.extend(true, $.fn.datetimepicker.defaults, {
+			icons: {
+				time: 'far fa-clock',
+				date: 'far fa-calendar',
+				up: 'fas fa-arrow-up',
+				down: 'fas fa-arrow-down',
+				previous: 'fas fa-chevron-left',
+				next: 'fas fa-chevron-right',
+				today: 'fas fa-calendar-check',
+				clear: 'far fa-trash-alt',
+				close: 'far fa-times-circle'
+			}
+		});
+
+		$("#id_date").datetimepicker(
+			{
+				format:'DD/MM/YYYY',
+				showTodayButton: true,
+				showClear: true,
+				showClose: true,
+			}
+		);
+		$("#id_time").datetimepicker(
+			{
+				format: 'HH:mm'
+			}
+		);
+		$("#id_birth_date").datetimepicker(
+			{
+				format:'DD/MM/YYYY',
+				showTodayButton: true,
+				showClear: true,
+				showClose: true,
+			}
+		);
+		$("#id_date_diagnosis").datetimepicker(
+			{
+				format:'DD/MM/YYYY',
+				showTodayButton: true,
+				showClear: true,
+				showClose: true,
+			}
+		);
+		$("#id_date_operation").datetimepicker(
+			{
+				format:'DD/MM/YYYY',
+				showTodayButton: true,
+				showClear: true,
+				showClose: true,
+			}
+		);
+	});
+	</script>
+{% endblock %}

@@ -1,0 +1,20 @@
+.detail {
+  border: 1px solid #ddd;
+  padding: 10px 0px;
+  margin: 0px 0px 15px 0px;
+}
+
+.link_detail {
+  margin-bottom: 5px;
+  width: max-content;
+}
+
+.link_detail a {
+  text-align: left;
+}
+
+@media (min-width: 576px)
+.modal-dialog {
+    max-width: 500px;
+    margin: 1.75rem auto;
+}

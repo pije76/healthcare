@@ -8,7 +8,7 @@ from django.dispatch import receiver
 from allauth.account.signals import email_confirmed
 from allauth.account.signals import user_signed_up
 
-from smart_selects.db_fields import ChainedForeignKey
+#from smart_selects.db_fields import ChainedForeignKey
 
 # from tenant_users.tenants.models import UserProfile
 
@@ -50,8 +50,6 @@ class UserProfile(AbstractUser):
 	last_name = models.CharField(max_length=255, blank=True, null=True)
 	full_name = models.CharField(_('Full Name'), max_length=255, blank=True, null=True)
 	ic_number = models.CharField(_('IC Number'), max_length=14, validators=[ic_number_validator], unique=True, blank=True, null=True)
-	jkl = models.CharField(max_length=255, blank=True, null=True)
-	eth = models.CharField(max_length=255, blank=True, null=True)
 	is_patient = models.BooleanField('Patient', default=False)
 	is_staff = models.BooleanField(_('Staff'), default=False)
 	is_superuser = models.BooleanField('Admin', default=False)

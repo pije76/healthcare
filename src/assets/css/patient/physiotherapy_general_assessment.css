@@ -1,0 +1,54 @@
+.isi {
+  height: auto;
+  padding-bottom: 20px;
+}
+
+.footer {
+  height: 151px;
+}
+
+.table-sm {
+  width: 70%;
+}
+
+.ui-icon-trash {
+    display: inline-block;
+}
+
+.custom-control-label {
+  padding-left: 20px;
+}
+
+.table-sm {
+  margin-bottom: 10px;
+}
+
+.items{
+    text-align:center;
+    margin:50px auto;
+}
+.items figure{
+    margin:0px 20px;
+    display:inline-block;
+    text-decoration:none;
+}
+
+#generalass {
+  padding: 20px;
+}
+
+#generalass .col {
+  border: 1px solid #c9c9c9;
+}
+
+#generalass .col:not(:last-child) {
+  border-right-width: 0;
+}
+
+#generalass .row:not(:last-child) .col {
+  border-bottom-width: 0;
+}
+
+.form-group {
+  margin-top: 10px;
+}

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block headtitle %}
+    {{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block content %}
+
+{% block styles %}
+	<link href="{% static 'css/patient/hgt.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block extrahead %}
+	{{ form.media }}
+{% endblock %}
+
+<div class="row isi">
+
+	<div class="formtitle">
+		{{ page_title }}
+	</div>
+
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+		<form method="post">
+			{% csrf_token %}
+			<table class="table-sm table-bordered">
+				<tbody>
+					<tr>
+						<td>{% trans "Name" %}:</td>
+						<td>{{ patients }}{{ form.patient|as_crispy_field }}</td>
+					</tr>
+					<tr>
+						<td>{% trans "I/C No" %}:</td>
+						<td>{{ icnumbers }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th class="text-center">{% trans "Date" %}</th>
+						<th class="text-center">{% trans "Time" %}</th>
+						<th class="text-center">{% trans "Blood glucose reading (mmol/L)" %}</th>
+						<th class="text-center">{% trans "Remark:" %}</th>
+						<th class="text-center">{% trans "Done By:" %}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{ form.date|as_crispy_field }}</td>
+						<td>{{ form.time|as_crispy_field }}</td>
+						<td>{{ form.blood_glucose_reading|as_crispy_field }}</td>
+						<td>{{ form.remark|as_crispy_field }}</td>
+						<td>{{ form.done_by|as_crispy_field }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+			{% for item in profiles %}
+			<a class="btn btn-danger" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+			{% endfor %}
+		</form>
+
+	</div>
+
+</div>
+
+{% endblock %}

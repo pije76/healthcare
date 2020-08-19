@@ -6,7 +6,7 @@ from django.contrib.admin.options import ModelAdmin
 #from ajax_select.admin import AjaxSelectAdmin
 #from ajax_select import make_ajax_form
 
-from patient_form.models import *
+from patient.models import *
 from .forms import *
 
 
@@ -39,8 +39,6 @@ class UserProfileAdmin(admin.ModelAdmin):
         'email',
         'full_name',
         'ic_number',
-        'jkl',
-        'eth',
 #        'roles',
         'is_active',
         'is_patient',

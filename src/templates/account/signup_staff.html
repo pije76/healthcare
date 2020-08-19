@@ -8,32 +8,35 @@
     <link href="{% static 'css/account.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
-{% block headtitle %}{% trans "Signup" %}{% endblock %}
+{% block headtitle %}{% trans "Register Staff" %}{% endblock %}
 
 {% block content %}
 
     {% if user.is_authenticated %}
+
+    <div class="row isi">
+        <div class="account_form">
+            <h1>{% trans "Register Staff" %}</h1>
+            <form class="signup" method="post" action="{% url 'account_signup' %}">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input type="hidden" name="{{ redirect_field_name }}" value="" />
+                <button type="submit" class="btn btn-primary btn_account">{% trans "Register" %}</button>
+            </form>
+            <p>
+                Back to <a href="{% url 'accounts:signup_view' %}">{% trans "Register" %}</a> options.
+            </p>
+        </div>
+
+    </div>
+
+    {% else %}
+
     <div class="row isi">
         <div class="col-sm-2 col-md-2 col-lg-2">
         </div>
     </div>
 
-    {% else %}
-    <div class="row isi">
-        <div class="account_form">
-            <h1>{% trans "Sign Up" %}</h1>
-            <form class="signup" method="post" action="{% url 'account_signup' %}">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <input type="hidden" name="{{ redirect_field_name }}" value="{% url 'account' %}" />
-                <button type="submit" class="btn btn-primary btn_account">{% trans "Sign Up" %}</button>
-            </form>
-            <p>
-                Back to <a href="/accounts/signup/">{% trans "Sign Up" %}</a> options.
-            </p>
-        </div>
-
-    </div>
     {% endif %}
 
 

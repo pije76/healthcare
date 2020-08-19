@@ -37,9 +37,6 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 SHARED_APPS = (
-	'dal',
-	'dal_select2',
-
 	'django_tenants',  # mandatory
 	'customers',  # Custom defined app that contains the TenantModel. Must NOT exist in TENANT_APPS
 
@@ -66,21 +63,20 @@ SHARED_APPS = (
 )
 
 TENANT_APPS = (
-	'dal',
-	'dal_select2',
-
 	# The following Django contrib apps must be in TENANT_APPS
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
 
-	'django.contrib.admin',
 	'django.contrib.sessions',
 	'django.contrib.messages',
+	'django.contrib.admin',
 	'django.contrib.staticfiles',
 	'django.forms',
 
-	'patient_form',
-	'patient_data',
+#	'patient_form',
+#	'patient_data',
+	'patient',
+	'staff',
 
 	'post_office',
 	'phonenumber_field',
@@ -98,16 +94,14 @@ TENANT_APPS = (
 #	'clever_selects',
 #	'chained_selectbox',
 	'bootstrap_datepicker_plus',
-#	'bootstrap4_datetime',
-	'durationwidget',
 	'djangoyearlessdate',
+	'django_summernote',
+	'durationwidget',
 
 	'massadmin',
 	'mptt',
 )
 
-FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
-DJANGO_POPUP_VIEW_FIELD_TEMPLATE_PACK = 'bootstrap4'
 
 INSTALLED_APPS = list(SHARED_APPS) + \
 	[app for app in TENANT_APPS if app not in SHARED_APPS]
@@ -115,10 +109,6 @@ INSTALLED_APPS = list(SHARED_APPS) + \
 
 TENANT_MODEL = "customers.Client"  # aplp.Model
 TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
-
-#TENANT_USERS_DOMAIN = "edapt.com"
-#SESSION_COOKIE_DOMAIN = '.edapt.com'
-
 
 MIDDLEWARE = [
 	'django_tenants.middleware.main.TenantMainMiddleware',
@@ -132,32 +122,6 @@ MIDDLEWARE = [
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
-AUTHENTICATION_BACKENDS = (
-	# Needed to login by username in Django admin, regardless of `allauth`
-	'django.contrib.auth.backends.ModelBackend',
-	# `allauth` specific authentication methods, such as login by e-mail
-	'allauth.account.auth_backends.AuthenticationBackend',
-)
-
-#ANONYMOUS_USER_ID = None
-
-# Allauth settings
-AUTH_USER_MODEL = 'accounts.UserProfile'
-AUTH_PROFILE_MODULE = 'accounts.UserProfile'
-ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = False
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
-ACCOUNT_EMAIL_VERIFICATION = False
-LOGIN_REDIRECT_URL = 'patient_data:patientdata_list'
-LOGOUT_REDIRECT_URL = 'index'
-ACCOUNT_AUTHENTICATION_METHOD = 'username'
-ACCOUNT_FORMS = {
-	'login': 'accounts.forms.MyLoginForm',
-	'signup': 'accounts.forms.MySignUpForm',
-}
-#ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.MySignUpForm'
-ACCOUNT_LOGOUT_ON_GET = True
-ACCOUNT_SESSION_REMEMBER = False
 
 ROOT_URLCONF = 'main.urls_tenants'
 
@@ -181,10 +145,6 @@ TEMPLATES = [
 			],
 		},
 	},
-	#    {
-	#        'BACKEND': 'accounts.pdf.PdftkEngine',
-	#        'APP_DIRS': True,
-	#    },
 ]
 
 
@@ -255,103 +215,9 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-LANGUAGES = [
-	('en', _('English')),
-	#    ('my', _('Malaysia')),
-	('id', _('Indonesia')),
-]
-
-LOCALE_PATHS = (
-	os.path.join(BASE_DIR, 'locale'),
-)
-
-#SOLID_I18N_USE_REDIRECTS = False
-
-MASSEDIT = {
-	'ADD_ACTION_GLOBALLY': False,
-}
-
-LOGGING = {
-	'version': 1,
-	'disable_existing_loggers': False,
-	'filters': {
-		'require_debug_false': {
-			'()': 'django.utils.log.RequireDebugFalse'
-		}
-	},
-	'handlers': {
-		'mail_admins': {
-			'level': 'ERROR',
-			'filters': ['require_debug_false'],
-			'class': 'django.utils.log.AdminEmailHandler'
-		},
-		'stderr': {
-			'level': 'INFO',
-			'class': 'logging.StreamHandler',
-		},
-		'file': {
-			'level': 'DEBUG',
-			'class': 'logging.FileHandler',
-			'filename': os.path.join(BASE_DIR, "debug.log"),
-		},
-	},
-	'loggers': {
-		'django.request': {
-			'handlers': ['file'],
-			'level': 'DEBUG',
-			'propagate': True,
-		},
-		'pika': {
-			'handlers': ['mail_admins'],
-			'level': 'ERROR',
-		},
-	},
-	'root': {
-		'handlers': ['stderr'],
-		'level': 'INFO',
-	},
-}
-
-# crispy form
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
-DATE_INPUT_FORMATS = [
-    '%d/%m/%Y', '%m/%d/%Y', '%m/%d/%y', # '25/10/2006', '10/25/2006', '10/25/06'
-]
-DATE_FORMAT = 'j/N/Y'
-TIME_INPUT_FORMATS = [
-	'%H:%M', # '14:30'
-]
-DATETIME_INPUT_FORMATS = [
-    '%d/%m/%Y %H:%M',        # '10/25/06 14:30'
-]
 
 # Post office email
 EMAIL_BACKEND = 'post_office.EmailBackend'
-
-from django.contrib.messages import constants as messages
-
-MESSAGE_TAGS = {
-	messages.DEBUG: 'alert-info',
-	messages.INFO: 'alert-info',
-	messages.SUCCESS: 'alert-success',
-	messages.WARNING: 'alert-warning',
-	messages.ERROR: 'alert-danger',
-}
-
-CACHES = {
-	'default': {
-		'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-	},
-}
-
-#JQUERY_URL = True
-#USE_DJANGO_JQUERY = True
-
-# AJAX_LOOKUP_CHANNELS = {
-#    'fullname': {'model': 'patient_form.full_name', 'search_field': 'full_name'},
-#    'fullname': ('patient_form.lookups', 'FullnameLookup'),
-#}
 
 # Override settings here
 try:
@@ -388,27 +254,67 @@ if DEBUG:
 		'INTERCEPT_REDIRECTS': False,
 	}
 	TEMPLATES = [
-		{
-			'BACKEND': 'django.template.backends.django.DjangoTemplates',
-			'DIRS': [os.path.join(BASE_DIR, 'templates')],
-			'APP_DIRS': True,
-			'OPTIONS': {
-				"debug": DEBUG,
-				'context_processors': [
-					'django.template.context_processors.debug',
-					'django.template.context_processors.request',
-					'django.contrib.auth.context_processors.auth',
-					'django.template.context_processors.i18n',
-					'django.template.context_processors.media',
-					'django.template.context_processors.static',
-					'django.template.context_processors.tz',
-					'django.contrib.messages.context_processors.messages',
-				],
-				"string_if_invalid": '<< MISSING VARIABLE "%s" >>' if DEBUG else "",
+	{
+		'BACKEND': 'django.template.backends.django.DjangoTemplates',
+		'DIRS': [os.path.join(BASE_DIR, 'templates')],
+		'APP_DIRS': True,
+		'OPTIONS': {
+			"debug": DEBUG,
+			'context_processors': [
+				'django.template.context_processors.debug',
+				'django.template.context_processors.request',
+				'django.contrib.auth.context_processors.auth',
+				'django.template.context_processors.i18n',
+				'django.template.context_processors.media',
+				'django.template.context_processors.static',
+				'django.template.context_processors.tz',
+				'django.contrib.messages.context_processors.messages',
+			],
+			"string_if_invalid": '<< MISSING VARIABLE "%s" >>' if DEBUG else "",
+		},
+	},
+		#    {
+		#        'BACKEND': 'accounts.pdf.PdftkEngine',
+		#        'APP_DIRS': True,
+		#    },
+	]
+	LOGGING = {
+		'version': 1,
+		'disable_existing_loggers': False,
+		'filters': {
+			'require_debug_false': {
+				'()': 'django.utils.log.RequireDebugFalse'
+			}
+		},
+		'handlers': {
+			'mail_admins': {
+				'level': 'ERROR',
+				'filters': ['require_debug_false'],
+				'class': 'django.utils.log.AdminEmailHandler'
+			},
+			'stderr': {
+				'level': 'INFO',
+				'class': 'logging.StreamHandler',
+			},
+			'file': {
+				'level': 'DEBUG',
+				'class': 'logging.FileHandler',
+				'filename': os.path.join(BASE_DIR, "debug.log"),
 			},
 		},
-			#    {
-			#        'BACKEND': 'accounts.pdf.PdftkEngine',
-			#        'APP_DIRS': True,
-			#    },
-	]
+		'loggers': {
+			'django.request': {
+				'handlers': ['file'],
+				'level': 'DEBUG',
+				'propagate': True,
+			},
+			'pika': {
+				'handlers': ['mail_admins'],
+				'level': 'ERROR',
+			},
+		},
+		'root': {
+			'handlers': ['stderr'],
+			'level': 'INFO',
+		},
+	}

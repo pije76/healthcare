@@ -5,8 +5,7 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 
-from allauth.account.forms import LoginForm
-from allauth.account.forms import SignupForm
+from allauth.account.forms import LoginForm, SignupForm
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML
@@ -14,7 +13,7 @@ from crispy_forms.layout import HTML
 #from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
 
 from .models import *
-from patient_form.models import *
+from patient.models import *
 
 ic_number_validator = RegexValidator("\d{6}\-\d{2}\-\d{4}", "IC Number format needs to be yymmdd-xx-zzzz.")
 
@@ -27,8 +26,12 @@ class MyLoginForm(LoginForm):
 #		super().__init__(*args, **kwargs)
 #		self.helper = FormHelper(self)
 
+	def __init__(self, *args, **kwargs):
+		self.request = kwargs.pop('request')
+		super().__init__(*args, **kwargs)
+
 #	username = forms.CharField(max_length=100, required=True, label=_('Username:'))
-	password = forms.CharField(max_length=100, required=True, label=_('Password'), widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("Password")}))
+	password = forms.CharField(max_length=100, required=True, label=_('Password'), widget=forms.PasswordInput(attrs={'class': "form-control", 'placeholder': _("Password")}))
 
 class MySignUpForm(SignupForm):
 
@@ -47,10 +50,11 @@ class MySignUpForm(SignupForm):
 		user.last_name = self.cleaned_data['last_name']
 #		user.ic_number = self.cleaned_data['ic_number']
 		user.is_active = True
-#		user.is_patient = True
-		user.is_patient = self.cleaned_data['is_patient']
-		user.is_staff = self.cleaned_data['is_staff']
 		user.is_admin = False
+#		user.is_staff = False
+#		user.is_patient = True
+		user.is_staff = self.cleaned_data['is_staff']
+		user.is_patient = self.cleaned_data['is_patient']
 		user.save()
 		return user
 
@@ -80,12 +84,10 @@ class ChangeUserProfile(forms.ModelForm):
 	last_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	email = forms.EmailField(required=False, label='', widget=forms.TextInput(attrs={'class': "form-control"}))
 	ic_number = forms.CharField(max_length=14, required=False, label="", initial='yymmdd-xx-zzzz', validators=[ic_number_validator], widget=forms.TextInput(attrs={'class': "form-control"}))
-	jkl = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	eth = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 
 	class Meta:
 		model = UserProfile
-		fields = ('first_name', 'last_name', 'email', 'ic_number', 'jkl', 'eth')
+		fields = ('first_name', 'last_name', 'email', 'ic_number')
 
 
 class ChangeAdmission(forms.ModelForm):

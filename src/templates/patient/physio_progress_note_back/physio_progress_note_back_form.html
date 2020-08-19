@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block headtitle %}
+    {{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block content %}
+
+{% block styles %}
+	<link href="{% static 'css/patient/physio_progress_note_back.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block extrahead %}
+	{{ form.media }}
+{% endblock %}
+
+<div class="row isi">
+
+	<div class="formtitle">
+		{{ page_title }}
+	</div>
+
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+		<form method="post">
+			{% csrf_token %}
+			<table class="table-sm table-bordered">
+				<tbody>
+					<tr>
+						<td>{% trans "Name" %}:</td>
+						<td>{{ patients }}{{ form.patient|as_crispy_field }}</td>
+					</tr>
+					<tr>
+						<td>{% trans "I/C No" %}:</td>
+						<td>{{ icnumbers }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table table-bordered">
+				<thead>
+					<tr class="d-flex">
+						<th class="col-2 text-center">{% trans "Date/Time" %}</th>
+						<th class="col-10 text-center">{% trans "Report" %}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="d-flex">
+						<td class="col-2">{{ form.date_time|as_crispy_field }}</td>
+						<td class="col-10">{{ form.report|as_crispy_field }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+			{% for item in profiles %}
+			<a class="btn btn-danger" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+			{% endfor %}
+		</form>
+
+	</div>
+
+</div>
+
+{% endblock %}

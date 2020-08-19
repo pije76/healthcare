@@ -1,0 +1,55 @@
+
+{% for item in patients %}
+<tr>
+    <td>{{ item.date|date:"d-m-Y" }}</td>
+    <td>{{ item.time|date:"H:i" }}</td>
+    <td>{{ item.admitted }}</td>
+    <td>{{ item.mode }}</td>
+    <td>{{ item.get_age }}</td>
+    <td>{{ item.birth_date|date:"d-m-Y" }}</td>
+    <td>{{ item.gender }}</td>
+    <td>{{ item.marital_status }}</td>
+    <td>{{ item.religion }}</td>
+    <td>{{ item.occupation }}</td>
+    <td>{{ item.communication_sight }}</td>
+    <td>{{ item.communication_hearing }}</td>
+    <td>{{ item.address }}</td>
+    <td>{{ item.ec_name }}</td>
+    <td>{{ item.ec_ic_number }}</td>
+    <td>{{ item.ec_relationship }}</td>
+    <td>{{ item.ec_phone }}</td>
+    <td>{{ item.ec_address }}</td>
+    <td>{{ item.general_condition }}</td>
+    <td>{{ item.vital_sign_temperature }} ºC</td>
+    <td>{{ item.vital_sign_pulse }} bpm</td>
+    <td>{{ item.vital_sign_bp }} mmHg</td>
+    <td>{{ item.vital_sign_resp }} min</td>
+    <td>{{ item.vital_sign_spo2 }} %</td>
+    <td>{{ item.vital_sign_on_oxygen_therapy }}</td>
+    <td>{{ item.vital_sign_on_oxygen_therapy_flow_rate }}</td>
+    <td>{{ item.vital_sign_hgt }}</td>
+    <td>{{ item.allergy_drug }}</td>
+    <td>{{ item.allergy_food }}</td>
+    <td>{{ item.allergy_others }}</td>
+    <td>{{ item.biohazard_infectious_disease }}</td>
+    <td>{{ item.invasive_line_insitu }}</td>
+    <td>{{ item.medical_history }}</td>
+    <td>{{ item.surgical_history }}</td>
+    <td>{{ item.date_diagnosis|date:"d-m-Y" }}</td>
+    <td>{{ item.diagnosis }}</td>
+    <td>{{ item.date_operation|date:"d-m-Y" }}</td>
+    <td>{{ item.operation }}</td>
+    <td>{{ item.own_medication }}</td>
+    <td>{{ item.adaptive_aids_with_patient }}</td>
+    <td>{{ item.orientation }}</td>
+    <td>{{ item.special_information }}</td>
+    <td>{{ item.admission_by }}</td>
+    <td>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:admission_edit' item.patient.username item.id %}" title="Edit" style="background-color:transparent;">
+            <i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:admission_delete' item.patient.username item.id %}" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
+        </button>
+    </td>
+</tr>
+{% endfor %}

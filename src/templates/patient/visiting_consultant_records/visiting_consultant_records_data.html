@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block headtitle %}
+	{{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block styles %}
+	<link href="{% static 'css/patient/visiting_consultant_records.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block javascript %}
+	<script src="{% static 'js/patient/visiting_consultant_records.js' %}"></script>
+	<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+	<div class="row formtitle">
+		{{ page_title }}
+	</div>
+
+	{% include 'patient/patient_title.html' %}
+
+	<div class="row">
+
+		<div class="col-12">
+			<div class="card">
+
+				<div class="card-body">
+
+					<div class="table-responsive">
+						<form method="post" action="">
+						{% csrf_token %}
+							<table id="t_add_row" class="table table-striped table-bordered display" style="width:100%">
+								<thead>
+									<tr>
+										<th class="text-center">{% trans "Date & Time" %}</th>
+										<th class="text-center">{% trans "Complaints" %}</th>
+										<th class="text-center">{% trans "Treatment & Orders" %}</th>
+										<th class="text-center">{% trans "Consultant" %}</th>
+										<th class="text-center">{% trans "Action" %}</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									{% include 'patient/visiting_consultant_records/partial_list.html' %}
+								</tfoot>
+							</table>
+						</form>
+					</div>
+
+				</div>
+
+            </div>
+        </div>
+
+    </div>
+
+	<br />
+
+	<div class="row">
+		<div class="col-4">
+			{% for item in profiles %}
+				<a class="btn btn-outline-primary" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Back" %}</a>
+			{% endfor %}
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+$(function()
+{
+	$(".trigger_modal").each(function()
+	{
+		$(this).modalForm(
+		{
+			formURL: $(this).data('form-url')
+		});
+	});
+});
+</script>
+{% endblock %}

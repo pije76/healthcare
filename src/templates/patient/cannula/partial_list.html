@@ -1,0 +1,26 @@
+{% for item in patients %}
+<tr>
+    <td>{{ item.nasogastric_tube_date|date:"d-m-Y" }}</td>
+    <td>{{ item.nasogastric_tube_size }}</td>
+    <td>{{ item.nasogastric_tube_type }}</td>
+    <td>{{ item.nasogastric_tube_location }}</td>
+    <td>{{ item.nasogastric_tube_due_date|date:"d-m-Y" }}</td>
+    <td>{{ item.nasogastric_tube_inserted_by }}</td>
+    <td>{{ item.urinary_catheter_date|date:"d-m-Y" }}</td>
+    <td>{{ item.urinary_catheter_size }}</td>
+    <td>{{ item.urinary_catheter_type }}</td>
+    <td>{{ item.urinary_catheter_due_date|date:"d-m-Y" }}</td>
+    <td>{{ item.urinary_catheter_inserted_by }}</td>
+    <td>{{ item.cannula_date|date:"d-m-Y" }}</td>
+    <td>{{ item.cannula_size }}</td>
+    <td>{{ item.cannula_location }}</td>
+    <td>{{ item.cannula_due_date|date:"d-m-Y" }}</td>
+    <td>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:cannula_edit' item.patient.username item.id %}"data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:cannula_delete' item.patient.username item.id %}"data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
+        </button>
+    </td>
+
+</tr>
+{% endfor %}

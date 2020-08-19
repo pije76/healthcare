@@ -48,26 +48,15 @@
 	border-radius: 5px;
 }
 
-a.btn_patient {
-	color: #212529;
-	border: 1px solid #dee2e6;
+a.btn_admin {
 	margin: 0px 25px;
 	font-size: 16px;
 	text-transform: capitalize;
-}
-
-a.btn_patient:hover {
-	color: #007bff;
+	display: block;
 }
 
 a.btn_staff {
-	color: #212529;
-	border: 1px solid #dee2e6;
-	margin: 0px 25px;
+	margin: 0px 10%;
 	font-size: 16px;
 	text-transform: capitalize;
-}
-
-a.btn_staff:hover {
-	color: #007bff;
 }
