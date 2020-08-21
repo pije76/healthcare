@@ -57,22 +57,29 @@ def multi_purpose_create(request, username):
         'ic_number': icnumbers,
     }
 
+    initial_formset_factory = [
+    {
+        'patient': patients,
+        'ic_number': icnumbers,
+    }]
+
     if request.method == 'POST':
-        form = MultipurposeForm(request.POST or None)
-        if form.is_valid():
-            profile = Multipurpose()
-            profile.patient = patients
-            profile.date_time = form.cleaned_data['date_time']
-            profile.symptom = form.cleaned_data['symptom']
-            profile.remark = form.cleaned_data['remark']
-            profile.save()
+        formset = Multipurpose_FormSet_Factory(request.POST or None)
+        if formset.is_valid():
+            for item in formset:
+                profile = Multipurpose()
+                profile.patient = patients
+                profile.date_time = item.cleaned_data['date_time']
+                profile.symptom = item.cleaned_data['symptom']
+                profile.remark = item.cleaned_data['remark']
+                profile.save()
 
             messages.success(request, _(page_title + ' form was created.'))
             return redirect('patient:patientdata_detail', username=patients.username)
         else:
-            messages.warning(request, form.errors)
+            messages.warning(request, formset.errors)
     else:
-        form = MultipurposeForm(initial=initial)
+        formset = Multipurpose_FormSet_Factory(initial=initial_formset_factory)
 
     context = {
         'logos': logos,
@@ -81,7 +88,7 @@ def multi_purpose_create(request, username):
         'patients': patients,
         'profiles': profiles,
         'icnumbers': icnumbers,
-        'form': form,
+        'formset': formset,
     }
 
     return render(request, 'patient/multi_purpose/multi_purpose_chart_form.html', context)
@@ -96,7 +103,7 @@ class MultipurposeUpdateView(BSModalUpdateView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:multi_purpose_data', kwargs={'username': username})
+        return reverse_lazy('patient:multi_purpose_list', kwargs={'username': username})
 
 
 multi_purpose_edit = MultipurposeUpdateView.as_view()
@@ -110,7 +117,7 @@ class MultipurposeDeleteView(BSModalDeleteView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:multi_purpose_data', kwargs={'username': username})
+        return reverse_lazy('patient:multi_purpose_list', kwargs={'username': username})
 
 
 multi_purpose_delete = MultipurposeDeleteView.as_view()

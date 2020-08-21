@@ -19,6 +19,14 @@ class FullnameLookup(ModelLookup):
 	filters = {'is_patient': True, }
 
 
+class StaffnameLookup(ModelLookup):
+	model = UserProfile
+	search_fields = (
+		'full_name__icontains',
+	)
+	filters = {'is_staff': True, }
+
+
 class FamilyNameLookup(ModelLookup):
 	model = Admission
 	search_fields = (

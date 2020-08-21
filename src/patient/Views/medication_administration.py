@@ -5,7 +5,7 @@ from django.db import connection
 from django.db.models import Count, Sum, F, Q
 from django.db.models.functions import Trunc
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, get_list_or_404, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -119,7 +119,7 @@ def medication_administration_create(request, username):
 	GROUP_SIZE = 4
 
 	if request.method == 'POST':
-		formset_factory = MedicationAdministrationRecord_FormSet_Factory(request.POST or None)
+		formset_factory = MedicationAdministrationRecordFormSet(request.POST or None)
 
 		if formset_factory.is_valid():
 			for item in formset_factory:
@@ -144,8 +144,8 @@ def medication_administration_create(request, username):
 		else:
 			messages.warning(request, formset_factory.errors)
 	else:
-		formset_factory = MedicationAdministrationRecord_FormSet_Factory(initial=initial_formset_factory)
-#       formset_factory = MedicationAdministrationRecord_FormSet_Factory(initial=[{'medication_date': get_today} for medication_date in queryset])
+		formset_factory = MedicationAdministrationRecordFormSet(initial=initial_formset_factory)
+#       formset_factory = MedicationAdministrationRecordFormSet(initial=[{'medication_date': get_today} for medication_date in queryset])
 
 	context = {
 		'logos': logos,
@@ -171,13 +171,13 @@ def medication_administration_create(request, username):
 class MedicationAdministrationRecordUpdateView(BSModalUpdateView):
 	model = MedicationAdministrationRecord
 	template_name = 'patient/medication_administration/partial_edit.html'
-	form_class = MedicationAdministrationRecord_FormSet_Factory
+	form_class = MedicationAdministrationRecordFormSet
 	page_title = _('MedicationAdministrationRecord Form')
 	success_message = _(page_title + ' form has been save successfully.')
 
 	def get_success_url(self):
 		username = self.kwargs['username']
-		return reverse_lazy('patient:medication_administration_data', kwargs={'username': username})
+		return reverse_lazy('patient:medication_administration_list', kwargs={'username': username})
 
 
 medication_administration_edit = MedicationAdministrationRecordUpdateView.as_view()
@@ -191,7 +191,7 @@ class MedicationAdministrationRecordDeleteView(BSModalDeleteView):
 
 	def get_success_url(self):
 		username = self.kwargs['username']
-		return reverse_lazy('patient:medication_administration_data', kwargs={'username': username})
+		return reverse_lazy('patient:medication_administration_list', kwargs={'username': username})
 
 
 medication_administration_delete = MedicationAdministrationRecordDeleteView.as_view()

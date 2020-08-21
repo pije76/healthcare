@@ -34,3 +34,12 @@ class DressingForm(BSModalModelForm):
 		super().__init__(*args, **kwargs)
 		self.helper = FormHelper()
 		self.fields['photos'].label = ''
+
+
+Dressing_FormSet_Factory = formset_factory(
+	DressingForm,
+	#   formset = MedicationAdministrationRecord_BaseFormSetFactory,
+	extra=0,
+	max_num=0,
+	#   can_delete=True,
+)

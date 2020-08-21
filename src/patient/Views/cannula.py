@@ -64,24 +64,31 @@ def cannula_create(request, username):
 		'urinary_catheter_inserted_by': request.user
 	}
 
+	initial_formset_factory = [
+	{
+		'patient': patients,
+		'ic_number': icnumbers,
+	}]
+
 	if request.method == 'POST':
-		form = CannulaForm(request.POST or None)
-		if form.is_valid():
-			profile = Cannula()
-			profile.patient = patients
-			profile.cannula_date = form.cleaned_data['cannula_date']
-			profile.cannula_size = form.cleaned_data['cannula_size']
-			profile.cannula_location = form.cleaned_data['cannula_location']
-			profile.cannula_due_date = form.cleaned_data['cannula_due_date']
-			profile.save()
+		formset = Cannula_FormSet_Factory(request.POST or None)
+		if formset.is_valid():
+			for item in formset:
+				profile = Cannula()
+				profile.patient = patients
+				profile.cannula_date = item.cleaned_data['cannula_date']
+				profile.cannula_size = item.cleaned_data['cannula_size']
+				profile.cannula_location = item.cleaned_data['cannula_location']
+				profile.cannula_due_date = item.cleaned_data['cannula_due_date']
+				profile.save()
 
 			messages.success(request, _(page_title + ' form was created.'))
 			return redirect('patient:patientdata_detail', username=patients.username)
 		else:
-			messages.warning(request, form.errors)
+			messages.warning(request, formset.errors)
 
 	else:
-		form = CannulaForm(initial=initial)
+		formset = Cannula_FormSet_Factory(initial=initial_formset_factory)
 
 	context = {
 		'logos': logos,
@@ -90,7 +97,7 @@ def cannula_create(request, username):
 		'patients': patients,
 		'profiles': profiles,
 		'icnumbers': icnumbers,
-		'form': form,
+		'formset': formset,
 	}
 
 	return render(request, 'patient/cannula/cannula_form.html', context)
@@ -105,7 +112,7 @@ class CannulaUpdateView(BSModalUpdateView):
 
 	def get_success_url(self):
 		username = self.kwargs['username']
-		return reverse_lazy('patient:cannula_data', kwargs={'username': username})
+		return reverse_lazy('patient:cannula_list', kwargs={'username': username})
 
 
 cannula_edit = CannulaUpdateView.as_view()
@@ -119,7 +126,7 @@ class CannulaDeleteView(BSModalDeleteView):
 
 	def get_success_url(self):
 		username = self.kwargs['username']
-		return reverse_lazy('patient:cannula_data', kwargs={'username': username})
+		return reverse_lazy('patient:cannula_list', kwargs={'username': username})
 
 
 cannula_delete = CannulaDeleteView.as_view()

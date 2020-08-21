@@ -23,3 +23,12 @@ class VisitingConsultantForm(BSModalModelForm):
     complaints = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control"}))
     treatment_orders = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control"}))
     consultant = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+
+
+VisitingConsultant_FormSet_Factory = formset_factory(
+    VisitingConsultantForm,
+    #   formset = MedicationAdministrationRecord_BaseFormSetFactory,
+    extra=0,
+    max_num=0,
+    #   can_delete=True,
+)

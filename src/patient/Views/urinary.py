@@ -106,7 +106,7 @@ class UrinaryUpdateView(BSModalUpdateView):
 
 	def get_success_url(self):
 		username = self.kwargs['username']
-		return reverse_lazy('patient:urinary_data', kwargs={'username': username})
+		return reverse_lazy('patient:urinary_list', kwargs={'username': username})
 
 
 urinary_edit = UrinaryUpdateView.as_view()
@@ -120,7 +120,7 @@ class UrinaryDeleteView(BSModalDeleteView):
 
 	def get_success_url(self):
 		username = self.kwargs['username']
-		return reverse_lazy('patient:urinary_data', kwargs={'username': username})
+		return reverse_lazy('patient:urinary_list', kwargs={'username': username})
 
 
 urinary_delete = UrinaryDeleteView.as_view()

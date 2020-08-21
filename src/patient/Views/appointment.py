@@ -131,7 +131,7 @@ class AppointmentUpdateView(BSModalUpdateView):
 
 	def get_success_url(self):
 		username = self.kwargs['username']
-		return reverse_lazy('patient:appointment_data', kwargs={'username': username})
+		return reverse_lazy('patient:appointment_list', kwargs={'username': username})
 
 
 appointment_edit = AppointmentUpdateView.as_view()
@@ -145,7 +145,7 @@ class AppointmentDeleteView(BSModalDeleteView):
 
 	def get_success_url(self):
 		username = self.kwargs['username']
-		return reverse_lazy('patient:appointment_data', kwargs={'username': username})
+		return reverse_lazy('patient:appointment_list', kwargs={'username': username})
 
 
 appointment_delete = AppointmentDeleteView.as_view()

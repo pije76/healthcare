@@ -61,27 +61,34 @@ def medication_record_create(request, username):
         'staff': request.user,
     }
 
+    initial_formset_factory = [
+    {
+        'patient': patients,
+        'ic_number': icnumbers,
+    }]
+
     if request.method == 'POST':
-        form = MedicationRecordForm(request.POST or None)
-        if form.is_valid():
-            profile = MedicationRecord()
-            profile.patient = patients
-            profile.date = form.cleaned_data['date']
-            profile.time = form.cleaned_data['time']
-            profile.medication = form.cleaned_data['medication']
-            profile.dosage = form.cleaned_data['dosage']
-            profile.topup = form.cleaned_data['topup']
-            profile.balance = form.cleaned_data['balance']
-            profile.remark = form.cleaned_data['remark']
-            profile.staff = form.cleaned_data['staff']
-            profile.save()
+        formset = MedicationRecord_FormSet_Factory(request.POST or None)
+        if formset.is_valid():
+            for item in formset:
+                profile = MedicationRecord()
+                profile.patient = patients
+                profile.date = item.cleaned_data['date']
+                profile.time = item.cleaned_data['time']
+                profile.medication = item.cleaned_data['medication']
+                profile.dosage = item.cleaned_data['dosage']
+                profile.topup = item.cleaned_data['topup']
+                profile.balance = item.cleaned_data['balance']
+                profile.remark = item.cleaned_data['remark']
+                profile.staff = item.cleaned_data['staff']
+                profile.save()
 
             messages.success(request, _(page_title + ' form was created.'))
             return redirect('patient:patientdata_detail', username=patients.username)
         else:
-            messages.warning(request, form.errors)
+            messages.warning(request, formset.errors)
     else:
-        form = MedicationRecordForm(initial=initial)
+        formset = MedicationRecord_FormSet_Factory(initial=initial_formset_factory)
 
     context = {
         'logos': logos,
@@ -90,7 +97,7 @@ def medication_record_create(request, username):
         'patients': patients,
         'profiles': profiles,
         'icnumbers': icnumbers,
-        'form': form,
+        'formset': formset,
     }
 
     return render(request, 'patient/medication/medication_form.html', context)
@@ -105,7 +112,7 @@ class MedicationRecordUpdateView(BSModalUpdateView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:medication_data', kwargs={'username': username})
+        return reverse_lazy('patient:medication_list', kwargs={'username': username})
 
 
 medication_edit = MedicationRecordUpdateView.as_view()
@@ -119,7 +126,7 @@ class MedicationRecordDeleteView(BSModalDeleteView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:medication_data', kwargs={'username': username})
+        return reverse_lazy('patient:medication_list', kwargs={'username': username})
 
 
 medication_delete = MedicationRecordDeleteView.as_view()

@@ -1,24 +1,37 @@
 .detail {
-  padding: 10px 0px;
-  margin: 0px 0px 15px 0px;
-  width: 540px;
+	padding: 10px 0px;
+	width: 540px;
 }
 .detail_med {
-  padding: 10px 0px;
-  margin: 0px 0px 15px 0px;
-  width: 100%;
+	padding: 10px 0px;
+	width: 100%;
+}
+.detail_table {
+	padding: 10px 0px;
+	width: auto;
+}
+.patient_detail {
+	margin: 0 0 10px;
+	padding: 10px 0px;
+	width: 540px;
+}
+.form_table {
+	padding-top: 10px;
 }
 .link_detail {
-  margin-bottom: 5px;
-  width: max-content;
+	margin-bottom: 5px;
+	width: max-content;
 }
 
 .link_detail a {
-  text-align: left;
+	text-align: left;
 }
 
 @media (min-width: 576px)
 .modal-dialog {
-    max-width: 500px;
-    margin: 1.75rem auto;
+	max-width: 500px;
+	margin: 1.75rem auto;
+}
+.kirim {
+	margin-right: 10px;
 }

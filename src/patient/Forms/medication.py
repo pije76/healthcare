@@ -28,3 +28,11 @@ class MedicationRecordForm(BSModalModelForm):
     remark = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
     staff = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 
+
+MedicationRecord_FormSet_Factory = formset_factory(
+    MedicationRecordForm,
+    #   formset = MedicationAdministrationRecord_BaseFormSetFactory,
+    extra=0,
+    max_num=0,
+    #   can_delete=True,
+)

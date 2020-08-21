@@ -94,7 +94,7 @@ class NursingUpdateView(BSModalUpdateView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:nursing_data', kwargs={'username': username})
+        return reverse_lazy('patient:nursing_list', kwargs={'username': username})
 
 
 nursing_edit = NursingUpdateView.as_view()
@@ -108,7 +108,7 @@ class NursingDeleteView(BSModalDeleteView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:nursing_data', kwargs={'username': username})
+        return reverse_lazy('patient:nursing_list', kwargs={'username': username})
 
 
 nursing_delete = NursingDeleteView.as_view()

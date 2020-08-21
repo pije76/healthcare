@@ -26,3 +26,12 @@ class CannulaForm(BSModalModelForm):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.helper = FormHelper()
+
+
+Cannula_FormSet_Factory = formset_factory(
+	CannulaForm,
+	#   formset = MedicationAdministrationRecord_BaseFormSetFactory,
+	extra=0,
+	max_num=0,
+	#   can_delete=True,
+)

@@ -28,3 +28,11 @@ class VitalSignFlowForm(BSModalModelForm):
     respiration = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
     spo2_percentage = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
     spo2_o2 = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
+
+VitalSignFlow_FormSet_Factory = formset_factory(
+    VitalSignFlowForm,
+    #   formset = MedicationAdministrationRecord_BaseFormSetFactory,
+    extra=0,
+    max_num=0,
+    #   can_delete=True,
+)

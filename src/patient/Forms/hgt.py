@@ -26,3 +26,11 @@ class HGTForm(BSModalModelForm):
 #   remark = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'autocomplete': 'off', 'pattern': '[A-Za-z ]+', 'title': 'Enter Characters Only '}))
     done_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 
+
+HGT_FormSet_Factory = formset_factory(
+    HGTForm,
+    #   formset = MedicationAdministrationRecord_BaseFormSetFactory,
+    extra=0,
+    max_num=0,
+    #   can_delete=True,
+)

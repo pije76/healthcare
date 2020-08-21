@@ -12,6 +12,7 @@
 {% block content %}
 
 {% block styles %}
+	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/patient/physio_progress_note_front.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
@@ -21,7 +22,7 @@
 
 <div class="row isi">
 
-	<div class="formtitle">
+	<div class="row formtitle">
 		{{ page_title }}
 	</div>
 

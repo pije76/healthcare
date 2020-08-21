@@ -24,3 +24,10 @@ class MaintenanceForm(BSModalModelForm):
     reported_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
     status = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=Maintenance.STATUS_CHOICES)
 
+Maintenance_FormSet_Factory = formset_factory(
+    MaintenanceForm,
+    #   formset = MedicationAdministrationRecord_BaseFormSetFactory,
+    extra=0,
+    max_num=0,
+    #   can_delete=True,
+)

@@ -3,16 +3,27 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.utils.translation import ugettext_lazy as _
 from django.dispatch import receiver
+from django.contrib.auth.base_user import *
 
 #from patient_form.models import Admission
 from allauth.account.signals import email_confirmed
 from allauth.account.signals import user_signed_up
+from phonenumber_field.modelfields import PhoneNumber, PhoneNumberField
+#from phonenumber_field.validators import validate_international_phonenumber
+from phonenumber_field.phonenumber import to_python
 
 #from smart_selects.db_fields import ChainedForeignKey
 
 # from tenant_users.tenants.models import UserProfile
 
 ic_number_validator = RegexValidator("\d{6}\-\d{2}\-\d{4}", "IC Number format needs to be yymmdd-xx-zzzz.")
+
+def validate_international_phonenumber(value):
+	phone_number = to_python(value)
+	if phone_number and not phone_number.is_valid():
+		raise ValidationError(
+			_("Please enter valid phone number with following format: +[countrycode][areacode][phonenumber]"), code="invalid_phone_number"
+		)
 
 class Role(models.Model):
 	PATIENT = 1
@@ -50,6 +61,21 @@ class UserProfile(AbstractUser):
 	last_name = models.CharField(max_length=255, blank=True, null=True)
 	full_name = models.CharField(_('Full Name'), max_length=255, blank=True, null=True)
 	ic_number = models.CharField(_('IC Number'), max_length=14, validators=[ic_number_validator], unique=True, blank=True, null=True)
+	birth_date = models.DateField(blank=True, null=True)
+	age = models.CharField(max_length=255, blank=True, null=True)
+	gender = models.CharField(max_length=255, blank=True, null=True)
+	marital_status = models.CharField(max_length=255, blank=True, null=True)
+	marital_status_others = models.CharField(max_length=255, blank=True, null=True)
+#	phone = PhoneNumberField(blank=True, default="+600000000000", validators=[validate_international_phonenumber])
+	religion = models.CharField(max_length=255, blank=True, null=True)
+	religion_others = models.CharField(max_length=255, blank=True, null=True)
+	occupation = models.CharField(max_length=255, blank=True, null=True)
+	occupation_others = models.CharField(max_length=255, blank=True, null=True)
+	communication_sight = models.CharField(max_length=255, blank=True, null=True)
+	communication_hearing = models.CharField(max_length=255, blank=True, null=True)
+	communication_hearing_others = models.CharField(max_length=255, blank=True, null=True)
+	address = models.CharField(max_length=255, blank=True, null=True)
+
 	is_patient = models.BooleanField('Patient', default=False)
 	is_staff = models.BooleanField(_('Staff'), default=False)
 	is_superuser = models.BooleanField('Admin', default=False)
@@ -117,24 +143,50 @@ class UserProfile(AbstractUser):
 #    def __str__(self):
 #        return self.ic_number.upper()
 
-class PatientProfile(UserProfile):
-	user = models.OneToOneField(UserProfile, parent_link=True, related_name='patient_profile', on_delete=models.CASCADE, blank=False, null=False)
+
+class EmergencyContact(models.Model):
+	ec_name = models.CharField(_('Family Name'), max_length=255, blank=True, null=True)
+#	ec_name = models.OneToOneField(UserProfile, related_name='emergencycontact_name', on_delete=models.CASCADE, blank=False, null=True)
+	ec_ic_number = models.CharField(_('NRIC Number'), max_length=14, blank=True, null=True)
+	ec_relationship = models.CharField(_('Family Relationship'), max_length=255, blank=True, null=True)
+#	ec_phone = models.CharField(_('Contact Number'), max_length=255, blank=True, null=True)
+	ec_phone = PhoneNumberField(_('Family Contact No'), validators=[validate_international_phonenumber], blank=True, null=True)
+	ec_address = models.CharField(_('Family Address'), max_length=255, blank=True, null=True)
+
+	def __str__(self):
+		return str(self.ec_name)
 
 	class Meta:
-		verbose_name = _('Patient')
-		verbose_name_plural = _("Patient")
+		verbose_name = _('Emergency Contact')
+		verbose_name_plural = _("Emergency Contact")
+
+
+#class PatientProfile(models.Model):
+class PatientProfile(UserProfile):
+#	objects = BaseUserManager()
+
+#	user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+#	user = models.OneToOneField(UserProfile, parent_link=True, related_name='patient_profile', on_delete=models.CASCADE, blank=False, null=False)
+
+	class Meta:
+		verbose_name = _('Patient Profile')
+		verbose_name_plural = _("Patient Profile")
+		proxy = True
+
 
 class StaffProfile(UserProfile):
-	user = models.OneToOneField(UserProfile, parent_link=True, related_name='staff_profile', on_delete=models.CASCADE, blank=False, null=False)
+#	user = models.OneToOneField(UserProfile, parent_link=True, related_name='staff_profile', on_delete=models.CASCADE, blank=False, null=False)
 
 	class Meta:
-		verbose_name = _('Staff')
-		verbose_name_plural = _("Staff")
+		verbose_name = _('Staff Profile')
+		verbose_name_plural = _("Staff Profile")
+		proxy = True
+
 
 class AdminProfile(UserProfile):
-	user = models.OneToOneField(UserProfile, parent_link=True, related_name='admin_profile', on_delete=models.CASCADE, blank=False, null=False)
+#	user = models.OneToOneField(UserProfile, parent_link=True, related_name='admin_profile', on_delete=models.CASCADE, blank=False, null=False)
 
 	class Meta:
-		verbose_name = _('Admin')
-		verbose_name_plural = _("Admin")
-
+		verbose_name = _('Admin Profile')
+		verbose_name_plural = _("Admin Profile")
+		proxy = True

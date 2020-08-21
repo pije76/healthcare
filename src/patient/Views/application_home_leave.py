@@ -26,7 +26,6 @@ start_time_night = datetime.datetime.strptime('12:01', '%H:%M').time()
 end_time_night = datetime.datetime.strptime('23:59', '%H:%M').time()
 
 
-
 @login_required
 def application_home_leave_list(request, username):
 	schema_name = connection.schema_name
@@ -47,6 +46,7 @@ def application_home_leave_list(request, username):
 
 	return render(request, 'patient/application_home_leave/application_home_leave_data.html', context)
 
+
 @login_required
 def application_home_leave_create(request, username):
 	schema_name = connection.schema_name
@@ -58,8 +58,8 @@ def application_home_leave_create(request, username):
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
-			#       'patient': patients,
-			#       'ic_number': icnumbers,
+#       'patient': patients,
+#       'ic_number': icnumbers,
 	}
 
 	if request.method == 'POST':
@@ -109,7 +109,7 @@ class ApplicationForHomeLeaveUpdateView(BSModalUpdateView):
 
 	def get_success_url(self):
 		username = self.kwargs['username']
-		return reverse_lazy('patient:application_home_leave_data', kwargs={'username': username})
+		return reverse_lazy('patient:application_home_leave_list', kwargs={'username': username})
 
 
 application_home_leave_edit = ApplicationForHomeLeaveUpdateView.as_view()
@@ -123,8 +123,7 @@ class ApplicationForHomeLeaveDeleteView(BSModalDeleteView):
 
 	def get_success_url(self):
 		username = self.kwargs['username']
-		return reverse_lazy('patient:application_home_leave_data', kwargs={'username': username})
+		return reverse_lazy('patient:application_home_leave_list', kwargs={'username': username})
 
 
 application_home_leave_delete = ApplicationForHomeLeaveDeleteView.as_view()
-

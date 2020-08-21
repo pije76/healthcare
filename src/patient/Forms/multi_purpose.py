@@ -21,3 +21,12 @@ class MultipurposeForm(BSModalModelForm):
     date_time = forms.DateTimeField(required=False, label="", initial=timezone.now, input_formats=settings.DATETIME_INPUT_FORMATS, widget=DateTimePickerInput(format="%d/%m/%Y %H:%M", attrs={'class': "form-control"}))
     symptom = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
     remark = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+
+
+Multipurpose_FormSet_Factory = formset_factory(
+    MultipurposeForm,
+    #   formset = MedicationAdministrationRecord_BaseFormSetFactory,
+    extra=0,
+    max_num=0,
+    #   can_delete=True,
+)

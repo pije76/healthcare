@@ -54,7 +54,7 @@
 		{{ page_title }}
 	</div>
 
-	{% include 'patient/patient_title.html' %}
+	{% include 'patient/patient_data.html' %}
 
 	<div class="row">
 
@@ -68,7 +68,7 @@
 						<form method="post" action="">
 						{% csrf_token %}
 						{% endfor %}
-							<table id="t_add_row" class="table table-striped table-bordered display" style="width:100%">
+							<table id="t_add_row" class="table table-striped table-bordered">
 								<thead>
 									<tr>
 										<th class="text-center">{% trans "Date" %}</th>

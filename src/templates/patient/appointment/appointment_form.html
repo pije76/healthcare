@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block styles %}
+	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/patient/appointment.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet" type="text/css">
 	<style>
@@ -27,90 +28,48 @@
 
 {% block content %}
 
-<div class="row isi">
+<div class="container-fluid">
 
-	<div class="formtitle">
+	<div class="row formtitle">
 		{{ page_title }}
 	</div>
 
-	<div class="clear"></div>
+	{% include 'patient/patient_formset.html' %}
 
-
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	<div class="row rounded form_table">
 
 		<form method="post">
 		{% csrf_token %}
 
-			<div class="container-fluid" id="appointment">
+			<table class="table table-bordered">
 
-				<div class="row">
-					<div class="col-2 col">
-						{% trans "Name" %}:
-					</div>
+				<thead class="thead-light">
+					<tr>
+						<th class="text-center" scope="col">{% trans "Date & Time" %}</th>
+						<th class="text-center" scope="col">{% trans "Hospital/Clinic/Center" %}</th>
+						<th class="text-center" scope="col">{% trans "Department" %}</th>
+						<th class="text-center" scope="col">{% trans "Planning & Investigation" %}</th>
+						<th class="text-center" scope="col">{% trans "Treatment/Order" %}</th>
+					</tr>
+				</thead>
+				<tbody>
 
-					<div class="col-4 col">
-						{{ patients }}
-						{{ form.patient|as_crispy_field }}
-					</div>
-				</div>
+				<tr>
+					<td>{{ form.date_time|as_crispy_field }}</td>
+					<td>{{ form.hospital_clinic_center|as_crispy_field }}</td>
+					<td>{{ form.department|as_crispy_field }}</td>
+					<td>{{ form.planning_investigation|as_crispy_field }}</td>
+					<td>{{ form.treatment_order|as_crispy_field }}</td>
+				</tr>
+				</tbody>
 
-				<div class="row">
-					<div class="col-2 col">
-						{% trans "I/C No" %}:
-					</div>
-					<div class="col-4 col">
-						{{ icnumbers }}
-					</div>
-				</div>
-			</div>
+			</table>
 
-			<div class="container-fluid" id="appointment">
-
-				<div class="row">
-					<div class="col-2 col text-center">
-						{% trans "Date" %}
-					</div>
-					<div class="col-2 col text-center">
-						{% trans "Time" %}
-					</div>
-					<div class="col-2 col text-center">
-						{% trans "Hospital/Clinic/Center" %}
-					</div>
-					<div class="col-2 col text-center">
-						{% trans "Department" %}
-					</div>
-					<div class="col-2 col text-center">
-						{% trans "Planning & Investigation" %}
-					</div>
-					<div class="col-2 col text-center">
-						{% trans "Treatment/Order" %}
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-4 col">
-						{{ form.date_time|as_crispy_field }}
-					</div>
-					<div class="col-2 col">
-						{{ form.hospital_clinic_center|as_crispy_field }}
-					</div>
-					<div class="col-2 col">
-						{{ form.department|as_crispy_field }}
-					</div>
-					<div class="col-2 col">
-						{{ form.planning_investigation|as_crispy_field }}
-					</div>
-					<div class="col-2 col">
-						{{ form.treatment_order|as_crispy_field }}
-					</div>
-				</div>
-			</div>
-
-			<br />
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 			{% for item in profiles %}
 			<a class="btn btn-danger" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
 			{% endfor %}
+
 		</form>
 
 	</div>

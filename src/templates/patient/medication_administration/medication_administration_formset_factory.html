@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block styles %}
+	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/patient/medication_administration.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
@@ -26,7 +27,7 @@
 
 <div class="row isi">
 
-	<div class="formtitle">
+	<div class="row formtitle">
 		{{ page_title }}
 	</div>
 

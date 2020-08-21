@@ -128,7 +128,7 @@ class PhysiotherapyGeneralAssessmentUpdateView(BSModalUpdateView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:physiotherapy_general_assessment_data', kwargs={'username': username})
+        return reverse_lazy('patient:physiotherapy_general_assessment_list', kwargs={'username': username})
 
 
 physiotherapy_general_assessment_edit = PhysiotherapyGeneralAssessmentUpdateView.as_view()
@@ -142,7 +142,7 @@ class PhysiotherapyGeneralAssessmentDeleteView(BSModalDeleteView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:physiotherapy_general_assessment_data', kwargs={'username': username})
+        return reverse_lazy('patient:physiotherapy_general_assessment_list', kwargs={'username': username})
 
 
 physiotherapy_general_assessment_delete = PhysiotherapyGeneralAssessmentDeleteView.as_view()

@@ -61,23 +61,19 @@
 								</div>
 							</div>
 
-							{% if user.is_staff %}
 							<div class="form-group row">
-								<label for="icnumber" class="col-4 col-form-label">{% trans "Position" %}</label>
+								<label for="icnumber" class="col-4 col-form-label">{% trans "Gender" %}</label>
 								<div class="col-6">
-									Staff
+									{{ item.gender }}
 								</div>
 							</div>
-							{% endif %}
 
-							{% if user.is_patient %}
 							<div class="form-group row">
-								<label for="icnumber" class="col-4 col-form-label">{% trans "Status" %}</label>
+								<label for="icnumber" class="col-4 col-form-label">{% trans "Birth Date" %}</label>
 								<div class="col-6">
-									Patient
+									{{ item.birth_date }}
 								</div>
 							</div>
-							{% endif %}
 					</div>
 				{% endfor %}
 				{% endif %}

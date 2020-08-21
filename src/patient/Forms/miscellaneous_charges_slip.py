@@ -24,3 +24,10 @@ class MiscellaneousChargesSlipForm(BSModalModelForm):
     amount = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
     given_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 
+MiscellaneousChargesSlip_FormSet_Factory = formset_factory(
+    MiscellaneousChargesSlipForm,
+    #   formset = MedicationAdministrationRecord_BaseFormSetFactory,
+    extra=0,
+    max_num=0,
+    #   can_delete=True,
+)

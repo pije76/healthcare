@@ -97,7 +97,7 @@ class PhysioProgressNoteBackUpdateView(BSModalUpdateView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:physio_progress_note_back_data', kwargs={'username': username})
+        return reverse_lazy('patient:physio_progress_note_back_list', kwargs={'username': username})
 
 
 physio_progress_note_back_edit = PhysioProgressNoteBackUpdateView.as_view()
@@ -111,7 +111,7 @@ class PhysioProgressNoteBackDeleteView(BSModalDeleteView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:physio_progress_note_back_data', kwargs={'username': username})
+        return reverse_lazy('patient:physio_progress_note_back_list', kwargs={'username': username})
 
 
 physio_progress_note_back_delete = PhysioProgressNoteBackDeleteView.as_view()

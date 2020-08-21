@@ -107,7 +107,7 @@ class NasogastricUpdateView(BSModalUpdateView):
 
 	def get_success_url(self):
 		username = self.kwargs['username']
-		return reverse_lazy('patient:nasogastric_data', kwargs={'username': username})
+		return reverse_lazy('patient:nasogastric_list', kwargs={'username': username})
 
 
 nasogastric_edit = NasogastricUpdateView.as_view()
@@ -121,7 +121,7 @@ class NasogastricDeleteView(BSModalDeleteView):
 
 	def get_success_url(self):
 		username = self.kwargs['username']
-		return reverse_lazy('patient:nasogastric_data', kwargs={'username': username})
+		return reverse_lazy('patient:nasogastric_list', kwargs={'username': username})
 
 
 nasogastric_delete = NasogastricDeleteView.as_view()

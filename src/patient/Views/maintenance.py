@@ -59,24 +59,31 @@ def maintenance_create(request, username):
         'reported_by': request.user,
     }
 
+    initial_formset_factory = [
+    {
+        'patient': patients,
+        'ic_number': icnumbers,
+    }]
+
     if request.method == 'POST':
-        form = MaintenanceForm(request.POST or None)
-        if form.is_valid():
-            profile = Maintenance()
-            profile.patient = patients
-            profile.date = form.cleaned_data['date']
-            profile.items = form.cleaned_data['items']
-            profile.location_room = form.cleaned_data['location_room']
-            profile.reported_by = form.cleaned_data['reported_by']
-            profile.status = form.cleaned_data['status']
-            profile.save()
+        formset = Maintenance_FormSet_Factory(request.POST or None)
+        if formset.is_valid():
+            for item in formset:
+                profile = Maintenance()
+                profile.patient = patients
+                profile.date = item.cleaned_data['date']
+                profile.items = item.cleaned_data['items']
+                profile.location_room = item.cleaned_data['location_room']
+                profile.reported_by = item.cleaned_data['reported_by']
+                profile.status = item.cleaned_data['status']
+                profile.save()
 
             messages.success(request, _(page_title + ' form was created.'))
             return redirect('patient:patientdata_detail', username=patients.username)
         else:
-            messages.warning(request, form.errors)
+            messages.warning(request, formset.errors)
     else:
-        form = MaintenanceForm(initial=initial)
+        formset = Maintenance_FormSet_Factory(initial=initial_formset_factory)
 
     context = {
         'logos': logos,
@@ -85,7 +92,7 @@ def maintenance_create(request, username):
         'patients': patients,
         'profiles': profiles,
         'icnumbers': icnumbers,
-        'form': form,
+        'formset': formset,
     }
 
     return render(request, 'patient/maintenance/maintenance_form.html', context)
@@ -100,7 +107,7 @@ class MaintenanceUpdateView(BSModalUpdateView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:maintenance_data', kwargs={'username': username})
+        return reverse_lazy('patient:maintenance_list', kwargs={'username': username})
 
 
 maintenance_edit = MaintenanceUpdateView.as_view()
@@ -114,7 +121,7 @@ class MaintenanceDeleteView(BSModalDeleteView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:maintenance_data', kwargs={'username': username})
+        return reverse_lazy('patient:maintenance_list', kwargs={'username': username})
 
 
 maintenance_delete = MaintenanceDeleteView.as_view()

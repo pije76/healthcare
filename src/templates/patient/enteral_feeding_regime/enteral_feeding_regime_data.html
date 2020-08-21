@@ -29,7 +29,7 @@
 		{{ page_title }}
 	</div>
 
-	{% include 'patient/patient_title.html' %}
+	{% include 'patient/patient_data.html' %}
 
 	<div class="row">
 
@@ -41,7 +41,7 @@
 					<div class="table-responsive">
 						<form method="post" action="">
 						{% csrf_token %}
-							<table id="t_add_row" class="table table-striped table-bordered display" style="width:100%">
+							<table id="t_add_row" class="table table-striped table-bordered">
 								<thead>
 									<tr>
 										<th class="text-center">{% trans "Time" %}</th>

@@ -21,22 +21,29 @@
 
 {% block content %}
 
-<div class="row border rounded detail">
+<div class="row border rounded patient_detail">
 
-	<div class="col-12">
 		{% if patients %}
-				{% for item in patients %}
-				<div class="col-4">
-					<span id="name_title">{% trans "Name" %}:</span>
-					<span id="name_field">{{ item.full_name }}</span>
-				</div>
-				<div class="col-6">
-					<span id="class_title">{% trans "IC Number" %}:</span>
-					<span id="class_field">{{ item.ic_number }}</span>
-				</div>
-				{% endfor %}
+			{% for item in patients %}
+			<div class="col-4">
+			<span id="name_title">{% trans "Name" %}:</span>
+		</div>
+
+		<div class="col-4">
+			<span id="name_field">{{ item.full_name }}</span>
+		</div>
+
+		<div class="w-100"></div>
+
+		<div class="col-4">
+			<span id="name_title">{% trans "IC Number" %}:</span>
+		</div>
+
+		<div class="col-4">
+			<span id="name_field">{{ item.ic_number }}</span>
+		</div>
+			{% endfor %}
 		{% endif %}
-	</div>
 
 </div>
 

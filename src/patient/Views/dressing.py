@@ -64,27 +64,34 @@ def dressing_create(request, username):
 		'done_by': request.user,
 	}
 
+	initial_formset_factory = [
+	{
+		'patient': patients,
+		'ic_number': icnumbers,
+	}]
+
 	if request.method == 'POST':
-		form = DressingForm(request.POST or None, request.FILES)
-		if form.is_valid():
-			profile = Dressing()
-			profile.patient = patients
-			profile.date = form.cleaned_data['date']
-			profile.time = form.cleaned_data['time']
-			profile.frequency_dressing = form.cleaned_data['frequency_dressing']
-			profile.type_dressing = form.cleaned_data['type_dressing']
-			profile.wound_location = form.cleaned_data['wound_location']
-			profile.wound_condition = form.cleaned_data['wound_condition']
-			profile.photos = form.cleaned_data['photos']
-			profile.done_by = form.cleaned_data['done_by']
-			profile.save()
+		formset = Dressing_FormSet_Factory(request.POST or None, request.FILES or None)
+		if formset.is_valid():
+			for item in formset:
+				profile = Dressing()
+				profile.patient = patients
+				profile.date = item.cleaned_data['date']
+				profile.time = item.cleaned_data['time']
+				profile.frequency_dressing = item.cleaned_data['frequency_dressing']
+				profile.type_dressing = item.cleaned_data['type_dressing']
+				profile.wound_location = item.cleaned_data['wound_location']
+				profile.wound_condition = item.cleaned_data['wound_condition']
+				profile.photos = item.cleaned_data['photos']
+				profile.done_by = item.cleaned_data['done_by']
+				profile.save()
 
 			messages.success(request, _(page_title + ' form was created.'))
 			return redirect('patient:patientdata_detail', username=patients.username)
 		else:
-			messages.warning(request, form.errors)
+			messages.warning(request, formset.errors)
 	else:
-		form = DressingForm(initial=initial)
+		formset = Dressing_FormSet_Factory(initial=initial_formset_factory)
 
 	context = {
 		'logos': logos,
@@ -93,7 +100,7 @@ def dressing_create(request, username):
 		'patients': patients,
 		'profiles': profiles,
 		'icnumbers': icnumbers,
-		'form': form,
+		'formset': formset,
 	}
 
 	return render(request, 'patient/dressing/dressing_form.html', context)
@@ -108,7 +115,7 @@ class DressingUpdateView(BSModalUpdateView):
 
 	def get_success_url(self):
 		username = self.kwargs['username']
-		return reverse_lazy('patient:dressing_data', kwargs={'username': username})
+		return reverse_lazy('patient:dressing_list', kwargs={'username': username})
 
 
 dressing_edit = DressingUpdateView.as_view()
@@ -122,7 +129,7 @@ class DressingDeleteView(BSModalDeleteView):
 
 	def get_success_url(self):
 		username = self.kwargs['username']
-		return reverse_lazy('patient:dressing_data', kwargs={'username': username})
+		return reverse_lazy('patient:dressing_list', kwargs={'username': username})
 
 
 dressing_delete = DressingDeleteView.as_view()

@@ -12,16 +12,17 @@
 {% block content %}
 
 {% block styles %}
+	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/patient/vital_sign_flow.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block extrahead %}
-	{{ form.media }}
+	{{ formset.media }}
 {% endblock %}
 
 <div class="row isi">
 
-	<div class="formtitle">
+	<div class="row formtitle">
 		{{ page_title }}
 	</div>
 
@@ -29,18 +30,9 @@
 
 		<form method="post">
 			{% csrf_token %}
-			<table class="table-sm table-bordered">
-				<tbody>
-					<tr>
-						<td>{% trans "Name" %}:</td>
-						<td>{{ patients }}{{ form.patient|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "I/C No" %}:</td>
-						<td>{{ icnumbers }}</td>
-					</tr>
-				</tbody>
-			</table>
+
+			{% include 'patient/patient_formset.html' %}
+
 			<table class="table table-bordered">
 				<col>
 					<colgroup span="2"></colgroup>
@@ -48,13 +40,14 @@
 					<colgroup span="2"></colgroup>
 				</col>
 				<tr>
-					<th class="text-center"rowspan="2">{% trans "Date" %}</th>
-					<th class="text-center"rowspan="2">{% trans "Time" %}</th>
-					<th class="text-center"rowspan="2">{% trans "Temp (ºC)" %}</th>
-					<th class="text-center"rowspan="2">{% trans "Pulse (bpm)" %}</th>
-					<th class="text-center"colspan="2" scope="colgroup">{% trans "Blood Pressure (mmHg)" %}</th>
-					<th class="text-center"rowspan="2">{% trans "Respiration (min)" %}</th>
-					<th class="text-center"colspan="2" scope="colgroup">{% trans "SPO2" %}</th>
+					<th class="text-center" rowspan="2">{% trans "Date" %}</th>
+					<th class="text-center" rowspan="2">{% trans "Time" %}</th>
+					<th class="text-center" rowspan="2">{% trans "Temp (ºC)" %}</th>
+					<th class="text-center" rowspan="2">{% trans "Pulse (bpm)" %}</th>
+					<th class="text-center" colspan="2" scope="colgroup">{% trans "Blood Pressure (mmHg)" %}</th>
+					<th class="text-center" rowspan="2">{% trans "Respiration (min)" %}</th>
+					<th class="text-center" colspan="2" scope="colgroup">{% trans "SPO2" %}</th>
+					<th class="text-center" rowspan="2">{% trans "Action" %}</th>
 				</tr>
 				<tr>
 					<th class="text-center"scope="col">{% trans "Systolic" %}</th>
@@ -62,17 +55,25 @@
 					<th class="text-center"scope="col">{% trans "(%)" %}</th>
 					<th class="text-center"scope="col">{% trans "O2/min" %}</th>
 				</tr>
-				<tr>
-					<td>{{ form.date|as_crispy_field }}</td>
-					<td>{{ form.time|as_crispy_field }}</td>
-					<td>{{ form.temp|as_crispy_field }}</td>
-					<td>{{ form.pulse|as_crispy_field }}</td>
-					<td>{{ form.blood_pressure_systolic|as_crispy_field }}</td>
-					<td>{{ form.blood_pressure_diastolic|as_crispy_field }}</td>
-					<td>{{ form.respiration|as_crispy_field }}</td>
-					<td>{{ form.spo2_percentage|as_crispy_field }}</td>
-					<td>{{ form.spo2_o2|as_crispy_field }}</td>
+				{{ formset.management_form }}
+				{% for item in formset %}
+				<tr class="form_row">
+					<td>{{ item.date|as_crispy_field }}</td>
+					<td>{{ item.time|as_crispy_field }}</td>
+					<td>{{ item.temp|as_crispy_field }}</td>
+					<td>{{ item.pulse|as_crispy_field }}</td>
+					<td>{{ item.blood_pressure_systolic|as_crispy_field }}</td>
+					<td>{{ item.blood_pressure_diastolic|as_crispy_field }}</td>
+					<td>{{ item.respiration|as_crispy_field }}</td>
+					<td>{{ item.spo2_percentage|as_crispy_field }}</td>
+					<td>{{ item.spo2_o2|as_crispy_field }}</td>
+					<td>
+						<button type="button" class="btn btn-success add_form_row">
+						<i class="fas fa-plus"></i>
+						</button>
+					</td>
 				</tr>
+				{% endfor %}
 			</table>
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 			{% for item in profiles %}
@@ -84,4 +85,102 @@
 
 </div>
 
+{% endblock %}
+
+{% block js %}
+	<script type='text/javascript'>
+	function cloneMore(selector, prefix)
+	{
+		var newElement = $(selector).clone(true);
+		var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+
+		$(newElement).find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function()
+		{
+			var name = $(this).attr('name').replace('-' + (total-1) + '-', '-' + total + '-');
+			var id = 'id_' + name;
+			$(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+		});
+
+		$(newElement).find('label').each(function()
+		{
+			var forValue = $(this).attr('for');
+			if (forValue)
+			{
+				forValue = forValue.replace('-' + (total-1) + '-', '-' + total + '-');
+				$(this).attr({'for': forValue});
+			}
+		});
+
+		$(newElement).find('[id$="date"]')
+			.removeClass('datepickerinput').removeAttr('#id_form-0-date').removeData('DateTimePicker')
+			.unbind().datetimepicker(
+				options={
+					"format": "DD/MM/YYYY",
+				}
+			);
+
+		$(newElement).find('[id$="time"]')
+			.removeClass('timepickerinput').removeAttr('#id_form-0-time').removeData('DateTimePicker')
+			.unbind().datetimepicker(
+				options={
+					"format": "HH:mm",
+				}
+			);
+
+		total++;
+
+		$('#id_' + prefix + '-TOTAL_FORMS').val(total);
+		$(selector).after(newElement);
+		var conditionRow = $('.form_row:not(:last)');
+		conditionRow.find('.btn.add_form_row')
+		.removeClass('btn-success').addClass('btn-danger')
+		.removeClass('add_form_row').addClass('remove_form_row')
+		.html('<i class="fas fa-minus"></i>');
+		console.log(selector);
+		return false;
+	}
+
+	$(document).on('click', '.add_form_row', function(e)
+	{
+		e.preventDefault();
+		cloneMore('.form_row:last', 'form');
+		return false;
+	});
+
+	function updateElementIndex(el, prefix, ndx)
+	{
+		var id_regex = new RegExp('(' + prefix + '-\\d+)');
+		var replacement = prefix + '-' + ndx;
+		if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+		if (el.id) el.id = el.id.replace(id_regex, replacement);
+		if (el.name) el.name = el.name.replace(id_regex, replacement);
+	}
+
+	function deleteForm(prefix, btn)
+	{
+		var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+		if (total > 1)
+		{
+			btn.closest('.form_row').remove();
+			var forms = $('.form_row');
+			$('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+			for (var i=0, formCount=forms.length; i<formCount; i++)
+			{
+				$(forms.get(i)).find(':input').each(function()
+				{
+					updateElementIndex(this, prefix, i);
+				});
+			}
+		}
+		return false;
+	}
+
+	$(document).on('click', '.remove_form_row', function(e)
+	{
+		e.preventDefault();
+		deleteForm('form', $(this));
+		return false;
+	});
+
+	</script>
 {% endblock %}

@@ -65,24 +65,31 @@ def hgt_create(request, username):
         'done_by': request.user,
     }
 
+    initial_formset_factory = [
+    {
+        'patient': patients,
+        'ic_number': icnumbers,
+    }]
+
     if request.method == 'POST':
-        form = HGTForm(request.POST or None)
-        if form.is_valid():
-            profile = HGT()
-            profile.patient = patients
-            profile.date = form.cleaned_data['date']
-            profile.time = form.cleaned_data['time']
-            profile.blood_glucose_reading = form.cleaned_data['blood_glucose_reading']
-            profile.remark = form.cleaned_data['remark']
-            profile.done_by = form.cleaned_data['done_by']
-            profile.save()
+        formset = HGT_FormSet_Factory(request.POST or None)
+        if formset.is_valid():
+            for item in formset:
+                profile = HGT()
+                profile.patient = patients
+                profile.date = item.cleaned_data['date']
+                profile.time = item.cleaned_data['time']
+                profile.blood_glucose_reading = item.cleaned_data['blood_glucose_reading']
+                profile.remark = item.cleaned_data['remark']
+                profile.done_by = item.cleaned_data['done_by']
+                profile.save()
 
             messages.success(request, _(page_title + ' form was created.'))
             return redirect('patient:patientdata_detail', username=patients.username)
         else:
-            messages.warning(request, form.errors)
+            messages.warning(request, formset.errors)
     else:
-        form = HGTForm(initial=initial)
+        formset = HGT_FormSet_Factory(initial=initial_formset_factory)
 
     context = {
         'logos': logos,
@@ -91,7 +98,7 @@ def hgt_create(request, username):
         'patients': patients,
         'profiles': profiles,
         'icnumbers': icnumbers,
-        'form': form,
+        'formset': formset,
     }
 
     return render(request, 'patient/hgt/hgt_form.html', context)
@@ -107,7 +114,7 @@ class HGTUpdateView(BSModalUpdateView):
 
 #    def get_success_url(self):
 #        username = self.kwargs['username']
-#        return reverse_lazy('patient:hgt_data', kwargs={'username': username})
+#        return reverse_lazy('patient:hgt_list', kwargs={'username': username})
 
 
 hgt_edit = HGTUpdateView.as_view()
@@ -121,7 +128,7 @@ class HGTDeleteView(BSModalDeleteView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:hgt_data', kwargs={'username': username})
+        return reverse_lazy('patient:hgt_list', kwargs={'username': username})
 
 
 hgt_delete = HGTDeleteView.as_view()

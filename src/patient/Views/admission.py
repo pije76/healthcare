@@ -23,30 +23,6 @@ end_time_night = datetime.datetime.strptime('23:59', '%H:%M').time()
 
 
 @login_required
-def save_admission_form(request, form, template_name):
-	data = dict()
-
-	if request.method == 'POST':
-		if form.is_valid():
-			patients = Admission()
-			patients = form.save(commit=False)
-			patients.patient = request.user
-			patients.save()
-			data['form_is_valid'] = True
-			patients = Admission.objects.all()
-			data['html_admission_list'] = render_to_string('patient/admission/admission.html', {'patients': patients})
-		else:
-			data['form_is_valid'] = False
-
-	context = {
-		'form': form,
-	}
-	data['html_form'] = render_to_string(template_name, context, request=request)
-
-	return JsonResponse(data)
-
-
-@login_required
 def admission_list(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
@@ -78,10 +54,6 @@ def admission_create(request, username):
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
-	initial_form = {
-		'patient': patients,
-		'ic_number': icnumbers,
-	}
 	initial_formset_factory = [
 	{
 		'patient': patients,
@@ -98,16 +70,15 @@ def admission_create(request, username):
 			for item in formset:
 				profile = Admission()
 				profile.patient = patients
+#				profile.ic_number = item.cleaned_data['ic_number']
 				profile.date = item.cleaned_data['date']
 				profile.time = item.cleaned_data['time']
 				profile.admitted = item.cleaned_data['admitted']
 				profile.admitted_others = item.cleaned_data['admitted_others']
 				profile.mode = item.cleaned_data['mode']
 				profile.birth_date = item.cleaned_data['birth_date']
-				today = datetime.date.today()
 				delta_day = int((datetime.datetime.now().date() - profile.birth_date).days / 365.24219)
 				profile.age = delta_day
-#				age = item.cleaned_data['age']
 				profile.gender = item.cleaned_data['gender']
 				profile.marital_status = item.cleaned_data['marital_status']
 				profile.marital_status_others = item.cleaned_data['marital_status_others']
@@ -185,16 +156,6 @@ def admission_create(request, username):
 	return render(request, 'patient/admission/admission_form.html', context)
 
 
-@login_required
-def admission_edit(request, id):
-	admissions = get_object_or_404(Admission, pk=id)
-	if request.method == 'POST':
-		form = AdmissionForm(request.POST or None, instance=admissions)
-	else:
-		form = AdmissionForm(instance=admissions)
-	return save_admission_form(request, form, 'patient/admission/partial_edit.html')
-
-
 class AdmissionUpdateView(BSModalUpdateView):
 	model = Admission
 #	initial = {
@@ -202,14 +163,14 @@ class AdmissionUpdateView(BSModalUpdateView):
 #		'value2': 'bar'
 #	}
 	template_name = 'patient/admission/partial_edit.html'
-	form_class = AdmissionForm
+	form_class = Admission_ModelForm
 	page_title = _('Admission Form')
 	success_message = _(page_title + ' form has been save successfully.')
-#	success_url = reverse_lazy('patient:admission')
+#	success_url = reverse_lazy('patient:admission_list')
 
 	def get_success_url(self):
 		username = self.kwargs['username']
-		return reverse_lazy('patient:admission', kwargs={'username': username})
+		return reverse_lazy('patient:admission_list', kwargs={'username': username})
 
 	def get_initial(self):
 		return {'patient': 'foo', 'value2': 'bar'}
@@ -238,25 +199,6 @@ class AdmissionUpdateView(BSModalUpdateView):
 admission_edit = AdmissionUpdateView.as_view()
 
 
-@login_required
-def admission_delete(request, id):
-	admissions = get_object_or_404(Admission, pk=id)
-	data = dict()
-
-	if request.method == 'POST':
-		admissions.delete()
-		data['form_is_valid'] = True
-		patients = Admission.objects.all()
-		data['html_admission_list'] = render_to_string('patient/admission/admission.html', {'patients': patients})
-		return JsonResponse(data)
-	else:
-		context = {'admissions': admissions}
-		data['html_form'] = render_to_string('patient/admission/partial_delete.html', context, request=request)
-		return JsonResponse(data)
-
-	return JsonResponse(data)
-
-
 class AdmissionDeleteView(BSModalDeleteView):
 	model = Admission
 	template_name = 'patient/admission/partial_delete.html'
@@ -265,6 +207,6 @@ class AdmissionDeleteView(BSModalDeleteView):
 
 	def get_success_url(self):
 		username = self.kwargs['username']
-		return reverse_lazy('patient:admission', kwargs={'username': username})
+		return reverse_lazy('patient:admission_list', kwargs={'username': username})
 
 admission_delete = AdmissionDeleteView.as_view()

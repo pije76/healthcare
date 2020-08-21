@@ -12,6 +12,7 @@
 {% block content %}
 
 {% block styles %}
+	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/patient/intake_output.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
@@ -21,7 +22,7 @@
 
 <div class="row isi">
 
-	<div class="formtitle">
+	<div class="row formtitle">
 		{{ page_title }}
 	</div>
 
@@ -29,25 +30,8 @@
 
 		<form method="post">
 		{% csrf_token %}
-			<table class="table-sm table-bordered">
-				<tbody>
-					<tr>
-						<td>{% trans "Name" %}:</td>
-						<td>
-							{{ patients }}
-							{% if formset %}
-							{% for item in formset %}
-							{{ item.patient|as_crispy_field }}
-							{% endfor %}
-							{% endif %}
-						</td>
-					</tr>
-					<tr>
-						<td>{% trans "I/C No" %}:</td>
-						<td>{{ icnumbers }}</td>
-					</tr>
-				</tbody>
-			</table>
+
+			{% include 'patient/patient_formset.html' %}
 
 			<table class="table table-bordered">
 				<tr>

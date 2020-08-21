@@ -61,23 +61,30 @@ def visiting_consultant_records_create(request, username):
         'ic_number': icnumbers,
     }
 
+    initial_formset_factory = [
+    {
+        'patient': patients,
+        'ic_number': icnumbers,
+    }]
+
     if request.method == 'POST':
-        form = VisitingConsultantForm(request.POST or None)
-        if form.is_valid():
-            profile = VisitingConsultant()
-            profile.patient = patients
-            profile.date_time = form.cleaned_data['date_time']
-            profile.complaints = form.cleaned_data['complaints']
-            profile.treatment_orders = form.cleaned_data['treatment_orders']
-            profile.consultant = form.cleaned_data['consultant']
-            profile.save()
+        formset = VisitingConsultant_FormSet_Factory(request.POST or None)
+        if formset.is_valid():
+            for item in formset:
+                profile = VisitingConsultant()
+                profile.patient = patients
+                profile.date_time = item.cleaned_data['date_time']
+                profile.complaints = item.cleaned_data['complaints']
+                profile.treatment_orders = item.cleaned_data['treatment_orders']
+                profile.consultant = item.cleaned_data['consultant']
+                profile.save()
 
             messages.success(request, _(page_title + ' form was created.'))
             return redirect('patient:patientdata_detail', username=patients.username)
         else:
-            messages.warning(request, form.errors)
+            messages.warning(request, formset.errors)
     else:
-        form = VisitingConsultantForm(initial=initial)
+        formset = VisitingConsultant_FormSet_Factory(initial=initial_formset_factory)
 
     context = {
         'logos': logos,
@@ -86,7 +93,7 @@ def visiting_consultant_records_create(request, username):
         'patients': patients,
         'profiles': profiles,
         'icnumbers': icnumbers,
-        'form': form,
+        'formset': formset,
     }
 
     return render(request, 'patient/visiting_consultant_records/visiting_consultant_records_form.html', context)
@@ -100,7 +107,7 @@ class VisitingConsultantUpdateView(BSModalUpdateView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:visiting_consultant_records_data', kwargs={'username': username})
+        return reverse_lazy('patient:visiting_consultant_records_list', kwargs={'username': username})
 
 
 visiting_consultant_records_edit = VisitingConsultantUpdateView.as_view()
@@ -114,7 +121,7 @@ class VisitingConsultantDeleteView(BSModalDeleteView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:visiting_consultant_records_data', kwargs={'username': username})
+        return reverse_lazy('patient:visiting_consultant_records_list', kwargs={'username': username})
 
 
 visiting_consultant_records_delete = VisitingConsultantDeleteView.as_view()

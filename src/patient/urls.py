@@ -11,6 +11,7 @@ from patient.Views.enteral_feeding_regime import *
 from patient.Views.hgt import *
 from patient.Views.application_home_leave import *
 from patient.Views.intake_output import *
+from patient.Views.investigationreport import *
 from patient.Views.maintenance import *
 from patient.Views.medication import *
 from patient.Views.medication_administration import *
@@ -49,6 +50,7 @@ urlpatterns = [
     path('<username>/hgt/', hgt_list, name='hgt_list'),
     path('<username>/application-home-leave/', application_home_leave_list, name='application_home_leave_list'),
     path('<username>/intake-output/', intake_output_list, name='intake_output_list'),
+    path('<username>/investigationreport/', investigationreport_list, name='investigationreport_list'),
     path('<username>/maintenance/', maintenance_list, name='maintenance_list'),
     path('<username>/medication-administration/', medication_administration_list, name='medication_administration_list'),
     path('<username>/medication/', medication_list, name='medication_list'),
@@ -75,6 +77,7 @@ urlpatterns = [
     path('enteral-feeding-regime/<username>/', enteral_feeding_regime_create, name='enteral_feeding_regime_create'),
     path('hgt/<username>/', hgt_create, name='hgt_create'),
     path('intake-output/<username>/', intake_output_create, name='intake_output_create'),
+    path('investigationreport/<username>/', investigationreport_create, name='investigationreport_create'),
     path('maintenance/<username>/', maintenance_create, name='maintenance_create'),
     path('medication-administration/<username>/', medication_administration_create, name='medication_administration_create'),
     path('medication-record/<username>/', medication_record_create, name='medication_record_create'),
@@ -100,6 +103,7 @@ urlpatterns = [
     path('<username>/hgt/<int:pk>/edit', hgt_edit, name='hgt_edit'),
     path('<username>/application-home-leave/<int:pk>/edit', application_home_leave_edit, name='application_home_leave_edit'),
     path('<username>/intake-output/<int:pk>/edit', intake_output_edit, name='intake_output_edit'),
+    path('<username>/investigationreport/<int:pk>/edit', investigationreport_edit, name='investigationreport_edit'),
     path('<username>/maintenance/<int:pk>/edit', maintenance_edit, name='maintenance_edit'),
     path('<username>/medication-administration/<int:pk>/edit', medication_administration_edit, name='medication_administration_edit'),
     path('<username>/medication/<int:pk>/edit', medication_edit, name='medication_edit'),
@@ -125,6 +129,7 @@ urlpatterns = [
     path('<username>/hgt/<int:pk>/delete', hgt_delete, name='hgt_delete'),
     path('<username>/application-home-leave/<int:pk>/delete', application_home_leave_delete, name='application_home_leave_delete'),
     path('<username>/intake-output/<int:pk>/delete', intake_output_delete, name='intake_output_delete'),
+    path('<username>/investigationreport/<int:pk>/delete', investigationreport_delete, name='investigationreport_delete'),
     path('<username>/maintenance/<int:pk>/delete', maintenance_delete, name='maintenance_delete'),
     path('<username>/medication-administration/<int:pk>/delete', medication_administration_delete, name='medication_administration_delete'),
     path('<username>/medication/<int:pk>/delete', medication_delete, name='medication_delete'),

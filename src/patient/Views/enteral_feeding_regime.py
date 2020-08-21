@@ -116,7 +116,7 @@ class EnteralFeedingRegimeUpdateView(BSModalUpdateView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:enteral_feeding_regime_data', kwargs={'username': username})
+        return reverse_lazy('patient:enteral_feeding_regime_list', kwargs={'username': username})
 
 
 enteral_feeding_regime_edit = EnteralFeedingRegimeUpdateView.as_view()
@@ -130,7 +130,7 @@ class EnteralFeedingRegimeDeleteView(BSModalDeleteView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:enteral_feeding_regime_data', kwargs={'username': username})
+        return reverse_lazy('patient:enteral_feeding_regime_list', kwargs={'username': username})
 
 
 enteral_feeding_regime_delete = EnteralFeedingRegimeDeleteView.as_view()

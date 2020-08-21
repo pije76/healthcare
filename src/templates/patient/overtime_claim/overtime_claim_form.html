@@ -12,7 +12,9 @@
 {% block content %}
 
 {% block styles %}
+	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/patient/overtime_claim.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'selectable/css/dj.selectable.css' %}" type="text/css" media="all" rel="stylesheet">
 {% endblock %}
 
 {% block extrahead %}
@@ -21,26 +23,17 @@
 
 <div class="row isi">
 
-	<div class="formtitle">
+	<div class="row formtitle">
 		{{ page_title }}
 	</div>
 
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-		<form method="post">
+		<form method="post" id="dataForm" data-url="{% url 'load_ic_number' %}" novalidate>
 			{% csrf_token %}
-			<table class="table-sm table-bordered">
-				<tbody>
-					<tr>
-						<td>{% trans "Name" %}:</td>
-						<td>{{ patients }}{{ form.patient|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "I/C No" %}:</td>
-						<td>{{ icnumbers }}</td>
-					</tr>
-				</tbody>
-			</table>
+
+			{% include 'patient/patient_formset.html' %}
+
 			<table class="table table-bordered">
 				<thead>
 					<tr>
@@ -74,4 +67,34 @@
 
 </div>
 
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="{% static 'selectable/js/jquery.dj.selectable.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/patient/overtime_claim.js' %}"></script>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+$("#id_checked_sign_by").change(function()
+{
+	var url = $("#dataForm").attr("data-url");
+	var fullnameId = $(this).val();
+	console.log("url: ", url);
+	console.log("fullnameId: ", fullnameId);
+	$.ajax(
+	{
+		url: url,
+		data:
+		{
+			'full_name': fullnameId,
+		},
+
+		success: function(data)
+		{
+			$("#id_ic_number").val(data);
+		},
+	});
+});
+</script>
 {% endblock %}

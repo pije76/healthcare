@@ -47,7 +47,6 @@ def overtime_claim_list(request, username):
 #    start = profile.hours
 #    delta = profile.hours.strftime(profile.duration_time)
 #    delta = profile.hours + profile.duration_time
-#    print("delta:", delta)
 
 #    profile.duration_time = form.cleaned_data['duration_time']
 #    delta = datetime.time(profile.duration_time)
@@ -58,7 +57,6 @@ def overtime_claim_list(request, username):
 #    today = datetime.datetime.today()
 #    delta = OvertimeClaim.objects.all()
 #    delta = datetime.datetime(event_date.year, event_date.month, event_date.day, event_time.hour, event_time.minute, event_time.second)
-#    print(type(delta))
 
 #    profile.hours = form.cleaned_data['hours']
 #    profile.hours = datetime.datetime.strptime(duration_time, '%H:%M').time()
@@ -135,7 +133,6 @@ def overtime_claim_create(request, username):
     else:
         form = OvertimeClaimForm(initial=initial)
 
-    print("staffs: ", staffs)
     context = {
         'logos': logos,
         'titles': titles,
@@ -157,7 +154,7 @@ class OvertimeClaimUpdateView(BSModalUpdateView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:overtime_claim_data', kwargs={'username': username})
+        return reverse_lazy('patient:overtime_claim_list', kwargs={'username': username})
 
 
 overtime_claim_edit = OvertimeClaimUpdateView.as_view()
@@ -171,7 +168,7 @@ class OvertimeClaimDeleteView(BSModalDeleteView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:overtime_claim_data', kwargs={'username': username})
+        return reverse_lazy('patient:overtime_claim_list', kwargs={'username': username})
 
 
 overtime_claim_delete = OvertimeClaimDeleteView.as_view()

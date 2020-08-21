@@ -13,7 +13,8 @@
 {% block content %}
 
 {% block styles %}
-<link href="{% static 'css/patient/physiotherapy_general_assessment.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/patient/physiotherapy_general_assessment.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block extrahead %}
@@ -22,7 +23,7 @@
 
 <div class="row isi">
 
-	<div class="formtitle">
+	<div class="row formtitle">
 		{{ page_title }}
 	</div>
 
@@ -69,20 +70,20 @@
 					<div class="col-1 border-top">
 					</div>
 					<div class="col-3 col" style="border-left:1px solid #fff;">
+						<div style="text-align:center;margin-top:10px;">{% trans "Front Body" %}</div>
 						<img src="{% static "images/left_body.png" %}" class="figure-img img-fluid rounded mx-auto d-block" alt="Left Body"/>
 						<div style="display:block;">{% trans "RIGHT" %}
 						<p style="float:right">{% trans "LEFT" %}</p></div>
 						{{ form.front_body|as_crispy_field }}
-						<div style="text-align:center;">{% trans "Front Body" %}</div>
 					</div>
 
 					<div class="col-3 col" style="border-left:1px solid #fff;">
+							<div style="text-align:center;margin-top:10px;">{% trans "Back Body" %}</div>
 						<figure class="figure">
 							<img src="{% static "images/right_body.png" %}" class="figure-img img-fluid rounded mx-auto d-block" alt="Right Body"/>
 							<div style="display:block;">{% trans "LEFT" %}
 							<p style="float:right">{% trans "RIGHT" %}</p></div>
 							{{ form.back_body|as_crispy_field }}
-							<div style="text-align:center;">{% trans "Back Body" %}</div>
 						</figure>
 					</div>
 

@@ -4,21 +4,35 @@ $(document).ready(function()
 	{
 		"order": [[ 0, "desc" ]],
 		dom: 'Bfrtip',
-		responsive: true,
-		pageLength: 25,
-		lengthChange: false,
+//		responsive: true,
+//		pageLength: 25,
+//		lengthChange: false,
 		buttons: [
 		{
-            extend: 'print',
-            className: 'btn btn-outline-secondary',
-            text: 'Print',
-            autoPrint: false,
-            title: 'Overtime Claim Form',
-            init: function (api, node, config)
-            {
-                $(node).removeClass('dt-button buttons-print')
-            },
-        }],
+//			'print'
+			extend: 'print',
+			className: 'btn btn-outline-primary',
+//			text: '<i class="fa fa fa-print fa-2x">Print</i>',
+			text: '<i style="font-size:24px;" class="fa fa fa-print fa-2x"></i> Print',
+			autoPrint: true,
+			title: 'Overtime Claim Form',
+			init: function (api, node, config)
+			{
+				$(node).removeClass('dt-button buttons-print')
+			},
+//			customize: function(win)
+//			{
+//				$(win.document.body)
+//					.css('font-size', '10pt')
+//					.prepend(
+//						'<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
+//					);
+
+//				$(win.document.body).find('table')
+//					.addClass('compact')
+//					.css('font-size', 'inherit');
+//			},
+		}],
 
 //		"drawCallback": function(settings)
 //		{
@@ -66,5 +80,8 @@ $(document).ready(function()
 //			"searchable": false
 //		}]
 	});
+
+	$("#id_checked_sign_by").prop("disabled", true);
+
 
 });

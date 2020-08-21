@@ -58,23 +58,30 @@ def miscellaneous_charges_slip_create(request, username):
         'given_by': request.user,
     }
 
+    initial_formset_factory = [
+    {
+        'patient': patients,
+        'ic_number': icnumbers,
+    }]
+
     if request.method == 'POST':
-        form = MiscellaneousChargesSlipForm(request.POST or None)
+        formset = MiscellaneousChargesSlip_FormSet_Factory(request.POST or None)
         if form.is_valid():
-            profile = MiscellaneousChargesSlip()
-            profile.patient = patients
-            profile.date = form.cleaned_data['date']
-            profile.items_procedures = form.cleaned_data['items_procedures']
-            profile.amount_unit = form.cleaned_data['amount_unit']
-            profile.given_by = form.cleaned_data['given_by']
-            profile.save()
+            for item in formset:
+                profile = MiscellaneousChargesSlip()
+                profile.patient = patients
+                profile.date = item.cleaned_data['date']
+                profile.items_procedures = item.cleaned_data['items_procedures']
+                profile.amount_unit = item.cleaned_data['amount_unit']
+                profile.given_by = item.cleaned_data['given_by']
+                profile.save()
 
             messages.success(request, _(page_title + ' form was created.'))
             return redirect('patient:patientdata_detail', username=patients.username)
         else:
-            messages.warning(request, form.errors)
+            messages.warning(request, formset.errors)
     else:
-        form = MiscellaneousChargesSlipForm(initial=initial)
+        formset = MiscellaneousChargesSlip_FormSet_Factory(initial=initial_formset_factory)
 
     context = {
         'logos': logos,
@@ -83,7 +90,7 @@ def miscellaneous_charges_slip_create(request, username):
         'patients': patients,
         'profiles': profiles,
         'icnumbers': icnumbers,
-        'form': form,
+        'formset': formset,
     }
 
     return render(request, 'patient/miscellaneous_charges_slip/miscellaneous_charges_slip_form.html', context)
@@ -98,7 +105,7 @@ class MiscellaneousChargesSlipUpdateView(BSModalUpdateView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:miscellaneous_charges_slip_data', kwargs={'username': username})
+        return reverse_lazy('patient:miscellaneous_charges_slip_list', kwargs={'username': username})
 
 
 miscellaneous_charges_slip_edit = MiscellaneousChargesSlipUpdateView.as_view()
@@ -112,7 +119,7 @@ class MiscellaneousChargesSlipDeleteView(BSModalDeleteView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:miscellaneous_charges_slip_data', kwargs={'username': username})
+        return reverse_lazy('patient:miscellaneous_charges_slip_list', kwargs={'username': username})
 
 
 miscellaneous_charges_slip_delete = MiscellaneousChargesSlipDeleteView.as_view()

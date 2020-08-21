@@ -31,26 +31,6 @@ class AdmissionAdmin(admin.ModelAdmin):
 		'admitted_others',
 		'mode',
 
-		'birth_date',
-		'age',
-		'gender',
-		'marital_status',
-		'marital_status_others',
-		'religion',
-		'religion_others',
-		'occupation',
-		'occupation_others',
-		'communication_sight',
-		'communication_hearing',
-		'communication_hearing_others',
-		'address',
-
-		'ec_name',
-		'ec_ic_number',
-		'ec_relationship',
-		'ec_phone',
-		'ec_address',
-
 		'general_condition',
 		'vital_sign_temperature',
 		'vital_sign_pulse',
@@ -308,6 +288,19 @@ class OvertimeClaimAdmin(admin.ModelAdmin):
 	ModelAdmin.ordering = ('id',)
 
 
+class PhysiotherapyGeneralAssessmentAdmin(admin.ModelAdmin):
+	list_display = [
+		'id',
+		'patient',
+		'doctor_diagnosis',
+		'doctor_management',
+		'problem',
+		'front_body',
+		'back_body',
+		'pain_scale',
+	]
+	ModelAdmin.ordering = ('id',)
+
 admin.site.register(Admission, AdmissionAdmin)
 admin.site.register(ApplicationForHomeLeave, ApplicationForHomeLeaveAdmin)
 admin.site.register(Appointment, AppointmentAdmin)
@@ -327,7 +320,7 @@ admin.site.register(Nursing)
 admin.site.register(OvertimeClaim, OvertimeClaimAdmin)
 admin.site.register(PhysioProgressNoteBack)
 admin.site.register(PhysioProgressNoteFront)
-admin.site.register(PhysiotherapyGeneralAssessment)
+admin.site.register(PhysiotherapyGeneralAssessment, PhysiotherapyGeneralAssessmentAdmin)
 admin.site.register(Stool)
 admin.site.register(VitalSignFlow)
 admin.site.register(VisitingConsultant)

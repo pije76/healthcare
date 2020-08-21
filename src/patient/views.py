@@ -19,7 +19,6 @@ def patientdata_list(request):
 
 	if request.user.is_superuser or request.user.is_staff:
 		datastaff = UserProfile.objects.filter(is_patient=True).order_by("id")
-		print("datastaff1: ", datastaff)
 #		q = Q()
 #		for item in city_list:
 #			q = q | Q(address__city__icontains=city)
@@ -32,7 +31,6 @@ def patientdata_list(request):
 	if request.user.is_patient:
 		datastaff = UserProfile.objects.filter(full_name=request.user).order_by("id")
 #		datapatients = Admission.objects.filter(patient__in=datastaff)
-		print("datastaff2: ", datastaff)
 
 	context = {
 		'patients': patients,

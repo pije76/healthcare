@@ -59,28 +59,35 @@ def vital_sign_flow_create(request, username):
         'ic_number': icnumbers,
     }
 
+    initial_formset_factory = [
+    {
+        'patient': patients,
+        'ic_number': icnumbers,
+    }]
+
     if request.method == 'POST':
-        form = VitalSignFlowForm(request.POST or None)
-        if form.is_valid():
-            profile = VitalSignFlow()
-            profile.patient = patients
-            profile.date = form.cleaned_data['date']
-            profile.time = form.cleaned_data['time']
-            profile.temp = form.cleaned_data['temp']
-            profile.pulse = form.cleaned_data['pulse']
-            profile.blood_pressure_systolic = form.cleaned_data['blood_pressure_systolic']
-            profile.blood_pressure_diastolic = form.cleaned_data['blood_pressure_diastolic']
-            profile.respiration = form.cleaned_data['respiration']
-            profile.spo2_percentage = form.cleaned_data['spo2_percentage']
-            profile.spo2_o2 = form.cleaned_data['spo2_o2']
-            profile.save()
+        formset = VitalSignFlow_FormSet_Factory(request.POST or None)
+        if formset.is_valid():
+            for item in formset:
+                profile = VitalSignFlow()
+                profile.patient = patients
+                profile.date = item.cleaned_data['date']
+                profile.time = item.cleaned_data['time']
+                profile.temp = item.cleaned_data['temp']
+                profile.pulse = item.cleaned_data['pulse']
+                profile.blood_pressure_systolic = item.cleaned_data['blood_pressure_systolic']
+                profile.blood_pressure_diastolic = item.cleaned_data['blood_pressure_diastolic']
+                profile.respiration = item.cleaned_data['respiration']
+                profile.spo2_percentage = item.cleaned_data['spo2_percentage']
+                profile.spo2_o2 = item.cleaned_data['spo2_o2']
+                profile.save()
 
             messages.success(request, _(page_title + ' form was created.'))
             return redirect('patient:patientdata_detail', username=patients.username)
         else:
-            messages.warning(request, form.errors)
+            messages.warning(request, formset.errors)
     else:
-        form = VitalSignFlowForm(initial=initial)
+        formset = VitalSignFlow_FormSet_Factory(initial=initial_formset_factory)
 
     context = {
         'logos': logos,
@@ -89,7 +96,7 @@ def vital_sign_flow_create(request, username):
         'patients': patients,
         'profiles': profiles,
         'icnumbers': icnumbers,
-        'form': form,
+        'formset': formset,
     }
 
     return render(request, 'patient/vital_sign_flow/vital_sign_flow_form.html', context)
@@ -103,7 +110,7 @@ class VitalSignFlowUpdateView(BSModalUpdateView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:vital_sign_flow_data', kwargs={'username': username})
+        return reverse_lazy('patient:vital_sign_flow_list', kwargs={'username': username})
 
 
 vital_sign_flow_edit = VitalSignFlowUpdateView.as_view()
@@ -117,7 +124,7 @@ class VitalSignFlowDeleteView(BSModalDeleteView):
 
     def get_success_url(self):
         username = self.kwargs['username']
-        return reverse_lazy('patient:vital_sign_flow_data', kwargs={'username': username})
+        return reverse_lazy('patient:vital_sign_flow_list', kwargs={'username': username})
 
 
 vital_sign_flow_delete = VitalSignFlowDeleteView.as_view()
