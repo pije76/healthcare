@@ -1,10 +1,8 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
-{% load widget_tweaks %}
 
 {% block headtitle %}
 	{{ page_title }} | {{ titles.title }}
@@ -83,7 +81,7 @@
 											<td></td>
 											<td><b>Total: {{ total_annual.annual_leave_days__sum }}</b></td>
 											<td><b>Total: {{ total_public.public_holiday_days__sum }}</b></td>
-											<td></td>
+											<td><b>Total: {{ total_replacement.replacement_public_holiday__sum }}</b></td>
 											<td></td>
 											<td></td>
 											<td></td>

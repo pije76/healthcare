@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load staticfiles %}
 {% load i18n %}
 {% load crispy_forms_tags %}
 
@@ -23,9 +22,9 @@
 
 <div class="row border rounded patient_detail">
 
-		{% if patients %}
-			{% for item in patients %}
-			<div class="col-4">
+	{% if patients %}
+		{% for item in patients %}
+		<div class="col-4">
 			<span id="name_title">{% trans "Name" %}:</span>
 		</div>
 
@@ -42,8 +41,8 @@
 		<div class="col-4">
 			<span id="name_field">{{ item.ic_number }}</span>
 		</div>
-			{% endfor %}
-		{% endif %}
+		{% endfor %}
+	{% endif %}
 
 </div>
 
@@ -87,13 +86,16 @@
 								<a class="btn btn-primary"href="{% url 'patient:hgt_create' item.username %}">{% trans "HGT Chart" %}</a>
 							</div>
 							<div class="link_detail">
-								<a class="btn btn-primary"href="{% url 'patient:intake_output_create' item.username %}">{% trans "Intake Output Chart" %}</a>
+								<a class="btn btn-danger"href="{% url 'patient:intake_output_create' item.username %}">{% trans "Intake Output Chart" %}</a>
+							</div>
+							<div class="link_detail">
+								<a class="btn btn-primary"href="{% url 'patient:investigationreport_create' item.username %}">{% trans "Investigation Report" %}</a>
 							</div>
 							<div class="link_detail">
 								<a class="btn btn-primary"href="{% url 'patient:maintenance_create' item.username %}">{% trans "Maintenance Form" %}</a>
 							</div>
                             <div class="link_detail">
-                                <a class="btn btn-primary"href="{% url 'patient:medication_administration_create' item.username %}">{% trans "Medication Administration Record" %}</a>
+                                <a class="btn btn-danger"href="{% url 'patient:medication_administration_create' item.username %}">{% trans "Medication Administration Record" %}</a>
                             </div>
 							<div class="link_detail">
 								<a class="btn btn-primary"href="{% url 'patient:medication_record_create' item.username %}">{% trans "Medication Records" %}</a>
@@ -111,13 +113,13 @@
 								<a class="btn btn-primary"href="{% url 'patient:nursing_create' item.username %}">{% trans "Nursing Report" %}</a>
 							</div>
 							<div class="link_detail">
-								<a class="btn btn-primary"href="{% url 'patient:overtime_claim_create' item.username %}">{% trans "Overtime Claim" %}</a>
-							</div>
-							<div class="link_detail">
-								<a class="btn btn-primary"href="{% url 'patient:physio_progress_note_front_create' item.username %}">{% trans "Physiotherapy Progress Note Sheet - Front" %}</a>
+								<a class="btn btn-danger"href="{% url 'patient:overtime_claim_create' item.username %}">{% trans "Overtime Claim" %}</a>
 							</div>
 							<div class="link_detail">
 								<a class="btn btn-primary"href="{% url 'patient:physio_progress_note_back_create' item.username %}">{% trans "Physiotherapy Progress Note Sheet - Back" %}</a>
+							</div>
+							<div class="link_detail">
+								<a class="btn btn-primary"href="{% url 'patient:physio_progress_note_front_create' item.username %}">{% trans "Physiotherapy Progress Note Sheet - Front" %}</a>
 							</div>
 							<div class="link_detail">
 								<a class="btn btn-primary"href="{% url 'patient:physiotherapy_general_assessment_create' item.username %}">{% trans "Physiotherapy - General Assessment Form" %}</a>
@@ -151,73 +153,76 @@
 
 					{% for item in patients %}
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:admission_list' item.username %}">{% trans "Admission Form" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:admission_list' item.username %}">{% trans "Admission Form" %} ({{ admission|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:application_home_leave_list' item.username %}">{% trans "Application For Home Leave" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:application_home_leave_list' item.username %}">{% trans "Application For Home Leave" %} ({{ application_home_leave|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:appointment_list' item.username %}">{% trans "Appointment Records" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:appointment_list' item.username %}">{% trans "Appointment Records" %} ({{ appointment|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:cannula_list' item.username %}">{% trans "Cannula Chart" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:cannula_list' item.username %}">{% trans "Cannula Chart" %} ({{ cannula|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:dressing_list' item.username %}">{% trans "Dressing Chart" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:dressing_list' item.username %}">{% trans "Dressing Chart" %} ({{ dressing|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:enteral_feeding_regime_list' item.username %}">{% trans "Enteral Feeding Regime" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:enteral_feeding_regime_list' item.username %}">{% trans "Enteral Feeding Regime" %} ({{ enteralfeedingregime|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:hgt_list' item.username %}">{% trans "HGT Chart" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:hgt_list' item.username %}">{% trans "HGT Chart" %} ({{ hgt|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:intake_output_list' item.username %}">{% trans "Intake Output Chart" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:intake_output_list' item.username %}">{% trans "Intake Output Chart" %} ({{ intakeoutput|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:maintenance_list' item.username %}">{% trans "Maintenance Form" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:investigationreport_list' item.username %}">{% trans "Investigation Report" %} ({{ investigationreport|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:medication_administration_list' item.username %}">{% trans "Medication Administration Record" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:maintenance_list' item.username %}">{% trans "Maintenance Form" %} ({{ maintenance|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:medication_list' item.username %}">{% trans "Medication Records" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:medication_administration_list' item.username %}">{% trans "Medication Administration Record" %} ({{ medicationadministrationrecord|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:miscellaneous_charges_slip_list' item.username %}">{% trans "Miscellaneous Charges Slip" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:medication_list' item.username %}">{% trans "Medication Records" %} ({{ medicationrecord|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:multi_purpose_list' item.username %}">{% trans "Multipurpose Chart" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:miscellaneous_charges_slip_list' item.username %}">{% trans "Miscellaneous Charges Slip" %} ({{ miscellaneouschargesslip|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:nasogastric_list' item.username %}">{% trans "Nasogastric Chart" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:multi_purpose_list' item.username %}">{% trans "Multipurpose Chart" %} ({{ multipurpose|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:nursing_list' item.username %}">{% trans "Nursing Report" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:nasogastric_list' item.username %}">{% trans "Nasogastric Chart" %} ({{ nasogastric|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:overtime_claim_list' item.username %}">{% trans "Overtime Claim" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:nursing_list' item.username %}">{% trans "Nursing Report" %} ({{ nursing|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:physio_progress_note_front_list' item.username %}">{% trans "Physiotherapy Progress Note Sheet - Front" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:overtime_claim_list' item.username %}">{% trans "Overtime Claim" %} ({{ overtimeclaim|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:physio_progress_note_back_list' item.username %}">{% trans "Physiotherapy Progress Note Sheet - Back" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:physio_progress_note_back_list' item.username %}">{% trans "Physiotherapy Progress Note Sheet - Back" %} ({{ physioprogressnoteback|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:physiotherapy_general_assessment_list' item.username %}">{% trans "Physiotherapy - General Assessment Form" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:physio_progress_note_front_list' item.username %}">{% trans "Physiotherapy Progress Note Sheet - Front" %} ({{ physioprogressnotefront|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:stool_list' item.username %}">{% trans "Stool Chart" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:physiotherapy_general_assessment_list' item.username %}">{% trans "Physiotherapy - General Assessment Form" %} ({{ physiotherapygeneralassessment|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:urinary_list' item.username %}">{% trans "Urinary Chart" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:stool_list' item.username %}">{% trans "Stool Chart" %} ({{ stool|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:visiting_consultant_records_list' item.username %}">{% trans "Visiting Consultant" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:urinary_list' item.username %}">{% trans "Urinary Chart" %} ({{ urinary|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:vital_sign_flow_list' item.username %}">{% trans "Vital Sign Flow Sheet" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'patient:visiting_consultant_records_list' item.username %}">{% trans "Visiting Consultant" %} ({{ visitingconsultant|length }})</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-outline-primary"href="{% url 'patient:vital_sign_flow_list' item.username %}">{% trans "Vital Sign Flow Sheet" %} ({{ vitalsignflow|length }})</a>
 						</div>
 					{% endfor %}
 
@@ -263,6 +268,9 @@
 							<a class="btn btn-outline-primary"href="{% url 'patient:intake_output_list' item.username %}">{% trans "Intake Output Chart" %}</a>
 						</div>
 						<div class="link_detail">
+							<a class="btn btn-outline-primary"href="{% url 'patient:investigationreport_list' item.username %}">{% trans "Investigation Report" %}</a>
+						</div>
+						<div class="link_detail">
 							<a class="btn btn-outline-primary"href="{% url 'patient:maintenance_list' item.username %}">{% trans "Maintenance Form" %}</a>
 						</div>
 						<div class="link_detail">
@@ -270,9 +278,6 @@
 						</div>
 						<div class="link_detail">
 							<a class="btn btn-outline-primary"href="{% url 'patient:medication_list' item.username %}">{% trans "Medication Records" %}</a>
-						</div>
-						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:miscellaneous_charges_slip_list' item.username %}">{% trans "Miscellaneous Charges Slip" %}</a>
 						</div>
 						{% endfor %}
 
@@ -290,6 +295,9 @@
 					<div class="col-sm-6 text-sm-left">
 
 					{% for item in patients %}
+						<div class="link_detail">
+							<a class="btn btn-outline-primary"href="{% url 'patient:miscellaneous_charges_slip_list' item.username %}">{% trans "Miscellaneous Charges Slip" %}</a>
+						</div>
 						<div class="link_detail">
 							<a class="btn btn-outline-primary"href="{% url 'patient:multi_purpose_list' item.username %}">{% trans "Multipurpose Chart" %}</a>
 						</div>

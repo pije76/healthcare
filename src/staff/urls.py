@@ -17,7 +17,7 @@ urlpatterns = [
 #    re_path(r'^staff/$', staffdata_list, name='staffdata_list'),
 #    re_path(r'^staff/create', staffdata_create, name='staffdata_create'),
 #    re_path(r'^staff/(?P<pk>\d+)/delete', staffdata_delete, name='staffdata_delete'),
-    re_path(r'^load_ic_number/$', load_ic_number, name='load_ic_number'),
+#    re_path(r'^load_ic_number/$', load_ic_number, name='load_ic_number'),
 
     re_path(r'^(?P<username>\w+)/staff-records/$', staff_records_list, name='staff_records_list'),
 

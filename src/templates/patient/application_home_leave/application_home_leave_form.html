@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
 {% load selectable_tags %}
@@ -21,7 +20,7 @@
 	{{ form.media }}
 {% endblock %}
 
-<div class="row isi">
+<div class="container-fluid">
 
 	<div class="row formtitle">
 		{{ page_title }}
@@ -183,8 +182,10 @@
 				<br />
 				<b>{% trans "Note" %}</b>:<br />	{% trans "This form must be signed by the patient, carrier or a member of the family responsible if patient is physically and mentally unfit." %}
 			</div>
+			<br />
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 			{% for item in profiles %}
+			<a class="btn btn-outline-primary" href="{% url 'patient:application_home_leave_pdf' item.username %}"><i style="font-size:24px;" class="fa fa fa-print fa-2x"></i> Print</a>
 			<a class="btn btn-danger" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
 			{% endfor %}
 		</form>

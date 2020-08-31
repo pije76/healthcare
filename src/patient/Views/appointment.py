@@ -1,18 +1,18 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import connection
-from django.db.models import F, Func, Value, CharField
-from django.db.models import Value, CharField
+from django.db.models import F, Func, Value, CharField, Value, CharField
 from django.db.models.functions import Cast, Concat, ExtractYear, ExtractMonth, ExtractDay, ExtractHour, ExtractMinute
-from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
+from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 
 from patient.models import *
 from patient.Forms.appointment import *
 from accounts.models import *
+from accounts.decorators import *
 from customers.models import *
 
 from bootstrap_modal_forms.generic import *
@@ -73,6 +73,9 @@ def appointment_list(request, username):
 
 
 @login_required
+#@staff_required
+#@admin_required
+#@admin_required(login_url='/', redirect_field_name='', message='You are not authorised to view this page.')
 def appointment_create(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
@@ -88,7 +91,7 @@ def appointment_create(request, username):
 	}
 
 	if request.method == 'POST':
-		form = AppointmentForm(request.POST or None)
+		form = Appointment_Form(request.POST or None)
 
 		if form.is_valid():
 			profile = Appointment()
@@ -106,7 +109,7 @@ def appointment_create(request, username):
 			messages.warning(request, form.errors)
 
 	else:
-		form = AppointmentForm(initial=initial)
+		form = Appointment_Form(initial=initial)
 
 	context = {
 		'logos': logos,
@@ -121,11 +124,11 @@ def appointment_create(request, username):
 	return render(request, 'patient/appointment/appointment_form.html', context)
 
 
-
+@method_decorator(admin_required, name='dispatch')
 class AppointmentUpdateView(BSModalUpdateView):
 	model = Appointment
 	template_name = 'patient/appointment/partial_edit.html'
-	form_class = AppointmentForm
+	form_class = Appointment_ModelForm
 	page_title = _('Appointment Form')
 	success_message = _(page_title + ' form has been save successfully.')
 
@@ -137,6 +140,7 @@ class AppointmentUpdateView(BSModalUpdateView):
 appointment_edit = AppointmentUpdateView.as_view()
 
 
+@method_decorator(admin_required, name='dispatch')
 class AppointmentDeleteView(BSModalDeleteView):
 	model = Appointment
 	template_name = 'patient/appointment/partial_delete.html'

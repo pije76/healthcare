@@ -3,15 +3,13 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
 from django_tenants.models import TenantMixin, DomainMixin
-#from tenant_users.tenants.models import TenantBase
 
-
+# Create your models here.
 def upload_path(instance, filename):
     return '{0}/{1}'.format('logo_location', filename)
 
 
 class Client(TenantMixin):
-#class Client(TenantBase):
     name = models.CharField(max_length=100)
     title = models.CharField(max_length=255, null=True, blank=True)
     logo = models.FileField(upload_to="logo_location", null=True, blank=True)

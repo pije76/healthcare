@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load staticfiles %}
 {% load i18n %}
 {% load crispy_forms_tags %}
 
@@ -21,22 +20,28 @@
 
 {% block content %}
 
-<div class="row border rounded detail">
+<div class="row border rounded staff_detail">
+	{% if staffs %}
+		{% for item in staffs %}
+		<div class="col-4">
+			<span id="name_title">{% trans "Name" %}:</span>
+		</div>
 
-	<div class="col-12">
-		{% if staffs %}
-				{% for item in staffs %}
-				<div class="col-4">
-					<span id="name_title">{% trans "Name" %}:</span>
-					<span id="name_field">{{ item.full_name }}</span>
-				</div>
-				<div class="col-6">
-					<span id="class_title">{% trans "IC Number" %}:</span>
-					<span id="class_field">{{ item.ic_number }}</span>
-				</div>
-				{% endfor %}
-		{% endif %}
-	</div>
+		<div class="col-4">
+			<span id="name_field">{{ item.full_name }}</span>
+		</div>
+
+		<div class="w-100"></div>
+
+		<div class="col-4">
+			<span id="name_title">{% trans "IC Number" %}:</span>
+		</div>
+
+		<div class="col-4">
+			<span id="name_field">{{ item.ic_number }}</span>
+		</div>
+		{% endfor %}
+	{% endif %}
 
 </div>
 

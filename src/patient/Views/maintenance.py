@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.translation import ugettext as _
-from django.http import JsonResponse
+from django.urls import reverse, reverse_lazy
 
 from patient.models import *
 from patient.Forms.maintenance import *
@@ -53,11 +53,11 @@ def maintenance_create(request, username):
     profiles = UserProfile.objects.filter(username=username)
     icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
-    initial = {
-        'patient': patients,
-        'ic_number': icnumbers,
+    initial = [{
+        'patient': item.full_name,
         'reported_by': request.user,
     }
+    for item in profiles]
 
     initial_formset_factory = [
     {
@@ -66,7 +66,7 @@ def maintenance_create(request, username):
     }]
 
     if request.method == 'POST':
-        formset = Maintenance_FormSet_Factory(request.POST or None)
+        formset = Maintenance_FormSet(request.POST or None)
         if formset.is_valid():
             for item in formset:
                 profile = Maintenance()
@@ -83,7 +83,7 @@ def maintenance_create(request, username):
         else:
             messages.warning(request, formset.errors)
     else:
-        formset = Maintenance_FormSet_Factory(initial=initial_formset_factory)
+        formset = Maintenance_FormSet(initial=initial)
 
     context = {
         'logos': logos,
@@ -101,7 +101,7 @@ def maintenance_create(request, username):
 class MaintenanceUpdateView(BSModalUpdateView):
     model = Maintenance
     template_name = 'patient/maintenance/partial_edit.html'
-    form_class = MaintenanceForm
+    form_class = Maintenance_ModelForm
     page_title = _('Maintenance Form')
     success_message = _(page_title + ' form has been save successfully.')
 

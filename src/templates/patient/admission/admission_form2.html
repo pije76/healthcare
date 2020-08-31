@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block headtitle %}
+    {{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block extrahead %}
+	{{ patient_form.media }}
+	{{ formset.media }}
+{% endblock %}
+
+{% block styles %}
+	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/patient/admission.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block javascript %}
+	<script src="{% static 'js/patient/admission_form.js' %}" type="text/javascript"></script>
+	<script src="{% static 'js/jquery.formset.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+	<div class="row formtitle">
+		{{ page_title }}
+	</div>
+
+	{% include 'patient/patient_form.html' %}
+
+	<p style="font-size:12px">
+		{% include 'messages.html' %}
+	</p>
+
+	<div class="row admissionform">
+
+		<form method="post">
+			{% csrf_token %}
+
+			<div class="row">
+				<div class="col-2 col">
+					{% trans "Full name  (as per IC)" %}:
+				</div>
+				<div class="col-4 col">
+					<b>
+						{{ patient_form.patient|as_crispy_field }}
+						{{ patient_form.username|as_crispy_field }}
+						{{ patient_form.password|as_crispy_field }}
+						{{ patient_form.first_name|as_crispy_field }}
+						{{ patient_form.date_joined|as_crispy_field }}
+					</b>
+				</div>
+				<div class="col-3 col">
+					<b>{{ patient_form.ic_number|as_crispy_field }}</b>
+				</div>
+				<div class="col-3 col">
+					<b>{{ patient_form.ic_upload|as_crispy_field }}</b>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-2 col">
+					{% trans "Age" %}:
+				</div>
+				<div class="col-4 col">
+					{{ patient_form.age|as_crispy_field }}
+				</div>
+				<div class="col-2 col">
+					{% trans "Date of birth" %}:
+				</div>
+				<div class="col-4 col">
+					{{ patient_form.birth_date|as_crispy_field }}
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-2 col">
+					{% trans "Sex / Gender" %}:
+				</div>
+				<div class="col-10 col">
+					{{ patient_form.gender|as_crispy_field }}
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-2 col">
+					{% trans "Marital Status" %}:
+				</div>
+				<div class="col-4 col">
+					{{ patient_form.marital_status|as_crispy_field }}
+				</div>
+				<div class="col-3 col border-left-0">
+					{{ patient_form.marital_status_others|as_crispy_field }}
+				</div>
+				<div class="col-3 col border-left-0">
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-2 col">
+					{% trans "Religion" %}:
+				</div>
+				<div class="col-6 col">
+					{{ patient_form.religion|as_crispy_field }}
+				</div>
+				<div class="col-3 col border-left-0">
+					{{ patient_form.religion_others|as_crispy_field }}
+				</div>
+				<div class="col-1 col border-left-0">
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-2 col">
+					{% trans "Occupation" %}:
+				</div>
+				<div class="col-4 col">
+					{{ patient_form.occupation|as_crispy_field }}
+				</div>
+				<div class="col-3 col border-left-0">
+					{{ patient_form.occupation_others|as_crispy_field }}
+				</div>
+				<div class="col-3 col border-left-0">
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-2 col">
+					{% trans "Communication" %}:
+				</div>
+				<div class="col-10 col">
+					{{ patient_form.communication_sight|as_crispy_field }}
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-2 col border-top-0">
+				</div>
+				<div class="col-4 col">
+					{{ patient_form.communication_hearing|as_crispy_field }}
+				</div>
+				<div class="col-3 col border-left-0">
+					{{ patient_form.communication_hearing_others|as_crispy_field }}
+				</div>
+				<div class="col-3 col border-left-0">
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-2 col">
+					{% trans "Address" %}:
+				</div>
+				<div class="col-10 col">
+					{{ patient_form.address|as_crispy_field }}
+				</div>
+			</div>
+
+
+			<br />
+
+			<div class="row">
+				<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+				{% for item in profiles %}
+				<a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+				{% endfor %}
+			</div>
+		</form>
+
+
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type='text/javascript'>
+$(function()
+{
+    $('.formSet_Emerg').formset({
+    	prefix: 'formset',
+        addCssClass: 'btn btn-success',
+        addText: '<i class="fas fa-plus"></i>',
+        deleteCssClass: 'btn btn-danger',
+        deleteText: '<i class="fas fa-minus"></i>',
+        keepFieldValues : '#id_form-0-date, #id_form-0-time, #id_form-0-done_by',
+        deleteContainerClass: 'hapus_Emerg',
+        addContainerClass: 'tambah_Emerg',
+    })
+});
+
+$(function()
+{
+    $('.formSet_Diag').formset({
+    	prefix: 'formset',
+        addCssClass: 'btn btn-success',
+        addText: '<i class="fas fa-plus"></i>',
+        deleteCssClass: 'btn btn-danger',
+        deleteText: '<i class="fas fa-minus"></i>',
+        keepFieldValues: '#id_form-0-date_diagnosis',
+        deleteContainerClass: 'hapus_Diag',
+        addContainerClass: 'tambah_Diag',
+    })
+});
+
+$(function()
+{
+    $('.formSet_Opr').formset({
+    	prefix: 'formset',
+        addCssClass: 'btn btn-success',
+        addText: '<i class="fas fa-plus"></i>',
+        deleteCssClass: 'btn btn-danger',
+        deleteText: '<i class="fas fa-minus"></i>',
+        keepFieldValues: '#id_form-0-date_operation',
+        deleteContainerClass: 'hapus_Opr',
+        addContainerClass: 'tambah_Opr',
+    })
+});
+
+$(function()
+{
+    $('.formSet_Own').formset({
+    	prefix: 'formset',
+        addCssClass: 'btn btn-success',
+        addText: '<i class="fas fa-plus"></i>',
+        deleteCssClass: 'btn btn-danger',
+        deleteText: '<i class="fas fa-minus"></i>',
+        keepFieldValues: '#id_form-0-own_medication_dosage, #id_form-0-own_medication_tablet_capsule, #id_form-0-own_medication_frequency',
+        deleteContainerClass: 'hapus_Own',
+        addContainerClass: 'tambah_Own',
+    })
+});
+</script>
+{% endblock %}

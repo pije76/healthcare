@@ -4,7 +4,7 @@ from django.db import connection
 from django.db.models import F, Func, Value, CharField
 from django.db.models import Value, CharField
 from django.db.models.functions import Cast, Concat, ExtractYear, ExtractMonth, ExtractDay, ExtractHour, ExtractMinute
-from django.http import JsonResponse
+from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
@@ -47,7 +47,6 @@ def dressing_list(request, username):
 	return render(request, 'patient/dressing/dressing_data.html', context)
 
 
-
 @login_required
 def dressing_create(request, username):
 	schema_name = connection.schema_name
@@ -58,20 +57,15 @@ def dressing_create(request, username):
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
-	initial = {
-		'patient': patients,
-		'ic_number': icnumbers,
+	initial = [{
+		'patient': item.full_name,
 		'done_by': request.user,
 	}
-
-	initial_formset_factory = [
-	{
-		'patient': patients,
-		'ic_number': icnumbers,
-	}]
+	for item in profiles]
 
 	if request.method == 'POST':
-		formset = Dressing_FormSet_Factory(request.POST or None, request.FILES or None)
+		formset = Dressing_FormSet(request.POST or None, request.FILES or None)
+
 		if formset.is_valid():
 			for item in formset:
 				profile = Dressing()
@@ -83,6 +77,7 @@ def dressing_create(request, username):
 				profile.wound_location = item.cleaned_data['wound_location']
 				profile.wound_condition = item.cleaned_data['wound_condition']
 				profile.photos = item.cleaned_data['photos']
+				profile.note = item.cleaned_data['note']
 				profile.done_by = item.cleaned_data['done_by']
 				profile.save()
 
@@ -91,7 +86,7 @@ def dressing_create(request, username):
 		else:
 			messages.warning(request, formset.errors)
 	else:
-		formset = Dressing_FormSet_Factory(initial=initial_formset_factory)
+		formset = Dressing_FormSet(initial=initial)
 
 	context = {
 		'logos': logos,
@@ -109,7 +104,7 @@ def dressing_create(request, username):
 class DressingUpdateView(BSModalUpdateView):
 	model = Dressing
 	template_name = 'patient/dressing/partial_edit.html'
-	form_class = DressingForm
+	form_class = Dressing_ModelForm
 	page_title = _('Dressing Form')
 	success_message = _(page_title + ' form has been save successfully.')
 

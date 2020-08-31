@@ -1,10 +1,8 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load staticfiles %}
 {% load i18n %}
 {% load crispy_forms_tags %}
-{% load widget_tweaks %}
 
 {% block headtitle %}
 	{{ page_title }} | {{ titles.title }}
@@ -24,7 +22,7 @@
 
 {% block content %}
 
-<div class="row isi">
+<div class="container-fluid">
 
 	<div class="row formtitle">
 		{{ page_title }}
@@ -110,7 +108,7 @@
 
 				{{ formset.management_form }}
 
-				{% for item in formset %}
+				{% for item in formset.forms %}
 				<div class="row new_formrow1">
 					<div class="col-3 col">
 						{{ item.medication_name|as_crispy_field }}

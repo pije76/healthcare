@@ -10,7 +10,7 @@ from accounts.models import *
 from bootstrap_modal_forms.forms import *
 
 
-class VisitingConsultantForm(BSModalModelForm):
+class VisitingConsultant_ModelForm(BSModalModelForm):
 
     class Meta:
         model = VisitingConsultant
@@ -25,10 +25,19 @@ class VisitingConsultantForm(BSModalModelForm):
     consultant = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 
 
-VisitingConsultant_FormSet_Factory = formset_factory(
-    VisitingConsultantForm,
+class VisitingConsultant_Form(BSModalForm):
+
+    patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    date_time = forms.DateTimeField(required=False, label="", initial=timezone.now, input_formats=settings.DATETIME_INPUT_FORMATS, widget=DateTimePickerInput(format="%d/%m/%Y %H:%M", attrs={'class': "form-control"}))
+    complaints = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control"}))
+    treatment_orders = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control"}))
+    consultant = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+
+
+VisitingConsultant_FormSet = formset_factory(
+    VisitingConsultant_Form,
     #   formset = MedicationAdministrationRecord_BaseFormSetFactory,
     extra=0,
-    max_num=0,
+#    max_num=0,
     #   can_delete=True,
 )

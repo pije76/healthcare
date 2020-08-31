@@ -1,10 +1,8 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
-{% load widget_tweaks %}
 
 {% block headtitle %}
 	{{ page_title }} | {{ titles.title }}
@@ -31,7 +29,7 @@
 
 	{% include 'patient/patient_data.html' %}
 
-	<div class="row">
+	<div class="row rounded form_table">
 
 		<div class="col-12">
 			<div class="card">
@@ -46,7 +44,8 @@
 									<tr>
 										<th class="text-center">{% trans "Date" %}</th>
 										<th class="text-center">{% trans "Items/Procedures" %}</th>
-										<th class="text-center">{% trans "Amount/Unit" %}</th>
+										<th class="text-center">{% trans "Unit" %}</th>
+										<th class="text-center">{% trans "Amount" %}</th>
 										<th class="text-center">{% trans "Given By" %}</th>
 										<th class="text-center">{% trans "Action" %}</th>
 									</tr>

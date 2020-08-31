@@ -1,10 +1,8 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load staticfiles %}
 {% load i18n %}
 {% load crispy_forms_tags %}
-{% load widget_tweaks %}
 
 {% block headtitle %}
 	{{ page_title }} | {{ titles.title }}
@@ -24,7 +22,7 @@
 
 {% block content %}
 
-<div class="row isi">
+<div class="container-fluid">
 
 	<div class="row formtitle">
 		{{ page_title }}
@@ -45,7 +43,7 @@
 					<div class="col-4 col">
 						{{ patients }}
 						{% if formset %}
-						{% for item in formset %}
+						{% for item in formset.forms %}
 						{{ item.patient|as_crispy_field }}
 						{% endfor %}
 						{% endif %}
@@ -60,7 +58,7 @@
 						{{ icnumbers }}
 					</div>
 					{% if formset %}
-					{% for item in formset %}
+					{% for item in formset.forms %}
 					<div class="col-6 col">
 						{{ item.allergy|as_crispy_field }}
 					</div>
@@ -117,7 +115,7 @@
 				{{ formset.management_form }}
 				{{ formset.non_form_errors }}
 
-				{% for item in formset %}
+				{% for item in formset.forms %}
 				<div class="row new_formrow1">
 					<div class="col-3 col">
 						{{ item.medication_name|as_crispy_field }}
@@ -170,7 +168,7 @@
 
 				<div class="row new_formrow2">
 					{% if formset %}
-					{% for item in formset %}
+					{% for item in formset.forms %}
 					<div class="col-4 col">
 						{{ item.stat|as_crispy_field }}
 					</div>

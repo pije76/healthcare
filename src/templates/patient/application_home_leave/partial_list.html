@@ -1,4 +1,5 @@
 {% for item in patients %}
+{% if user.is_staff %}
 <tr>
     <td>{{ item.patient }}</td>
     <td>{{ item.patient_family_name }}</td>
@@ -9,10 +10,25 @@
     <td>{{ item.signature }}</td>
     <td>{{ item.date }}</td>
     <td>
-        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:homeleave_edit' item.patient.username item.id %}"data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:application_home_leave_edit' item.patient.username item.id %}"data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
         </button>
-        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:homeleave_delete' item.patient.username item.id %}"data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:application_home_leave_delete' item.patient.username item.id %}"data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
         </button>
     </td>
 </tr>
+
+{% elif user.is_staff or user.is_patient %}
+
+<tr>
+    <td>{{ item.patient }}</td>
+    <td>{{ item.patient_family_name }}</td>
+    <td>{{ item.nric_number }}</td>
+    <td>{{ item.patient_family_relationship }}</td>
+    <td>{{ item.patient_family_phone }}</td>
+    <td>{{ item.designation }}</td>
+    <td>{{ item.signature }}</td>
+    <td>{{ item.date }}</td>
+</tr>
+{% endif %}
+
 {% endfor %}

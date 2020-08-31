@@ -4,7 +4,7 @@ from django.db import connection
 from django.db.models import F, Func, Value, CharField
 from django.db.models import Value, CharField
 from django.db.models.functions import Cast, Concat, ExtractYear, ExtractMonth, ExtractDay, ExtractHour, ExtractMinute
-from django.http import JsonResponse
+from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
@@ -59,11 +59,11 @@ def hgt_create(request, username):
     profiles = UserProfile.objects.filter(username=username)
     icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
-    initial = {
-        'patient': patients,
-        'ic_number': icnumbers,
+    initial = [{
+        'patient': item.full_name,
         'done_by': request.user,
     }
+    for item in profiles]
 
     initial_formset_factory = [
     {
@@ -72,7 +72,8 @@ def hgt_create(request, username):
     }]
 
     if request.method == 'POST':
-        formset = HGT_FormSet_Factory(request.POST or None)
+        formset = HGT_FormSet(request.POST or None)
+
         if formset.is_valid():
             for item in formset:
                 profile = HGT()
@@ -80,6 +81,7 @@ def hgt_create(request, username):
                 profile.date = item.cleaned_data['date']
                 profile.time = item.cleaned_data['time']
                 profile.blood_glucose_reading = item.cleaned_data['blood_glucose_reading']
+                profile.frequency = item.cleaned_data['frequency']
                 profile.remark = item.cleaned_data['remark']
                 profile.done_by = item.cleaned_data['done_by']
                 profile.save()
@@ -89,7 +91,7 @@ def hgt_create(request, username):
         else:
             messages.warning(request, formset.errors)
     else:
-        formset = HGT_FormSet_Factory(initial=initial_formset_factory)
+        formset = HGT_FormSet(initial=initial)
 
     context = {
         'logos': logos,
@@ -107,7 +109,7 @@ def hgt_create(request, username):
 class HGTUpdateView(BSModalUpdateView):
     model = HGT
     template_name = 'patient/hgt/partial_edit.html'
-    form_class = HGTForm
+    form_class = HGT_ModelForm
     page_title = _('HGT Form')
     success_message = _(page_title + ' form has been save successfully.')
     success_url = reverse_lazy('index')

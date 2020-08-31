@@ -3,7 +3,12 @@
   padding: 10px 0px;
   margin: 0px 0px 15px 0px;
 }
-
+.staff_detail {
+	margin: 0 0 10px;
+	padding: 10px 0px;
+	width: 540px;
+	background-color: #dee7ef;
+}
 .link_detail {
   margin-bottom: 5px;
   width: max-content;

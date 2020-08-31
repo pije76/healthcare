@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.translation import ugettext as _
-from django.http import JsonResponse
+from django.urls import reverse, reverse_lazy
 
 from patient.models import *
 from patient.Forms.physiotherapy_general_assessment import *
@@ -59,7 +59,7 @@ def physiotherapy_general_assessment_create(request, username):
     }
 
     if request.method == 'POST':
-        form = PhysiotherapyGeneralAssessmentForm(request.POST or None)
+        form = PhysiotherapyGeneralAssessment_Form(request.POST or None)
         if form.is_valid():
             profile = PhysiotherapyGeneralAssessment()
             profile.patient = patients
@@ -103,7 +103,7 @@ def physiotherapy_general_assessment_create(request, username):
         else:
             messages.warning(request, form.errors)
     else:
-        form = PhysiotherapyGeneralAssessmentForm(initial=initial)
+        form = PhysiotherapyGeneralAssessment_Form(initial=initial)
 
     context = {
         'logos': logos,
@@ -122,7 +122,7 @@ def physiotherapy_general_assessment_create(request, username):
 class PhysiotherapyGeneralAssessmentUpdateView(BSModalUpdateView):
     model = PhysiotherapyGeneralAssessment
     template_name = 'patient/physiotherapy_general_assessment/partial_edit.html'
-    form_class = PhysiotherapyGeneralAssessmentForm
+    form_class = PhysiotherapyGeneralAssessment_ModelForm
     page_title = _('PhysiotherapyGeneralAssessment Form')
     success_message = _(page_title + ' form has been save successfully.')
 

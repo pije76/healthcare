@@ -2,24 +2,24 @@
 {% load i18n %}
 {% load static %}
 
-<div class="row border rounded detail">
+<div class="row border rounded detail_form">
 
-		<div class="col-4">
-			<span id="name_title">{% trans "Name" %}:</span>
-		</div>
-		<div class="col-4">
-			<span id="name_field">
-				{{ patients }}
-			</span>
-		</div>
-
-		<div class="w-100"></div>
-
-		<div class="col-4">
-			<span id="name_title">{% trans "IC Number" %}:</span>
-		</div>
-		<div class="col-4">
-			<span id="name_field">{{ icnumbers }}</span>
-		</div>
-
+	<div class="col-4">
+		<span id="name_title">{% trans "Name" %}:</span>
 	</div>
+	<div class="col-4">
+		<span id="name_field">
+			{{ patients }}
+		</span>
+	</div>
+
+	<div class="w-100"></div>
+
+	<div class="col-4">
+		<span id="name_title">{% trans "IC Number" %}:</span>
+	</div>
+	<div class="col-4">
+		<span id="name_field">{{ icnumbers }}</span>
+	</div>
+
+</div>

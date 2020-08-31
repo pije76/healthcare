@@ -1,15 +1,12 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
 
 {% block headtitle %}
     {{ page_title }} | {{ titles.title }}
 {% endblock %}
-
-{% block content %}
 
 {% block styles %}
 	<link href="{% static 'css/staff/staff_records.css' %}" rel="stylesheet" type="text/css">
@@ -19,35 +16,47 @@
 	{{ form.media }}
 {% endblock %}
 
-<div class="row isi">
+{% block content %}
+
+<div class="container-fluid">
 
 	<div class="row formtitle">
 		{{ page_title }}
 	</div>
 
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	<div class="row border rounded detail_form">
 
-		<form method="post" id="dataForm" data-url="{% url 'staff:load_ic_number' %}" novalidate>
-			{% csrf_token %}
-			<table class="table-sm table-bordered">
-				<tbody>
+		<div class="col-4">
+			<span id="name_title">{% trans "Name" %}:</span>
+		</div>
+		<div class="col-4">
+			<span id="name_field">
+				{{ staffs }}
+				{{ form.staff|as_crispy_field }}
+			</span>
+		</div>
+
+		<div class="w-100"></div>
+
+		<div class="col-4">
+			<span id="name_title">{% trans "IC Number" %}:</span>
+		</div>
+		<div class="col-4">
+			<span id="name_field">{{ icnumbers }}</span>
+		</div>
+
+	</div>
+
+
+	<form method="post">
+	{% csrf_token %}
+
+		<div class="row rounded form_table">
+
+			<table id="form_set" class="table table-bordered">
+				<thead class="thead-light">
 					<tr>
-						<td>{% trans "Name" %}:</td>
-						<td>{{ staffs }}{{ form.staff|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "I/C No" %}:</td>
-						<td>{{ icnumbers }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Year" %}:</td>
-						<td>{{ form.date|as_crispy_field }}</td>
-					</tr>
-				</tbody>
-			</table>
-			<table class="table table-bordered">
-				<thead>
-					<tr>
+						<th class="text-center">{% trans "Year" %}</th>
 						<th class="text-center">{% trans "Annual Leave ___ Days" %}</th>
 						<th class="text-center">{% trans "Public Holiday ___ Days" %}</th>
 						<th class="text-center">{% trans "Replacement Public Holiday" %}</th>
@@ -61,6 +70,7 @@
 				</thead>
 				<tbody>
 					<tr>
+						<td>{{ form.date|as_crispy_field }}</td>
 						<td>{{ form.annual_leave_days|as_crispy_field }}</td>
 						<td>{{ form.public_holiday_days|as_crispy_field }}</td>
 						<td>{{ form.replacement_public_holiday|as_crispy_field }}</td>
@@ -73,14 +83,19 @@
 					</tr>
 				</tbody>
 			</table>
-			<br />
+
+		</div>
+
+		<div class="row">
+
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 			{% for item in profiles %}
-			<a class="btn btn-danger" href="{% url 'staff:staffdata_detail' item.username %}">{% trans "Cancel" %}</a>
+			<a class="btn btn-danger kirim" href="{% url 'staff:staffdata_detail' item.username %}">{% trans "Cancel" %}</a>
 			{% endfor %}
-		</form>
 
-	</div>
+		</div>
+
+	</form>
 
 </div>
 

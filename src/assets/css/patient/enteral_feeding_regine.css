@@ -23,10 +23,28 @@
   margin-bottom: 10px;
 }
 
-.footer_info {
-  display: inline-flex;
-}
-
 #total {
     margin: auto 5px;
+}
+
+.enteral_table {
+	width: 540px;
+}
+
+.foot_table {
+  margin: 0px 0px 10px 0px;
+  border: 1px solid #dee2e6!important;
+  padding: 10px 0;
+}
+
+.header_form {
+    color: #495057;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+    padding: .75rem;
+    margin-top: 20px;
+}
+
+.header_form_detail {
+  padding: .75rem;
 }

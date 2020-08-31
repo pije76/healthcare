@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
 
@@ -20,17 +19,20 @@
 	{{ form.media }}
 {% endblock %}
 
-<div class="row isi">
+<div class="container-fluid">
 
 	<div class="row formtitle">
 		{{ page_title }}
 	</div>
 
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	{% include 'patient/patient_formset.html' %}
 
-		<form method="post">
-			{% csrf_token %}
-			<table class="table-sm table-bordered">
+	<form method="post">
+	{% csrf_token %}
+
+		<div class="row rounded form_table">
+
+			<table class="table table-bordered">
 				<tbody>
 					<tr>
 						<td>{% trans "Name" %}:</td>
@@ -56,13 +58,15 @@
 					</tr>
 				</tbody>
 			</table>
+
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 			{% for item in profiles %}
-			<a class="btn btn-danger" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+			<a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
 			{% endfor %}
-		</form>
 
-	</div>
+		</div>
+
+	</form>
 
 </div>
 

@@ -35,31 +35,45 @@
 					{% elif user.is_authenticated and user.is_patient or user.is_staff%}
 
 					<li class="nav-item">
-						<a class="nav-link" href="{% url 'patient:patientdata_list' %}"><i class="fas fa-hospital-user"></i>&nbsp;{% trans "Patient Data" %}</a>
+						<a class="nav-link" href="{% url 'patient:patientdata_list' %}">
+							<i class="fas fa-hospital-user"></i>&nbsp;{% trans "Patient Data" %}
+						</a>
 					</li>
 
 					{% endif %}
 
 					<li class="nav-item">
-						<a class="nav-link" href="#"><i class="fa fa-language"></i>&nbsp;{% trans "Translate" %}</a>
+						<a class="nav-link" href="#">
+							<i class="fa fa-language"></i>&nbsp;{% trans "Translate" %}
+						</a>
 					</li>
 
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class='caret'></span></a>
+						<a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span class='caret'></span>
+						</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
-						<a class="dropdown-item" href="{% url "set_language_from_url" user_language="en" %}"><i class="flag flag-16 flag-us"></i>{% trans "English" %}</a>
-						<a class="dropdown-item" href="{% url "set_language_from_url" user_language="id" %}"><i class="flag flag-16 flag-id"></i>{% trans "Indonesia" %}</a>
+						<a class="dropdown-item" href="{% url "set_language_from_url" user_language="en" %}">
+							<i class="flag flag-16 flag-us"></i>{% trans "English" %}
+						</a>
+						<a class="dropdown-item" href="{% url "set_language_from_url" user_language="id" %}">
+							<i class="flag flag-16 flag-id"></i>{% trans "Indonesia" %}
+						</a>
 					</li>
 
 					{% if user.is_authenticated %}
 					<li class="nav-item">
-						<a class="nav-link" href="#"><i class="fas fa-user"></i>&nbsp;{{ user }}</a>
+						<a class="nav-link" href="#">
+							<i class="fas fa-user"></i>&nbsp;{{ user.full_name }}
+						</a>
 					</li>
 
 					{% else %}
 
 					<li class="nav-item">
-						<a class="nav-link" href="#"><i class="fas fa-user"></i>&nbsp;{% trans "Account" %}</a>
+						<a class="nav-link" href="#">
+							<i class="fas fa-user"></i>&nbsp;{% trans "Account" %}
+						</a>
 					</li>
 
 					{% endif %}
@@ -70,20 +84,34 @@
 						{% if user.is_authenticated and user.is_superuser or user.is_staff%}
 
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
-							<a class="dropdown-item" href="{% url 'accounts:account' %}"><i class="fas fa-user-cog"></i>&nbsp;{% trans "My Account" %}</a>
-							<a class="dropdown-item" href="{% url 'account_change_password' %}"><i class="fas fa-unlock-alt"></i>&nbsp;&nbsp;{% trans "Change password" %}</a>
-							<a class="dropdown-item" href="{% url 'accounts:signup_view' %}"><i class="fas fa-user-plus"></i>&nbsp;{% trans "Register" %}</a>
+							<a class="dropdown-item" href="{% url 'accounts:account' %}">
+								<i class="fas fa-user-cog"></i>&nbsp;{% trans "My Account" %}
+							</a>
+							<a class="dropdown-item" href="{% url 'account_change_password' %}">
+								<i class="fas fa-unlock-alt"></i>&nbsp;&nbsp;{% trans "Change password" %}
+							</a>
+							<a class="dropdown-item" href="{% url 'accounts:signup_view' %}">
+								<i class="fas fa-user-plus"></i>&nbsp;{% trans "Register" %}
+							</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="/accounts/logout/"><i class="fas fa-sign-out-alt"></i>&nbsp;{% trans "Logout" %}</a>
+							<a class="dropdown-item" href="/accounts/logout/">
+								<i class="fas fa-sign-out-alt"></i>&nbsp;{% trans "Logout" %}
+							</a>
 						</div>
 
 						{% elif user.is_authenticated and user.is_patient %}
 
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
-							<a class="dropdown-item" href="{% url 'accounts:account' %}"><i class="fas fa-user-cog"></i>&nbsp;{% trans "My Account" %}</a>
-							<a class="dropdown-item" href="{% url 'account_change_password' %}"><i class="fas fa-unlock-alt"></i>&nbsp;{% trans "Change password" %}</a>
+							<a class="dropdown-item" href="{% url 'accounts:account' %}">
+								<i class="fas fa-user-cog"></i>&nbsp;{% trans "My Account" %}
+							</a>
+							<a class="dropdown-item" href="{% url 'account_change_password' %}">
+								<i class="fas fa-unlock-alt"></i>&nbsp;{% trans "Change password" %}
+							</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="/accounts/logout/"><i class="fas fa-sign-out-alt"></i>&nbsp;{% trans "Logout" %}</a>
+							<a class="dropdown-item" href="/accounts/logout/">
+								<i class="fas fa-sign-out-alt"></i>&nbsp;{% trans "Logout" %}
+							</a>
 						</div>
 
 						{% else %}

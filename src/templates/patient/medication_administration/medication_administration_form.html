@@ -1,10 +1,8 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load staticfiles %}
 {% load i18n %}
 {% load crispy_forms_tags %}
-{% load widget_tweaks %}
 
 {% block headtitle %}
 	{{ page_title }} | {{ titles.title }}
@@ -19,12 +17,12 @@
 {% endblock %}
 
 {% block extrahead %}
-	{{ formset.media }}
+	{{ form.media }}
 {% endblock %}
 
 {% block content %}
 
-<div class="row isi">
+<div class="container-fluid">
 
 	<div class="row formtitle">
 		{{ page_title }}
@@ -34,10 +32,7 @@
 
 		<form method="post">
 		{% csrf_token %}
-		{{ formset.management_form }}
-		{{ formset.non_form_errors }}
 
-			{% for item in formset %}
 			<div class="container-fluid" id="medication_administration">
 
 				<div class="row">
@@ -46,7 +41,7 @@
 					</div>
 					<div class="col-4 col">
 						{{ patients }}
-						{{ item.patient|as_crispy_field }}
+						{{ form.patient|as_crispy_field }}
 					</div>
 				</div>
 
@@ -58,7 +53,7 @@
 						{{ icnumbers }}
 					</div>
 					<div class="col-6 col">
-						{{ item.allergy|as_crispy_field }}
+						{{ form.allergy|as_crispy_field }}
 					</div>
 				</div>
 			</div>
@@ -66,141 +61,50 @@
 			<div class="container-fluid" id="medication_administration">
 
 				<div class="row">
-					<div class="col-7 col text-center">
-						{% trans "Medication" %}
-					</div>
 					<div class="col-2 col text-center">
 						{% trans "Date" %}
 					</div>
-					<div class="col-1 col text-center">
+					<div class="col-2 col text-center">
 						{% trans "Time" %}
 					</div>
-					<div class="col-1 col text-center">
-						{% trans "Signature" %}
-					</div>
-					<div class="col-1 col" style="border-top:none;border-right:none;border-bottom:none;">
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-3 col text-center">
-						{% trans "Name" %}
+					<div class="col-4 col text-center">
+						{% trans "Medication" %}
 					</div>
 					<div class="col-1 col text-center">
-						{% trans "Dosage" %}
-					</div>
-					<div class="col-1 col text-center">
-						{% trans "Tab/MLS	" %}
-					</div>
-					<div class="col-1 col text-center">
-						{% trans "Frequency" %}
-					</div>
-					<div class="col-1 col text-center">
-						{% trans "Route" %}
-					</div>
-					<div class="col-2 col" style="border-top:none;">
-					</div>
-					<div class="col-1 col" style="border-top:none;">
-					</div>
-					<div class="col-1 col" style="border-top:none;">
+						{% trans "Status" %}
 					</div>
 					<div class="col-1 col" style="border-top:none;border-right:none;border-bottom:none;">
 					</div>
 				</div>
 
 				<div class="row new_formrow1">
-					<div class="col-3 col">
-						{{ item.medication_name|as_crispy_field }}
-					</div>
-					<div class="col-1 col">
-						{{ item.medication_dosage|as_crispy_field }}
-					</div>
-					<div class="col-1 col">
-						{{ item.medication_tab|as_crispy_field }}
-					</div>
-					<div class="col-1 col">
-						{{ item.medication_frequency|as_crispy_field }}
-					</div>
-					<div class="col-1 col">
-						{{ item.medication_route|as_crispy_field }}
+					<div class="col-2 col">
+						{{ form.medication_date|as_crispy_field }}
 					</div>
 					<div class="col-2 col">
-						{{ item.medication_date|as_crispy_field }}
+						{{ form.medication_time|as_crispy_field }}
+					</div>
+					<div class="col-4 col">
+						{{ form.medication_route|as_crispy_field }}
 					</div>
 					<div class="col-1 col">
-						{{ item.medication_time|as_crispy_field }}
-					</div>
-					<div class="col-1 col">
-						{{ item.signature_nurse|as_crispy_field }}
+						{{ form.status_nurse|as_crispy_field }}
 					</div>
 					<div class="col-1 col" style="border-top:none;border-right:none;border-bottom:none;">
-						{{ item.patient|as_crispy_field }}
+						{{ form.patient|as_crispy_field }}
 						<button type="button" class="btn btn-success add_formrow1">
 							<i class="fas fa-plus"></i>
 						</button>
 					</div>
 				</div>
 
-				<div class="row">
-					<div class="col-4 col text-center">
-						{% trans "STAT Medication" %}
-					</div>
-					<div class="col-3 col text-center">
-						{% trans "Date & Time" %}
-					</div>
-					<div class="col-4 col text-center">
-						{% trans "Given By" %}
-					</div>
-					<div class="col-1 col" style="border-top:none;border-right:none;border-bottom:none;">
-					</div>
-				</div>
 
-				<div class="row new_formrow2">
-					<div class="col-4 col">
-						{{ item.stat|as_crispy_field }}
-					</div>
-					<div class="col-3 col">
-						{{ item.medicationstat_date_time|as_crispy_field }}
-					</div>
-					<div class="col-4 col">
-						{{ item.given_by|as_crispy_field }}
-					</div>
-					<div class="col-1 col" style="border-top:none;border-right:none;border-bottom:none;">
-						{{ item.patient|as_crispy_field }}
-						<button type="button" class="btn btn-success add_formrow2">
-							<i class="fas fa-plus"></i>
-						</button>
-					</div>
-				</div>
 			</div>
-			{% endfor %}
 
-
-			N-NBM          O- Omit          R-Refused        TA- Take Away      T-Taken        W-Withold
-			<br /><br />
-			* Blue colour row is for date –auto fill
-			<br />
-			*allergy: if written—red colour –auto fill for subsequent records
-			<br />
-			* Yellow column is for time for serving medication
-			<br />
-			Request to put selecting button for the time column –all international timing -0100,0200,0300,0400,0500…….2400
-			<br />
-			*Route: Oral/IV/IM/S/C/SL/ RT/ PR /LA /Neb
-			<br />
-			*Frequency: OD/OM/PM/ON/BD/TDS/QID/EOD/PRN/OTHERS:
-			<br />
-			* 1/1= 1tab, 11/11=2 TABS, 111/111 =3 TABS, ½ =HALF TAB, OTHERS: 1 ½ , 4 TABS
-			<br />
-			* INDICATE THE MEDICATION FROM WHERE= FROM  SK CENTER, HOSPITAL, CLINIC, OWN
-			<br />
-			*THE PERSON WHO GIVE ONLY CAN ENTER THE ABOVE SIGNATURE COLUMN –EXAMPLE LSS,LPC-NAME OF NURSE WHO GIVE.
-			<br />
-			*NEED APPROVAL FOR CHANGES OF THE MEDICATION KEY IN .
 			<br />
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
-			{% for item in profiles %}
-			<a class="btn btn-danger" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+			{% for form in profiles %}
+			<a class="btn btn-danger" href="{% url 'patient:patientdata_detail' form.username %}">{% trans "Cancel" %}</a>
 			{% endfor %}
 		</form>
 

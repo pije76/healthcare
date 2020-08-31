@@ -17,12 +17,12 @@ class MedicationAdministrationRecord_FormSet_Helper(FormHelper):
 			Fieldset(
 				'medication_name',
 				'medication_dosage',
-				'medication_tab',
+				'medication_tab_cap_mls',
 				'medication_frequency',
 				'medication_route',
 				'medication_date',
 				'medication_time',
-				'signature_nurse',
+				'status_nurse',
 				'stat',
 				'medicationstat_date_time',
 				'given_by'
@@ -33,32 +33,6 @@ class MedicationAdministrationRecord_FormSet_Helper(FormHelper):
 		)
 		self.template = 'bootstrap/table_inline_formset.html'
 #       self.template = 'bootstrap4/display_form.html'
-
-
-class MedicationAdministrationRecord_Form(BSModalForm):
-
-	patient = forms.CharField(required=False, label="", widget=forms.HiddenInput(attrs={'class': "form-control"}))
-#   patient = forms.HiddenInput()
-	allergy = forms.CharField(required=False, label=_("Allergy"), widget=forms.TextInput(attrs={'class': "form-control"}))
-	medication_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	medication_dosage = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
-	medication_tab = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.TAB_CHOICES)
-	medication_frequency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.MEDICATION_ADMINISTRATION_FREQUENCY_CHOICES)
-	medication_route = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.ROUTE_CHOICES)
-	medication_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': "form-control"}))
-	medication_time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
-	signature_nurse = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.SIGNATURE_CHOICES)
-	stat = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.STAT_CHOICES)
-	medicationstat_date_time = forms.DateTimeField(required=False, label="", initial=timezone.now, input_formats=settings.DATETIME_INPUT_FORMATS, widget=DateTimePickerInput(format="%d/%m/%Y %H:%M", attrs={'class': "form-control"}))
-	given_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-
-MedicationAdministrationRecordFormSet = formset_factory(
-	MedicationAdministrationRecord_Form,
-	#   formset = MedicationAdministrationRecord_BaseFormSetFactory,
-	extra=0,
-	max_num=0,
-	#   can_delete=True,
-)
 
 
 class MedicationAdministrationRecord_BaseFormSetFactory(BaseModelFormSet):
@@ -92,19 +66,19 @@ class MedicationAdministrationRecord_ModelForm(BSModalModelForm):
 
 
 # for modelform_factory
-MedicationAdministrationRecord_ModelForm_Factory1 = modelform_factory(
+MedicationAdministrationRecord_ModelForm1 = modelform_factory(
 	MedicationAdministrationRecord,
 	fields=(
 		'patient',
 		'allergy',
 		'medication_name',
 		'medication_dosage',
-		'medication_tab',
+		'medication_tab_cap_mls',
 		'medication_frequency',
 		'medication_route',
 		'medication_date',
 		'medication_time',
-		'signature_nurse',
+		'status_nurse',
 		'stat',
 		'medicationstat_date_time',
 		'given_by'
@@ -112,7 +86,7 @@ MedicationAdministrationRecord_ModelForm_Factory1 = modelform_factory(
 )
 
 # for modelform_factory
-MedicationAdministrationRecord_ModelForm_Factory2 = modelform_factory(
+MedicationAdministrationRecord_ModelForm2 = modelform_factory(
 	MedicationAdministrationRecord,
 	form=MedicationAdministrationRecord_ModelForm,
 	widgets={
@@ -120,12 +94,12 @@ MedicationAdministrationRecord_ModelForm_Factory2 = modelform_factory(
 		'patient': forms.HiddenInput(),
 		'medication_name': forms.TextInput(attrs={'class': "form-control"}),
 		'medication_dosage': forms.NumberInput(attrs={'class': "form-control"}),
-		'medication_tab': forms.Select(attrs={'class': "form-control"}, choices=MedicationAdministrationRecord.TAB_CHOICES),
+		'medication_tab_cap_mls': forms.Select(attrs={'class': "form-control"}, choices=MedicationAdministrationRecord.TAB_CHOICES),
 		'medication_frequency': forms.Select(attrs={'class': "form-control"}, choices=MedicationAdministrationRecord.MEDICATION_ADMINISTRATION_FREQUENCY_CHOICES),
 		'medication_route': forms.Select(attrs={'class': "form-control"}, choices=MedicationAdministrationRecord.ROUTE_CHOICES),
 		'medication_date': DatePickerInput(attrs={'class': "form-control"}),
 		'medication_time': TimePickerInput(attrs={'class': "form-control"}),
-		'signature_nurse': forms.Select(attrs={'class': "form-control"}, choices=MedicationAdministrationRecord.SIGNATURE_CHOICES),
+		'status_nurse': forms.Select(attrs={'class': "form-control"}, choices=MedicationAdministrationRecord.SIGNATURE_CHOICES),
 		'stat': forms.Select(attrs={'class': "form-control"}, choices=MedicationAdministrationRecord.STAT_CHOICES),
 		'medicationstat_date_time': DateTimePickerInput(attrs={'class': "form-control"}),
 		'given_by': forms.TextInput(attrs={'class': "form-control"}),
@@ -137,7 +111,7 @@ MedicationAdministrationRecord_ModelFormSetFactory = modelformset_factory(
 	form=MedicationAdministrationRecord_ModelForm,
 	#   formset = MedicationAdministrationRecord_BaseFormSetFactory,
 	#   exclude = ['patient'],
-	extra=1
+	extra=0
 	#   max_num=1,
 	#   can_delete=True,
 )
@@ -157,12 +131,12 @@ class MedicationAdministrationRecord_InlineForm(BSModalModelForm):
 	allergy = forms.CharField(required=False, label=_("Allergy"), widget=forms.TextInput(attrs={'class': "form-control"}))
 	medication_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	medication_dosage = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
-	medication_tab = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.TAB_CHOICES)
+	medication_tab_cap_mls = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.TAB_CHOICES)
 	medication_frequency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.MEDICATION_ADMINISTRATION_FREQUENCY_CHOICES)
 	medication_route = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.ROUTE_CHOICES)
 	medication_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': "form-control"}))
 	medication_time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
-	signature_nurse = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.SIGNATURE_CHOICES)
+	status_nurse = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.SIGNATURE_CHOICES)
 	stat = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.STAT_CHOICES)
 	medicationstat_date_time = forms.DateTimeField(required=False, label="", initial=timezone.now, input_formats=settings.DATETIME_INPUT_FORMATS, widget=DateTimePickerInput(format="%d/%m/%Y %H:%M", attrs={'class': "form-control"}))
 	given_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
@@ -172,7 +146,7 @@ MedicationAdministrationRecord_InlineFormSetFactory = inlineformset_factory(
 	UserProfile,
 	MedicationAdministrationRecord,
 	#   form = MedicationAdministrationRecord_InlineForm,
-	extra=1,
+	extra=0,
 	#   max_num=1,
 	#   can_delete=False,
 	fields=(
@@ -180,12 +154,12 @@ MedicationAdministrationRecord_InlineFormSetFactory = inlineformset_factory(
 		'allergy',
 		'medication_name',
 		'medication_dosage',
-		'medication_tab',
+		'medication_tab_cap_mls',
 		'medication_frequency',
 		'medication_route',
 		'medication_date',
 		'medication_time',
-		'signature_nurse',
+		'status_nurse',
 		'stat',
 		'medicationstat_date_time',
 		'given_by'
@@ -194,12 +168,12 @@ MedicationAdministrationRecord_InlineFormSetFactory = inlineformset_factory(
 	#       'allergy': 'Allergy',
 	#       'medication_name': '',
 	#       'medication_dosage': '',
-	#       'medication_tab': '',
+	#       'medication_tab_cap_mls': '',
 	#       'medication_frequency': '',
 	#       'medication_route': '',
 	#       'medication_date': '',
 	#       'medication_time': '',
-	#       'signature_nurse': '',
+	#       'status_nurse': '',
 	#       'stat': '',
 	#       'medicationstat_date_time': '',
 	#       'given_by': '',
@@ -209,12 +183,12 @@ MedicationAdministrationRecord_InlineFormSetFactory = inlineformset_factory(
 	#       'patient': forms.HiddenInput(),
 	#       'medication_name': forms.TextInput(attrs={'class': "form-control"}),
 	#       'medication_dosage': forms.NumberInput(attrs={'class': "form-control"}),
-	#       'medication_tab': forms.Select(attrs={'class': "form-control"}, choices=MedicationAdministrationRecord.TAB_CHOICES),
+	#       'medication_tab_cap_mls': forms.Select(attrs={'class': "form-control"}, choices=MedicationAdministrationRecord.TAB_CHOICES),
 	#       'medication_frequency': forms.Select(attrs={'class': "form-control"}, choices=MedicationAdministrationRecord.MEDICATION_ADMINISTRATION_FREQUENCY_CHOICES),
 	#       'medication_route': forms.Select(attrs={'class': "form-control"}, choices=MedicationAdministrationRecord.ROUTE_CHOICES),
 	#       'medication_date': DatePickerInput(attrs={'class': "form-control"}),
 	#       'medication_time': TimePickerInput(attrs={'class': "form-control"}),
-	#       'signature_nurse': forms.Select(attrs={'class': "form-control"}, choices=MedicationAdministrationRecord.SIGNATURE_CHOICES),
+	#       'status_nurse': forms.Select(attrs={'class': "form-control"}, choices=MedicationAdministrationRecord.SIGNATURE_CHOICES),
 	#       'stat': forms.Select(attrs={'class': "form-control"}, choices=MedicationAdministrationRecord.STAT_CHOICES),
 	#       'medicationstat_date_time': DateTimePickerInput(attrs={'class': "form-control"}),
 	#       'given_by': forms.TextInput(attrs={'class': "form-control"}),
@@ -222,4 +196,32 @@ MedicationAdministrationRecord_InlineFormSetFactory = inlineformset_factory(
 	#   help_texts = {
 	#       'medication_name': _('Some useful help text.'),
 	#   },
+)
+
+
+class MedicationAdministrationRecord_Form(BSModalForm):
+
+	patient = forms.CharField(required=False, label="", widget=forms.HiddenInput(attrs={'class': "form-control"}))
+#   patient = forms.HiddenInput()
+	allergy = forms.CharField(required=False, label=_("Allergy"), widget=forms.TextInput(attrs={'class': "form-control"}))
+	medication_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	medication_dosage = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
+#	medication_tab_cap_mls = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.TAB_CHOICES)
+	medication_tab_cap_mls = forms.ChoiceField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	medication_frequency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.MEDICATION_ADMINISTRATION_FREQUENCY_CHOICES)
+	medication_route = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.ROUTE_CHOICES)
+	medication_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': "form-control"}))
+	medication_time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
+	status_nurse = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.SIGNATURE_CHOICES)
+	stat = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.STAT_CHOICES)
+	medicationstat_date_time = forms.DateTimeField(required=False, label="", initial=timezone.now, input_formats=settings.DATETIME_INPUT_FORMATS, widget=DateTimePickerInput(format="%d/%m/%Y %H:%M", attrs={'class': "form-control"}))
+	given_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	done = forms.BooleanField(required=False, label='', widget=forms.TextInput())
+
+MedicationAdministrationRecord_FormSet = formset_factory(
+	MedicationAdministrationRecord_Form,
+#   formset = MedicationAdministrationRecord_BaseFormSetFactory,
+	extra=0,
+#	max_num=0,
+	#   can_delete=True,
 )

@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.translation import ugettext as _
-from django.http import JsonResponse
+from django.urls import reverse, reverse_lazy
 
 from patient.models import *
 from patient.Forms.miscellaneous_charges_slip import *
@@ -52,11 +52,11 @@ def miscellaneous_charges_slip_create(request, username):
     profiles = UserProfile.objects.filter(username=username)
     icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
-    initial = {
-        'patient': patients,
-        'ic_number': icnumbers,
+    initial = [{
+        'patient': item.full_name,
         'given_by': request.user,
     }
+    for item in profiles]
 
     initial_formset_factory = [
     {
@@ -65,14 +65,15 @@ def miscellaneous_charges_slip_create(request, username):
     }]
 
     if request.method == 'POST':
-        formset = MiscellaneousChargesSlip_FormSet_Factory(request.POST or None)
-        if form.is_valid():
+        formset = MiscellaneousChargesSlip_FormSet(request.POST or None)
+        if formset.is_valid():
             for item in formset:
                 profile = MiscellaneousChargesSlip()
                 profile.patient = patients
                 profile.date = item.cleaned_data['date']
                 profile.items_procedures = item.cleaned_data['items_procedures']
-                profile.amount_unit = item.cleaned_data['amount_unit']
+                profile.unit = item.cleaned_data['unit']
+                profile.amount = item.cleaned_data['amount']
                 profile.given_by = item.cleaned_data['given_by']
                 profile.save()
 
@@ -81,7 +82,7 @@ def miscellaneous_charges_slip_create(request, username):
         else:
             messages.warning(request, formset.errors)
     else:
-        formset = MiscellaneousChargesSlip_FormSet_Factory(initial=initial_formset_factory)
+        formset = MiscellaneousChargesSlip_FormSet(initial=initial)
 
     context = {
         'logos': logos,
@@ -99,7 +100,7 @@ def miscellaneous_charges_slip_create(request, username):
 class MiscellaneousChargesSlipUpdateView(BSModalUpdateView):
     model = MiscellaneousChargesSlip
     template_name = 'patient/miscellaneous_charges_slip/partial_edit.html'
-    form_class = MiscellaneousChargesSlipForm
+    form_class = MiscellaneousChargesSlip_ModelForm
     page_title = _('MiscellaneousChargesSlip Form')
     success_message = _(page_title + ' form has been save successfully.')
 

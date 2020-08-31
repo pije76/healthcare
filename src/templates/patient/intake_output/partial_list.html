@@ -1,14 +1,13 @@
 {% for item in time_range_day %}
 <tr>
     <td>{{ item.date|date:"d-m-Y" }}</td>
-    <td>{{ item.time_intake|date:"H:i" }}</td>
+    <td>{{ item.time|date:"H:i" }}</td>
     <td>{{ item.intake_oral_type }}</td>
     <td>{{ item.intake_oral_ml }}</td>
     <td>{{ item.intake_parenteral_type }}</td>
     <td>{{ item.intake_parenteral_ml }}</td>
     <td>{{ item.intake_other_type }}</td>
     <td>{{ item.intake_other_ml }}</td>
-    <td>{{ item.time_output|date:"H:i" }}</td>
     <td>{{ item.output_urine_ml }}</td>
     <td>{{ item.output_urine_cum }}</td>
     <td>{{ item.output_gastric_ml }}</td>
@@ -26,14 +25,13 @@
 {% for item in time_range_night %}
 <tr>
     <td>{{ item.date|date:"d-m-Y" }}</td>
-    <td>{{ item.time_intake|date:"H:i" }}</td>
+    <td>{{ item.time|date:"H:i" }}</td>
     <td>{{ item.intake_oral_type }}</td>
     <td>{{ item.intake_oral_ml }}</td>
     <td>{{ item.intake_parenteral_type }}</td>
     <td>{{ item.intake_parenteral_ml }}</td>
     <td>{{ item.intake_other_type }}</td>
     <td>{{ item.intake_other_ml }}</td>
-    <td>{{ item.time_output|date:"H:i" }}</td>
     <td>{{ item.output_urine_ml }}</td>
     <td>{{ item.output_urine_cum }}</td>
     <td>{{ item.output_gastric_ml }}</td>

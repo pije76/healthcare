@@ -1,3 +1,11 @@
+.detail_form {
+  padding: 10px 0px;
+  width: 540px;
+  background-color: #dee7ef;
+}
+.form_table {
+  padding-top: 10px;
+}
 .isi {
   height: auto;
   padding-bottom: 20px;
@@ -47,4 +55,7 @@
 
 .table-sm {
   margin-bottom: 10px;
+}
+.kirim {
+  margin: 0 5px;
 }

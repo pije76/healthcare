@@ -1,10 +1,8 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load staticfiles %}
 {% load i18n %}
 {% load crispy_forms_tags %}
-{% load widget_tweaks %}
 
 {% block headtitle %}
 	{{ page_title }} | {{ titles.title }}
@@ -34,7 +32,7 @@
 		{{ page_title }}
 	</div>
 
-	{% include 'patient/patient_formset.html' %}
+	{% include 'patient/patient_form.html' %}
 
 	<div class="row rounded form_table">
 
@@ -49,7 +47,7 @@
 						<th class="text-center" scope="col">{% trans "Hospital/Clinic/Center" %}</th>
 						<th class="text-center" scope="col">{% trans "Department" %}</th>
 						<th class="text-center" scope="col">{% trans "Planning & Investigation" %}</th>
-						<th class="text-center" scope="col">{% trans "Treatment/Order" %}</th>
+						<th class="text-center" scope="col">{% trans "Treatment/Order after follow up" %}</th>
 					</tr>
 				</thead>
 				<tbody>

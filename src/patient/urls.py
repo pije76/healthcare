@@ -146,4 +146,7 @@ urlpatterns = [
     path('<username>/visiting-consultant-records/<int:pk>/delete', visiting_consultant_records_delete, name='visiting_consultant_records_delete'),
     path('<username>/vital-sign-flow/<int:pk>/delete', vital_sign_flow_delete, name='vital_sign_flow_delete'),
 
+    path('<username>/application-home-leave/pdf', application_home_leave_pdf, name='application_home_leave_pdf'),
+    path('<username>/overtime-claim/pdf', overtime_claim_pdf, name='overtime_claim_pdf'),
+
 ]

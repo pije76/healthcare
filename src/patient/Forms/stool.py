@@ -20,7 +20,7 @@ class Stool_ModelForm(BSModalModelForm):
 #           patient': forms.HiddenInput(),
 		}
 
-#	patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': "form-control"}))
 	time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
 	frequency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=Stool.STOOL_FREQUENCY_CHOICES)
@@ -57,8 +57,8 @@ class Stool_Form(BSModalForm):
 
 	patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 #	patient = forms.ModelChoiceField(queryset=None, widget=forms.Select, required=True)
-	date = forms.DateField(required=False, label="", input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': "form-control"}))
-	time = forms.TimeField(required=False, label="", input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
+	date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': "form-control"}))
+	time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
 	frequency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=Stool.STOOL_FREQUENCY_CHOICES)
 	consistency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=Stool.CONSISTENCY_CHOICES)
 	amount = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=Stool.AMOUNT_CHOICES)
@@ -69,8 +69,8 @@ class Stool_Form(BSModalForm):
 Stool_ModelFormSet = modelformset_factory(
 	Stool,
 	form=Stool_ModelForm,
-	extra=1,
-	max_num=1,
+	extra=0,
+#	max_num=1,
 #    can_delete=False
 )
 
@@ -78,16 +78,15 @@ Stool_InlineFormSet = inlineformset_factory(
 	UserProfile,
 	Stool,
 	form=Stool_ModelForm,
-	extra=1,
-	max_num=1,
+	extra=0,
+#	max_num=1,
 #    can_delete=False
 )
 
-
-StoolFormSet = formset_factory(
+Stool_FormSet = formset_factory(
 	Stool_Form,
 #   formset = Stool_ModelForm,
-	extra=1,
-	max_num=1,
+	extra=0,
+#	max_num=0,
 	#   can_delete=True,
 )

@@ -14,8 +14,24 @@ from mptt.admin import MPTTModelAdmin, DraggableMPTTAdmin
 
 # import autocomplete_all
 
+from accounts.models import UserProfile
 from .models import *
 from .forms import *
+
+
+#class PatientDataAdmin(admin.StackedInline):
+#	model = UserProfile
+#    max_num = 1
+#    extra = 1
+
+#class AdmissionInline(admin.TabularInline):
+#	model = UserProfile
+
+
+#class PatientDataAdmin(admin.ModelAdmin):
+#	inlines = [
+#		AdmissionInline,
+#	]
 
 
 #@admin.register(Admission)
@@ -25,8 +41,8 @@ class AdmissionAdmin(admin.ModelAdmin):
 	list_display = [
 		'id',
 		'patient',
-		'date',
-		'time',
+		'date_admission',
+		'time_admission',
 		'admitted',
 		'admitted_others',
 		'mode',
@@ -56,11 +72,6 @@ class AdmissionAdmin(admin.ModelAdmin):
 		'diagnosis',
 		'date_operation',
 		'operation',
-		'own_medication',
-		'own_medication_drug_name',
-		'own_medication_dosage',
-		'own_medication_tablet_capsule',
-		'own_medication_frequency',
 
 		'adaptive_aids_with_patient',
 		'adaptive_aids_with_patient_others',
@@ -71,6 +82,9 @@ class AdmissionAdmin(admin.ModelAdmin):
 #	form = AdmissionForm
 #    autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
+#	inlines = [
+#		PatientDataAdmin,
+#	]
 
 
 class ApplicationForHomeLeaveAdmin(admin.ModelAdmin):
@@ -187,15 +201,13 @@ class DressingAdmin(admin.ModelAdmin):
 		'done_by',
 	]
 	ModelAdmin.ordering = ('id',)
-#	inlines = [
-#        WoundConditionDataAdmin,
-#    ]
 
 
 class EnteralFeedingRegimeAdmin(admin.ModelAdmin):
 	list_display = [
 		'id',
 		'patient',
+		'date',
 		'time',
 		'type_of_milk',
 		'amount',
@@ -232,6 +244,18 @@ class MaintenanceAdmin(admin.ModelAdmin):
 	ModelAdmin.ordering = ('id',)
 
 
+class MedicationAdmin(admin.ModelAdmin):
+	list_display = [
+		'id',
+		'patient',
+		'own_medication',
+		'own_medication_drug_name',
+		'own_medication_dosage',
+		'own_medication_tablet_capsule',
+		'own_medication_frequency',
+	]
+	ModelAdmin.ordering = ('id',)
+
 class MedicationAdministrationRecordAdmin(admin.ModelAdmin):
 	list_display = [
 		'id',
@@ -239,12 +263,12 @@ class MedicationAdministrationRecordAdmin(admin.ModelAdmin):
 		'allergy',
 		'medication_name',
 		'medication_dosage',
-		'medication_tab',
+		'medication_tab_cap_mls',
 		'medication_frequency',
 		'medication_route',
 		'medication_date',
 		'medication_time',
-		'signature_nurse',
+		'status_nurse',
 		'stat',
 		'medicationstat_date_time',
 		'given_by',
@@ -257,14 +281,13 @@ class IntakeOutputAdmin(admin.ModelAdmin):
 		'id',
 		'patient',
 		'date',
-		'time_intake',
+		'time',
 		'intake_oral_type',
 		'intake_oral_ml',
 		'intake_parenteral_type',
 		'intake_parenteral_ml',
 		'intake_other_type',
 		'intake_other_ml',
-		'time_output',
 		'output_urine_ml',
 		'output_urine_cum',
 		'output_gastric_ml',
@@ -279,7 +302,8 @@ class OvertimeClaimAdmin(admin.ModelAdmin):
 		'id',
 		'patient',
 		'date',
-		'duration_time',
+		'duration_time_from',
+		'duration_time_to',
 		'hours',
 		'total_hours',
 		'checked_sign_by',
@@ -301,26 +325,44 @@ class PhysiotherapyGeneralAssessmentAdmin(admin.ModelAdmin):
 	]
 	ModelAdmin.ordering = ('id',)
 
+
+
+
+class StoolAdmin(admin.ModelAdmin):
+	list_display = [
+		'id',
+		'patient',
+		'time',
+		'frequency',
+		'consistency',
+		'amount',
+		'remark',
+		'done_by',
+	]
+	ModelAdmin.ordering = ('id',)
+
 admin.site.register(Admission, AdmissionAdmin)
 admin.site.register(ApplicationForHomeLeave, ApplicationForHomeLeaveAdmin)
 admin.site.register(Appointment, AppointmentAdmin)
-admin.site.register(Nasogastric, NasogastricAdmin)
-admin.site.register(Urinary, UrinaryAdmin)
 admin.site.register(Cannula, CannulaAdmin)
 admin.site.register(Dressing, DressingAdmin)
 admin.site.register(EnteralFeedingRegime, EnteralFeedingRegimeAdmin)
 admin.site.register(HGT, HGTAdmin)
 admin.site.register(IntakeOutput, IntakeOutputAdmin)
+admin.site.register(InvestigationReport)
 admin.site.register(Maintenance, MaintenanceAdmin)
+admin.site.register(Medication, MedicationAdmin)
 admin.site.register(MedicationAdministrationRecord, MedicationAdministrationRecordAdmin)
 admin.site.register(MedicationRecord)
 admin.site.register(Multipurpose)
 admin.site.register(MiscellaneousChargesSlip)
+admin.site.register(Nasogastric, NasogastricAdmin)
 admin.site.register(Nursing)
 admin.site.register(OvertimeClaim, OvertimeClaimAdmin)
 admin.site.register(PhysioProgressNoteBack)
 admin.site.register(PhysioProgressNoteFront)
 admin.site.register(PhysiotherapyGeneralAssessment, PhysiotherapyGeneralAssessmentAdmin)
-admin.site.register(Stool)
+admin.site.register(Stool, StoolAdmin)
+admin.site.register(Urinary, UrinaryAdmin)
 admin.site.register(VitalSignFlow)
 admin.site.register(VisitingConsultant)

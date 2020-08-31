@@ -15,10 +15,10 @@ from .forms import *
 
 
 # Register your models here.
-class PatientDataAdmin(admin.StackedInline):
-    model = Admission
-    max_num = 1
-    extra = 1
+#class PatientDataAdmin(admin.StackedInline):
+#    model = Admission
+#    max_num = 1
+#    extra = 1
 
 class UserProfileAdmin(admin.ModelAdmin):
 #    class FullNameModelChoiceField(forms.ModelChoiceField):
@@ -43,7 +43,7 @@ class UserProfileAdmin(admin.ModelAdmin):
         'email',
         'full_name',
         'ic_number',
-#        'roles',
+        'date_joined',
 
         'birth_date',
         'age',
@@ -67,9 +67,9 @@ class UserProfileAdmin(admin.ModelAdmin):
 #    form = make_ajax_form(UserProfile, {
 #        'full_name': 'full_name'
 #    })
-    inlines = [
-        PatientDataAdmin,
-    ]
+#    inlines = [
+#        PatientDataAdmin,
+#    ]
 
 #    class Meta:
 #        model = UserProfile
@@ -78,6 +78,7 @@ class UserProfileAdmin(admin.ModelAdmin):
 class EmergencyContactAdmin(admin.ModelAdmin):
     list_display = [
         'id',
+        'patient',
         'ec_name',
         'ec_ic_number',
         'ec_relationship',
@@ -102,6 +103,7 @@ class PatientProfileAdmin(admin.ModelAdmin):
         'email',
         'full_name',
         'ic_number',
+        'date_joined',
 
         'birth_date',
         'age',
@@ -191,8 +193,8 @@ class AdminProfileAdmin(admin.ModelAdmin):
     list_filter = ()
 
 
-#admin.site.register(UserProfile, UserProfileAdmin)
+admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(EmergencyContact, EmergencyContactAdmin)
-admin.site.register(PatientProfile, PatientProfileAdmin)
-admin.site.register(StaffProfile, StaffProfileAdmin)
-admin.site.register(AdminProfile, AdminProfileAdmin)
+#admin.site.register(PatientProfile, PatientProfileAdmin)
+#admin.site.register(StaffProfile, StaffProfileAdmin)
+#admin.site.register(AdminProfile, AdminProfileAdmin)

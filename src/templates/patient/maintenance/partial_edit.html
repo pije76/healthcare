@@ -12,11 +12,10 @@
 	<div class="modal-body">
         <div class="form-group">
             {{ form.date|as_crispy_field }}
-            {{ form.time|as_crispy_field }}
-            {{ form.hospital_clinic_center|as_crispy_field }}
-            {{ form.department|as_crispy_field }}
-            {{ form.planning_investigation|as_crispy_field }}
-            {{ form.treatment_order|as_crispy_field }}
+            {{ form.items|as_crispy_field }}
+            {{ form.location_room|as_crispy_field }}
+            {{ form.reported_by|as_crispy_field }}
+            {{ form.status|as_crispy_field }}
         </div>
 	</div>
 

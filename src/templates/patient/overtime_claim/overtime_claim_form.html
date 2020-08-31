@@ -1,15 +1,12 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
 
 {% block headtitle %}
     {{ page_title }} | {{ titles.title }}
 {% endblock %}
-
-{% block content %}
 
 {% block styles %}
 	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
@@ -21,49 +18,75 @@
 	{{ form.media }}
 {% endblock %}
 
-<div class="row isi">
+{% block content %}
+
+<div class="container-fluid">
 
 	<div class="row formtitle">
 		{{ page_title }}
 	</div>
 
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	{% include 'patient/patient_formset.html' %}
 
-		<form method="post" id="dataForm" data-url="{% url 'load_ic_number' %}" novalidate>
-			{% csrf_token %}
+	<form method="post">
+	{% csrf_token %}
 
-			{% include 'patient/patient_formset.html' %}
+		<div class="row rounded form_table">
 
-			<table class="table table-bordered">
-				<thead>
+			<table id="form_set" class="table table-bordered">
+				<thead class="thead-light">
 					<tr>
 						<th class="text-center">{% trans "Date" %}</th>
-						<th class="text-center">{% trans "Duration of Time" %}</th>
-						<th class="text-center">{% trans "Hours" %}</th>
+						<th class="text-center">{% trans "Duration of Time - From" %}</th>
+						<th class="text-center">{% trans "Duration of Time - To" %}</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<td>{{ form.date|as_crispy_field }}</td>
 						<td>
-							{{ form.duration_time|as_crispy_field }}
-							{{ form.total_hours|as_crispy_field }}
+							{{ form.duration_time_from|as_crispy_field }}
 						</td>
-						<td>{{ form.hours|as_crispy_field }}</td>
+						<td>
+							{{ form.duration_time_to|as_crispy_field }}
+						</td>
 					</tr>
 				</tbody>
 			</table>
-			<div class="footer_info">{% trans "Checked and sign by" %}: ({{ form.checked_sign_by|as_crispy_field }})</div>
-			<br />
-			<div class="footer_info">{% trans "Verify by" %}: ({{ form.verify_by|as_crispy_field }})</div>
-			<br />
+
+		</div>
+
+		<div class="row border rounded foot_table">
+
+			<div class="col-3">
+				{% trans "Checked and sign by" %}:
+			</div>
+			<div class="col-3">
+				{{ form.checked_sign_by|as_crispy_field }}
+			</div>
+
+			<div class="w-100"></div>
+
+			<div class="col-3">
+				{% trans "Verify by" %}:
+			</div>
+			<div class="col-4 d-flex">
+				({{ form.verify_by|as_crispy_field }})
+			</div>
+
+		</div>
+
+		<div class="row">
+
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 			{% for item in profiles %}
-			<a class="btn btn-danger" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+			<a class="btn btn-outline-primary" href="{% url 'patient:overtime_claim_pdf' item.username %}"><i style="font-size:24px;" class="fa fa fa-print fa-2x"></i> Print</a>
+			<a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
 			{% endfor %}
-		</form>
 
-	</div>
+		</div>
+
+	</form>
 
 </div>
 
@@ -96,5 +119,8 @@ $("#id_checked_sign_by").change(function()
 		},
 	});
 });
+
+//$("#id_checked_sign_by").prop("disabled", true);
+
 </script>
 {% endblock %}

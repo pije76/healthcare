@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.translation import ugettext as _
-from django.http import JsonResponse
+from django.urls import reverse, reverse_lazy
 
 from patient.models import *
 from patient.Forms.nursing import *
@@ -58,7 +58,7 @@ def nursing_create(request, username):
     }
 
     if request.method == 'POST':
-        form = NursingForm(request.POST or None)
+        form = Nursing_Form(request.POST or None)
         if form.is_valid():
             profile = Nursing()
             profile.patient = patients
@@ -71,7 +71,7 @@ def nursing_create(request, username):
         else:
             messages.warning(request, form.errors)
     else:
-        form = NursingForm(initial=initial)
+        form = Nursing_Form(initial=initial)
 
     context = {
         'logos': logos,
@@ -85,10 +85,11 @@ def nursing_create(request, username):
 
     return render(request, 'patient/nursing/nursing_form.html', context)
 
+
 class NursingUpdateView(BSModalUpdateView):
     model = Nursing
     template_name = 'patient/nursing/partial_edit.html'
-    form_class = NursingForm
+    form_class = Nursing_ModelForm
     page_title = _('Nursing Form')
     success_message = _(page_title + ' form has been save successfully.')
 

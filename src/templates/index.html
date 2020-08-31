@@ -2,17 +2,17 @@
 
 {% load account %}
 {% load static %}
-{% load staticfiles %}
 {% load i18n %}
 
 {% block styles %}
-    <link href="{% static 'css/account.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/account.css' %}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block content %}
 
-<div class="row isi">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+<div class="container-fluid">
+    <div class="col-12">
+
         <div class="messageform">
             {% include 'messages.html' %}
         </div>

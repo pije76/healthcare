@@ -4,7 +4,7 @@ from django.core import serializers
 from django.db import connection
 from django.db.models import Count, Sum, F, Q
 from django.db.models.functions import Trunc
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
@@ -119,33 +119,32 @@ def medication_administration_create(request, username):
 	GROUP_SIZE = 4
 
 	if request.method == 'POST':
-		formset_factory = MedicationAdministrationRecordFormSet(request.POST or None)
+		form = MedicationAdministrationRecord_Form(request.POST or None)
 
-		if formset_factory.is_valid():
-			for item in formset_factory:
-				profile = MedicationAdministrationRecord()
-				profile.patient = patients
-				profile.allergy = item.cleaned_data['allergy']
-				profile.medication_name = item.cleaned_data['medication_name']
-				profile.medication_dosage = item.cleaned_data['medication_dosage']
-				profile.medication_tab = item.cleaned_data['medication_tab']
-				profile.medication_frequency = item.cleaned_data['medication_frequency']
-				profile.medication_route = item.cleaned_data['medication_route']
-				profile.medication_date = item.cleaned_data['medication_date']
-				profile.medication_time = item.cleaned_data['medication_time']
-				profile.signature_nurse = item.cleaned_data['signature_nurse']
-				profile.stat = item.cleaned_data['stat']
-				profile.medicationstat_date_time = item.cleaned_data['medicationstat_date_time']
-				profile.given_by = item.cleaned_data['given_by']
-				profile.save()
+		if form.is_valid():
+			profile = MedicationAdministrationRecord()
+			profile.patient = patients
+			profile.allergy = item.cleaned_data['allergy']
+			profile.medication_name = item.cleaned_data['medication_name']
+			profile.medication_dosage = item.cleaned_data['medication_dosage']
+			profile.medication_tab_cap_mls = item.cleaned_data['medication_tab_cap_mls']
+			profile.medication_frequency = item.cleaned_data['medication_frequency']
+			profile.medication_route = item.cleaned_data['medication_route']
+			profile.medication_date = item.cleaned_data['medication_date']
+			profile.medication_time = item.cleaned_data['medication_time']
+			profile.status_nurse = item.cleaned_data['status_nurse']
+			profile.stat = item.cleaned_data['stat']
+			profile.medicationstat_date_time = item.cleaned_data['medicationstat_date_time']
+			profile.given_by = item.cleaned_data['given_by']
+			profile.save()
 
 			messages.success(request, _(page_title + ' form was created.'))
 			return redirect('patient:patientdata_detail', username=patients.username)
 		else:
-			messages.warning(request, formset_factory.errors)
+			messages.warning(request, form.errors)
 	else:
-		formset_factory = MedicationAdministrationRecordFormSet(initial=initial_formset_factory)
-#       formset_factory = MedicationAdministrationRecordFormSet(initial=[{'medication_date': get_today} for medication_date in queryset])
+		form = MedicationAdministrationRecord_Form(initial=initial_form)
+#       form = MedicationAdministrationRecord_FormSet(initial=[{'medication_date': get_today} for medication_date in queryset])
 
 	context = {
 		'logos': logos,
@@ -154,25 +153,25 @@ def medication_administration_create(request, username):
 		'patients': patients,
 		'profiles': profiles,
 		'icnumbers': icnumbers,
-					#       'form': form,
-		'formset': formset_factory,
-					#       'formset1': formset1,
-					#       'formset2': formset2,
-					#       'helper': helper,
+#       'form': form,
+		'form': form,
+#       'formset1': formset1,
+#       'formset2': formset2,
+#       'helper': helper,
 	}
 
-#   return render(request, 'patient/_form/medication_administration_form.html', context)
-	return render(request, 'patient/medication_administration/medication_administration_formset_factory.html', context)
-#   return render(request, 'patient/_form/medication_administration_modelform_factory.html', context)
-#   return render(request, 'patient/_form/medication_administration_modelformset_factory.html', context)
-#   return render(request, 'patient/_form/medication_administration_inlineformset_factory.html', context)
+	return render(request, 'patient/medication_administration/medication_administration_form.html', context)
+#	return render(request, 'patient/medication_administration/medication_administration_formset_factory.html', context)
+#   return render(request, 'patient/medication_administration/medication_administration_modelform_factory.html', context)
+#   return render(request, 'patient/medication_administration/medication_administration_modelformset_factory.html', context)
+#   return render(request, 'patient/medication_administration/medication_administration_inlineformset_factory.html', context)
 
 
 class MedicationAdministrationRecordUpdateView(BSModalUpdateView):
 	model = MedicationAdministrationRecord
 	template_name = 'patient/medication_administration/partial_edit.html'
-	form_class = MedicationAdministrationRecordFormSet
-	page_title = _('MedicationAdministrationRecord Form')
+	form_class = MedicationAdministrationRecord_ModelForm
+	page_title = _('Medication Administration Record Form')
 	success_message = _(page_title + ' form has been save successfully.')
 
 	def get_success_url(self):
@@ -186,7 +185,7 @@ medication_administration_edit = MedicationAdministrationRecordUpdateView.as_vie
 class MedicationAdministrationRecordDeleteView(BSModalDeleteView):
 	model = MedicationAdministrationRecord
 	template_name = 'patient/medication_administration/partial_delete.html'
-	page_title = _('MedicationAdministrationRecord Form')
+	page_title = _('Medication Administration Record Form')
 	success_message = _(page_title + ' form was deleted.')
 
 	def get_success_url(self):

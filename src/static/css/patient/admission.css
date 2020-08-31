@@ -57,24 +57,6 @@
   display: inline-flex;
 }
 
-#admissionform {
-  padding: 20px;
-}
-
-#admissionform .col {
-  border: 1px solid #c9c9c9;
-  padding-top: 12px;
-  padding-bottom: 10px;
-}
-
-#admissionform .col:not(:last-child) {
-  border-right-width: 0;
-}
-
-#admissionform .row:not(:last-child) .col {
-  border-bottom-width: 0;
-}
-
 .delete-row {
   align-self: center;
 }
@@ -82,4 +64,57 @@
 .form-row1 {
   margin-right: 0px !important;
   margin-left: 0px !important;
+}
+
+.hapus_Emerg, .hapus_Diag, .hapus_Opr, .hapus_Own {
+  border-right: 1px solid #c9c9c9;
+  border-bottom: 1px solid #c9c9c9;
+}
+
+.tambah_Emerg, .tambah_Diag, .tambah_Opr, .tambah_Diag {
+  margin: auto -15px;
+  padding: 10px 10px 10px 95%;
+  border-left: 1px solid #c9c9c9;
+  border-right: 1px solid #c9c9c9;
+}
+
+.tambah_Own {
+  margin: auto -15px;
+  padding: 10px 10px 10px 95%;
+  border-top: 1px solid #c9c9c9;
+  border-left: 1px solid #c9c9c9;
+  border-right: 1px solid #c9c9c9;
+}
+
+#div_id_form-0-ic_number, #div_id_form-0-ic_upload, #div_id_patient_form-ic_number, #div_id_patient_form-ic_upload {
+  font-weight: normal;
+}
+
+.admissionform .col {
+  border: 1px solid #c9c9c9;
+  padding-top: 12px;
+  padding-bottom: 10px;
+}
+
+.admissionform .col:not(:last-child) {
+  border-right-width: 0;
+}
+
+.admissionform .row:not(:last-child) .col {
+  border-bottom-width: 0;
+}
+
+.admissionform {
+  padding: 15px !important;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.disabled_input {
+  pointer-events: none;
+  background-color: #e9ecef;
+  opacity: 1;
 }

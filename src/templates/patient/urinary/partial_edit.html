@@ -1,8 +1,6 @@
 {% load crispy_forms_tags %}
-{% load widget_tweaks %}
 {% load i18n %}
 {% load static %}
-{% load staticfiles %}
 
 {% block javascript %}
     <script src="{% static 'js/jquery.min.js' %}"></script>
@@ -29,24 +27,6 @@
                 {{ form.patient|as_crispy_field }}
             </div>
             <div class="col-12 col">
-            {{ form.nasogastric_tube_date }}
-            </div>
-            <div class="col-12 col">
-            {{ form.nasogastric_tube_size }}
-            </div>
-            <div class="col-12 col">
-            {{ form.nasogastric_tube_type }}
-            </div>
-            <div class="col-12 col">
-            {{ form.nasogastric_tube_location }}
-            </div>
-            <div class="col-12 col">
-            {{ form.nasogastric_tube_due_date }}
-            </div>
-            <div class="col-12 col">
-            {{ form.nasogastric_tube_inserted_by }}
-            </div>
-            <div class="col-12 col">
             {{ form.urinary_catheter_date }}
             </div>
             <div class="col-12 col">
@@ -60,18 +40,6 @@
             </div>
             <div class="col-12 col">
             {{ form.urinary_catheter_inserted_by }}
-            </div>
-            <div class="col-12 col">
-            {{ form.cannula_date }}
-            </div>
-            <div class="col-12 col">
-            {{ form.cannula_size }}
-            </div>
-            <div class="col-12 col">
-            {{ form.cannula_location }}
-            </div>
-            <div class="col-12 col">
-            {{ form.cannula_due_date }}
             </div>
         </div>
 	</div>

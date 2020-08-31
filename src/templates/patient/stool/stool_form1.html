@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
 
@@ -33,7 +32,57 @@
 
 	{% include 'patient/patient_formset.html' %}
 
-	<div class="row rounded form_table">
+	<div id="form_set" class="row rounded form_table">
+
+		{{ formset.management_form }}
+		<form method="post" id="stoolForm" name='stoolForm'>
+		{% csrf_token %}
+
+			<table class="table table-bordered">
+				<thead class="thead-light">
+					<tr>
+						<th class="text-center">{% trans "Date" %}</th>
+						<th class="text-center">{% trans "Time" %}</th>
+						<th class="text-center">{% trans "Frequency" %}</th>
+						<th class="text-center">{% trans "Consistency" %}</th>
+						<th class="text-center">{% trans "Amount" %}</th>
+						<th class="text-center">{% trans "Remark" %}</th>
+						<th class="text-center">{% trans "Done by" %}</th>
+						<th class="text-center">{% trans "Action" %}</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					{% for item in formset.forms %}
+					<tr class="form_row">
+						<td>{{ item.date|as_crispy_field }}</td>
+						<td>{{ item.time|as_crispy_field }}</td>
+						<td>{{ item.frequency|as_crispy_field }}</td>
+						<td>{{ item.consistency|as_crispy_field }}</td>
+						<td>{{ item.amount|as_crispy_field }}</td>
+						<td>{{ item.remark|as_crispy_field }}</td>
+						<td>{{ item.done_by|as_crispy_field }}</td>
+						<td>
+							{{ item.patient|as_crispy_field }}
+							<button type="button" class="btn btn-success add_form_row">
+							<i class="fas fa-plus"></i>
+							</button>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+			{% for item in profiles %}
+			<a class="btn btn-danger" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+			{% endfor %}
+
+		</form>
+
+	</div>
+
+	<div id="empty_form" class="row rounded form_table" style="display:none">
 
 		<form method="post" id="stoolForm" name='stoolForm'>
 		{% csrf_token %}
@@ -52,10 +101,9 @@
 					</tr>
 				</thead>
 				<tbody>
-					{{ formset.management_form }}
-					{% for item in formset.forms %}
 					<tr class="form_row">
-						{{ item.errors }}
+					{{ formset.empty_form }}
+					{% for item in formset.forms %}
 						<td>{{ item.date|as_crispy_field }}</td>
 						<td>{{ item.time|as_crispy_field }}</td>
 						<td>{{ item.frequency|as_crispy_field }}</td>
@@ -69,18 +117,19 @@
 							<i class="fas fa-plus"></i>
 							</button>
 						</td>
-					</tr>
 					{% endfor %}
+					</tr>
 				</tbody>
 			</table>
+
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 			{% for item in profiles %}
 			<a class="btn btn-danger" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
 			{% endfor %}
+
 		</form>
 
 	</div>
-
 </div>
 
 {% endblock %}
@@ -126,6 +175,10 @@
 				}
 			);
 
+        $('#form_set').append($('.form_row').html().replace(/__prefix__/g, total));
+        $('#id_form-TOTAL_FORMS').val(parseInt(total) + 1);
+
+
 		total++;
 
 		$('#id_' + prefix + '-TOTAL_FORMS').val(total);
@@ -142,8 +195,14 @@
 	$(document).on('click', '.add_form_row', function(e)
 	{
 		var doneby = $('#id_form-0-done_by').val();
+//		var form_idx = $('#id_form-TOTAL_FORMS').val();
+
 		e.preventDefault();
 		cloneMore('.form_row:last', 'form');
+
+//        $('#form_set').append($('.form_row').html().replace(/__prefix__/g, form_idx));
+//        $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+
 		$(".form_row:last").find('#id_form-1-done_by').each(function()
 		{
 			$(this).append(doneby);
@@ -153,7 +212,9 @@
 			$(this).autocomplete('destroy');
 			enable_autocomplete($(this), cust_part_url);
 		});
+
 		console.log(doneby);
+
 		return false;
 	});
 

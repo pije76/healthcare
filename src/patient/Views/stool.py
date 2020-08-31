@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.translation import ugettext as _
-from django.http import JsonResponse
+from django.urls import reverse, reverse_lazy
 from django.urls import reverse_lazy
 from django.db import IntegrityError, transaction
 
@@ -53,39 +53,17 @@ def stool_create(request, username):
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Stool Chart')
 	patients = get_object_or_404(UserProfile, username=username)
-
-	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
-
-	patientprofile = Stool.objects.none()
-	patientprofiles = Stool.objects.all()
-	staffs = UserProfile.objects.filter(username=request.user)
 	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = [{
 		'patient': item.full_name,
-#		'ic_number': item.ic_number,
-#		'done_by': done_by,
 		'done_by': request.user,
-#		'done_by': item.full_name,
-#		'done_by': "test",
 	}
 	for item in profiles]
 
-#	initial_data = [
-#	{
-#		'done_by': done_by[item]
-#	}
-#	for item in range(len(patientprofiles))]
-
-	initial_formset_factory = [
-	{
-		'patient': patients,
-		'ic_number': icnumbers,
-		'done_by': request.user,
-	}]
-
 	if request.method == 'POST':
-		formset = StoolFormSet(request.POST or None)
+		formset = Stool_FormSet(request.POST or None)
 
 		if formset.is_valid():
 			for item in formset:
@@ -105,7 +83,7 @@ def stool_create(request, username):
 		else:
 			messages.warning(request, formset.errors)
 	else:
-		formset = StoolFormSet(initial=initial)
+		formset = Stool_FormSet(initial=initial)
 
 	context = {
 		'logos': logos,

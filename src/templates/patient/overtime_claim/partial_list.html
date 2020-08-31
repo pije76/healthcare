@@ -1,8 +1,8 @@
 {% for item in patients %}
 <tr>
     <td>{{ item.date|date:"d-m-Y" }}</td>
-    <td>{{ item.duration_time }}</td>
-    <td>{{ item.hours|date:"H:i" }}</td>
+    <td>{{ item.duration_time_from }}</td>
+    <td>{{ item.duration_time_to }}</td>
     <td>{{ item.total_hours }}</td>
     <td>{{ item.checked_sign_by }}</td>
     <td>{{ item.verify_by }}</td>

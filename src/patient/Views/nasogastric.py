@@ -4,7 +4,7 @@ from django.db import connection
 from django.db.models import F, Func, Value, CharField
 from django.db.models import Value, CharField
 from django.db.models.functions import Cast, Concat, ExtractYear, ExtractMonth, ExtractDay, ExtractHour, ExtractMinute
-from django.http import JsonResponse
+from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
@@ -57,33 +57,37 @@ def nasogastric_create(request, username):
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
-	initial = {
-		'patient': patients,
-		'ic_number': icnumbers,
+	initial = [{
+		'patient': item.full_name,
 		'nasogastric_tube_inserted_by': request.user,
-		'urinary_catheter_inserted_by': request.user
+		'nasogastric_remove_by': request.user,
 	}
+	for item in profiles]
 
 	if request.method == 'POST':
-		form = NasogastricForm(request.POST or None)
-		if form.is_valid():
-			profile = Nasogastric()
-			profile.patient = patients
-			profile.nasogastric_tube_date = form.cleaned_data['nasogastric_tube_date']
-			profile.nasogastric_tube_size = form.cleaned_data['nasogastric_tube_size']
-			profile.nasogastric_tube_type = form.cleaned_data['nasogastric_tube_type']
-			profile.nasogastric_tube_location = form.cleaned_data['nasogastric_tube_location']
-			profile.nasogastric_tube_due_date = form.cleaned_data['nasogastric_tube_due_date']
-			profile.nasogastric_tube_inserted_by = form.cleaned_data['nasogastric_tube_inserted_by']
-			profile.save()
+		formset = Nasogastric_FormSet(request.POST or None)
+
+		if formset.is_valid():
+			for item in formset:
+				profile = Nasogastric()
+				profile.patient = patients
+				profile.nasogastric_tube_date = item.cleaned_data['nasogastric_tube_date']
+				profile.nasogastric_tube_size = item.cleaned_data['nasogastric_tube_size']
+				profile.nasogastric_tube_type = item.cleaned_data['nasogastric_tube_type']
+				profile.nasogastric_tube_location = item.cleaned_data['nasogastric_tube_location']
+				profile.nasogastric_tube_due_date = item.cleaned_data['nasogastric_tube_due_date']
+				profile.nasogastric_tube_inserted_by = item.cleaned_data['nasogastric_tube_inserted_by']
+				profile.nasogastric_remove_date = item.cleaned_data['nasogastric_remove_date']
+				profile.nasogastric_remove_by = item.cleaned_data['nasogastric_remove_by']
+				profile.save()
 
 			messages.success(request, _(page_title + ' form was created.'))
 			return redirect('patient:patientdata_detail', username=patients.username)
 		else:
-			messages.warning(request, form.errors)
+			messages.warning(request, formset.errors)
 
 	else:
-		form = NasogastricForm(initial=initial)
+		formset = Nasogastric_FormSet(initial=initial)
 
 	context = {
 		'logos': logos,
@@ -92,7 +96,7 @@ def nasogastric_create(request, username):
 		'patients': patients,
 		'profiles': profiles,
 		'icnumbers': icnumbers,
-		'form': form,
+		'formset': formset,
 	}
 
 	return render(request, 'patient/nasogastric/nasogastric_form.html', context)
@@ -101,7 +105,7 @@ def nasogastric_create(request, username):
 class NasogastricUpdateView(BSModalUpdateView):
 	model = Nasogastric
 	template_name = 'patient/nasogastric/partial_edit.html'
-	form_class = NasogastricForm
+	form_class = Nasogastric_ModelForm
 	page_title = _('Nasogastric Form')
 	success_message = _(page_title + ' form has been save successfully.')
 

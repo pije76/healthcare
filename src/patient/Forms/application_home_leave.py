@@ -10,7 +10,8 @@ from accounts.models import *
 from bootstrap_modal_forms.forms import *
 from selectable.forms import AutoCompleteWidget
 
-class ApplicationForHomeLeaveForm(BSModalModelForm):
+
+class ApplicationForHomeLeave_ModelForm(BSModalModelForm):
     class Meta:
         model = ApplicationForHomeLeave
         fields = '__all__'
@@ -61,4 +62,17 @@ class ApplicationForHomeLeaveForm(BSModalModelForm):
     designation = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("designation")}))
     signature = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("signature")}))
 #    signature = JSignatureField()
+    date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': "form-control"}))
+
+
+
+class ApplicationForHomeLeave_Form(BSModalForm):
+    patient = forms.CharField(required=False, label="", widget=AutoCompleteWidget(FullnameLookup, attrs={'class': "form-control", 'placeholder': _("type min. 3 characters & select")}))
+    ic_number = forms.CharField(max_length=14, required=False, label="", validators=[ic_number_validator], widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("yymmdd-xx-zzzz")}))
+    family_name = forms.CharField(required=False, label="", widget=AutoCompleteWidget(FamilyNameLookup, attrs={'class': "form-control", 'placeholder': _("type min. 3 characters & select")}))
+    family_ic_number = forms.CharField(required=False, label="", validators=[ic_number_validator], widget=AutoCompleteWidget(ECNumberLookup, attrs={'class': "form-control", 'placeholder': _("yymmdd-xx-zzzz")}))
+    family_relationship = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("myself or relationship")}))
+    family_phone = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("+6012345678")}))
+    designation = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("designation")}))
+    signature = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("signature")}))
     date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': "form-control"}))

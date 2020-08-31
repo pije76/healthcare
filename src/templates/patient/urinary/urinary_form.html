@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
 
@@ -9,64 +8,134 @@
     {{ page_title }} | {{ titles.title }}
 {% endblock %}
 
-{% block content %}
-
 {% block styles %}
 	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/patient/urinary.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
-{% block extrahead %}
-	{{ form.media }}
+{% block javascript %}
+    <script src="{% static 'js/jquery.formset.js' %}"></script>
 {% endblock %}
 
-<div class="row isi">
+{% block extrahead %}
+	{{ formset.media }}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid">
 
 	<div class="row formtitle">
 		{{ page_title }}
 	</div>
 
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	{% include 'patient/patient_formset.html' %}
 
-		<form method="post">
-			{% csrf_token %}
-			<table class="table-sm table-bordered">
+	<form method="post">
+	{% csrf_token %}
+
+		<div class="row rounded form_table">
+
+			{{ formset.management_form }}
+			<table id="form_set" class="table table-bordered">
+				<thead class="thead-light">
+					<tr>
+						<th class="text-center" scope="col">{% trans "Date" %}</th>
+						<th class="text-center" scope="col">{% trans "Size (Fr)" %}</th>
+						<th class="text-center" scope="col">{% trans "Type" %}</th>
+						<th class="text-center" scope="col">{% trans "Due date" %}</th>
+						<th class="text-center" scope="col">{% trans "Inserted by" %}</th>
+						<th class="text-center" scope="col">{% trans "Remove date" %}</th>
+						<th class="text-center remove_by" scope="col">{% trans "Remove by" %}</th>
+						<th class="text-center" scope="col">{% trans "Action" %}</th>
+					</tr>
+				</thead>
+
 				<tbody>
-					<tr>
-						<td>{% trans "Name" %}:</td>
-						<td>{{ patients }}{{ form.patient|as_crispy_field }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "I/C No" %}:</td>
-						<td>{{ icnumbers }}</td>
-					</tr>
+					{% for item in formset.forms %}
+					<tr id="{{ item.prefix }}-row">
+						<td>{{ item.urinary_catheter_date|as_crispy_field }}</td>
+						<td>{{ item.urinary_catheter_size|as_crispy_field }}</td>
+						<td>{{ item.urinary_catheter_type|as_crispy_field }}</td>
+						<td>{{ item.urinary_catheter_due_date|as_crispy_field }}</td>
+						<td>{{ item.urinary_catheter_inserted_by|as_crispy_field }}</td>
+						<td>{{ item.urinary_catheter_remove_date|as_crispy_field }}</td>
+						<td class="action">{{ item.urinary_catheter_remove_by|as_crispy_field }}</td>
+						<td></td>
+					<tr class="tambah_row"></tr>
+					{% endfor %}
 				</tbody>
 			</table>
-			<table class="table table-bordered">
-				<tr>
-					<th class="text-center" scope="col">{% trans "Date" %}</th>
-					<th class="text-center" scope="col">{% trans "Size (Fr)" %}</th>
-					<th class="text-center" scope="col">{% trans "Type" %}</th>
-					<th class="text-center" scope="col">{% trans "Due date" %}</th>
-					<th class="text-center" scope="col">{% trans "Inserted by" %}</th>
-				</tr>
 
-				<tr>
-					<th class="text-center" scope="row">{{ form.urinary_catheter_date|as_crispy_field }}</th>
-					<td>{{ form.urinary_catheter_size|as_crispy_field }}</td>
-					<td>{{ form.urinary_catheter_type|as_crispy_field }}</td>
-					<td>{{ form.urinary_catheter_due_date|as_crispy_field }}</td>
-					<td>{{ form.urinary_catheter_inserted_by|as_crispy_field }}</td>
-				</tr>
-			</table>
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 			{% for item in profiles %}
-			<a class="btn btn-danger" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+			<a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
 			{% endfor %}
-		</form>
 
-	</div>
+		</div>
+
+	</form>
 
 </div>
 
+{% endblock %}
+
+{% block js %}
+<script type='text/javascript'>
+$(document).ready(function()
+{
+	$("#id_form-0-urinary_catheter_remove_by").hide();
+	$(".remove_by").hide();
+	$(".action").hide();
+
+	$("#id_form-1-urinary_catheter_remove_by").hide();
+	$(".remove_by").hide();
+	$(".action").hide();
+
+	$('#id_form-0-urinary_catheter_remove_date').on('dp.change', function(e)
+	{
+		$("#id_form-0-urinary_catheter_remove_by").show();
+		$(".remove_by").show();
+		$(".action").show();
+	});
+
+	$('#id_form-1-urinary_catheter_remove_date').on('dp.change', function(e)
+	{
+		$("#id_form-1-urinary_catheter_remove_by").show();
+		$(".remove_by").show();
+		$(".action").show();
+	});
+
+	$(function()
+	{
+		$('#form_set tbody tr').formset(
+		{
+//			prefix: 'formset',
+//			prefix: '{{ formset.prefix }}',
+			addCssClass: 'btn btn-success',
+			addText: '<i class="fas fa-plus"></i>',
+			deleteCssClass: 'btn btn-danger',
+			deleteText: '<i class="fas fa-minus"></i>',
+			keepFieldValues: '#id_form-0-urinary_catheter_date, #id_form-0-urinary_catheter_size, #id_form-0-urinary_catheter_type, #id_form-0-urinary_catheter_due_date, #id_form-0-urinary_catheter_inserted_by, #id_form-0-urinary_catheter_remove_date, #id_form-0-urinary_catheter_remove_by',
+//			addContainerClass: 'tambah_row',
+			added: function(row)
+			{
+				$(row).find('[id$="date"]').removeClass('datepickerinput').removeAttr('#id_form-0-date').removeData('DateTimePicker')
+			.unbind().datetimepicker(
+				options={
+					"format": "DD/MM/YYYY",
+				});
+
+				$(row).find('[id$="time"]').removeClass('timepickerinput').removeAttr('#id_form-0-time').removeData('DateTimePicker')
+			.unbind().datetimepicker(
+				options={
+					"format": "HH:mm",
+				});
+			},
+		});
+	});
+});
+
+</script>
 {% endblock %}

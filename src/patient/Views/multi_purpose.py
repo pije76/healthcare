@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.translation import ugettext as _
-from django.http import JsonResponse
+from django.urls import reverse, reverse_lazy
 
 from patient.models import *
 from patient.Forms.multi_purpose import *
@@ -52,10 +52,11 @@ def multi_purpose_create(request, username):
     profiles = UserProfile.objects.filter(username=username)
     icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
-    initial = {
-        'patient': patients,
-        'ic_number': icnumbers,
+    initial = [{
+        'patient': item.full_name,
+        'done_by': request.user,
     }
+    for item in profiles]
 
     initial_formset_factory = [
     {
@@ -64,7 +65,7 @@ def multi_purpose_create(request, username):
     }]
 
     if request.method == 'POST':
-        formset = Multipurpose_FormSet_Factory(request.POST or None)
+        formset = Multipurpose_FormSet(request.POST or None)
         if formset.is_valid():
             for item in formset:
                 profile = Multipurpose()
@@ -79,7 +80,7 @@ def multi_purpose_create(request, username):
         else:
             messages.warning(request, formset.errors)
     else:
-        formset = Multipurpose_FormSet_Factory(initial=initial_formset_factory)
+        formset = Multipurpose_FormSet(initial=initial)
 
     context = {
         'logos': logos,
@@ -97,7 +98,7 @@ def multi_purpose_create(request, username):
 class MultipurposeUpdateView(BSModalUpdateView):
     model = Multipurpose
     template_name = 'patient/multi_purpose/partial_edit.html'
-    form_class = MultipurposeForm
+    form_class = Multipurpose_Form
     page_title = _('Multipurpose Form')
     success_message = _(page_title + ' form has been save successfully.')
 

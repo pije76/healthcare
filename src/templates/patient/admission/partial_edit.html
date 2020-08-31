@@ -1,8 +1,6 @@
 {% load crispy_forms_tags %}
-{% load widget_tweaks %}
 {% load i18n %}
 {% load static %}
-{% load staticfiles %}
 
 {% block javascript %}
     <script src="{% static 'js/jquery.min.js' %}"></script>
@@ -97,7 +95,7 @@
 			{{ form.vital_sign_spo2|as_crispy_field }}
 			</div>
             <div class="col-12 col">
-			{{ form.vital_sign_on_oxygen_therapy|as_crispy_field }} 
+			{{ form.vital_sign_on_oxygen_therapy|as_crispy_field }}
 			</div>
             <div class="col-12 col">
 			{{ form.vital_sign_on_oxygen_therapy_flow_rate|as_crispy_field }}
@@ -174,7 +172,7 @@
 			<i class="icon wb-plus" aria-hidden="true"></i>{% trans "Submit" %}
 		</button>
 	</div>
-	
+
 </form>
 
 {% block js %}

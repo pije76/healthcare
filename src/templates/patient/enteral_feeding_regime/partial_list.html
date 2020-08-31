@@ -1,5 +1,8 @@
 {% for item in patients %}
+
+{% if user.is_superuser%}
 <tr>
+    <td>{{ item.date|date:"d-m-Y" }}</td>
     <td>{{ item.time|date:"H:i" }}</td>
     <td>{{ item.type_of_milk }}</td>
     <td>{{ item.amount }}</td>
@@ -13,4 +16,17 @@
         </button>
     </td>
 </tr>
+
+{% elif user.is_staff or user.is_patient %}
+
+<tr>
+    <td>{{ item.date|date:"d-m-Y" }}</td>
+    <td>{{ item.time|date:"H:i" }}</td>
+    <td>{{ item.type_of_milk }}</td>
+    <td>{{ item.amount }}</td>
+    <td>{{ item.warm_water_before }}</td>
+    <td>{{ item.warm_water_after }}</td>
+    <td>{{ item.total_fluids }}</td>
+</tr>
+{% endif %}
 {% endfor %}

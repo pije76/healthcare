@@ -11,7 +11,7 @@ from bootstrap_modal_forms.forms import *
 from crispy_forms.layout import Layout, Fieldset, Div, Submit, Reset, HTML, Field, Hidden
 
 
-class InvestigationReportForm(BSModalModelForm):
+class InvestigationReport_ModelForm(BSModalModelForm):
 	class Meta:
 		model = InvestigationReport
 		fields = '__all__'
@@ -28,10 +28,14 @@ class InvestigationReportForm(BSModalModelForm):
 		self.fields['file_upload'].label = ''
 
 
-InvestigationReport_FormSet_Factory = formset_factory(
-	InvestigationReportForm,
-	#   formset = MedicationAdministrationRecord_BaseFormSetFactory,
-	extra=0,
-	max_num=0,
-	#   can_delete=True,
-)
+class InvestigationReport_Form(BSModalForm):
+
+	patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': "form-control"}))
+	file_upload = forms.ImageField(required=False, label='', widget=forms.FileInput(attrs={'class': "form-control"}))
+
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.helper = FormHelper()
+		self.fields['file_upload'].label = ''
+

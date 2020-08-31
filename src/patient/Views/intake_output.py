@@ -4,7 +4,6 @@ from django.db import connection
 from django.db.models import Sum, Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.translation import ugettext as _
-from django.http import JsonResponse
 from django.urls import reverse, reverse_lazy
 
 from patient.models import *
@@ -35,19 +34,19 @@ def intake_output_list(request, username):
 	patients = IntakeOutput.objects.filter(patient=patientid)
 	profiles = UserProfile.objects.filter(pk=patientid)
 
-	total_oral_day = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_day, end_time_day)).aggregate(Sum('intake_oral_ml'))
-	total_parental_day = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_day, end_time_day)).aggregate(Sum('intake_parenteral_ml'))
-	total_other_intake_day = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_day, end_time_day)).aggregate(Sum('intake_other_ml'))
-	total_cum_day = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_day, end_time_day)).aggregate(Sum('output_urine_cum'))
-	total_gastric_day = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_day, end_time_day)).aggregate(Sum('output_gastric_ml'))
-	total_other_output_day = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_day, end_time_day)).aggregate(Sum('output_other_ml'))
+	total_oral_day = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_day, end_time_day)).aggregate(Sum('intake_oral_ml'))
+	total_parental_day = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_day, end_time_day)).aggregate(Sum('intake_parenteral_ml'))
+	total_other_intake_day = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_day, end_time_day)).aggregate(Sum('intake_other_ml'))
+	total_cum_day = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_day, end_time_day)).aggregate(Sum('output_urine_cum'))
+	total_gastric_day = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_day, end_time_day)).aggregate(Sum('output_gastric_ml'))
+	total_other_output_day = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_day, end_time_day)).aggregate(Sum('output_other_ml'))
 
-	total_oral_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_night, end_time_night)).aggregate(Sum('intake_oral_ml'))
-	total_parental_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_night, end_time_night)).aggregate(Sum('intake_parenteral_ml'))
-	total_other_intake_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_night, end_time_night)).aggregate(Sum('intake_other_ml'))
-	total_cum_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_night, end_time_night)).aggregate(Sum('output_urine_cum'))
-	total_gastric_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_night, end_time_night)).aggregate(Sum('output_gastric_ml'))
-	total_other_output_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time_intake__range=(start_time_night, end_time_night)).aggregate(Sum('output_other_ml'))
+	total_oral_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_night, end_time_night)).aggregate(Sum('intake_oral_ml'))
+	total_parental_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_night, end_time_night)).aggregate(Sum('intake_parenteral_ml'))
+	total_other_intake_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_night, end_time_night)).aggregate(Sum('intake_other_ml'))
+	total_cum_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_night, end_time_night)).aggregate(Sum('output_urine_cum'))
+	total_gastric_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_night, end_time_night)).aggregate(Sum('output_gastric_ml'))
+	total_other_output_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_night, end_time_night)).aggregate(Sum('output_other_ml'))
 
 	total_oral = IntakeOutput.objects.filter(patient=patientid).aggregate(Sum('intake_oral_ml'))
 	total_parental = IntakeOutput.objects.filter(patient=patientid).aggregate(Sum('intake_parenteral_ml'))
@@ -66,8 +65,8 @@ def intake_output_list(request, username):
 
 #   total_balance = total_intake + total_output
 
-	time_range_day = IntakeOutput.objects.filter(patient=patientid, time_intake__range=(start_time_day, end_time_day))
-	time_range_night = IntakeOutput.objects.filter(patient=patientid, time_intake__range=(start_time_night, end_time_night))
+	time_range_day = IntakeOutput.objects.filter(patient=patientid, time__range=(start_time_day, end_time_day))
+	time_range_night = IntakeOutput.objects.filter(patient=patientid, time__range=(start_time_night, end_time_night))
 
 	context = {
 		'logos': logos,
@@ -116,10 +115,10 @@ def intake_output_create(request, username):
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 	intakeoutput = IntakeOutput.objects.filter(patient=patientid)
 
-	initial = {
-		'patient': patients,
-		'ic_number': icnumbers,
-	}
+	initial = [{
+        'patient': item.full_name,
+    }
+    for item in profiles]
 
 	initial_formset_factory = [
 	{
@@ -127,22 +126,38 @@ def intake_output_create(request, username):
 		'ic_number': icnumbers,
 	}]
 
+	initial_list = [
+		{'time': '00:00'},
+		{'time': '01:00'},
+		{'time': '02:00'},
+		{'time': '03:00'},
+		{'time': '04:00'},
+		{'time': '05:00'},
+		{'time': '06:00'},
+		{'time': '07:00'},
+		{'time': '08:00'},
+		{'time': '09:00'},
+		{'time': '10:00'},
+		{'time': '11:00'},
+		{'time': '12:00'},
+	]
+
+
 	if request.method == 'POST':
-		formset = IntakeOutput_FormSet_Factory(request.POST or None)
+		formset = IntakeOutput_FormSet(request.POST or None)
 
 		if formset.is_valid():
 			for item in formset:
 				profile = IntakeOutput()
 				profile.patient = patients
 				profile.date = item.cleaned_data['date']
-				profile.time_intake = item.cleaned_data['time_intake']
+				profile.time = item.cleaned_data['time']
 				profile.intake_oral_type = item.cleaned_data['intake_oral_type']
 				profile.intake_oral_ml = item.cleaned_data['intake_oral_ml']
 				profile.intake_parenteral_type = item.cleaned_data['intake_parenteral_type']
 				profile.intake_parenteral_ml = item.cleaned_data['intake_parenteral_ml']
 				profile.intake_other_type = item.cleaned_data['intake_other_type']
 				profile.intake_other_ml = item.cleaned_data['intake_other_ml']
-				profile.time_output = item.cleaned_data['time_output']
 				profile.output_urine_ml = item.cleaned_data['output_urine_ml']
 				profile.output_urine_cum = item.cleaned_data['output_urine_cum']
 				profile.output_gastric_ml = item.cleaned_data['output_gastric_ml']
@@ -153,11 +168,11 @@ def intake_output_create(request, username):
 			messages.success(request, _(page_title + ' form was created.'))
 			return redirect('patient:patientdata_detail', username=patients.username)
 		else:
-			#           messages.warning(request, form.errors)
+#           messages.warning(request, form.errors)
 			messages.warning(request, formset.errors)
 	else:
-		#       form = IntakeOutputForm(initial=initial)
-		formset = IntakeOutput_FormSet_Factory(initial=initial_formset_factory)
+#       form = IntakeOutputForm(initial=initial)
+		formset = IntakeOutput_FormSet(initial=initial_list)
 
 	context = {
 		'logos': logos,
@@ -166,7 +181,7 @@ def intake_output_create(request, username):
 		'patients': patients,
 		'profiles': profiles,
 		'icnumbers': icnumbers,
-			#       'form': form,
+#       'form': form,
 		'formset': formset,
 	}
 
@@ -188,9 +203,9 @@ class IntakeOutputCreateView(BSModalCreateView):
 		data = super().get_context_data(**kwargs)
 
 		if self.request.POST:
-			data['formset'] = IntakeOutput_ModelFormSet_Factory(self.request.POST, instance=self.object, form_kwargs={'request': self.request})
+			data['formset'] = IntakeOutput_ModelFormSet(self.request.POST, instance=self.object, form_kwargs={'request': self.request})
 		else:
-			data['formset'] = IntakeOutput_ModelFormSet_Factory(instance=self.object, form_kwargs={'request': self.request})
+			data['formset'] = IntakeOutput_ModelFormSet(instance=self.object, form_kwargs={'request': self.request})
 		return data
 
 	def form_valid(self, form):

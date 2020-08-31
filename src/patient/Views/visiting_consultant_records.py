@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.translation import ugettext as _
-from django.http import JsonResponse
+from django.urls import reverse, reverse_lazy
 
 from patient.models import *
 from patient.Forms.visiting_consultant_records import *
@@ -19,9 +19,6 @@ start_time_day = datetime.datetime.strptime('00:00', '%H:%M').time()
 end_time_day = datetime.datetime.strptime('12:00', '%H:%M').time()
 start_time_night = datetime.datetime.strptime('12:01', '%H:%M').time()
 end_time_night = datetime.datetime.strptime('23:59', '%H:%M').time()
-
-
-
 
 
 @login_required
@@ -45,7 +42,6 @@ def visiting_consultant_records_list(request, username):
     return render(request, 'patient/visiting_consultant_records/visiting_consultant_records_data.html', context)
 
 
-
 @login_required
 def visiting_consultant_records_create(request, username):
     schema_name = connection.schema_name
@@ -56,10 +52,11 @@ def visiting_consultant_records_create(request, username):
     profiles = UserProfile.objects.filter(username=username)
     icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
-    initial = {
-        'patient': patients,
-        'ic_number': icnumbers,
+    initial = [{
+        'patient': item.full_name,
+        'done_by': request.user,
     }
+    for item in profiles]
 
     initial_formset_factory = [
     {
@@ -68,7 +65,7 @@ def visiting_consultant_records_create(request, username):
     }]
 
     if request.method == 'POST':
-        formset = VisitingConsultant_FormSet_Factory(request.POST or None)
+        formset = VisitingConsultant_FormSet(request.POST or None)
         if formset.is_valid():
             for item in formset:
                 profile = VisitingConsultant()
@@ -84,7 +81,7 @@ def visiting_consultant_records_create(request, username):
         else:
             messages.warning(request, formset.errors)
     else:
-        formset = VisitingConsultant_FormSet_Factory(initial=initial_formset_factory)
+        formset = VisitingConsultant_FormSet(initial=initial)
 
     context = {
         'logos': logos,
@@ -101,7 +98,7 @@ def visiting_consultant_records_create(request, username):
 class VisitingConsultantUpdateView(BSModalUpdateView):
     model = VisitingConsultant
     template_name = 'patient/visiting_consultant_records/partial_edit.html'
-    form_class = VisitingConsultantForm
+    form_class = VisitingConsultant_ModelForm
     page_title = _('VisitingConsultant Form')
     success_message = _(page_title + ' form has been save successfully.')
 

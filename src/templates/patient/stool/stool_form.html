@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
 
@@ -33,12 +32,13 @@
 
 	{% include 'patient/patient_formset.html' %}
 
-	<div class="row rounded form_table">
+	<form method="post">
+	{% csrf_token %}
 
-		<form method="post" id="stoolForm" name='stoolForm'>
-		{% csrf_token %}
+		<div class="row rounded form_table">
 
-			<table class="table table-bordered">
+			{{ formset.management_form }}
+			<table id="form_set" class="table table-bordered">
 				<thead class="thead-light">
 					<tr>
 						<th class="text-center">{% trans "Date" %}</th>
@@ -52,10 +52,8 @@
 					</tr>
 				</thead>
 				<tbody>
-					{{ formset.management_form }}
 					{% for item in formset.forms %}
-					<tr class="form_row">
-						{{ item.errors }}
+					<tr id="{{ item.prefix }}-row">
 						<td>{{ item.date|as_crispy_field }}</td>
 						<td>{{ item.time|as_crispy_field }}</td>
 						<td>{{ item.frequency|as_crispy_field }}</td>
@@ -63,23 +61,25 @@
 						<td>{{ item.amount|as_crispy_field }}</td>
 						<td>{{ item.remark|as_crispy_field }}</td>
 						<td>{{ item.done_by|as_crispy_field }}</td>
-						<td>
-							{{ item.patient|as_crispy_field }}
-							<button type="button" class="btn btn-success add_form_row">
-							<i class="fas fa-plus"></i>
-							</button>
-						</td>
+						<td></td>
 					</tr>
+					<tr class="tambah_row"></tr>
 					{% endfor %}
 				</tbody>
 			</table>
+
+		</div>
+
+		<div class="row">
+
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 			{% for item in profiles %}
-			<a class="btn btn-danger" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+			<a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
 			{% endfor %}
-		</form>
 
-	</div>
+		</div>
+
+	</form>
 
 </div>
 
@@ -87,10 +87,35 @@
 
 
 {% block js %}
-	<script type='text/javascript'>
-	$(function() {
-        $('#stoolForm tbody tr').formset();
-    });
+<script type='text/javascript'>
+	$(function()
+	{
+		$('#form_set tbody tr').formset(
+		{
+//			prefix: 'formset',
+//			prefix: '{{ formset.prefix }}',
+			addCssClass: 'btn btn-success',
+			addText: '<i class="fas fa-plus"></i>',
+			deleteCssClass: 'btn btn-danger',
+			deleteText: '<i class="fas fa-minus"></i>',
+			keepFieldValues: '#id_form-0-date, #id_form-0-time, #id_form-0-done_by',
+//			addContainerClass: 'tambah_row',
+			added: function(row)
+			{
+				$(row).find('[id$="date"]').removeClass('datepickerinput').removeAttr('#id_form-0-date').removeData('DateTimePicker')
+			.unbind().datetimepicker(
+				options={
+					"format": "DD/MM/YYYY",
+				});
 
-	</script>
+				$(row).find('[id$="time"]').removeClass('timepickerinput').removeAttr('#id_form-0-time').removeData('DateTimePicker')
+			.unbind().datetimepicker(
+				options={
+					"format": "HH:mm",
+				});
+			},
+		});
+	});
+
+</script>
 {% endblock %}

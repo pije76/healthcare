@@ -24,9 +24,10 @@ from selectable.forms import *
 #from easy_select2 import select2_modelform, select2_modelform_meta
 #from easy_select2.utils import apply_select2
 #from jsignature.forms import JSignatureField
-from djangoyearlessdate.forms import *
+from djangoyearlessdate import forms as form
 from bootstrap_modal_forms.forms import *
 #from dal import autocomplete
+from bootstrap_datepicker_plus import YearPickerInput
 
 
 from .models import *
@@ -71,7 +72,7 @@ alphanumeric = RegexValidator(r'^[a-zA-Z]*$', 'Only alphanumeric characters are 
 #now = date.today
 
 
-mark_safe_lazy = lazy(mark_safe, six.text_type)
+#mark_safe_lazy = lazy(mark_safe, six.text_type)
 
 
 class SlimRadioSelect(RadioSelect):
@@ -96,17 +97,17 @@ class HorizontalRadioSelect(RadioSelect):
 	option_template_name = 'patient/horizontal_option.html'
 
 
-class StaffRecordsForm(BSModalModelForm):
+class StaffRecord_ModelForm(BSModalModelForm):
 
 	class Meta:
 		model = StaffRecords
 		fields = '__all__'
 		widgets = {
-			'patient': forms.HiddenInput(),
+			'staff': forms.HiddenInput(),
 		}
 
-#	date = forms.DateField(required=False, label="", initial=datetime.datetime.now().year, input_formats=settings.DATE_INPUT_FORMATS, widget=YearPickerInput(format="%Y", attrs={'class': "form-control"}))
-	date = forms.CharField(required=False, label="", initial=datetime.datetime.now().year, widget=YearPickerInput(format="%Y", attrs={'class': "form-control"}))
+#	staff = forms.CharField(required=False, label="", widget=forms.HiddenInput(attrs={'class': "form-control"}))
+	date = forms.DateField(required=False, label="", initial=datetime.datetime.now().year, widget=YearPickerInput(format="%Y", attrs={'class': "form-control"}))
 	annual_leave_days = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
 	public_holiday_days = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
 	replacement_public_holiday = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
@@ -116,5 +117,21 @@ class StaffRecordsForm(BSModalModelForm):
 	emergency_leaves_reasons = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	unpaid_leaves = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	unpaid_leaves_reasons = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+
+
+class StaffRecords_Form(BSModalForm):
+
+	staff = forms.CharField(required=False, label="", widget=forms.HiddenInput(attrs={'class': "form-control"}))
+	date = form.YearField(required=False, label="", initial=datetime.datetime.now().year, widget=YearPickerInput(format="%Y", attrs={'class': "form-control"}))
+	annual_leave_days = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
+	public_holiday_days = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
+	replacement_public_holiday = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
+	medical_certificate = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	siri_no_diagnosis = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	emergency_leaves = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	emergency_leaves_reasons = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	unpaid_leaves = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	unpaid_leaves_reasons = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+
 
 

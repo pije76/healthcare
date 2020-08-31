@@ -4,7 +4,7 @@ from django.db import connection
 from django.db.models import F, Func, Value, CharField
 from django.db.models import Value, CharField
 from django.db.models.functions import Cast, Concat, ExtractYear, ExtractMonth, ExtractDay, ExtractHour, ExtractMinute
-from django.http import JsonResponse
+from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
@@ -57,12 +57,11 @@ def cannula_create(request, username):
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
-	initial = {
-		'patient': patients,
-		'ic_number': icnumbers,
-		'nasogastric_tube_inserted_by': request.user,
-		'urinary_catheter_inserted_by': request.user
+	initial = [{
+		'patient': item.full_name,
+		'cannula_remove_by': request.user,
 	}
+	for item in profiles]
 
 	initial_formset_factory = [
 	{
@@ -71,7 +70,8 @@ def cannula_create(request, username):
 	}]
 
 	if request.method == 'POST':
-		formset = Cannula_FormSet_Factory(request.POST or None)
+		formset = Cannula_FormSet(request.POST or None)
+
 		if formset.is_valid():
 			for item in formset:
 				profile = Cannula()
@@ -80,6 +80,8 @@ def cannula_create(request, username):
 				profile.cannula_size = item.cleaned_data['cannula_size']
 				profile.cannula_location = item.cleaned_data['cannula_location']
 				profile.cannula_due_date = item.cleaned_data['cannula_due_date']
+				profile.cannula_remove_date = item.cleaned_data['cannula_remove_date']
+				profile.cannula_remove_by = item.cleaned_data['cannula_remove_by']
 				profile.save()
 
 			messages.success(request, _(page_title + ' form was created.'))
@@ -88,7 +90,7 @@ def cannula_create(request, username):
 			messages.warning(request, formset.errors)
 
 	else:
-		formset = Cannula_FormSet_Factory(initial=initial_formset_factory)
+		formset = Cannula_FormSet(initial=initial)
 
 	context = {
 		'logos': logos,
@@ -106,7 +108,7 @@ def cannula_create(request, username):
 class CannulaUpdateView(BSModalUpdateView):
 	model = Cannula
 	template_name = 'patient/cannula/partial_edit.html'
-	form_class = CannulaForm
+	form_class = Cannula_ModelForm
 	page_title = _('Cannula Form')
 	success_message = _(page_title + ' form has been save successfully.')
 

@@ -9,7 +9,7 @@ from accounts.models import *
 
 from bootstrap_modal_forms.forms import *
 
-class MultipurposeForm(BSModalModelForm):
+class Multipurpose_ModelForm(BSModalModelForm):
 
     class Meta:
         model = Multipurpose
@@ -23,10 +23,18 @@ class MultipurposeForm(BSModalModelForm):
     remark = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 
 
-Multipurpose_FormSet_Factory = formset_factory(
-    MultipurposeForm,
+class Multipurpose_Form(BSModalForm):
+
+    patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    date_time = forms.DateTimeField(required=False, label="", initial=timezone.now, input_formats=settings.DATETIME_INPUT_FORMATS, widget=DateTimePickerInput(format="%d/%m/%Y %H:%M", attrs={'class': "form-control"}))
+    symptom = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    remark = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+
+
+Multipurpose_FormSet = formset_factory(
+    Multipurpose_Form,
     #   formset = MedicationAdministrationRecord_BaseFormSetFactory,
     extra=0,
-    max_num=0,
+#    max_num=0,
     #   can_delete=True,
 )

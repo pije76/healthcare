@@ -8,17 +8,26 @@ from ..lookups import *
 from accounts.models import *
 
 from bootstrap_modal_forms.forms import *
-from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
+from django_summernote.widgets import SummernoteWidget
+from django_summernote.fields import SummernoteTextFormField, SummernoteTextField
 
-class NursingForm(BSModalModelForm):
 
-    class Meta:
-        model = Nursing
-        fields = '__all__'
-        widgets = {
-            'patient': forms.HiddenInput(),
-        }
+class Nursing_ModelForm(BSModalModelForm):
 
-    date_time = forms.DateTimeField(required=False, label="", initial=timezone.now, input_formats=settings.DATETIME_INPUT_FORMATS, widget=DateTimePickerInput(format="%d/%m/%Y %H:%M", attrs={'class': "form-control"}))
-    report = forms.CharField(required=False, label="", widget=SummernoteWidget(attrs={'class': "form-control", 'summernote': {'width': '100%', 'height': '400px'}}))
+	class Meta:
+		model = Nursing
+		fields = '__all__'
+		widgets = {
+			'patient': forms.HiddenInput(),
+		}
+
+	date_time = forms.DateTimeField(required=False, label="", initial=timezone.now, input_formats=settings.DATETIME_INPUT_FORMATS, widget=DateTimePickerInput(format="%d/%m/%Y %H:%M", attrs={'class': "form-control"}))
+	report = forms.CharField(required=False, label="", widget=SummernoteWidget(attrs={'class': "form-control", 'summernote': {'width': '100%', 'height': '400px'}}))
+
+
+class Nursing_Form(BSModalForm):
+
+	patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	date_time = forms.DateTimeField(required=False, label="", initial=timezone.now, input_formats=settings.DATETIME_INPUT_FORMATS, widget=DateTimePickerInput(format="%d/%m/%Y %H:%M", attrs={'class': "form-control"}))
+	report = forms.CharField(required=False, label="", widget=SummernoteWidget(attrs={'class': "form-control", 'summernote': {'width': '100%', 'height': '400px'}}))
 

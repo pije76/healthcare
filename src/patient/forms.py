@@ -27,7 +27,6 @@ from selectable.forms import *
 from djangoyearlessdate.forms import *
 from bootstrap_modal_forms.forms import *
 #from dal import autocomplete
-from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 
 
 
@@ -73,7 +72,7 @@ alphanumeric = RegexValidator(r'^[a-zA-Z]*$', 'Only alphanumeric characters are 
 #now = date.today
 
 
-mark_safe_lazy = lazy(mark_safe, six.text_type)
+#mark_safe_lazy = lazy(mark_safe, six.text_type)
 
 
 class SlimRadioSelect(RadioSelect):

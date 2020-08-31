@@ -30,6 +30,13 @@
 #id_duration_time_0, #id_duration_time_1 {
     margin-right: 5px;
 }
+
 .help {
     display: none;
+}
+
+.foot_table {
+  margin-bottom: 10px;
+  border: 1px solid #dee2e6!important;
+  padding: 10px 0;
 }

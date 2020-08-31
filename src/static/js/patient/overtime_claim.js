@@ -81,7 +81,7 @@ $(document).ready(function()
 //		}]
 	});
 
-	$("#id_checked_sign_by").prop("disabled", true);
+//	$("#id_checked_sign_by").prop("disabled", true);
 
 
 });

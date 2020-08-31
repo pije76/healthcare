@@ -1,10 +1,8 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load staticfiles %}
 {% load crispy_forms_tags %}
 {% load i18n %}
-{% load widget_tweaks %}
 
 {% block headtitle %}
 	{{ page_title }} | {{ titles.title }}
@@ -32,7 +30,7 @@
 
 	{% include 'patient/patient_data.html' %}
 
-	<div class="row">
+	<div class="row rounded form_table">
 
 		<div class="col-12">
 			<div class="card">
@@ -44,6 +42,7 @@
 						{% csrf_token %}
 							<table id="t_add_row" class="table table-striped table-bordered">
 								<thead>
+									{% if user.is_superuser %}
 									<tr>
 										<th class="text-center">{% trans "Patient Name" %}</th>
 										<th class="text-center">{% trans "Patient/Family Name" %}</th>
@@ -55,6 +54,18 @@
 										<th class="text-center">{% trans "Date" %}</th>
 										<th class="text-center">{% trans "Action" %}</th>
 									</tr>
+									{% elif user.is_staff or user.is_patient %}
+									<tr>
+										<th class="text-center">{% trans "Patient Name" %}</th>
+										<th class="text-center">{% trans "Patient/Family Name" %}</th>
+										<th class="text-center">{% trans "NRIC Number" %}</th>
+										<th class="text-center">{% trans "Patient/Family Relationship" %}</th>
+										<th class="text-center">{% trans "Patient/Family Phone" %}</th>
+										<th class="text-center">{% trans "Designation" %}</th>
+										<th class="text-center">{% trans "Signature" %}</th>
+										<th class="text-center">{% trans "Date" %}</th>
+									</tr>
+									{% endif %}
 								</thead>
 								<tbody>
 									{% include 'patient/application_home_leave/partial_list.html' %}

@@ -1,10 +1,8 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load staticfiles %}
 {% load i18n %}
 {% load crispy_forms_tags %}
-{% load widget_tweaks %}
 
 {% block headtitle %}
 	{{ page_title }} | {{ titles.title }}
@@ -24,7 +22,7 @@
 
 {% block content %}
 
-<div class="row isi">
+<div class="container-fluid">
 
 	<div class="row formtitle">
 		{{ page_title }}
@@ -37,7 +35,7 @@
 		{{ formset.management_form }}
 		{{ formset.non_form_errors }}
 
-			{% for item in formset %}
+			{% for item in formset.forms %}
 			<div class="container-fluid" id="medication_administration">
 
 				<div class="row">

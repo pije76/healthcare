@@ -1,5 +1,5 @@
 """
-WSGI config for multi-tenancy project.
+WSGI config for healthcare project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

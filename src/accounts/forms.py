@@ -1,93 +1,77 @@
 from django import forms
 from django.contrib.auth.models import *
-from django.urls import reverse
 from django.utils.translation import ugettext as _
-from django.contrib.auth.forms import UserCreationForm
-from django.db import transaction
-
-from allauth.account.forms import LoginForm, SignupForm
-
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import HTML
-
-#from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
 
 from .models import *
 from patient.models import *
 
+from allauth.account.forms import LoginForm, SignupForm
+
 ic_number_validator = RegexValidator("\d{6}\-\d{2}\-\d{4}", "IC Number format needs to be yymmdd-xx-zzzz.")
 
+
 class MyLoginForm(LoginForm):
-#	class Meta:
-#		model = UserProfile
-#		fields = ('username', 'password')
-
-#	def __init__(self, *args, **kwargs):
-#		super().__init__(*args, **kwargs)
-#		self.helper = FormHelper(self)
-
 	def __init__(self, *args, **kwargs):
 		self.request = kwargs.pop('request')
 		super().__init__(*args, **kwargs)
 
-#	username = forms.CharField(max_length=100, required=True, label=_('Username:'))
+#	username = forms.CharField(max_length=100, required=True, label=_('Username'), widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("Username")}))
 	password = forms.CharField(max_length=100, required=True, label=_('Password'), widget=forms.PasswordInput(attrs={'class': "form-control", 'placeholder': _("Password")}))
+
 
 class MySignUpForm(SignupForm):
 
-	first_name = forms.CharField(max_length=100, required=True, label=_('First Name'), widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("First Name")}))
-	last_name = forms.CharField(max_length=100, required=False, label=_('Last Name'), widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("Last Name")}))
-#	ic_number = forms.CharField(max_length=14, required=True, label=_('IC Number'), initial='yymmdd-xx-zzzz')
-	is_patient = forms.BooleanField(required=False ,label='', widget=forms.HiddenInput())
-	is_staff = forms.BooleanField(required=False ,label='', widget=forms.HiddenInput())
+	username = forms.CharField(max_length=100, required=True, label=_('Username:'), widget=forms.TextInput(attrs={'class': "form-control"}))
+	full_name = forms.CharField(max_length=100, required=False, label=_('Full Name:'), widget=forms.TextInput(attrs={'class': "form-control"}))
+#	first_name = forms.CharField(max_length=100, required=True, label=_('First Name'), widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("First Name")}))
+#	last_name = forms.CharField(max_length=100, required=False, label=_('Last Name'), widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("Last Name")}))
+	is_patient = forms.BooleanField(required=False, label='', widget=forms.CheckboxInput())
+	is_staff = forms.BooleanField(required=False, label='', widget=forms.CheckboxInput())
 
-#	def custom_signup(self, request, user):
-#	def signup(self, request, user):
 	def save(self, request):
 		user = super().save(request)
-#		profile = UserProfile(full_name=user)
-		user.first_name = self.cleaned_data['first_name']
-		user.last_name = self.cleaned_data['last_name']
-#		user.ic_number = self.cleaned_data['ic_number']
+		user.full_name = self.cleaned_data['full_name']
+		user.username = self.cleaned_data['username']
+#		user.first_name = self.cleaned_data['first_name']
+#		user.last_name = self.cleaned_data['last_name']
 		user.is_active = True
 		user.is_admin = False
-#		user.is_staff = False
-#		user.is_patient = True
 		user.is_staff = self.cleaned_data['is_staff']
 		user.is_patient = self.cleaned_data['is_patient']
+##		if user.is_staff is True and user.is_patient is False:
+##			staff_profile = StaffProfile(staff_name=user)
+##			staff_profile.save()
+##		if user.is_staff is False and user.is_patient is True:
+##			patient_profile = PatientProfile(patient_name=user)
+##			patient_profile.save()
 		user.save()
 		return user
 
+#	def clean_username(self):
+#		cleaned_data = super().clean()
+#		username = cleaned_data.get("username")
+#		username = self.cleaned_data['username']
+#		print("username: ", username)
+#		try:
+#			user = UserProfile.objects.get(username=username)
+#			user = UserProfile.objects.filter(username=username)
+#		except UserProfile.DoesNotExist:
+#			return username
+#		raise forms.ValidationError(u'Username "%s" is already in use.' % username)
 
-#class PatientSignUpForm(UserCreationForm):
-#    interests = forms.ModelMultipleChoiceField(queryset=Subject.objects.all(),widget=forms.CheckboxSelectMultiple,required=True    )
 
-#	class Meta(UserCreationForm.Meta):
-#		model = UserProfile
-
-#	@transaction.atomic
-#	def save(self):
-#		user = super().save(commit=False)
-#        user.is_patient = True
-#		user.save()
-#		patient = PatientProfile.objects.create(user=user)
-#        patient.interests.add(*self.cleaned_data.get('interests'))
-#		return user
 
 class ChangeUserProfile(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 
-#	user = User.objects.get(username=request.user.username)
-
-	first_name = forms.CharField(required=True, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	last_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	full_name = forms.CharField(max_length=100, required=True, label='', widget=forms.TextInput(attrs={'class': "form-control"}))
 	email = forms.EmailField(required=False, label='', widget=forms.TextInput(attrs={'class': "form-control"}))
 	ic_number = forms.CharField(max_length=14, required=False, label="", initial='yymmdd-xx-zzzz', validators=[ic_number_validator], widget=forms.TextInput(attrs={'class': "form-control"}))
 
 	class Meta:
 		model = UserProfile
-		fields = ('first_name', 'last_name', 'email', 'ic_number')
+		fields = ('full_name', 'email', 'ic_number')
 
 
 class ChangeAdmission(forms.ModelForm):

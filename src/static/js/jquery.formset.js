@@ -57,19 +57,26 @@
                     addCssSelector = $.trim(options.addCssClass).replace(/\s+/g, '.');
 
                 var delButtonHTML = '<a class="' + options.deleteCssClass + '" href="javascript:void(0)">' + options.deleteText +'</a>';
-                if (options.deleteContainerClass) {
+                if (options.deleteContainerClass)
+                {
                     // If we have a specific container for the remove button,
                     // place it as the last child of that container:
                     row.find('[class*="' + options.deleteContainerClass + '"]').append(delButtonHTML);
-                } else if (row.is('TR')) {
+                }
+                else if (row.is('TR'))
+                {
                     // If the forms are laid out in table rows, insert
                     // the remove button into the last table cell:
                     row.children(':last').append(delButtonHTML);
-                } else if (row.is('UL') || row.is('OL')) {
+                }
+                else if (row.is('UL') || row.is('OL'))
+                {
                     // If they're laid out as an ordered/unordered list,
                     // insert an <li> after the last list item:
                     row.append('<li>' + delButtonHTML + '</li>');
-                } else {
+                }
+                else
+                {
                     // Otherwise, just insert the remove button as the
                     // last child element of the form's container:
                     row.append(delButtonHTML);
@@ -183,20 +190,25 @@
             options.formTemplate = template;
 
             var addButtonHTML = '<a class="' + options.addCssClass + '" href="javascript:void(0)">' + options.addText + '</a>';
-            if (options.addContainerClass) {
+            if (options.addContainerClass)
+            {
                 // If we have a specific container for the "add" button,
                 // place it as the last child of that container:
                 var addContainer = $('[class*="' + options.addContainerClass + '"');
                 addContainer.append(addButtonHTML);
                 addButton = addContainer.find('[class="' + options.addCssClass + '"]');
-            } else if ($$.is('TR')) {
+            }
+            else if ($$.is('TR'))
+            {
                 // If forms are laid out as table rows, insert the
                 // "add" button in a new table row:
                 var numCols = $$.eq(0).children().length,   // This is a bit of an assumption :|
                     buttonRow = $('<tr><td colspan="' + numCols + '">' + addButtonHTML + '</tr>').addClass(options.formCssClass + '-add');
                 $$.parent().append(buttonRow);
                 addButton = buttonRow.find('a');
-            } else {
+            }
+            else
+            {
                 // Otherwise, insert it immediately after the last form:
                 $$.filter(':last').after(addButtonHTML);
                 addButton = $$.filter(':last').next();
@@ -207,8 +219,12 @@
             addButton.click(function() {
                 var formCount = parseInt(totalForms.val()),
                     row = options.formTemplate.clone(true).removeClass('formset-custom-template'),
-                    buttonRow = $($(this).parents('tr.' + options.formCssClass + '-add').get(0) || this),
                     delCssSelector = $.trim(options.deleteCssClass).replace(/\s+/g, '.');
+                if (options.addContainerClass) {
+                    buttonRow = $('[class*="' + options.addContainerClass + '"');
+                } else {
+                    buttonRow = $($(this).parents('tr.' + options.formCssClass + '-add').get(0) || this);
+                }
                 applyExtraClasses(row, formCount);
                 row.insertBefore(buttonRow).show();
                 row.find(childElementSelector).each(function() {
