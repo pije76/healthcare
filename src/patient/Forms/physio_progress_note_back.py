@@ -10,7 +10,7 @@ from accounts.models import *
 from bootstrap_modal_forms.forms import *
 from django_summernote.widgets import SummernoteWidget
 
-class PhysioProgressNoteBackForm(BSModalModelForm):
+class PhysioProgressNoteBack_ModelForm(BSModalModelForm):
 
     class Meta:
         model = PhysioProgressNoteBack

@@ -1,23 +1,26 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load i18n %}
 {% load crispy_forms_tags %}
+{% load i18n %}
 
 {% block headtitle %}
 	{{ page_title }} | {{ titles.title }}
 {% endblock %}
 
 {% block styles %}
-<link href="{% static 'css/patient/medication_administration.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/patient/medication_administration.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block javascript %}
 	<script src="{% static 'js/patient/medication_administration.js' %}" type="text/javascript"></script>
+	<script src="{% static 'js/jquery.formset.js' %}"></script>
 {% endblock %}
 
 {% block extrahead %}
 	{{ form.media }}
+	{{ formset.media }}
 {% endblock %}
 
 {% block content %}
@@ -28,246 +31,111 @@
 		{{ page_title }}
 	</div>
 
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	{% include 'patient/patient_formset.html' %}
 
-		<form method="post">
-		{% csrf_token %}
+	<form method="post">
+	{% csrf_token %}
+	{{ formset.management_form }}
 
-			<div class="container-fluid" id="medication_administration">
-
-				<div class="row">
-					<div class="col-2 col">
-						{% trans "Name" %}:
-					</div>
-					<div class="col-4 col">
-						{{ patients }}
-						{{ form.patient|as_crispy_field }}
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-2 col">
-						{% trans "I/C No" %}:
-					</div>
-					<div class="col-4 col">
-						{{ icnumbers }}
-					</div>
-					<div class="col-6 col">
-						{{ form.allergy|as_crispy_field }}
-					</div>
-				</div>
+		<div class="row">
+			<div class="col-5 border text-center header_form">
+				<span id="name_title">{% trans "Date" %}:</span>
 			</div>
-
-			<div class="container-fluid" id="medication_administration">
-
-				<div class="row">
-					<div class="col-2 col text-center">
-						{% trans "Date" %}
-					</div>
-					<div class="col-2 col text-center">
-						{% trans "Time" %}
-					</div>
-					<div class="col-4 col text-center">
-						{% trans "Medication" %}
-					</div>
-					<div class="col-1 col text-center">
-						{% trans "Status" %}
-					</div>
-					<div class="col-1 col" style="border-top:none;border-right:none;border-bottom:none;">
-					</div>
-				</div>
-
-				<div class="row new_formrow1">
-					<div class="col-2 col">
-						{{ form.medication_date|as_crispy_field }}
-					</div>
-					<div class="col-2 col">
-						{{ form.medication_time|as_crispy_field }}
-					</div>
-					<div class="col-4 col">
-						{{ form.medication_route|as_crispy_field }}
-					</div>
-					<div class="col-1 col">
-						{{ form.status_nurse|as_crispy_field }}
-					</div>
-					<div class="col-1 col" style="border-top:none;border-right:none;border-bottom:none;">
-						{{ form.patient|as_crispy_field }}
-						<button type="button" class="btn btn-success add_formrow1">
-							<i class="fas fa-plus"></i>
-						</button>
-					</div>
-				</div>
-
-
+			<div class="col-7 border text-center header_form">
+				<span id="name_title">{% trans "Allergy" %}:</span>
 			</div>
+			<div class="w-100"></div>
+			<div class="col-5 border header_form_detail">
+				<span id="name_title">
+					{{ form.medication_date|as_crispy_field }}
+				</span>
+			</div>
+			<div class="col-7 border header_form_detail header_form_inline form-inline">
+				<span id="name_title">
+					{{ allergy_form }}
+				</span>
+			</div>
+		</div>
 
-			<br />
+		<div class="row rounded form_table">
+
+			<table id="form_set" class="table table-bordered">
+				<thead class="thead-light">
+					<tr>
+						<th class="text-center row_medication_date">{% trans "Date" %}</th>
+						<th class="text-center">{% trans "Time" %}</th>
+						<th class="text-center">{% trans "Medication" %}</th>
+						<th class="text-center">{% trans "Status" %}</th>
+						<th class="text-center">{% trans "Action" %}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in formset.forms %}
+					<tr id="{{ item.prefix }}-row">
+						<td class="{{ item.prefix }}_date_field">{{ item.medication_date|as_crispy_field }}</td>
+						<td class="{{ item.prefix }}_time_field">{{ item.medication_time|as_crispy_field }}</td>
+						<td>{{ item.medication|as_crispy_field }}</td>
+						<td>{{ item.status_nurse|as_crispy_field }}</td>
+						<td class="aksi"></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+		</div>
+
+		<div class="row">
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
-			{% for form in profiles %}
-			<a class="btn btn-danger" href="{% url 'patient:patientdata_detail' form.username %}">{% trans "Cancel" %}</a>
+			{% for item in profiles %}
+			<a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
 			{% endfor %}
-		</form>
+		</div>
+	</form>
 
-	</div>
 
 </div>
 
 {% endblock %}
 
+
 {% block js %}
-	<script type='text/javascript'>
-
-	function cloneMore(selector, prefix)
+<script type='text/javascript'>
+$(document).ready(function()
+{
+	$('#id_medication_date').on('dp.change', function(e)
 	{
-		var currentElement =  $(selector)
-		var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
-//		var newElement = $(selector).clone(true);
-		var newElement = $(currentElement).clone(true).get(0);
-
-		$(newElement).removeAttr('id').insertAfter($(currentElement)).children('.hidden').removeClass('hidden');
-
-		$(newElement).find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function()
+		var datenew = $(this).val();
+		if(datenew != '')
 		{
-//			var name = $(this).attr('name').replace('-' + (total-1) + '-', '-' + total + '-');
-//			var id = 'id_' + name;
-//			if ($(this).attr('prefix') != 'hidden')
-//			{
-//				$(this).val('');
-//			}
-//			$(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
-			var name = $(this).attr('name')
-			if(name)
+			$('[id$="medication_date"]').val(datenew);
+		}
+	});
+
+	$(function()
+	{
+		$('#form_set tbody tr').formset(
+		{
+			addCssClass: 'btn btn-success',
+			addText: '<i class="fas fa-plus"></i>',
+			deleteCssClass: 'btn btn-danger',
+			deleteText: '<i class="fas fa-minus"></i>',
+			keepFieldValues: '#id_form-0-medication_date, #id_form-0-medication_time, #id_form-0-medication, #id_form-0-status_nurse',
+			added: function(row)
 			{
-				name = name.replace('-' + (total-1) + '-', '-' + total + '-');
-				var id = 'id_' + name;
-				$(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
-			}
-		});
-
-		$(newElement).find('label').each(function()
-		{
-//			var forValue = $(this).attr('for');
-//			if (forValue)
-//			{
-//				forValue = forValue.replace('-' + (total-1) + '-', '-' + total + '-');
-//				$(this).attr({'for': forValue});
-//			}
-			var forValue = $(this).attr('for').replace('-' + (total-1) + '-','-' + total + '-');
-			$(this).attr('for', forValue);
-		});
-		$(newElement).find('[id$="medication_date"]')
-			.removeClass('datepickerinput').removeAttr('#id_form-0-medication_date').removeData('DateTimePicker')
+				$(row).find('[id$="medication_date"]').removeClass('datepickerinput').removeAttr('#id_form-0-medication_date').removeData('DateTimePicker')
 			.unbind().datetimepicker(
 				options={
 					"format": "DD/MM/YYYY",
-				}
-			);
-		$(newElement).find('[id$="medication_time"]')
-			.removeClass('timepickerinput').removeAttr('#id_form-0-medication_time').removeData('DateTimePicker')
+				});
+
+				$(row).find('[id$="medication_time"]').removeClass('timepickerinput').removeAttr('#id_form-0-medication_time').removeData('DateTimePicker')
 			.unbind().datetimepicker(
 				options={
 					"format": "HH:mm",
-				}
-			);
-		$(newElement).find('[id$="medicationstat_date_time"]')
-			.removeClass('datetimepickerinput').removeAttr('#id_form-0-medicationstat_date_time').removeData('DateTimePicker')
-			.unbind().datetimepicker(
-				options={
-					"format": "DD/MM/YYYY HH:mm",
-				}
-			);
-
-		total++;
-
-		$('#id_' + prefix + '-TOTAL_FORMS').val(total);
-		$(selector).after(newElement);
-		var conditionRow1 = $('.new_formrow1:not(:last)');
-		conditionRow1.find('.btn.add_formrow1')
-		.removeClass('btn-success').addClass('btn-danger')
-		.removeClass('add_formrow1').addClass('remove_formrow1')
-		.html('<i class="fas fa-minus"></i>');
-
-		var conditionRow2 = $('.new_formrow2:not(:last)');
-		conditionRow2.find('.btn.add_formrow2')
-		.removeClass('btn-success').addClass('btn-danger')
-		.removeClass('add_formrow2').addClass('remove_formrow2')
-		.html('<i class="fas fa-minus"></i>');
-		return false;
-	}
-
-	$(document).on('click', '.add_formrow1', function(e)
-	{
-		e.preventDefault();
-		cloneMore('.new_formrow1:last', 'form');
-		return false;
-	});
-
-	$(document).on('click', '.add_formrow2', function(e)
-	{
-		e.preventDefault();
-		cloneMore('.new_formrow2:last', 'form');
-		return false;
-	});
-
-	function updateElementIndex(el, prefix, ndx)
-	{
-		var id_regex = new RegExp('(' + prefix + '-\\d+)');
-		var replacement = prefix + '-' + ndx;
-		if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
-		if (el.id) el.id = el.id.replace(id_regex, replacement);
-		if (el.name) el.name = el.name.replace(id_regex, replacement);
-	}
-
-	function deleteForm1(prefix, btn)
-	{
-		var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
-		if (total > 1)
-		{
-			btn.closest('.new_formrow1').remove();
-			var forms = $('.new_formrow1');
-			$('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
-			for (var i=0, formCount=forms.length; i<formCount; i++)
-			{
-				$(forms.get(i)).find(':input').each(function()
-				{
-					updateElementIndex(this, prefix, i);
 				});
-			}
-		}
-		return false;
-	}
-
-	function deleteForm2(prefix, btn)
-	{
-		var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
-		if (total > 1)
-		{
-			btn.closest('.new_formrow2').remove();
-			var forms = $('.new_formrow2');
-			$('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
-			for (var i=0, formCount=forms.length; i<formCount; i++)
-			{
-				$(forms.get(i)).find(':input').each(function()
-				{
-					updateElementIndex(this, prefix, i);
-				});
-			}
-		}
-		return false;
-	}
-
-	$(document).on('click', '.remove_formrow1', function(e)
-	{
-		e.preventDefault();
-		deleteForm1('form', $(this));
-		return false;
+			},
+		});
 	});
-
-	$(document).on('click', '.remove_formrow2', function(e)
-	{
-		e.preventDefault();
-		deleteForm2('form', $(this));
-		return false;
-	});
-	</script>
+});
+</script>
 {% endblock %}

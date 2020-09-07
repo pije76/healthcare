@@ -33,7 +33,7 @@ def admission_list(request, username):
 	patientid = UserProfile.objects.get(username=username).id
 	patients = Admission.objects.filter(patient=patientid)
 	patientform = UserProfile.objects.filter(username=username)
-	ecform = EmergencyContact.objects.filter(patient=patientid)
+	ecform = Family.objects.filter(patient=patientid)
 	admissionform = Admission.objects.filter(patient=patientid)
 	profiles = UserProfile.objects.filter(pk=patientid)
 
@@ -59,12 +59,14 @@ def admission_create(request, username):
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Admission Form')
 	patients = get_object_or_404(UserProfile, username=username)
+	patientid = get_object_or_404(UserProfile, username=username).id
 	patientusername = get_object_or_404(UserProfile, username=username).username
 	username = get_object_or_404(UserProfile, username=username).username
 	password = get_object_or_404(UserProfile, username=username).password
 	first_name = get_object_or_404(UserProfile, username=username).first_name
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	allergy_data = Allergy.objects.filter(patient=patientid)
 
 	initial = {
 		'patient': patients,
@@ -95,12 +97,13 @@ def admission_create(request, username):
 
 	if request.method == 'POST':
 		patient_form = UserProfile_ModelForm(request.POST or None, instance=patients, prefix="patient_form")
-		ec_form = EmergencyContact_FormSet(request.POST or None, prefix="ec_form")
+		ec_formset = Family_FormSet(request.POST or None, prefix="ec_formset")
 		admision_form = Admission_Form(request.POST or None, prefix="admision_form")
 		admision_formset = AdmissionFormSet(request.POST or None, prefix="admision_formset")
-		medication_formset = MedicationFormSet(request.POST or None, prefix="medication_formset")
+		allergy_form = Allergy_Form(request.POST or None, prefix="allergy_form")
+		medication_formset = Medication_FormSet(request.POST or None, prefix="medication_formset")
 
-		if patient_form.is_valid() and ec_form.is_valid() and admision_form.is_valid() and admision_formset.is_valid() and medication_formset.is_valid():
+		if patient_form.is_valid() and ec_formset.is_valid() and admision_form.is_valid() and admision_formset.is_valid() and allergy_form.is_valid() and medication_formset.is_valid():
 
 			profile = patient_form.save(commit=False)
 			profile.full_name = patient_form.cleaned_data['full_name']
@@ -141,8 +144,7 @@ def admission_create(request, username):
 			form_profile.vital_sign_on_oxygen_therapy = admision_form.cleaned_data['vital_sign_on_oxygen_therapy']
 			form_profile.vital_sign_on_oxygen_therapy_flow_rate = admision_form.cleaned_data['vital_sign_on_oxygen_therapy_flow_rate']
 			form_profile.vital_sign_hgt = admision_form.cleaned_data['vital_sign_hgt']
-			form_profile.allergy_drug = admision_form.cleaned_data['allergy_drug']
-			form_profile.allergy_food = admision_form.cleaned_data['allergy_food']
+
 			form_profile.biohazard_infectious_disease = admision_form.cleaned_data['biohazard_infectious_disease']
 			form_profile.invasive_line_insitu = admision_form.cleaned_data['invasive_line_insitu']
 			form_profile.medical_history = admision_form.cleaned_data['medical_history']
@@ -157,8 +159,16 @@ def admission_create(request, username):
 
 			form_profile.save()
 
-			for item in ec_form:
-				ec_profile = EmergencyContact()
+			allergy_profile = Allergy()
+			allergy_profile.patient = patients
+			allergy_profile.allergy_drug = allergy_form.cleaned_data['allergy_drug']
+			allergy_profile.allergy_food = allergy_form.cleaned_data['allergy_food']
+			allergy_profile.allergy_others = allergy_form.cleaned_data['allergy_others']
+
+			allergy_profile.save()
+
+			for item in ec_formset:
+				ec_profile = Family()
 				ec_profile.patient = patients
 				ec_profile.ec_name = item.cleaned_data['ec_name']
 				ec_profile.ec_ic_number = item.cleaned_data['ec_ic_number']
@@ -180,11 +190,11 @@ def admission_create(request, username):
 			for item in medication_formset:
 				medication_formset_profile = Medication()
 				medication_formset_profile.patient = patients
-				medication_formset_profile.own_medication = item.cleaned_data['own_medication']
-				medication_formset_profile.own_medication_drug_name = item.cleaned_data['own_medication_drug_name']
-				medication_formset_profile.own_medication_dosage = item.cleaned_data['own_medication_dosage']
-				medication_formset_profile.own_medication_tablet_capsule = item.cleaned_data['own_medication_tablet_capsule']
-				medication_formset_profile.own_medication_frequency = item.cleaned_data['own_medication_frequency']
+				medication_formset_profile.medication = item.cleaned_data['medication']
+				medication_formset_profile.medication_drug_name = item.cleaned_data['medication_drug_name']
+				medication_formset_profile.medication_dosage = item.cleaned_data['medication_dosage']
+				medication_formset_profile.medication_tablet_capsule = item.cleaned_data['medication_tablet_capsule']
+				medication_formset_profile.medication_frequency = item.cleaned_data['medication_frequency']
 				medication_formset_profile.save()
 
 			messages.success(request, _(page_title + ' form was created.'))
@@ -192,17 +202,19 @@ def admission_create(request, username):
 
 		else:
 			messages.warning(request, patient_form.errors)
-			messages.warning(request, ec_form.errors)
+			messages.warning(request, ec_formset.errors)
 			messages.warning(request, admision_form.errors)
 			messages.warning(request, admision_formset.errors)
+			messages.warning(request, allergy_form.errors)
+			messages.warning(request, medication_formset.errors)
 
 	else:
-#		patient_form = UserProfile_ModelForm(initial=initial, instance=patients, prefix="patient_form")
 		patient_form = UserProfile_ModelForm(initial=initial, instance=patients, prefix="patient_form")
-		ec_form = EmergencyContact_FormSet(initial=initial_emergency, prefix="ec_form")
+		ec_formset = Family_FormSet(initial=initial_formset, prefix="ec_formset")
 		admision_form = Admission_Form(initial=initial, prefix="admision_form")
 		admision_formset = AdmissionFormSet(initial=initial_formset, prefix="admision_formset")
-		medication_formset = MedicationFormSet(initial=initial_formset, prefix="medication_formset")
+		allergy_form = Allergy_Form(initial=initial, prefix="allergy_form")
+		medication_formset = Medication_FormSet(initial=initial_formset, prefix="medication_formset")
 
 	context = {
 		'logos': logos,
@@ -212,9 +224,10 @@ def admission_create(request, username):
 		'profiles': profiles,
 		'icnumbers': icnumbers,
 		'patient_form': patient_form,
-		'ec_form': ec_form,
+		'ec_formset': ec_formset,
 		'admision_form': admision_form,
 		'admision_formset': admision_formset,
+		'allergy_form': allergy_form,
 		'medication_formset': medication_formset,
 	}
 

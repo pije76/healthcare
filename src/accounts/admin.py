@@ -75,7 +75,7 @@ class UserProfileAdmin(admin.ModelAdmin):
 #        model = UserProfile
 
 
-class EmergencyContactAdmin(admin.ModelAdmin):
+class FamilyAdmin(admin.ModelAdmin):
     list_display = [
         'id',
         'patient',
@@ -194,7 +194,7 @@ class AdminProfileAdmin(admin.ModelAdmin):
 
 
 admin.site.register(UserProfile, UserProfileAdmin)
-admin.site.register(EmergencyContact, EmergencyContactAdmin)
+admin.site.register(Family, FamilyAdmin)
 #admin.site.register(PatientProfile, PatientProfileAdmin)
 #admin.site.register(StaffProfile, StaffProfileAdmin)
 #admin.site.register(AdminProfile, AdminProfileAdmin)

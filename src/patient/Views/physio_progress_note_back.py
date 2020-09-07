@@ -61,10 +61,11 @@ def physio_progress_note_back_create(request, username):
     }
 
     if request.method == 'POST':
-        form = PhysioProgressNoteBackForm(request.POST or None)
+        form = PhysioProgressNoteBack_ModelForm(request.POST or None)
         if form.is_valid():
             profile = PhysioProgressNoteBack()
             profile.patient = patients
+            profile.date_time = form.cleaned_data['date_time']
             profile.report = form.cleaned_data['report']
             profile.save()
 
@@ -73,7 +74,7 @@ def physio_progress_note_back_create(request, username):
         else:
             messages.warning(request, form.errors)
     else:
-        form = PhysioProgressNoteBackForm(initial=initial)
+        form = PhysioProgressNoteBack_ModelForm(initial=initial)
 
     context = {
         'logos': logos,
@@ -91,7 +92,7 @@ def physio_progress_note_back_create(request, username):
 class PhysioProgressNoteBackUpdateView(BSModalUpdateView):
     model = PhysioProgressNoteBack
     template_name = 'patient/physio_progress_note_back/partial_edit.html'
-    form_class = PhysioProgressNoteBackForm
+    form_class = PhysioProgressNoteBack_ModelForm
     page_title = _('PhysioProgressNoteBack Form')
     success_message = _(page_title + ' form has been save successfully.')
 

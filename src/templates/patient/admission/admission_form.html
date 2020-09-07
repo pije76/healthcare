@@ -10,8 +10,11 @@
 
 {% block extrahead %}
 	{{ patient_form.media }}
-	{{ ec_form.media }}
+	{{ ec_formset.media }}
+	{{ admision_form.media }}
 	{{ admision_formset.media }}
+	{{ allergy_form.media }}
+	{{ medication_formset.media }}
 {% endblock %}
 
 {% block styles %}
@@ -42,8 +45,9 @@
 
 		<form method="post">
 			{% csrf_token %}
+			{{ ec_formset.management_form }}
 			{{ admision_formset.management_form }}
-			{{ ec_form.management_form }}
+			{{ medication_formset.management_form }}
 
 			<div class="row">
 				<div class="col-2 col" style="border-radius: 0.25rem 0 0 0;">
@@ -206,7 +210,7 @@
 					{% trans "Emergency contact" %}:
 				</div>
 
-				{% for obj in ec_form.forms %}
+				{% for obj in ec_formset.forms %}
 				<div class="col-4 col border-bottom">
 					{{ obj.patient|as_crispy_field }}
 					{% trans "Name" %}:
@@ -351,13 +355,13 @@
 					{% trans "Allergy" %}:
 				</div>
 				<div class="col-3 col">
-					{{ admision_form.allergy_drug|as_crispy_field }}
+					{{ allergy_form.allergy_drug|as_crispy_field }}
 				</div>
 				<div class="col-3 col">
-					{{ admision_form.allergy_food|as_crispy_field }}
+					{{ allergy_form.allergy_food|as_crispy_field }}
 				</div>
 				<div class="col-4 col">
-					{{ admision_form.allergy_others|as_crispy_field }}
+					{{ allergy_form.allergy_others|as_crispy_field }}
 				</div>
 			</div>
 
@@ -487,7 +491,7 @@
 					{% trans "Own medication" %}:
 				</div>
 				<div class="col-10 col">
-					{{ item.own_medication|as_crispy_field }}
+					{{ item.medication|as_crispy_field }}
 				</div>
 			</div>
 
@@ -496,7 +500,7 @@
 				<div class="col-2 col border-top-0">
 				</div>
 				<div class="col-3 col text-center">
-					{% trans "Drug name" %}:
+					{% trans "Drug Name" %}:
 				</div>
 				<div class="col-2 col text-center">
 					{% trans "Dosage" %}:
@@ -513,16 +517,16 @@
 				<div class="col-2 col border-top-0">
 				</div>
 				<div class="col-3 col">
-					{{ item.own_medication_drug_name|as_crispy_field }}
+					{{ item.medication_drug_name|as_crispy_field }}
 				</div>
 				<div class="col-2 col">
-					{{ item.own_medication_dosage|as_crispy_field }}
+					{{ item.medication_dosage|as_crispy_field }}
 				</div>
 				<div class="col-2 col">
-					{{ item.own_medication_tablet_capsule|as_crispy_field }}
+					{{ item.medication_tablet_capsule|as_crispy_field }}
 				</div>
 				<div class="col-2 col">
-					{{ item.own_medication_frequency|as_crispy_field }}
+					{{ item.medication_frequency|as_crispy_field }}
 				</div>
 				<div class="col-1 col hapus_Own"></div>
 			</div>
@@ -606,7 +610,7 @@ $(document).ready(function()
 	        addText: '<i class="fas fa-plus"></i>',
 	        deleteCssClass: 'btn btn-danger',
 	        deleteText: '<i class="fas fa-minus"></i>',
-	        keepFieldValues : '#id_ec_form-0-patient, #id_ec_form-0-date, #id_ec_form-0-time, #id_ec_form-0-done_by',
+	        keepFieldValues : '#id_ec_formset-0-patient, #id_ec_formset-0-date, #id_ec_formset-0-time, #id_ec_formset-0-done_by',
 	        deleteContainerClass: 'hapus_Emerg',
 	        addContainerClass: 'tambah_Emerg',
 	    })
@@ -648,7 +652,7 @@ $(document).ready(function()
 	        addText: '<i class="fas fa-plus"></i>',
 	        deleteCssClass: 'btn btn-danger',
 	        deleteText: '<i class="fas fa-minus"></i>',
-	        keepFieldValues: '#id_medication_formset-0-own_medication_dosage, #id_medication_formset-0-own_medication_tablet_capsule, #id_medication_formset-0-own_medication_frequency',
+	        keepFieldValues: '#id_medication_formset-0-medication_dosage, #id_medication_formset-0-medication_tablet_capsule, #id_medication_formset-0-medication_frequency',
 	        deleteContainerClass: 'hapus_Own',
 	        addContainerClass: 'tambah_Own',
 	        added: function(row)

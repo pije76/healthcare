@@ -7,19 +7,65 @@ from accounts.models import *
 from customers.models import *
 from .models import *
 
+
 # Create your views here.
 def load_ic_number(request):
 	fullname_data = request.GET.get('full_name')
-	patient_data = request.GET.get('patient')
-	family_data = request.GET.get('ec_name')
+	familyname_data = request.GET.get('ec_name')
 	fullname_results = UserProfile.objects.filter(full_name=fullname_data).order_by('full_name')
-#	fullname_results = UserProfile.objects.filter(full_name=request.user)
-	patient_results = Admission.objects.filter(patient=patient_data)
+	familyname_results = Family.objects.filter(ec_name=familyname_data).order_by('ec_name')
+
 	context = {
 		'fullname_results': fullname_results,
-		'patient_results': patient_results,
+		'familyname_results': familyname_results,
 	}
-	return render(request, 'patient/dropdown_list.html', context)
+	return render(request, 'patient/dropdown_list_icnumber.html', context)
+
+
+def load_relationship(request):
+	fullname_data = request.GET.get('full_name')
+	familyname_data = request.GET.get('ec_name')
+	relationship_data = request.GET.get('ec_relationship')
+	fullname_results = UserProfile.objects.filter(full_name=fullname_data).order_by('full_name')
+	familyname_results = Family.objects.filter(ec_name=familyname_data).order_by('ec_name')
+	familyrelationship_results = Family.objects.filter(ec_name=familyname_data).values_list('ec_relationship', flat=True).first()
+
+	context = {
+		'fullname_results': fullname_results,
+		'familyname_results': familyname_results,
+		'familyrelationship_results': familyrelationship_results,
+	}
+	return render(request, 'patient/dropdown_list_relationship.html', context)
+
+
+def load_signature(request):
+	fullname_data = request.GET.get('full_name')
+	familyname_data = request.GET.get('ec_name')
+	fullname_results = UserProfile.objects.filter(full_name=fullname_data).order_by('full_name')
+	familyname_results = Family.objects.filter(ec_name=familyname_data).order_by('ec_name')
+	signature_results = Family.objects.filter(ec_name=familyname_data).values_list('ec_name', flat=True).first()
+
+	context = {
+		'fullname_results': fullname_results,
+		'familyname_results': familyname_results,
+		'signature_results': signature_results,
+	}
+	return render(request, 'patient/dropdown_list_signature.html', context)
+
+
+def load_phone(request):
+	fullname_data = request.GET.get('full_name')
+	familyname_data = request.GET.get('ec_name')
+	fullname_results = UserProfile.objects.filter(full_name=fullname_data).order_by('full_name')
+	familyname_results = Family.objects.filter(ec_name=familyname_data).order_by('ec_name')
+	family_phone_results = Family.objects.filter(ec_name=familyname_data).values_list('ec_phone', flat=True).first()
+
+	context = {
+		'fullname_results': fullname_results,
+		'familyname_results': familyname_results,
+		'family_phone_results': family_phone_results,
+	}
+	return render(request, 'patient/dropdown_list_phone.html', context)
 
 
 @login_required

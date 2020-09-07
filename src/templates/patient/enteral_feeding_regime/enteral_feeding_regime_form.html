@@ -19,6 +19,7 @@
 {% endblock %}
 
 {% block extrahead %}
+	{{ form.media }}
 	{{ formset.media }}
 {% endblock %}
 
@@ -35,7 +36,6 @@
 	<form method="post">
 	{% csrf_token %}
 	{{ formset.management_form }}
-
 
 		<div class="row" style="width:540px;">
 
@@ -59,6 +59,7 @@
 			<table id="form_set" class="table table-bordered">
 				<thead class="thead-light">
 					<tr>
+						<th class="text-center">{% trans "Date" %}</th>
 						<th class="text-center">{% trans "Time" %}</th>
 						<th class="text-center">{% trans "Type Of Milk" %}</th>
 						<th class="text-center">{% trans "Amount (ml)" %}</th>
@@ -68,7 +69,8 @@
 				<tbody>
 					{% for item in formset.forms %}
 					<tr id="{{ item.prefix }}-row">
-						<td>{{ item.time|as_crispy_field }}</td>
+						<td class="date_field">{{ item.date|as_crispy_field }}</td>
+						<td class="time_field">{{ item.time|as_crispy_field }}</td>
 						<td>{{ item.type_of_milk|as_crispy_field }}</td>
 						<td>{{ item.amount|as_crispy_field }}</td>
 						<td></td>
@@ -101,7 +103,10 @@
 					*{% trans "TOTAL FLUIDS" %} =
 				</div>
 				<div class="col-2">
-					<input type="number" class="form-control" id="total"></span>
+<!--
+					<input type="number" class="form-control" id="total">
+-->
+					<span id="total"></span>
 				</div>
 				<div class="col-4">
 					{% trans "mls/day" %}
@@ -141,6 +146,25 @@ $(document).ready(function()
 //	console.log(oldTime);
 //	console.log(hour);
 
+	$('.calc').change(function()
+	{
+		var total = 0;
+		$('.calc').each(function()
+		{
+			if($(this).val() != '')
+			{
+				total += parseInt($(this).val());
+			}
+		});
+		$('#total').html(total);
+	});
+
+	//when the select changes:
+	$('.calc').on("change", function()
+	{
+		$('#total').val($(this).val());
+	});
+
 	$(function()
 	{
 		$('#form_set tbody tr').formset(
@@ -149,7 +173,7 @@ $(document).ready(function()
 			addText: '<i class="fas fa-plus"></i>',
 			deleteCssClass: 'btn btn-danger',
 			deleteText: '<i class="fas fa-minus"></i>',
-			keepFieldValues: '#id_form-0-date, #id_form-0-time, #id_form-0-amount',
+			keepFieldValues: '#id_form-0-date, #id_form-0-time, #id_form-0-amount, #id_form-0-patient',
 			added: function(row)
 			{
 				$(row).find('[id$="date"]').removeClass('datepickerinput').removeAttr('#id_form-0-date').removeData('DateTimePicker')

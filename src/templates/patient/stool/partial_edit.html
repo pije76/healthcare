@@ -11,12 +11,15 @@
 
 	<div class="modal-body">
         <div class="form-group">
-            {{ form.date|as_crispy_field }}
-            {{ form.time|as_crispy_field }}
-            {{ form.hospital_clinic_center|as_crispy_field }}
-            {{ form.department|as_crispy_field }}
-            {{ form.planning_investigation|as_crispy_field }}
-            {{ form.treatment_order|as_crispy_field }}
+
+			{{ form.date|as_crispy_field }}
+			{{ form.time|as_crispy_field }}
+			{{ form.frequency|as_crispy_field }}
+			{{ form.consistency|as_crispy_field }}
+			{{ form.amount|as_crispy_field }}
+			{{ form.remark|as_crispy_field }}
+			{{ form.done_by|as_crispy_field }}
+
         </div>
 	</div>
 
@@ -24,5 +27,5 @@
 		<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 		<button type="submit" class="btn btn-primary"><i class="icon wb-plus" aria-hidden="true"></i>Submit</button>
 	</div>
-	
+
 </form>

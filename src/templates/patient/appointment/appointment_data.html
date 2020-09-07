@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% load static %}
 {% load crispy_forms_tags %}
 {% load i18n %}
 
@@ -132,7 +133,7 @@ $(function()
 	});
 });
 </script>
-	<script type='text/javascript'>
+<script type='text/javascript'>
 	$(document).ready(function()
 	{
 
@@ -167,67 +168,5 @@ $(function()
 			}
 		);
 	});
-	</script>
-
-<script type="text/javascript">
-
-//	data_from_django = {{ to_output|safe }};
-//	widget.init(data_from_django);
-//	my_date = new Date();
-//	my_date.setTime(data_from_django*1000);
-
-//$(document).ready(function()
-//{
-
-	var returnedYear = {{ datetimeyear.str_datetime|safe }};
-	var returnedMonth = {{ datetimemonth.str_datetime|safe }};
-	var returnedDay = {{ datetimeday.str_datetime|safe }};
-	var returnedHour = {{ datetimehour.str_datetime|safe }};
-	var returnedMinute = {{ datetimeminute.str_datetime|safe }};
-
-	returnedYear = returnedYear.toString();
-	returnedMonth = returnedMonth.toString();
-	returnedDay = returnedDay.toString();
-	returnedHour = returnedHour.toString();
-	returnedMinute = returnedMinute.toString();
-
-    var mydate = new Date(returnedYear, returnedMonth, returnedDay, returnedHour, returnedMinute);
-
-//	$(function()
-//	{
-//		var date = new Date();
-//		var date = new Date(to_remind.date);
-
-
-		$("#myModal").modal("show");
-
-		$.extend(true, $.fn.datetimepicker.defaults, {
-			icons: {
-				time: 'far fa-clock',
-				date: 'far fa-calendar',
-				up: 'fas fa-arrow-up',
-				down: 'fas fa-arrow-down',
-				previous: 'fas fa-chevron-left',
-				next: 'fas fa-chevron-right',
-				today: 'fas fa-calendar-check',
-				clear: 'far fa-trash-alt',
-				close: 'far fa-times-circle'
-			}
-		});
-
-		$('#tanggal').datetimepicker({
-			format: 'DD/MM/YYYY HH:mm',
-			inline: true,
-			useCurrent:false,
-			defaultDate: mydate,
-			sideBySide: true,
-			showTodayButton: false,
-			showClear: false,
-			showClose: false,
-		});
-
-//	});
-
-//});
 </script>
 {% endblock %}

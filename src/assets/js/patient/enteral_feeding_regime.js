@@ -1,33 +1,3 @@
-var t = $('#t_add_row').DataTable(
-	{
-		"order": [[ 0, "desc" ]]
-	});
-
-$(document).ready(function()
-{
-	$('.calc').change(function()
-	{
-		var total = 0;
-		$('.calc').each(function()
-		{
-			if($(this).val() != '')
-			{
-				total += parseInt($(this).val());
-			}
-		});
-		$('#total').html(total);
-	});
-});
-
-$(document).ready(function()
-{
-	//when the select changes:
-	$('.calc').on("change", function()
-	{
-		$('#total').val($(this).val());
-	});
-});
-
 $(document).ready(function()
 {
 	var loadForm = function()

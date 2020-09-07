@@ -70,7 +70,7 @@ def admission_create(request, username):
 
 	if request.method == 'POST':
 		patient_form = Patient_ModelForm(request.POST or None, prefix="patient_form")
-		ec_form = EmergencyContact_Form(request.POST or None, prefix="ec_form")
+		ec_form = Family_Form(request.POST or None, prefix="ec_form")
 		formset = Admission_FormSet(request.POST or None, prefix="formset")
 
 		if patient_form.is_valid():
@@ -100,7 +100,7 @@ def admission_create(request, username):
 			messages.warning(request, patient_form.errors)
 
 		if ec_form.is_valid():
-			profile = EmergencyContact()
+			profile = Family()
 			profile.patient = patients
 			profile.ec_name = ec_form.cleaned_data['ec_name']
 			profile.ec_ic_number = ec_form.cleaned_data['ec_ic_number']
@@ -150,11 +150,11 @@ def admission_create(request, username):
 				profile.diagnosis = item.cleaned_data['diagnosis']
 				profile.date_operation = item.cleaned_data['date_operation']
 				profile.operation = item.cleaned_data['operation']
-				profile.own_medication = item.cleaned_data['own_medication']
-				profile.own_medication_drug_name = item.cleaned_data['own_medication_drug_name']
-				profile.own_medication_dosage = item.cleaned_data['own_medication_dosage']
-				profile.own_medication_tablet_capsule = item.cleaned_data['own_medication_tablet_capsule']
-				profile.own_medication_frequency = item.cleaned_data['own_medication_frequency']
+				profile.medication = item.cleaned_data['medication']
+				profile.medication_drug_name = item.cleaned_data['medication_drug_name']
+				profile.medication_dosage = item.cleaned_data['medication_dosage']
+				profile.medication_tablet_capsule = item.cleaned_data['medication_tablet_capsule']
+				profile.medication_frequency = item.cleaned_data['medication_frequency']
 
 				profile.adaptive_aids_with_patient = item.cleaned_data['adaptive_aids_with_patient']
 				profile.adaptive_aids_with_patient_others = item.cleaned_data['adaptive_aids_with_patient_others']
@@ -170,7 +170,7 @@ def admission_create(request, username):
 			messages.warning(request, formset.errors)
 	else:
 		patient_form = Patient_ModelForm(initial=initial, prefix="patient_form")
-		ec_form = EmergencyContact_Form(initial=initial, prefix="ec_form")
+		ec_form = Family_Form(initial=initial, prefix="ec_form")
 		formset = Admission_FormSet(initial=initial_formset, prefix="formset")
 
 	context = {

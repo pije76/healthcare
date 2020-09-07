@@ -1,10 +1,3 @@
-var t = $('#t_add_row.display').DataTable(
-	{
-		"order": [[ 0, "desc" ]]
-	});
-
-
-
 $(document).ready(function()
 {
 	var loadForm = function()

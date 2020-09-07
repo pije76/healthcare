@@ -44,7 +44,7 @@ class AdmissionAdmin(admin.ModelAdmin):
 		'date_admission',
 		'time_admission',
 		'admitted',
-		'admitted_others',
+#		'admitted_others',
 		'mode',
 
 		'general_condition',
@@ -56,15 +56,12 @@ class AdmissionAdmin(admin.ModelAdmin):
 		'vital_sign_on_oxygen_therapy',
 		'vital_sign_on_oxygen_therapy_flow_rate',
 		'vital_sign_hgt',
-		'allergy_drug',
-		'allergy_food',
-		'allergy_others',
 		'biohazard_infectious_disease',
-		'biohazard_infectious_disease_others',
+#		'biohazard_infectious_disease_others',
 		'invasive_line_insitu',
-		'invasive_line_insitu_others',
+#		'invasive_line_insitu_others',
 		'medical_history',
-		'medical_history_others',
+#		'medical_history_others',
 		'surgical_history_none',
 		'surgical_history',
 
@@ -74,7 +71,7 @@ class AdmissionAdmin(admin.ModelAdmin):
 		'operation',
 
 		'adaptive_aids_with_patient',
-		'adaptive_aids_with_patient_others',
+#		'adaptive_aids_with_patient_others',
 		'orientation',
 		'special_information',
 		'admission_by',
@@ -95,9 +92,9 @@ class ApplicationForHomeLeaveAdmin(admin.ModelAdmin):
 		'family_ic_number',
 		'family_relationship',
 		'family_phone',
-		'designation',
-		'signature',
-		'date',
+		'witnessed_designation',
+		'witnessed_signature',
+		'witnessed_date',
 	]
 #    autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
@@ -248,11 +245,11 @@ class MedicationAdmin(admin.ModelAdmin):
 	list_display = [
 		'id',
 		'patient',
-		'own_medication',
-		'own_medication_drug_name',
-		'own_medication_dosage',
-		'own_medication_tablet_capsule',
-		'own_medication_frequency',
+		'medication',
+		'medication_drug_name',
+		'medication_dosage',
+		'medication_tablet_capsule',
+		'medication_frequency',
 	]
 	ModelAdmin.ordering = ('id',)
 
@@ -261,17 +258,28 @@ class MedicationAdministrationRecordAdmin(admin.ModelAdmin):
 		'id',
 		'patient',
 		'allergy',
-		'medication_name',
-		'medication_dosage',
-		'medication_tab_cap_mls',
-		'medication_frequency',
-		'medication_route',
+		'medication',
+#		'medication_name',
+#		'medication_dosage',
+#		'medication_tab_cap_mls',
+#		'medication_frequency',
+#		'medication_route',
 		'medication_date',
 		'medication_time',
 		'status_nurse',
 		'stat',
 		'medicationstat_date_time',
 		'given_by',
+	]
+	ModelAdmin.ordering = ('id',)
+
+
+class NursingAdmin(admin.ModelAdmin):
+	list_display = [
+		'id',
+		'patient',
+		'date_time',
+		'report',
 	]
 	ModelAdmin.ordering = ('id',)
 
@@ -297,6 +305,18 @@ class IntakeOutputAdmin(admin.ModelAdmin):
 	ModelAdmin.ordering = ('id',)
 
 
+class InvestigationReportAdmin(admin.ModelAdmin):
+	list_display = [
+		'id',
+		'patient',
+		'date',
+		'file_upload',
+		'image_img',
+	]
+	ModelAdmin.ordering = ('id',)
+
+
+
 class OvertimeClaimAdmin(admin.ModelAdmin):
 	list_display = [
 		'id',
@@ -320,12 +340,22 @@ class PhysiotherapyGeneralAssessmentAdmin(admin.ModelAdmin):
 		'doctor_management',
 		'problem',
 		'front_body',
+		'front_body_img',
 		'back_body',
+		'back_body_img',
 		'pain_scale',
 	]
 	ModelAdmin.ordering = ('id',)
 
 
+class PhysioProgressNoteBackAdmin(admin.ModelAdmin):
+	list_display = [
+		'id',
+		'patient',
+		'date_time',
+		'report',
+	]
+	ModelAdmin.ordering = ('id',)
 
 
 class StoolAdmin(admin.ModelAdmin):
@@ -341,7 +371,20 @@ class StoolAdmin(admin.ModelAdmin):
 	]
 	ModelAdmin.ordering = ('id',)
 
+
+class AllergyAdmin(admin.ModelAdmin):
+	list_display = [
+		'id',
+		'patient',
+		'allergy_drug',
+		'allergy_food',
+		'allergy_others',
+	]
+	ModelAdmin.ordering = ('id',)
+
+
 admin.site.register(Admission, AdmissionAdmin)
+admin.site.register(Allergy, AllergyAdmin)
 admin.site.register(ApplicationForHomeLeave, ApplicationForHomeLeaveAdmin)
 admin.site.register(Appointment, AppointmentAdmin)
 admin.site.register(Cannula, CannulaAdmin)
@@ -349,7 +392,7 @@ admin.site.register(Dressing, DressingAdmin)
 admin.site.register(EnteralFeedingRegime, EnteralFeedingRegimeAdmin)
 admin.site.register(HGT, HGTAdmin)
 admin.site.register(IntakeOutput, IntakeOutputAdmin)
-admin.site.register(InvestigationReport)
+admin.site.register(InvestigationReport, InvestigationReportAdmin)
 admin.site.register(Maintenance, MaintenanceAdmin)
 admin.site.register(Medication, MedicationAdmin)
 admin.site.register(MedicationAdministrationRecord, MedicationAdministrationRecordAdmin)
@@ -357,9 +400,9 @@ admin.site.register(MedicationRecord)
 admin.site.register(Multipurpose)
 admin.site.register(MiscellaneousChargesSlip)
 admin.site.register(Nasogastric, NasogastricAdmin)
-admin.site.register(Nursing)
+admin.site.register(Nursing, NursingAdmin)
 admin.site.register(OvertimeClaim, OvertimeClaimAdmin)
-admin.site.register(PhysioProgressNoteBack)
+admin.site.register(PhysioProgressNoteBack, PhysioProgressNoteBackAdmin)
 admin.site.register(PhysioProgressNoteFront)
 admin.site.register(PhysiotherapyGeneralAssessment, PhysiotherapyGeneralAssessmentAdmin)
 admin.site.register(Stool, StoolAdmin)

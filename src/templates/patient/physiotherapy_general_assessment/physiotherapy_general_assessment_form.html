@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load crispy_forms_tags %}
+{% load widget_tweaks %}
 {% load i18n %}
 
 {% block headtitle %}
@@ -27,7 +28,7 @@
 
 	{% include 'patient/patient_formset.html' %}
 
-	<form method="post">
+	<form method="post" action="" enctype="multipart/form-data">
 	{% csrf_token %}
 
 		<div class="row rounded form_table">

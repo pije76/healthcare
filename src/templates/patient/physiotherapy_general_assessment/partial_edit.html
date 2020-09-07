@@ -10,19 +10,53 @@
 	</div>
 
 	<div class="modal-body">
-        <div class="form-group">
-            {{ form.date|as_crispy_field }}
-            {{ form.time|as_crispy_field }}
-            {{ form.hospital_clinic_center|as_crispy_field }}
-            {{ form.department|as_crispy_field }}
-            {{ form.planning_investigation|as_crispy_field }}
-            {{ form.treatment_order|as_crispy_field }}
-        </div>
+		<div class="form-group">
+			<td>{{ form.doctor_diagnosis|as_crispy_field }}
+			<td>{{ form.doctor_management|as_crispy_field }}
+			<td>{{ form.problem|as_crispy_field }}
+			<td>
+				<a href="{{ item.front_body_url }}">
+					<img class="image_physiotherapy_general_assessment" src="{{ item.front_body_url }}">
+				</a>
+			</td>
+			<td>
+				<a href="{{ item.back_body_url }}">
+					<img class="image_physiotherapy_general_assessment" src="{{ item.back_body_url }}">
+				</a>
+			</td>
+			<td>{{ form.pain_scale|as_crispy_field }}
+			<td>{{ form.comments|as_crispy_field }}
+			<td>{{ form.special_question|as_crispy_field }}
+			<td>{{ form.general_health|as_crispy_field }}
+			<td>{{ form.pmx_surgery|as_crispy_field }}
+			<td>{{ form.ix_mri_x_ray|as_crispy_field }}
+			<td>{{ form.medications_steroids|as_crispy_field }}
+			<td>{{ form.occupation_recreation|as_crispy_field }}
+			<td>{{ form.pacemaker_hearing_aid|as_crispy_field }}
+			<td>{{ form.splinting|as_crispy_field }}
+			<td>{{ form.physical_examination_movement|as_crispy_field }}
+			<td>{{ form.muscle_power|as_crispy_field }}
+			<td>{{ form.functional_activities|as_crispy_field }}
+			<td>{{ form.special_test|as_crispy_field }}
+			<td>{{ form.date_time|as_crispy_field }}
+			<td>{{ form.attending_physiotherapist|as_crispy_field }}
+			<td>{{ form.current_history|as_crispy_field }}
+			<td>{{ form.past_history|as_crispy_field }}
+			<td>{{ form.neurological_reflexes|as_crispy_field }}
+			<td>{{ form.neurological_motor|as_crispy_field }}
+			<td>{{ form.neurological_sensation|as_crispy_field }}
+			<td>{{ form.clearing_test_other_joint|as_crispy_field }}
+			<td>{{ form.physiotherapists_impression|as_crispy_field }}
+			<td>{{ form.short_term_goals|as_crispy_field }}
+			<td>{{ form.long_term_goals|as_crispy_field }}
+			<td>{{ form.plan_treatment|as_crispy_field }}
+
+		</div>
 	</div>
 
 	<div class="modal-footer">
 		<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 		<button type="submit" class="btn btn-primary"><i class="icon wb-plus" aria-hidden="true"></i>Submit</button>
 	</div>
-	
+
 </form>

@@ -59,13 +59,15 @@ def physiotherapy_general_assessment_create(request, username):
     }
 
     if request.method == 'POST':
-        form = PhysiotherapyGeneralAssessment_Form(request.POST or None)
+        form = PhysiotherapyGeneralAssessment_Form(request.POST or None, request.FILES or None)
         if form.is_valid():
             profile = PhysiotherapyGeneralAssessment()
             profile.patient = patients
             profile.doctor_diagnosis = form.cleaned_data['doctor_diagnosis']
             profile.doctor_management = form.cleaned_data['doctor_management']
             profile.problem = form.cleaned_data['problem']
+            profile.front_body = form.cleaned_data['front_body']
+            profile.back_body = form.cleaned_data['back_body']
             profile.pain_scale = form.cleaned_data['pain_scale']
             profile.comments = form.cleaned_data['comments']
             profile.current_history = form.cleaned_data['current_history']

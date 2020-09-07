@@ -11,20 +11,6 @@
 {% block styles %}
 	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/patient/intake_output.css' %}" rel="stylesheet" type="text/css">
-	<style>
-	.date_field
-	{
-		width: 130px;
-	}
-	.time_field
-	{
-		width: 90px;
-	}
-	.integer_field
-	{
-		width: 75px;
-	}
-	</style>
 {% endblock %}
 
 {% block javascript %}
@@ -47,10 +33,10 @@
 
 	<form method="post">
 	{% csrf_token %}
+	{{ formset.management_form }}
 
 		<div class="row rounded form_table">
 
-			{{ formset.management_form }}
 			<table id="form_set" class="table table-bordered">
 				<thead class="thead-light">
 					<tr>

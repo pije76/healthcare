@@ -13,10 +13,13 @@
         <div class="form-group">
             {{ form.date|as_crispy_field }}
             {{ form.time|as_crispy_field }}
-            {{ form.hospital_clinic_center|as_crispy_field }}
-            {{ form.department|as_crispy_field }}
-            {{ form.planning_investigation|as_crispy_field }}
-            {{ form.treatment_order|as_crispy_field }}
+            {{ form.temp|as_crispy_field }}
+            {{ form.pulse|as_crispy_field }}
+            {{ form.blood_pressure_systolic|as_crispy_field }}
+            {{ form.blood_pressure_diastolic|as_crispy_field }}
+            {{ form.respiration|as_crispy_field }}
+            {{ form.spo2_percentage|as_crispy_field }}
+            {{ form.spo2_o2|as_crispy_field }}
         </div>
 	</div>
 
@@ -24,5 +27,5 @@
 		<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 		<button type="submit" class="btn btn-primary"><i class="icon wb-plus" aria-hidden="true"></i>Submit</button>
 	</div>
-	
+
 </form>

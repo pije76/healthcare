@@ -48,25 +48,29 @@ def intake_output_list(request, username):
 	total_gastric_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_night, end_time_night)).aggregate(Sum('output_gastric_ml'))
 	total_other_output_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_night, end_time_night)).aggregate(Sum('output_other_ml'))
 
-	total_oral = IntakeOutput.objects.filter(patient=patientid).aggregate(Sum('intake_oral_ml'))
-	total_parental = IntakeOutput.objects.filter(patient=patientid).aggregate(Sum('intake_parenteral_ml'))
-	total_other_intake = IntakeOutput.objects.filter(patient=patientid,).aggregate(Sum('intake_other_ml'))
+	total_oral = IntakeOutput.objects.filter(patient=patientid).aggregate(Sum(F('intake_oral_ml')))
+	total_parental = IntakeOutput.objects.filter(patient=patientid).aggregate(Sum(F('intake_parenteral_ml')))
+	total_other_intake = IntakeOutput.objects.filter(patient=patientid,).aggregate(Sum(F('intake_other_ml')))
 
 	agg_data = IntakeOutput.objects.aggregate(total_source1=Count('intake_oral_ml'), total_source2=Count('intake_parenteral_ml'), total_source3=Count('intake_other_ml'))
 	total_count = sum(agg_data.values())
 	res = IntakeOutput.objects.all().annotate(total_source1=Count('intake_oral_ml'), total_source2=Count('intake_parenteral_ml'), total_source3=Count('intake_other_ml')).annotate(total_count=F('total_source1') + F('total_source2') + F('total_source3')).order_by('-total_count')
 
-#   total_intake = total_oral+total_parental+total_other_intake
+#	total_intake = total_oral+total_parental+total_other_intake
+	total_intake = sum(IntakeOutput.objects.filter(patient=patientid).order_by('date').aggregate(x=Sum('intake_oral_ml'), y=Sum('intake_parenteral_ml'), z=Sum('intake_other_ml')).values())
 
-#   total_intake = IntakeOutput.objects.all().aggregate(Sum(F('output_urine_cum') + F('output_gastric_ml') + F('output_other_ml'))
+#	total_intake = IntakeOutput.objects.all().aggregate(latest=Sum(F('output_urine_cum') + F('output_gastric_ml') + F('output_other_ml')))
 
-	total_intake = IntakeOutput.objects.filter(patient=patientid).annotate(Count('output_urine_cum')).annotate(Count('output_gastric_ml')).annotate(Count('output_other_ml'))
+#	total_intake = IntakeOutput.objects.filter(patient=patientid).annotate(Count('output_urine_cum')).annotate(Count('output_gastric_ml')).annotate(Count('output_other_ml'))
 #   total_output = total_cum+total_gastric+total_other_output
+	total_output = sum(IntakeOutput.objects.filter(patient=patientid).order_by('date').aggregate(x=Sum('output_urine_cum'), y=Sum('output_gastric_ml'), z=Sum('output_other_ml')).values())
 
-#   total_balance = total_intake + total_output
+	total_balance = total_intake + total_output
 
 	time_range_day = IntakeOutput.objects.filter(patient=patientid, time__range=(start_time_day, end_time_day))
 	time_range_night = IntakeOutput.objects.filter(patient=patientid, time__range=(start_time_night, end_time_night))
+
+	time_range = IntakeOutput.objects.filter(patient=patientid).order_by('date')
 
 	context = {
 		'logos': logos,
@@ -93,11 +97,12 @@ def intake_output_list(request, username):
 #       'total_parental': total_parental,
 
 #       'total_intake': total_intake,
-#       'total_output': total_output,
-#       'total_balance': total_balance,
+		'total_output': total_output,
+		'total_balance': total_balance,
 
 		'time_range_day': time_range_day,
 		'time_range_night': time_range_night,
+		'time_range': time_range,
 	}
 
 	return render(request, 'patient/intake_output/intake_output_data.html', context)
@@ -140,8 +145,18 @@ def intake_output_create(request, username):
 		{'time': '10:00'},
 		{'time': '11:00'},
 		{'time': '12:00'},
+		{'time': '13:00'},
+		{'time': '14:00'},
+		{'time': '15:00'},
+		{'time': '16:00'},
+		{'time': '17:00'},
+		{'time': '18:00'},
+		{'time': '19:00'},
+		{'time': '20:00'},
+		{'time': '21:00'},
+		{'time': '22:00'},
+		{'time': '23:00'},
 	]
-
 
 	if request.method == 'POST':
 		formset = IntakeOutput_FormSet(request.POST or None)

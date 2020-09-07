@@ -11,12 +11,14 @@
 
 	<div class="modal-body">
         <div class="form-group">
-            {{ form.date|as_crispy_field }}
-            {{ form.time|as_crispy_field }}
-            {{ form.hospital_clinic_center|as_crispy_field }}
-            {{ form.department|as_crispy_field }}
-            {{ form.planning_investigation|as_crispy_field }}
-            {{ form.treatment_order|as_crispy_field }}
+			{{ form.patient|as_crispy_field }}
+			{{ form.family_name|as_crispy_field }}
+			{{ form.family_ic_number|as_crispy_field }}
+			{{ form.family_relationship|as_crispy_field }}
+			{{ form.family_phone|as_crispy_field }}
+			{{ form.witnessed_designation|as_crispy_field }}
+			{{ form.witnessed_signature|as_crispy_field }}
+			{{ form.witnessed_date|as_crispy_field }}
         </div>
 	</div>
 
@@ -24,5 +26,5 @@
 		<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 		<button type="submit" class="btn btn-primary"><i class="icon wb-plus" aria-hidden="true"></i>Submit</button>
 	</div>
-	
+
 </form>

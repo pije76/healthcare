@@ -61,30 +61,35 @@ def application_home_leave_create(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Application For Home Leave')
+	patientid = UserProfile.objects.get(username=username).id
 	patients = get_object_or_404(UserProfile, username=username)
+#	families = get_object_or_404(Family, patient=patientid)
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
 	initial = {
-#       'patient': patients,
-#       'ic_number': icnumbers,
+		'patient': patients,
+		'ic_number': icnumbers,
 	}
 
 	if request.method == 'POST':
 #		form = ApplicationForHomeLeave_ModelForm(request.POST or None, instance=request.user)
 		form = ApplicationForHomeLeave_Form(request.POST or None)
+#		form = ApplicationForHomeLeave_Form(request.POST or None, get_user=patients)
 
 		if form.is_valid():
 #			profile = form.save(commit=False)
 			profile = ApplicationForHomeLeave()
-			profile.patient = form.cleaned_data['patient']
+			profile.patient = patients
+#			profile.patient = form.cleaned_data['patient']
 			profile.family_name = form.cleaned_data['family_name']
+#			profile.family_name = families
 			profile.family_ic_number = form.cleaned_data['family_ic_number']
 			profile.family_relationship = form.cleaned_data['family_relationship']
 			profile.family_phone = form.cleaned_data['family_phone']
-			profile.designation = form.cleaned_data['designation']
-			profile.signature = form.cleaned_data['signature']
-			profile.date = form.cleaned_data['date']
+			profile.witnessed_designation = form.cleaned_data['witnessed_designation']
+			profile.witnessed_signature = form.cleaned_data['witnessed_signature']
+			profile.witnessed_date = form.cleaned_data['witnessed_date']
 			profile.save()
 
 			messages.success(request, _(page_title + ' form was created.'))
@@ -92,11 +97,11 @@ def application_home_leave_create(request, username):
 		else:
 			messages.warning(request, form.errors)
 	else:
-		form = ApplicationForHomeLeave_Form()
-#       form = ApplicationForHomeLeaveForm(initial=initial)
-#       form = ApplicationForHomeLeaveForm(instance=request.user)
-#       form = ApplicationForHomeLeaveForm(initial=initial, instance=request.user)
-#       form = ApplicationForHomeLeaveForm()
+#		form = ApplicationForHomeLeave_Form()
+		form = ApplicationForHomeLeave_Form(initial=initial)
+#       form = ApplicationForHomeLeave_ModelForm(instance=request.user)
+#		form = ApplicationForHomeLeave_Form(initial=initial, get_user=patients)
+#       form = ApplicationForHomeLeave_Form()
 
 	context = {
 		'logos': logos,
@@ -111,8 +116,8 @@ def application_home_leave_create(request, username):
 	return render(request, 'patient/application_home_leave/application_home_leave_form.html', context)
 
 class PdfMixin(object):
-    content_type = "application/pdf"
-    response_class = PdfResponse
+	content_type = "application/pdf"
+	response_class = PdfResponse
 
 def application_home_leave_pdf(response, username):
 	schema_name = connection.schema_name

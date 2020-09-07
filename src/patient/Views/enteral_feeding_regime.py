@@ -41,6 +41,8 @@ def enteral_feeding_regime_list(request, username):
 	total_feeding = EnteralFeedingRegime.objects.filter(patient=patientid).aggregate(Sum('amount'))
 	total_fluids = EnteralFeedingRegime.objects.filter(patient=patientid).values_list('total_fluids', flat=True).first()
 	all_total_fluids = EnteralFeedingRegime.objects.filter(patient=patientid).aggregate(Sum('total_fluids'))
+	warm_water_before = EnteralFeedingRegime.objects.filter(patient=patientid).values_list('warm_water_before', flat=True).first()
+	warm_water_after = EnteralFeedingRegime.objects.filter(patient=patientid).values_list('warm_water_after', flat=True).first()
 
 	context = {
 		'logos': logos,
@@ -52,6 +54,8 @@ def enteral_feeding_regime_list(request, username):
 		'total_feeding': total_feeding,
 		'total_fluids': total_fluids,
 		'all_total_fluids': all_total_fluids,
+		'warm_water_before': warm_water_before,
+		'warm_water_after': warm_water_after,
 	}
 
 	return render(request, 'patient/enteral_feeding_regime/enteral_feeding_regime_data.html', context)
@@ -76,7 +80,6 @@ def enteral_feeding_regime_create(request, username):
 		'done_by': request.user,
 	}
 
-#    initial_list = [{'01:00', '02:00'},]
 	initial_list = [
 		{'time': '00:00'},
 		{'time': '01:00'},
@@ -104,37 +107,15 @@ def enteral_feeding_regime_create(request, username):
 		{'time': '23:00'},
 	]
 
-#    initial_list = {'01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00'}
-#    for item in initial_list:
-#        return item
-
-#	initial_list = [
-#    	{'00:00'+ datetime.timedelta(hours=1)},
-#	]
-
-	initial_time = [{
-#		'time': [item for item in initial_list]
-		'time': '01:00',
-    }]
-
 	initial_formset = [{
 		'patient': item.full_name,
-#		'time': str(initial_list),
-#        'time': datetime.datetime.now().strftime("%H:%M") + datetime.timedelta(hours=1),
 		'done_by': request.user,
 	}
 	for item in profiles]
 
-#	initial_time = [{'time': item.initial_list,} for item in initial_list]
-
-#    print("time: ", datetime.timedelta(hours=1))
-
-#    for data in initial_list:
-#    initial_formset.append({'time': data})
-
+	queryset = request.user.username
 
 	if request.method == 'POST':
-#		EnteralFeedingRegime_FormSet = formset_factory(EnteralFeedingRegime_Form, extra=24, formset=TestBaseFormSet)
 		form = EnteralFeedingRegime_Form(request.POST or None)
 		formset = EnteralFeedingRegime_FormSet(request.POST or None)
 
@@ -143,10 +124,9 @@ def enteral_feeding_regime_create(request, username):
 			profile_form = EnteralFeedingRegime()
 			profile_form.patient = patients
 			profile_form.date = form.cleaned_data['date']
-			profile_form.warm_water_before = item.cleaned_data['warm_water_before']
-			profile_form.warm_water_after = item.cleaned_data['warm_water_after']
+			profile_form.warm_water_before = form.cleaned_data['warm_water_before']
+			profile_form.warm_water_after = form.cleaned_data['warm_water_after']
 			profile_form.save()
-
 
 			for item in formset:
 				profile = EnteralFeedingRegime()
@@ -164,6 +144,7 @@ def enteral_feeding_regime_create(request, username):
 	else:
 #		EnteralFeedingRegime_FormSet = formset_factory(EnteralFeedingRegime_Form, extra=24, formset=TestBaseFormSet)
 		form = EnteralFeedingRegime_Form(initial=initial)
+#		formset = EnteralFeedingRegime_FormSet(get_username=username)
 		formset = EnteralFeedingRegime_FormSet(initial=initial_list)
 #		formset = EnteralFeedingRegime_FormSet()
 #		formset = EnteralFeedingRegime_FormSet(form_kwargs={'time': custom_kwarg})

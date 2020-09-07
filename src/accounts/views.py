@@ -192,7 +192,8 @@ class StaffSignUpView(SignupView):
 		ct_intake_output = Permission.objects.filter(codename__contains='intakeoutput').values_list('id', flat=True)
 		ct_investigationreport = Permission.objects.filter(codename__contains='investigationreport').values_list('id', flat=True)
 		ct_maintenance = Permission.objects.filter(codename__contains='maintenance').values_list('id', flat=True)
-		ct_medication = Permission.objects.filter(codename__contains='medicationrecord').values_list('id', flat=True)
+		ct_medication = Permission.objects.filter(codename__contains='medication').values_list('id', flat=True)
+		ct_medicationrecord = Permission.objects.filter(codename__contains='medicationrecord').values_list('id', flat=True)
 		ct_medication_administration = Permission.objects.filter(codename__contains='medicationadministrationrecord').values_list('id', flat=True)
 		ct_miscellaneous_charges_slip = Permission.objects.filter(codename__contains='miscellaneouschargesslip').values_list('id', flat=True)
 		ct_multi_purpose = Permission.objects.filter(codename__contains='multipurpose').values_list('id', flat=True)
@@ -227,34 +228,36 @@ class StaffSignUpView(SignupView):
 			user.user_permissions.add(i)
 		for j in ct_medication:
 			user.user_permissions.add(j)
-		for k in ct_medication_administration:
+		for k in ct_medicationrecord:
 			user.user_permissions.add(k)
-		for ll in ct_multi_purpose:
+		for ll in ct_medication_administration:
 			user.user_permissions.add(ll)
-		for m in ct_miscellaneous_charges_slip:
+		for m in ct_multi_purpose:
 			user.user_permissions.add(m)
-		for n in ct_nasogastric:
+		for n in ct_miscellaneous_charges_slip:
 			user.user_permissions.add(n)
-		for o in ct_nursing:
+		for o in ct_nasogastric:
 			user.user_permissions.add(o)
-		for p in ct_overtime_claim:
+		for p in ct_nursing:
 			user.user_permissions.add(p)
-		for q in ct_physio_progress_note_back:
+		for q in ct_overtime_claim:
 			user.user_permissions.add(q)
-		for r in ct_physio_progress_note_front:
+		for r in ct_physio_progress_note_back:
 			user.user_permissions.add(r)
-		for s in ct_physiotherapy_general_assessment:
+		for s in ct_physio_progress_note_front:
 			user.user_permissions.add(s)
-		for t in ct_stool:
+		for t in ct_physiotherapy_general_assessment:
 			user.user_permissions.add(t)
-		for u in ct_urinary:
+		for u in ct_stool:
 			user.user_permissions.add(u)
-		for v in ct_visiting_consultant_records:
+		for v in ct_urinary:
 			user.user_permissions.add(v)
-		for w in ct_vital_sign_flow:
+		for w in ct_visiting_consultant_records:
 			user.user_permissions.add(w)
-		for x in ct_investigationreport:
+		for x in ct_vital_sign_flow:
 			user.user_permissions.add(x)
+		for y in ct_investigationreport:
+			user.user_permissions.add(y)
 		user.save()
 
 	def get_initial(self):

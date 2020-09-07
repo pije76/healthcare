@@ -57,7 +57,7 @@ def nasogastric_create(request, username):
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
-	initial = [{
+	initial_formset = [{
 		'patient': item.full_name,
 		'nasogastric_tube_inserted_by': request.user,
 		'nasogastric_remove_by': request.user,
@@ -87,7 +87,7 @@ def nasogastric_create(request, username):
 			messages.warning(request, formset.errors)
 
 	else:
-		formset = Nasogastric_FormSet(initial=initial)
+		formset = Nasogastric_FormSet(initial=initial_formset)
 
 	context = {
 		'logos': logos,

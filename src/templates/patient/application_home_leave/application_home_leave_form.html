@@ -30,7 +30,7 @@
 
 	<div class="col-12">
 
-		<form method="post" id="dataForm" data-url="{% url 'load_ic_number' %}" novalidate>
+		<form method="post" id="dataForm" novalidate>
 			{% csrf_token %}
 			<div class="application_home_leave_body">
 
@@ -95,7 +95,7 @@
 						{% trans "hereby wish to apply from" %} {{ titles }} {% trans "for self / patient" %}
 					</div>
 					<div class="col-6">
-						{{ form.patient|as_crispy_field }}
+						<input type="text" name="patient" class="form-control" value="{{ patients }}">
 					</div>
 				</div>
 
@@ -117,7 +117,7 @@
 					</div>
 
 					<div class="col-6">
-						{{ form.family_name|as_crispy_field }}
+						{{ form.signature_name|as_crispy_field }}
 						<b>({% trans "Patient / Family Responsible" %})</b>
 					</div>
 				</div>
@@ -126,12 +126,12 @@
 
 				<div class="row">
 					<div class="col-6">
-						{{ form.family_relationship|as_crispy_field }}
+						{{ form.signature_relationship|as_crispy_field }}
 						<b>({% trans "Relationship" %})</b>
 					</div>
 
 					<div class="col-6">
-						{{ form.family_ic_number|as_crispy_field }}
+						{{ form.signature_ic_number|as_crispy_field }}
 						<b>({% trans "IC No." %})</b>
 					</div>
 				</div>
@@ -149,7 +149,7 @@
 						{% trans "Name" %}:
 					</div>
 					<div class="col-2">
-						{{ form.family_name|as_crispy_field }}
+						{{ form.witnessed_name|as_crispy_field }}
 					</div>
 				</div>
 				<br />
@@ -158,7 +158,7 @@
 						{% trans "Designation" %}:
 					</div>
 					<div class="col-2">
-						{{ form.designation|as_crispy_field }}
+						{{ form.witnessed_designation|as_crispy_field }}
 					</div>
 				</div>
 				<br />
@@ -167,7 +167,7 @@
 						{% trans "Signature" %}:
 					</div>
 					<div class="col-2">
-						{{ form.signature|as_crispy_field }}
+						{{ form.witnessed_signature|as_crispy_field }}
 					</div>
 				</div>
 				<br />
@@ -176,7 +176,7 @@
 						{% trans "Date" %}:
 					</div>
 					<div class="col-2">
-						{{ form.date|as_crispy_field }}
+						{{ form.witnessed_date|as_crispy_field }}
 					</div>
 				</div>
 				<br />
@@ -185,7 +185,7 @@
 			<br />
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 			{% for item in profiles %}
-			<a class="btn btn-outline-primary" href="{% url 'patient:application_home_leave_pdf' item.username %}"><i style="font-size:24px;" class="fa fa fa-print fa-2x"></i> Print</a>
+			<a class="btn btn-outline-primary kirim" href="{% url 'patient:application_home_leave_pdf' item.username %}"><i style="font-size:24px;" class="fa fa fa-print fa-2x"></i> Print</a>
 			<a class="btn btn-danger" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
 			{% endfor %}
 		</form>
@@ -218,13 +218,14 @@
 <script type="text/javascript">
 $("#id_patient").change(function()
 {
-	var url = $("#dataForm").attr("data-url");
+//	var url = $("#dataForm").attr("data-url");
+
 	var fullnameId = $(this).val();
-	console.log("url: ", url);
-	console.log("fullnameId: ", fullnameId);
+//	console.log("url: ", url);
+//	console.log("fullnameId: ", fullnameId);
 	$.ajax(
 	{
-		url: url,
+		url:'{% url "patient:load_ic_number" %}',
 		data:
 		{
 			'full_name': fullnameId,
@@ -236,5 +237,92 @@ $("#id_patient").change(function()
 		},
 	});
 });
+
+$("#id_family_name").change(function()
+{
+	var familynameId = $(this).val();
+//	console.log("url: ", url);
+	console.log("familynameId: ", familynameId);
+	$.ajax(
+	{
+		url:'{% url "patient:load_ic_number" %}',
+		data:
+		{
+			'ec_name': familynameId,
+//			'ec_relationship': familynameId.ec_relationship,
+		},
+
+		success: function(data)
+		{
+			$("#id_family_ic_number").val(data);
+			$("#id_signature_ic_number").val(data);
+		},
+	});
+});
+
+
+$("#id_family_name").change(function()
+{
+	var familynameId = $(this).val();
+	$.ajax(
+	{
+		url:'{% url "patient:load_relationship" %}',
+		data:
+		{
+			'ec_name': familynameId,
+//			'ec_relationship': familynameId,
+		},
+
+		success: function(data)
+		{
+			$("#id_family_relationship").val(data);
+			$("#id_signature_relationship").val(data);
+//			$("#id_patient").val(data);
+		},
+	});
+});
+
+$("#id_family_name").change(function()
+{
+	var familynameId = $(this).val();
+	$.ajax(
+	{
+		url:'{% url "patient:load_signature" %}',
+		data:
+		{
+			'ec_name': familynameId,
+//			'ec_relationship': familynameId,
+		},
+
+		success: function(data)
+		{
+			$("#id_signature_name").val(data);
+			$("#id_witnessed_name").val(data);
+//			$("#id_patient").val(data);
+		},
+	});
+});
+
+
+$("#id_family_name").change(function()
+{
+	var familynameId = $(this).val();
+	$.ajax(
+	{
+		url:'{% url "patient:load_phone" %}',
+		data:
+		{
+			'ec_name': familynameId,
+//			'ec_relationship': familynameId,
+		},
+
+		success: function(data)
+		{
+			$("#id_family_phone").val(data);
+//			$("#id_patient").val(data);
+		},
+	});
+});
+
 </script>
 {% endblock %}

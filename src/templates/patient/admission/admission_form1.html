@@ -478,7 +478,7 @@
 						{% trans "Own medication" %}:
 					</div>
 					<div class="col-10 col">
-						{{ item.own_medication|as_crispy_field }}
+						{{ item.medication|as_crispy_field }}
 					</div>
 				</div>
 
@@ -506,16 +506,16 @@
 					<div class="col-2 col" style="border-top:none;">
 					</div>
 					<div class="col-3 col">
-						{{ item.own_medication_drug_name|as_crispy_field }}
+						{{ item.medication_drug_name|as_crispy_field }}
 					</div>
 					<div class="col-2 col">
-						{{ item.own_medication_dosage|as_crispy_field }}
+						{{ item.medication_dosage|as_crispy_field }}
 					</div>
 					<div class="col-2 col">
-						{{ item.own_medication_tablet_capsule|as_crispy_field }}
+						{{ item.medication_tablet_capsule|as_crispy_field }}
 					</div>
 					<div class="col-2 col">
-						{{ item.own_medication_frequency|as_crispy_field }}
+						{{ item.medication_frequency|as_crispy_field }}
 					</div>
 					<div class="col-1 col">
 						<button type="button" style="margin-top:5px;" class="btn btn-success add_formSet_Own">

@@ -47,8 +47,6 @@
 										<th class="text-center">{% trans "Time" %}</th>
 										<th class="text-center">{% trans "Type of Milk" %}</th>
 										<th class="text-center">{% trans "Amount (ml)" %}</th>
-										<th class="text-center">{% trans "Flush Before (mls)" %}</th>
-										<th class="text-center">{% trans "Flush After (mls)" %}</th>
 										<th class="text-center">{% trans "Total Fluids (mls/day)" %}</th>
 										<th class="text-center">{% trans "Action" %}</th>
 									</tr>
@@ -58,8 +56,6 @@
 										<th class="text-center">{% trans "Time" %}</th>
 										<th class="text-center">{% trans "Type of Milk" %}</th>
 										<th class="text-center">{% trans "Amount (ml)" %}</th>
-										<th class="text-center">{% trans "Flush Before (mls)" %}</th>
-										<th class="text-center">{% trans "Flush After (mls)" %}</th>
 										<th class="text-center">{% trans "Total Fluids (mls/day)" %}</th>
 									</tr>
 									{% endif %}
@@ -69,9 +65,19 @@
 								</tbody>
 								<tfoot>
 									<tr>
-										<td colspan="2"><b>TOTAL FEEDING :</b></td>
+										<td colspan="3"><b>TOTAL FEEDING :</b></td>
 										<td><b>{{ total_feeding.amount__sum }}</b></td>
-										<td colspan="2"><b>TOTAL FLUIDS :</b></td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td colspan="2">{% trans "Flush with warm water before" %}</td>
+										<td><b>{{ warm_water_before }}</b> (mls)</td>
+										<td colspan="2">{% trans "Flush with warm water after" %}</td>
+										<td><b>{{ warm_water_after }}</b> (mls)</td>
+									</tr>
+									<tr>
+										<td colspan="3"><b>TOTAL FLUIDS :</b></td>
 										<td><b>{{ all_total_fluids.total_fluids__sum }}</b></td>
 										<td></td>
 										<td></td>
@@ -104,15 +110,53 @@
 
 {% block js %}
 <script type="text/javascript">
-$(function()
+$(document).ready(function()
 {
-	$(".trigger_modal").each(function()
+	$(function()
 	{
-		$(this).modalForm(
+		$(".trigger_modal").each(function()
 		{
-			formURL: $(this).data('form-url')
+			$(this).modalForm(
+			{
+				formURL: $(this).data('form-url')
+			});
 		});
 	});
+
+	var t = $('#t_add_row').DataTable(
+	{
+		"order": [[ 0, "desc" ], [ 1, "asc" ]],
+//		"pageLength": 24,
+		"displayLength": 24,
+		"lengthMenu": [ 24, 48, 72, 96, 120],
+		"columnDefs": [
+		{
+			"visible": false, "targets": [0, 4],
+		}
+		],
+		"drawCallback": function(settings)
+		{
+			var api = this.api();
+			var rows = api.rows(
+			{
+				page:'current'
+			}).nodes();
+			var last=null;
+
+			api.column(0, {page:'current'} ).data().each(function(group, i)
+			{
+				if ( last !== group )
+				{
+					$(rows).eq(i).before(
+						'<tr class="group"><td colspan="14">'+group+'</td></tr>'
+					);
+
+					last = group;
+				}
+			});
+		},
+		});
 });
+
 </script>
 {% endblock %}

@@ -45,10 +45,10 @@
 									{% if user.is_superuser %}
 									<tr>
 										<th class="text-center">{% trans "Patient Name" %}</th>
-										<th class="text-center">{% trans "Patient/Family Name" %}</th>
+										<th class="text-center">{% trans "Family Name" %}</th>
 										<th class="text-center">{% trans "NRIC Number" %}</th>
-										<th class="text-center">{% trans "Patient/Family Relationship" %}</th>
-										<th class="text-center">{% trans "Patient/Family Phone" %}</th>
+										<th class="text-center">{% trans "Family Relationship" %}</th>
+										<th class="text-center">{% trans "Family Phone" %}</th>
 										<th class="text-center">{% trans "Designation" %}</th>
 										<th class="text-center">{% trans "Signature" %}</th>
 										<th class="text-center">{% trans "Date" %}</th>
@@ -57,10 +57,10 @@
 									{% elif user.is_staff or user.is_patient %}
 									<tr>
 										<th class="text-center">{% trans "Patient Name" %}</th>
-										<th class="text-center">{% trans "Patient/Family Name" %}</th>
+										<th class="text-center">{% trans "Family Name" %}</th>
 										<th class="text-center">{% trans "NRIC Number" %}</th>
-										<th class="text-center">{% trans "Patient/Family Relationship" %}</th>
-										<th class="text-center">{% trans "Patient/Family Phone" %}</th>
+										<th class="text-center">{% trans "Family Relationship" %}</th>
+										<th class="text-center">{% trans "Family Phone" %}</th>
 										<th class="text-center">{% trans "Designation" %}</th>
 										<th class="text-center">{% trans "Signature" %}</th>
 										<th class="text-center">{% trans "Date" %}</th>

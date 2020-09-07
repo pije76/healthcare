@@ -57,21 +57,30 @@ def nursing_create(request, username):
         'ic_number': icnumbers,
     }
 
+    initial_formset = [{
+        'patient': item.full_name,
+        'nasogastric_tube_inserted_by': request.user,
+        'nasogastric_remove_by': request.user,
+    }
+    for item in profiles]
+
     if request.method == 'POST':
-        form = Nursing_Form(request.POST or None)
-        if form.is_valid():
-            profile = Nursing()
-            profile.patient = patients
-            profile.date_time = form.cleaned_data['date_time']
-            profile.report = form.cleaned_data['report']
-            profile.save()
+        formset = Nursing_FormSet(request.POST or None)
+
+        if formset.is_valid():
+            for item in formset:
+                profile = Nursing()
+                profile.patient = patients
+                profile.date_time = item.cleaned_data['date_time']
+                profile.report = item.cleaned_data['report']
+                profile.save()
 
             messages.success(request, _(page_title + ' form was created.'))
             return redirect('patient:patientdata_detail', username=patients.username)
         else:
-            messages.warning(request, form.errors)
+            messages.warning(request, formset.errors)
     else:
-        form = Nursing_Form(initial=initial)
+        formset = Nursing_FormSet(initial=initial_formset)
 
     context = {
         'logos': logos,
@@ -80,7 +89,7 @@ def nursing_create(request, username):
         'patients': patients,
         'profiles': profiles,
         'icnumbers': icnumbers,
-        'form': form,
+        'formset': formset,
     }
 
     return render(request, 'patient/nursing/nursing_form.html', context)

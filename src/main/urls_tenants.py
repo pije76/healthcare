@@ -22,7 +22,8 @@ urlpatterns = [
 	path(_('account/'), include('accounts.urls')),
 	re_path(r'^selectable/', include('selectable.urls')),
 	path('summernote/', include('django_summernote.urls')),
-	path('load_ic_number', load_ic_number, name='load_ic_number'),
+#	path('load_ic_number', load_ic_number, name='load_ic_number'),
+#	path('load_relationship', load_relationship, name='load_relationship'),
 
 	re_path(r'(?P<user_language>\w+)/$', set_language_from_url, name="set_language_from_url")
 ]

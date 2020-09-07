@@ -18,13 +18,37 @@ $(document).ready(function()
 	$("#id_admision_form-surgical_history").prop("disabled", true);
 	$("#id_admision_form-surgical_history_none_1").attr("checked", true);
 
-	$("#id_medication_formset-0-own_medication_1").filter('[value="False"]').attr('checked', true)
+	$("#id_medication_formset-0-medication_1").filter('[value="False"]').attr('checked', true)
 	$('.hapus_Own').addClass("disabled");
 	$('.tambah_Own').addClass("disabled");
 	$("[id$='drug_name']").addClass("disabled_input");
 	$("[id$='dosage']").addClass("disabled_input");
 	$("[id$='tablet_capsule']").addClass("disabled_input");
 	$("[id$='frequency']").addClass("disabled_input");
+
+	if($('#id_patient_form-marital_status_others').val().length > 0)
+	{
+		$("#id_patient_form-marital_status_3").prop({ checked: true });
+		$("#id_patient_form-marital_status_others").prop("disabled", false);
+	}
+
+	if($('#id_patient_form-religion_others').val().length > 0)
+	{
+		$("#id_patient_form-religion_5").prop({ checked: true });
+		$("#id_patient_form-religion_others").prop("disabled", false);
+	}
+
+	if($('#id_patient_form-occupation_others').val().length > 0)
+	{
+		$("#id_patient_form-occupation_3").prop({ checked: true });
+		$("#id_patient_form-occupation_others").prop("disabled", false);
+	}
+
+	if($('#id_patient_form-communication_hearing_others').val().length > 0)
+	{
+		$("#id_patient_form-communication_hearing_4").prop({ checked: true });
+		$("#id_patient_form-communication_hearing_others").prop("disabled", false);
+	}
 
 //    $('input.admitted').checkbox({cls:'jquery-safari-checkbox'});
 //    $(':radio[id^="id_admision_form-admitted_"]').checkbox({cls:'jquery-safari-checkbox'});
@@ -783,13 +807,13 @@ $(document).ready(function()
 		}
 	});
 
-	$(':radio[id^="id_medication_formset-0-own_medication_"]').click(function()
+	$(':radio[id^="id_medication_formset-0-medication_"]').click(function()
 	{
 
 		var $this = $(this);
-		if ($this.is("#id_medication_formset-0-own_medication_1"))
+		if ($this.is("#id_medication_formset-0-medication_1"))
 		{
-			if ($("#id_medication_formset-0-own_medication_1").filter('[value="True"]').attr('checked', true))
+			if ($("#id_medication_formset-0-medication_1").filter('[value="True"]').attr('checked', true))
 			{
 				$('.hapus_Own').addClass("disabled");
 				$('.tambah_Own').addClass("disabled");
@@ -808,9 +832,9 @@ $(document).ready(function()
 				$("[id$='frequency']").removeClass("disabled_input");
 			}
 		}
-		else if ($this.is("#id_medication_formset-0-own_medication_2"))
+		else if ($this.is("#id_medication_formset-0-medication_2"))
 		{
-			if ($("#id_medication_formset-0-own_medication_2").filter('[value="True"]').attr('checked', true))
+			if ($("#id_medication_formset-0-medication_2").filter('[value="True"]').attr('checked', true))
 			{
 				$('.hapus_Own').removeClass("disabled");
 				$('.tambah_Own').removeClass("disabled");

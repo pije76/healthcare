@@ -46,3 +46,16 @@
   margin-right: -15px !important;
   margin-left: -15px !important;
 }
+
+.date_field
+{
+  width: 130px;
+}
+.time_field
+{
+  width: 90px;
+}
+.integer_field
+{
+  width: 75px;
+}

@@ -45,15 +45,13 @@ class OvertimeClaim_ModelForm(BSModalModelForm):
 
 
 class OvertimeClaim_Form(BSModalForm):
-#	def __init__(self, *args, **kwargs):
-#		super().__init__(*args, **kwargs)
-#		self.helper = FormHelper()
-#		self.fields['checked_sign_by'].label = ''
 
 	patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': "form-control"}))
-	duration_time_from = forms.DurationField(required=False, label="", initial="00:05:00", widget=TimeDurationWidget(show_days=False, show_hours=True, show_minutes=True, show_seconds=False, attrs={'class': "form-control"}))
-	duration_time_to = forms.DurationField(required=False, label="", initial="00:05:00", widget=TimeDurationWidget(show_days=False, show_hours=True, show_minutes=True, show_seconds=False, attrs={'class': "form-control"}))
+#	duration_time_from = forms.DurationField(required=False, label="", initial="00:05:00", widget=TimeDurationWidget(show_days=False, show_hours=True, show_minutes=True, show_seconds=False, attrs={'class': "form-control"}))
+	duration_time_from = forms.TimeField(required=False, label="", initial="00:00", input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
+#	duration_time_to = forms.DurationField(required=False, label="", initial="00:05:00", widget=TimeDurationWidget(show_days=False, show_hours=True, show_minutes=True, show_seconds=False, attrs={'class': "form-control"}))
+	duration_time_to = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
 	hours = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
 	total_hours = forms.CharField(required=False, label="", widget=forms.HiddenInput(attrs={'class': "form-control"}))
 	checked_sign_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
@@ -61,3 +59,15 @@ class OvertimeClaim_Form(BSModalForm):
 #	checked_sign_by = forms.CharField(required=False, label="", widget=AutoCompleteWidget(StaffnameLookup, attrs={'class': "form-control", 'placeholder': _("type min. 3 characters & select")}))
 	verify_by = forms.CharField(required=False, label="", widget=AutoCompleteWidget(StaffnameLookup, attrs={'class': "form-control", 'placeholder': _("type min. 3 characters & select")}))
 
+#	def __init__(self, *args, **kwargs):
+#		super().__init__(*args, **kwargs)
+
+#		self.helper = FormHelper()
+#		self.fields['checked_sign_by'].label = ''
+#		self.helper.layout = Layout(
+#			InlineRadios('duration_time_from'),
+#			Div(
+#				Div('duration_time_from', css_class='col-md-6',),
+#				css_class='row',
+#			),
+#		)

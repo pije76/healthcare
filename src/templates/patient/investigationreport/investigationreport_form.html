@@ -27,7 +27,7 @@
 
 	{% include 'patient/patient_formset.html' %}
 
-	<form method="post">
+	<form method="post" action="" enctype="multipart/form-data">
 	{% csrf_token %}
 
 		<div class="row rounded form_table">

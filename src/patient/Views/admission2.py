@@ -52,8 +52,8 @@ def admission_create(request, username):
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Admission Form')
 	patients = get_object_or_404(UserProfile, username=username)
-#	emergencies = get_object_or_404(EmergencyContact, ec_name=username)
-#	emergenciesprofiles = EmergencyContact.objects.filter(username=username)
+#	emergencies = get_object_or_404(Family, ec_name=username)
+#	emergenciesprofiles = Family.objects.filter(username=username)
 	patientusername = get_object_or_404(UserProfile, username=username).username
 	patientname = get_object_or_404(PatientProfile, username=username)
 	username = get_object_or_404(UserProfile, username=username).username
@@ -100,7 +100,7 @@ def admission_create(request, username):
 
 	if request.method == 'POST':
 		patient_form = UserProfile_ModelForm(request.POST or None, instance=patients, prefix="patient_form")
-		ec_form = EmergencyContact_FormSet(request.POST or None, prefix="ec_form")
+		ec_form = Family_FormSet(request.POST or None, prefix="ec_form")
 		formset = Admission_FormSet(request.POST or None, prefix="formset")
 
 		if patient_form.is_valid():
@@ -205,7 +205,7 @@ def admission_create(request, username):
 
 		if ec_form.is_valid():
 			for item in ec_form:
-				ec_profile = EmergencyContact_FormSet()
+				ec_profile = Family_FormSet()
 				ec_profile.patient = patients
 				ec_profile.ec_name = item.cleaned_data['ec_name']
 				ec_profile.ec_ic_number = item.cleaned_data['ec_ic_number']
@@ -257,11 +257,11 @@ def admission_create(request, username):
 				profile.diagnosis = item.cleaned_data['diagnosis']
 				profile.date_operation = item.cleaned_data['date_operation']
 				profile.operation = item.cleaned_data['operation']
-				profile.own_medication = item.cleaned_data['own_medication']
-				profile.own_medication_drug_name = item.cleaned_data['own_medication_drug_name']
-				profile.own_medication_dosage = item.cleaned_data['own_medication_dosage']
-				profile.own_medication_tablet_capsule = item.cleaned_data['own_medication_tablet_capsule']
-				profile.own_medication_frequency = item.cleaned_data['own_medication_frequency']
+				profile.medication = item.cleaned_data['medication']
+				profile.medication_drug_name = item.cleaned_data['medication_drug_name']
+				profile.medication_dosage = item.cleaned_data['medication_dosage']
+				profile.medication_tablet_capsule = item.cleaned_data['medication_tablet_capsule']
+				profile.medication_frequency = item.cleaned_data['medication_frequency']
 
 				profile.adaptive_aids_with_patient = item.cleaned_data['adaptive_aids_with_patient']
 				profile.adaptive_aids_with_patient_others = item.cleaned_data['adaptive_aids_with_patient_others']
@@ -278,7 +278,7 @@ def admission_create(request, username):
 
 	else:
 		patient_form = UserProfile_ModelForm(instance=patients, prefix="patient_form")
-		ec_form = EmergencyContact_FormSet(initial=initial_emergency, prefix="ec_form")
+		ec_form = Family_FormSet(initial=initial_emergency, prefix="ec_form")
 		formset = Admission_FormSet(initial=initial_formset, prefix="formset")
 
 	context = {

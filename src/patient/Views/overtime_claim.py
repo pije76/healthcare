@@ -115,22 +115,26 @@ def overtime_claim_create(request, username):
 
             duration_time_from = form.cleaned_data['duration_time_from']
             duration_time_to = form.cleaned_data['duration_time_to']
-            hours = form.cleaned_data['hours']
-            sec_from = duration_time_from.total_seconds()
-            convert_duration_hour_from = int((sec_from / 3600) % 3600)
-            convert_duration_minute_from = int((sec_from / 60) % 60)
+#            hours = form.cleaned_data['hours']
+#            sec_from = duration_time_from.timedelta.total_seconds()
+            sec_from = duration_time_from.hour * 60 + duration_time_from.minute
+#            convert_duration_hour_from = int((sec_from / 3600) % 3600)
+#            convert_duration_minute_from = int((sec_from / 60) % 60)
 
-            sec_to = duration_time_to.total_seconds()
-            convert_duration_hour_to = int((sec_to / 3600) % 3600)
-            convert_duration_minute_to = int((sec_to / 60) % 60)
+#            sec_to = duration_time_to.total_seconds()
+            sec_to = duration_time_to.hour * 60 + duration_time_to.minute
+#            convert_duration_hour_to = int((sec_to / 3600) % 3600)
+#            convert_duration_minute_to = int((sec_to / 60) % 60)
 
-            delta_from = datetime.timedelta(hours=convert_duration_hour_from, minutes=convert_duration_minute_from)
-            total_delta_from = (datetime.datetime.combine(datetime.date(1, 1, 1), hours) + delta_from).time()
+#            delta_from = datetime.timedelta(hours=convert_duration_hour_from, minutes=convert_duration_minute_from)
+#            total_delta_from = (datetime.datetime.combine(datetime.date(1, 1, 1), hours) + delta_from).time()
 
-            delta_to = datetime.timedelta(hours=convert_duration_hour_to, minutes=convert_duration_minute_to)
-            total_delta_to = (datetime.datetime.combine(datetime.date(1, 1, 1), hours) + delta_to).time()
+#            delta_to = datetime.timedelta(hours=convert_duration_hour_to, minutes=convert_duration_minute_to)
+#            total_delta_to = (datetime.datetime.combine(datetime.date(1, 1, 1), hours) + delta_to).time()
 
-            total_delta = (delta_to - delta_from)
+#            total_delta = (delta_to - delta_from)
+            total_delta = (sec_to - sec_from) / 60
+
 
             profile = OvertimeClaim()
             profile.patient = patients
@@ -138,7 +142,7 @@ def overtime_claim_create(request, username):
             profile.duration_time_from = form.cleaned_data['duration_time_from']
             profile.duration_time_to = form.cleaned_data['duration_time_to']
 #            total = int(total_delta_to - total_delta_from)
-            print("total_delta_from: ", total_delta)
+#            print("total_delta_from: ", total_delta)
             profile.hours = form.cleaned_data['hours']
             profile.total_hours = total_delta
             profile.checked_sign_by = staffs

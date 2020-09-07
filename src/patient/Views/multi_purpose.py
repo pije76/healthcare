@@ -98,7 +98,7 @@ def multi_purpose_create(request, username):
 class MultipurposeUpdateView(BSModalUpdateView):
     model = Multipurpose
     template_name = 'patient/multi_purpose/partial_edit.html'
-    form_class = Multipurpose_Form
+    form_class = Multipurpose_ModelForm
     page_title = _('Multipurpose Form')
     success_message = _(page_title + ' form has been save successfully.')
 

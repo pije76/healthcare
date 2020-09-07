@@ -76,6 +76,7 @@ TENANT_APPS = (
 
     'bootstrap_modal_forms',
     'crispy_forms',
+    'widget_tweaks',
     'selectable',
     'bootstrap_datepicker_plus',
     'djangoyearlessdate',

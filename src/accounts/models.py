@@ -50,7 +50,7 @@ class UserProfile(AbstractUser):
 	def __str__(self):
 		return str(self.full_name)
 
-##	def save(self, *args, **kwargs):
+#	def save(self, *args, **kwargs):
 #		if self.age:
 ##		today = datetime.date.today()
 ##		birth_date = today.year - self.birth_date.year - ((today.month, today.day) < (self.birth_date.month, self.birth_date.day))
@@ -66,7 +66,7 @@ class UserProfile(AbstractUser):
 		verbose_name_plural = _("User Profile")
 
 
-class EmergencyContact(models.Model):
+class Family(models.Model):
 	patient = models.ForeignKey(UserProfile, related_name='emergencycontact_profile', on_delete=models.CASCADE, blank=False, null=True)
 	ec_name = models.CharField(_('Family Name'), max_length=255, blank=True, null=True)
 	ec_ic_number = models.CharField(_('NRIC Number'), max_length=14, blank=True, null=True)
@@ -79,33 +79,6 @@ class EmergencyContact(models.Model):
 		return str(self.ec_name)
 
 	class Meta:
-		verbose_name = _('Emergency Contact')
-		verbose_name_plural = _("Emergency Contact")
+		verbose_name = _('Family Contact')
+		verbose_name_plural = _("Family Contact")
 
-
-#class StaffProfile(UserProfile):
-#	staff_name = models.OneToOneField(UserProfile, related_name='staff_profile', on_delete=models.CASCADE, parent_link=True, primary_key=True, blank=False, null=False)
-
-#	class Meta:
-#		verbose_name = _('Staff Profile')
-#		verbose_name_plural = _("Staff Profile")
-
-
-#class PatientProfile(UserProfile):
-#	patient_name = models.OneToOneField(UserProfile, related_name='patient_profile', on_delete=models.CASCADE, parent_link=True, primary_key=True, blank=False, null=False)
-
-#	class Meta:
-#		verbose_name = _('Patient Profile')
-#		verbose_name_plural = _("Patient Profile")
-#		model = Child
-
-#	def save(self, *args, **kwargs):
-#		super().save(*args, **kwargs)
-
-
-#class AdminProfile(UserProfile):
-#	admin_name = models.OneToOneField(UserProfile, related_name='admin_profile', on_delete=models.CASCADE, parent_link=True, primary_key=True, blank=False, null=False)
-
-#	class Meta:
-#		verbose_name = _('Admin Profile')
-#		verbose_name_plural = _("Admin Profile")

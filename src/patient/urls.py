@@ -39,7 +39,10 @@ urlpatterns = [
 #    path('patient/', patientdata_list, name='patientdata_list'),
 #    path('patient/create', patientdata_create, name='patientdata_create'),
 #    path('patient/<int:pk>/delete', patientdata_delete, name='patientdata_delete'),
-#    path('load_ic_number', load_ic_number, name='load_ic_number'),
+    path('load_ic_number', load_ic_number, name='load_ic_number'),
+    path('load_relationship', load_relationship, name='load_relationship'),
+    path('load_phone', load_phone, name='load_phone'),
+    path('load_signature', load_signature, name='load_signature'),
 
 #    path('admission/<username>/', admission, name='admission_create'),
     path('<username>/admission/', admission_list, name='admission_list'),

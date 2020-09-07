@@ -106,7 +106,7 @@ def medication_record_create(request, username):
 class MedicationRecordUpdateView(BSModalUpdateView):
     model = MedicationRecord
     template_name = 'patient/medication/partial_edit.html'
-    form_class = MedicationRecord_Form
+    form_class = MedicationRecord_ModelForm
     page_title = _('MedicationRecord Form')
     success_message = _(page_title + ' form has been save successfully.')
 

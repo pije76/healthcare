@@ -2,8 +2,9 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import RegexValidator
 from django.db.models import F
+from django.utils.safestring import mark_safe
 
-from accounts.models import UserProfile
+from accounts.models import *
 from staff.models import *
 
 from mptt.models import MPTTModel, TreeForeignKey
@@ -21,7 +22,6 @@ class Admission(models.Model):
 		('Hospital', _('Hospital')),
 		('Home', _('Home')),
 		('Others', _('Others')),
-#		('Others', mark_safe_lazy('Others <input type="text" style="font-size: 1rem;font-weight: 400;line-height: 1.5;color: #495057;background-color: #fff;background-clip:padding-box;border: 1px solid #ced4da;border-radius: .25rem;transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;display:none;">')),
 	)
 
 	MODE_CHOICES = (
@@ -167,9 +167,7 @@ class Admission(models.Model):
 	vital_sign_on_oxygen_therapy = models.CharField(max_length=255, blank=True, null=True,)
 	vital_sign_on_oxygen_therapy_flow_rate = models.PositiveIntegerField(blank=True, null=True)
 	vital_sign_hgt = models.PositiveIntegerField(blank=True, null=True)
-	allergy_drug = models.CharField(max_length=255, blank=True, null=True)
-	allergy_food = models.CharField(max_length=255, blank=True, null=True)
-	allergy_others = models.CharField(max_length=255, blank=True, null=True)
+
 	biohazard_infectious_disease = models.CharField(max_length=255, blank=True, null=True)
 	biohazard_infectious_disease_others = models.CharField(max_length=255, blank=True, null=True)
 	invasive_line_insitu = models.CharField(max_length=255, blank=True, null=True)
@@ -196,6 +194,10 @@ class Admission(models.Model):
 ##		today = datetime.date.today()
 ##		birth_date = today.year - self.birth_date.year - ((today.month, today.day) < (self.birth_date.month, self.birth_date.day))
 ##		self.age = birth_date
+##		for field_name in ['admitted', 'biohazard_infectious_disease', 'invasive_line_insitu', 'medical_history', 'surgical_history', 'adaptive_aids_with_patient', 'special_information', 'diagnosis', 'operation']:
+##			val = getattr(self, field_name, False)
+##			if val:
+##				setattr(self, field_name, val.capitalize())
 ##		super().save(*args, **kwargs)
 
 ##	@property
@@ -239,16 +241,24 @@ class Admission(models.Model):
 class ApplicationForHomeLeave(models.Model):
 	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	ic_number = models.CharField(_('IC Number'), validators=[ic_number_validator], max_length=14, blank=True, null=True)
-#	family_name = models.ForeignKey(Admission, verbose_name="Family Name", on_delete=models.CASCADE, blank=False, null=True)
-	family_name = models.CharField(_('Family Name'), max_length=255, blank=True, null=True)
+
+#	family_name = models.ForeignKey(Family, verbose_name="Family Name", on_delete=models.CASCADE, blank=False, null=True)
+	family_name = models.CharField(verbose_name="Family Name", max_length=255, blank=True, null=True)
+#	family_name = models.CharField(_('Family Name'), max_length=255, blank=True, null=True)
 	family_ic_number = models.CharField(_('NRIC Number'), validators=[ic_number_validator], max_length=14, blank=True, null=True)
 #	family_ic_number = ChainedForeignKey(Admission, chained_field="ec_name", chained_model_field="family_name", show_all=False, auto_choose=True, sort=True)
 	family_relationship = models.CharField(_('Family Relationship'), max_length=255, blank=True, null=True)
 #	family_phone = PhoneNumberField(_('Phone'), blank=True, validators=[validate_international_phonenumber])
 	family_phone = models.CharField(_('Family Phone'), max_length=255, blank=True, null=True)
-	designation = models.CharField(max_length=255, blank=True, null=True)
-	signature = models.CharField(max_length=255, blank=True, null=True)
-	date = models.DateField(blank=True, null=True)
+
+	signature_name = models.CharField(verbose_name="Witnessed Name", max_length=255, blank=True, null=True)
+	signature_ic_number = models.CharField(_('NRIC Number'), validators=[ic_number_validator], max_length=14, blank=True, null=True)
+	signature_relationship = models.CharField(_('Family Relationship'), max_length=255, blank=True, null=True)
+
+	witnessed_name = models.CharField(verbose_name="Witnessed Name", max_length=255, blank=True, null=True)
+	witnessed_designation = models.CharField(max_length=255, blank=True, null=True)
+	witnessed_signature = models.CharField(max_length=255, blank=True, null=True)
+	witnessed_date = models.DateField(blank=True, null=True)
 
 	def __str__(self):
 		return str(self.patient)
@@ -395,35 +405,35 @@ class Dressing(models.Model):
 	)
 
 	WOUND_LOCATION_CHOICES = (
-		('head', _('Head')),
-		('face', _('Face')),
-		('neck', _('Neck')),
-		('chest', _('Chest')),
-		('abdomen', _('Abdomen')),
-		('back', _('Back')),
-		('sacral', _('Sacral')),
-		('buttock', _('Buttock')),
-		('hand', _('Hand')),
-		('leg', _('Leg')),
+		('Head', _('Head')),
+		('Face', _('Face')),
+		('Neck', _('Neck')),
+		('Chest', _('Chest')),
+		('Abdomen', _('Abdomen')),
+		('Back', _('Back')),
+		('Sacral', _('Sacral')),
+		('Buttock', _('Buttock')),
+		('Hand', _('Hand')),
+		('Leg', _('Leg')),
 		('Others', _('Others')),
 	)
 
 	WOUND_CONDITION_CHOICES = (
-		('clean', _('Clean')),
-		('slough', _('Slough')),
-		('eschar', _('Eschar')),
+		('Clean', _('Clean')),
+		('Slough', _('Slough')),
+		('Eschar', _('Eschar')),
 		('Others', (
 			('Exudate', (
-				('sanguineous', _('Sanguineous')),
-				('serous', _('Serous')),
-				('haemoserous', _('Haemoserous')),
-				('purulent', _('Purulent')),
+				('Sanguineous', _('Sanguineous')),
+				('Serous', _('Serous')),
+				('Haemoserous', _('Haemoserous')),
+				('Purulent', _('Purulent')),
 			)),
 			('Amount', (
-				('scant', _('Scant')),
-				('minimal', _('Minimal')),
-				('moderate', _('Moderate')),
-				('large', _('Large')),
+				('Scant', _('Scant')),
+				('Minimal', _('Minimal')),
+				('Moderate', _('Moderate')),
+				('Large', _('Large')),
 			)),
 		)),
 	)
@@ -540,7 +550,7 @@ def upload_path_investigationreport(instance, filename):
 class InvestigationReport(models.Model):
 	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(blank=True, null=True)
-	file_upload = models.ImageField(upload_to=upload_path_dressing, blank=True, null=True)
+	file_upload = models.ImageField(upload_to=upload_path_investigationreport, blank=True, null=True)
 
 	def __str__(self):
 		return str(self.patient)
@@ -564,9 +574,9 @@ class InvestigationReport(models.Model):
 
 class Maintenance(models.Model):
 	STATUS_CHOICES = (
-		('done', _('Done')),
-		('pending', _('Pending')),
-		('cancel', _('Cancel')),
+		('Done', _('Done')),
+		('Pending', _('Pending')),
+		('Cancel', _('Cancel')),
 	)
 
 	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
@@ -585,23 +595,6 @@ class Maintenance(models.Model):
 	class Meta:
 		verbose_name = _('Maintenance')
 		verbose_name_plural = _("Maintenance")
-
-
-class Medication(models.Model):
-	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
-	own_medication = models.CharField(max_length=255, blank=True, null=True)
-	own_medication_drug_name = models.CharField(max_length=255, blank=True, null=True)
-	own_medication_dosage = models.PositiveIntegerField(blank=True, null=True)
-	own_medication_tablet_capsule = models.PositiveIntegerField(blank=True, null=True)
-	own_medication_frequency = models.CharField(max_length=255, blank=True, null=True)
-
-	def __str__(self):
-#		return str(self.patient)
-		return '%s %s %s %s %s' % (self.own_medication, self.own_medication_drug_name, self.own_medication_dosage, self.own_medication_tablet_capsule, self.own_medication_frequency)
-
-	class Meta:
-		verbose_name = _('Medication')
-		verbose_name_plural = _("Medication")
 
 
 class MedicationRecord(models.Model):
@@ -623,13 +616,45 @@ class MedicationRecord(models.Model):
 		verbose_name_plural = _("Medication Record")
 
 
+class Allergy(models.Model):
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
+	allergy_drug = models.CharField(max_length=255, blank=True, null=True)
+	allergy_food = models.CharField(max_length=255, blank=True, null=True)
+	allergy_others = models.CharField(max_length=255, blank=True, null=True)
+
+	def __str__(self):
+		return '%s (%s - %s)' % (self.allergy_drug, self.allergy_food, self.allergy_others)
+
+	class Meta:
+		verbose_name = _('Allergy')
+		verbose_name_plural = _("Allergy")
+
+
+class Medication(models.Model):
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
+#	medication = models.CharField(max_length=255, blank=True, null=True)
+	medication = models.BooleanField(default=False)
+	medication_drug_name = models.CharField(max_length=255, blank=True, null=True)
+	medication_dosage = models.PositiveIntegerField(blank=True, null=True)
+	medication_tablet_capsule = models.PositiveIntegerField(blank=True, null=True)
+	medication_frequency = models.CharField(max_length=255, blank=True, null=True)
+
+	def __str__(self):
+#		return str(self.patient)
+		return '%s (%s - %s - %s)' % (self.medication_drug_name, self.medication_dosage, self.medication_tablet_capsule, self.medication_frequency)
+
+	class Meta:
+		verbose_name = _('Medication Template')
+		verbose_name_plural = _("Medication Template")
+
+
 class MedicationAdministrationRecord(models.Model):
 	TAB_CHOICES = (
 		('1', _('1/1 = 1 Tab')),
 		('2', _('11/11 = 2 Tabs')),
 		('3', _('111/111 = 3 Tabs')),
-		('half', _('1/2 = Half Tab')),
-		('others', _('1 1/2 = Others')),
+		('Half', _('1/2 = Half Tab')),
+		('Others', _('1 1/2 = Others')),
 		('4', _('4 Tabs')),
 	)
 
@@ -647,21 +672,21 @@ class MedicationAdministrationRecord(models.Model):
 	)
 
 	ROUTE_CHOICES = (
-		('oral', _('Oral')),
-		('iv', 'IV'),
-		('im', 'IM'),
-		('sc', 'SC'),
-		('sl', 'SL'),
-		('rt', 'RT'),
-		('pr', 'PR'),
-		('la', 'LA'),
-		('neb', 'Neb'),
+		('Oral', _('Oral')),
+		('IV', 'IV'),
+		('IM', 'IM'),
+		('SC', 'SC'),
+		('SL', 'SL'),
+		('RT', 'RT'),
+		('PR', 'PR'),
+		('LA', 'LA'),
+		('Neb', 'Neb'),
 	)
 
 	SIGNATURE_CHOICES = (
-		('od', 'LSS'),
-		('om', 'LPC'),
-		('pm', 'SYA'),
+		('LSS', 'LSS'),
+		('LPC', 'LPC'),
+		('SYA', 'SYA'),
 	)
 
 	STAT_CHOICES = (
@@ -674,14 +699,16 @@ class MedicationAdministrationRecord(models.Model):
 	)
 
 	patient = models.ForeignKey(UserProfile, related_name="patient_medicationadministrationrecord", on_delete=models.CASCADE, blank=False, null=True)
-	allergy = models.CharField(max_length=255, blank=True, null=True)
-	medication_name = models.CharField(max_length=255, blank=True, null=True)
-	medication_dosage = models.PositiveIntegerField(blank=True, null=True)
-	medication_tab_cap_mls = models.CharField(max_length=255, blank=True, null=True)
-	medication_frequency = models.CharField(max_length=255, blank=True, null=True)
-	medication_route = models.CharField(max_length=255, blank=True, null=True)
+#	allergy = models.CharField(max_length=255, blank=True, null=True)
+	allergy = models.ForeignKey(Allergy, related_name="medication_allergy", on_delete=models.CASCADE, blank=False, null=True)
+#	medication_name = models.CharField(max_length=255, blank=True, null=True)
+#	medication_dosage = models.PositiveIntegerField(blank=True, null=True)
+#	medication_tab_cap_mls = models.CharField(max_length=255, blank=True, null=True)
+#	medication_frequency = models.CharField(max_length=255, blank=True, null=True)
+#	medication_route = models.CharField(max_length=255, blank=True, null=True)
 	medication_date = models.DateField(blank=True, null=True)
 	medication_time = models.TimeField(blank=True, null=True)
+	medication = models.ForeignKey(Medication, related_name="medication_admission", on_delete=models.CASCADE, blank=False, null=True)
 	status_nurse = models.CharField(max_length=255, blank=True, null=True)
 	stat = models.CharField(max_length=255, blank=True, null=True)
 	medicationstat_date_time = models.DateTimeField(blank=True, null=True)
@@ -772,8 +799,10 @@ class OvertimeClaim(models.Model):
 	patient = models.ForeignKey(UserProfile, related_name='patient_overtimeclaim', on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(blank=True, null=True)
 #	date = models.DateTimeField(blank=True, null=True)
-	duration_time_from = models.DurationField(blank=True, null=True)
-	duration_time_to = models.DurationField(blank=True, null=True)
+#	duration_time_from = models.DurationField(blank=True, null=True)
+	duration_time_from = models.TimeField(blank=True, null=True)
+#	duration_time_to = models.DurationField(blank=True, null=True)
+	duration_time_to = models.TimeField(blank=True, null=True)
 	hours = models.TimeField(blank=True, null=True)
 	total_hours = models.CharField(max_length=255, blank=True, null=True)
 	checked_sign_by = models.ForeignKey(UserProfile, related_name='checked_sign_by_overtimeclaim', on_delete=models.CASCADE, blank=True, null=True)
@@ -889,9 +918,9 @@ class PhysiotherapyGeneralAssessment(models.Model):
 	)
 
 	PHYSICAL_EXAMINATION_MOVEMENT_CHOICES = (
-		('joint', _('Joint')),
-		('active', _('Active')),
-		('passive', _('Passive')),
+		('Joint', _('Joint')),
+		('Active', _('Active')),
+		('Passive', _('Passive')),
 	)
 
 	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
@@ -933,6 +962,31 @@ class PhysiotherapyGeneralAssessment(models.Model):
 
 	def __str__(self):
 		return str(self.patient)
+
+	def front_body_url(self):
+		if self.front_body and hasattr(self.front_body, 'url'):
+			return self.front_body.url
+
+	def back_body_url(self):
+		if self.back_body and hasattr(self.back_body, 'url'):
+			return self.back_body.url
+
+	def front_body_img(self):
+		if self.front_body and hasattr(self.front_body, 'url'):
+			return mark_safe('<img src="%s" style="width: 60px; height: 60px" />' % self.front_body.url)
+		else:
+			return _('No Front Body Thumbnail')
+
+	front_body_img.short_description = _('Front Body Thumbnail')
+
+	def back_body_img(self):
+		if self.back_body and hasattr(self.back_body, 'url'):
+			return mark_safe('<img src="%s" style="width: 60px; height: 60px" />' % self.back_body.url)
+		else:
+			return _('No Back Body Thumbnail')
+
+	back_body_img.short_description = _('Back Body Thumbnail')
+
 
 	class Meta:
 		verbose_name = _('Physiotherapy General Assessment')

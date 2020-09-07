@@ -25,8 +25,8 @@ class MySignUpForm(SignupForm):
 	full_name = forms.CharField(max_length=100, required=False, label=_('Full Name:'), widget=forms.TextInput(attrs={'class': "form-control"}))
 #	first_name = forms.CharField(max_length=100, required=True, label=_('First Name'), widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("First Name")}))
 #	last_name = forms.CharField(max_length=100, required=False, label=_('Last Name'), widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("Last Name")}))
-	is_patient = forms.BooleanField(required=False, label='', widget=forms.CheckboxInput())
-	is_staff = forms.BooleanField(required=False, label='', widget=forms.CheckboxInput())
+	is_patient = forms.BooleanField(required=False, label='', widget=forms.HiddenInput())
+	is_staff = forms.BooleanField(required=False, label='', widget=forms.HiddenInput())
 
 	def save(self, request):
 		user = super().save(request)

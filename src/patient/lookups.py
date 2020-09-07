@@ -4,11 +4,12 @@ from django.db.models import Q
 from selectable.base import ModelLookup
 from selectable.base import LookupBase
 from selectable.registry import registry
+from selectable.decorators import results_decorator
 
 #from ajax_select import register, LookupChannel
 
-from accounts.models import UserProfile
-from .models import Admission
+from accounts.models import *
+from .models import *
 
 
 class FullnameLookup(ModelLookup):
@@ -27,9 +28,19 @@ class StaffnameLookup(ModelLookup):
 	filters = {'is_staff': True, }
 
 
+@results_decorator
+def patient_required(request):
+	user = getattr(request, 'user', None)
+	if user is None or not user.is_authenticated:
+		return HttpResponse(status=401)
+
+
+@patient_required
 class FamilyNameLookup(ModelLookup):
-	model = Admission
+	model = Family
 	search_fields = (
+#		'patient',
+#		'patient__icontains',
 		'ec_name__icontains',
 	)
 

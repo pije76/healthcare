@@ -31,3 +31,11 @@ class Nursing_Form(BSModalForm):
 	date_time = forms.DateTimeField(required=False, label="", initial=timezone.now, input_formats=settings.DATETIME_INPUT_FORMATS, widget=DateTimePickerInput(format="%d/%m/%Y %H:%M", attrs={'class': "form-control"}))
 	report = forms.CharField(required=False, label="", widget=SummernoteWidget(attrs={'class': "form-control", 'summernote': {'width': '100%', 'height': '400px'}}))
 
+
+Nursing_FormSet = formset_factory(
+	Nursing_Form,
+#   formset = MedicationAdministrationRecord_BaseFormSetFactory,
+	extra=0,
+#    max_num=0,
+#   can_delete=True,
+)
