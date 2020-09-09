@@ -59,12 +59,14 @@
 		<div class="w-100"></div>
 		<div class="col-6 border header_form_detail" style="border-radius: 0px 0px 0px .25rem;">
 			<span id="name_title">
-				{{ form.medication_date|as_crispy_field }}
+				{{ medicine_date|date:"d-m-Y" }}
 			</span>
 		</div>
 		<div class="col-6 border header_form_detail header_form_inline" style="border-radius: 0px 0px .25rem 0px;">
 			<span id="name_title">
-				{{ allergy_form }}
+				{{ allergy_drug_data }},
+				{{ allergy_food_data }},
+				{{ allergy_others_data }}
 			</span>
 		</div>
 	</div>
@@ -77,9 +79,10 @@
 
 				<div class="card-body">
 
-					<div class="table-responsive">
-						<form method="post" action="">
-						{% csrf_token %}
+					<form method="post" action="">
+					{% csrf_token %}
+
+						<div class="table-responsive">
 
 							<table id="t_add_row" class="table table-striped table-bordered display">
 								<thead>
@@ -87,60 +90,56 @@
 									<tr>
 										<th class="text-center row_medication_date">{% trans "Date" %}</th>
 										<th class="text-center">{% trans "Time" %}</th>
-										<th class="text-center">{% trans "Medication" %}</th>
+										<th class="text-center">{% trans "Medicine" %}</th>
 										<th class="text-center">{% trans "Status" %}</th>
+										<th class="text-center">{% trans "Done" %}</th>
 										<th class="text-center">{% trans "Action" %}</th>
 									</tr>
 									{% elif user.is_staff or user.is_patient %}
 									<tr>
 										<th class="text-center row_medication_date">{% trans "Date" %}</th>
 										<th class="text-center">{% trans "Time" %}</th>
-										<th class="text-center">{% trans "Medication" %}</th>
+										<th class="text-center">{% trans "Medicine" %}</th>
 										<th class="text-center">{% trans "Status" %}</th>
-									</tr>
-									<tr>
-										<th class="text-center">{% trans "Name" %}</th>
-										<th class="text-center">{% trans "Dosage" %}</th>
-										<th class="text-center">{% trans "Tab/MLS" %}</th>
-										<th class="text-center">{% trans "Frequency" %}</th>
-										<th class="text-center">{% trans "Route" %}</th>
+										<th class="text-center">{% trans "Done" %}</th>
 									</tr>
 									{% endif %}
 								</thead>
 								<tbody>
-									{% for item in patients %}
-									<tr>
-										<td>{{ item.medication_date|date:"d-m-Y" }}</td>
-										<td>{{ item.medication_time|date:"H:i" }}</td>
-										<td>{{ item.medication }}</td>
-										<td>{{ item.status_nurse }}</td>
-										<td>
-											<button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:medication_administration_edit' item.patient.username item.id %}"data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
-											</button>
-											<button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:medication_administration_delete' item.patient.username item.id %}"data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
-											</button>
-										</td>
-									</tr>
-									{% endfor %}
+									{% include 'patient/medication_administration/partial_list_medication_data.html' %}
 								</tbody>
 							</table>
+
+						</div>
+
+						<div class="table-responsive">
+							<h3>Stat Medication</h3>
 
 							<table id="t_add_row" class="table table-striped table-bordered display">
 								<thead>
+									{% if user.is_superuser %}
 									<tr>
-										<th class="text-center" rowspan="2">{% trans "Stat" %}</th>
-										<th class="text-center" rowspan="2">{% trans "Date & Time" %}</th>
-										<th class="text-center" rowspan="2">{% trans "Given By" %}</th>
+										<th class="text-center" rowspan="2">{% trans "Time" %}</th>
+										<th class="text-center" rowspan="2">{% trans "Medicine" %}</th>
+										<th class="text-center" rowspan="2">{% trans "Done" %}</th>
 										<th class="text-center" rowspan="2" style="border: 1px solid #ddd" >{% trans "Action" %}</th>
 									</tr>
+									{% elif user.is_staff or user.is_patient %}
+									<tr>
+										<th class="text-center" rowspan="2">{% trans "Time" %}</th>
+										<th class="text-center" rowspan="2">{% trans "Medicine" %}</th>
+										<th class="text-center" rowspan="2">{% trans "Done" %}</th>
+									</tr>
+									{% endif %}
 								</thead>
 								<tbody>
-									{% include 'patient/medication_administration/partial_list_formset.html' %}
+									{% include 'patient/medication_administration/partial_list_medication_stat.html' %}
 								</tbody>
 							</table>
 
-						</form>
-					</div>
+						</div>
+
+					</form>
 
 				</div>
 

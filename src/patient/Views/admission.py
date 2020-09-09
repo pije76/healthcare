@@ -47,7 +47,6 @@ def admission_list(request, username):
 		'admissionform': admissionform,
 		'profiles': profiles,
 	}
-	print("admissionform: ", admissionform)
 
 	return render(request, 'patient/admission/admission_data.html', context)
 

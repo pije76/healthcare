@@ -66,6 +66,7 @@
 						<th class="text-center">{% trans "Time" %}</th>
 						<th class="text-center">{% trans "Medication" %}</th>
 						<th class="text-center">{% trans "Status" %}</th>
+						<th class="text-center">{% trans "Done" %}</th>
 						<th class="text-center">{% trans "Action" %}</th>
 					</tr>
 				</thead>
@@ -76,6 +77,7 @@
 						<td class="{{ item.prefix }}_time_field">{{ item.medication_time|as_crispy_field }}</td>
 						<td>{{ item.medication|as_crispy_field }}</td>
 						<td>{{ item.status_nurse|as_crispy_field }}</td>
+						<td>{{ item.done|as_crispy_field }}</td>
 						<td class="aksi"></td>
 					</tr>
 					{% endfor %}

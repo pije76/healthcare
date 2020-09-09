@@ -698,9 +698,15 @@ class MedicationAdministrationRecord(models.Model):
 		('Withold', 'W-Withold'),
 	)
 
+	BOOLEAN_CHOICES = (
+		(False, _('No')),
+		(True, _('Yes')),
+	)
+
 	patient = models.ForeignKey(UserProfile, related_name="patient_medicationadministrationrecord", on_delete=models.CASCADE, blank=False, null=True)
 #	allergy = models.CharField(max_length=255, blank=True, null=True)
-	allergy = models.ForeignKey(Allergy, related_name="medication_allergy", on_delete=models.CASCADE, blank=False, null=True)
+#	allergy = models.ForeignKey(Allergy, related_name="medication_allergy", on_delete=models.CASCADE, blank=False, null=True)
+	allergy = models.OneToOneField(Allergy, related_name="medication_allergy", on_delete=models.CASCADE, blank=False, null=True)
 #	medication_name = models.CharField(max_length=255, blank=True, null=True)
 #	medication_dosage = models.PositiveIntegerField(blank=True, null=True)
 #	medication_tab_cap_mls = models.CharField(max_length=255, blank=True, null=True)

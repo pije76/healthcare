@@ -1,12 +1,12 @@
-{% for item in patients %}
+{% for item in medicine_data %}
+
+{% if user.is_superuser %}
 <tr>
-    <td>{{ item.medication_name }}</td>
-    <td>{{ item.medication_dosage }}</td>
-    <td>{{ item.medication_tab }}</td>
-    <td>{{ item.medication_frequency }}</td>
-    <td>{{ item.medication_route }}</td>
-    <td>{{ item.medication_time|date:"H:i" }}</td>
     <td>{{ item.medication_date|date:"d-m-Y" }}</td>
+    <td>{{ item.medication_time|date:"H:i" }}</td>
+    <td>{{ item.medication }}</td>
+    <td>{{ item.status_nurse }}</td>
+    <td>{{ item.done }}</td>
     <td>
         <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:medication_administration_edit' item.patient.username item.id %}"data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
         </button>
@@ -14,4 +14,16 @@
         </button>
     </td>
 </tr>
+
+{% elif user.is_staff or user.is_patient %}
+
+<tr>
+    <td>{{ item.medication_date|date:"d-m-Y" }}</td>
+    <td>{{ item.medication_time|date:"H:i" }}</td>
+    <td>{{ item.medication }}</td>
+    <td>{{ item.status_nurse }}</td>
+    <td>{{ item.done }}</td>
+</tr>
+{% endif %}
+
 {% endfor %}

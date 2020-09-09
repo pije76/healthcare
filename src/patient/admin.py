@@ -253,6 +253,7 @@ class MedicationAdmin(admin.ModelAdmin):
 	]
 	ModelAdmin.ordering = ('id',)
 
+
 class MedicationAdministrationRecordAdmin(admin.ModelAdmin):
 	list_display = [
 		'id',
@@ -267,6 +268,7 @@ class MedicationAdministrationRecordAdmin(admin.ModelAdmin):
 		'medication_date',
 		'medication_time',
 		'status_nurse',
+		'done',
 		'stat',
 		'medicationstat_date_time',
 		'given_by',

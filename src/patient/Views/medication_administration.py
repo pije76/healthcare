@@ -44,7 +44,12 @@ def medication_administration_list(request, username):
 	fulll_name_profiles = UserProfile.objects.filter(username=username).values_list('full_name', flat=True).first()
 	profiles = UserProfile.objects.filter(pk=patientid)
 	allergies = MedicationAdministrationRecord.objects.filter(patient=patientid).values_list('allergy', flat=True).first()
-	allergy_data = Allergy.objects.filter(patient=patientid)
+	medicine_date = MedicationAdministrationRecord.objects.filter(patient=patientid).values_list('medication_date', flat=True).first()
+	medicine_data = MedicationAdministrationRecord.objects.filter(patient=patientid)
+	medicine_stat = MedicationAdministrationRecord.objects.filter(patient=patientid)
+	allergy_drug_data = Allergy.objects.filter(patient=patientid).values_list('allergy_drug', flat=True).first()
+	allergy_food_data = Allergy.objects.filter(patient=patientid).values_list('allergy_food', flat=True).first()
+	allergy_others_data = Allergy.objects.filter(patient=patientid).values_list('allergy_others', flat=True).first()
 
 	context = {
 		'logos': logos,
@@ -55,7 +60,12 @@ def medication_administration_list(request, username):
 		'allergies': allergies,
 		'icnumbers': icnumbers,
 		'fulll_name_profiles': fulll_name_profiles,
-		'allergy_data': allergy_data,
+		'medicine_date': medicine_date,
+		'allergy_drug_data': allergy_drug_data,
+		'allergy_food_data': allergy_food_data,
+		'allergy_others_data': allergy_others_data,
+		'medicine_data': medicine_data,
+		'medicine_stat': medicine_stat,
 	}
 
 	return render(request, 'patient/medication_administration/medication_administration_data.html', context)
@@ -207,6 +217,7 @@ def medication_administration_create(request, username):
 				profile.medication_date = item.cleaned_data['medication_date']
 				profile.medication_time = item.cleaned_data['medication_time']
 				profile.status_nurse = item.cleaned_data['status_nurse']
+				profile.done = item.cleaned_data['done']
 				profile.stat = item.cleaned_data['stat']
 				profile.medicationstat_date_time = item.cleaned_data['medicationstat_date_time']
 				profile.given_by = item.cleaned_data['given_by']

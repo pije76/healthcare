@@ -8,6 +8,11 @@ from ..lookups import *
 from accounts.models import *
 
 from bootstrap_modal_forms.forms import *
+from crispy_forms.layout import Field
+
+
+class CustomCheckbox(Field):
+	template = 'patient/medication_administration/custom_checkbox.html'
 
 
 class MedicationAdministrationRecord_ModelForm(BSModalModelForm):
@@ -197,7 +202,17 @@ class MedicationAdministrationRecord_Form(BSModalForm):
 	stat = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.STAT_CHOICES)
 	medicationstat_date_time = forms.DateTimeField(required=False, label="", initial=timezone.now, input_formats=settings.DATETIME_INPUT_FORMATS, widget=DateTimePickerInput(format="%d/%m/%Y %H:%M", attrs={'class': "form-control"}))
 	given_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	done = forms.BooleanField(required=False, label='', widget=forms.TextInput())
+#	done = forms.BooleanField(required=False, label='', widget=forms.TextInput())
+	done = forms.BooleanField(required=False)
+#	done = forms.ChoiceField(required=False, label="", initial=False, widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.BOOLEAN_CHOICES)
+
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.helper = FormHelper()
+		self.helper.layout = Layout(
+			CustomCheckbox('done'),
+		)
+
 
 MedicationAdministrationRecord_FormSet = formset_factory(
 	MedicationAdministrationRecord_Form,
@@ -226,7 +241,16 @@ class MedicationAdministrationRecord_ModelForm(BSModalModelForm):
 	stat = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.STAT_CHOICES)
 	medicationstat_date_time = forms.DateTimeField(required=False, label="", initial=timezone.now, input_formats=settings.DATETIME_INPUT_FORMATS, widget=DateTimePickerInput(format="%d/%m/%Y %H:%M", attrs={'class': "form-control"}))
 	given_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	done = forms.BooleanField(required=False, label='', widget=forms.TextInput())
+#	done = forms.BooleanField(required=False, label='', widget=forms.TextInput())
+	done = forms.BooleanField(required=False)
+#	done = forms.ChoiceField(required=False, label="", initial=False, widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=MedicationAdministrationRecord.BOOLEAN_CHOICES)
+
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.helper = FormHelper()
+		self.helper.layout = Layout(
+			CustomCheckbox('done'),
+		)
 
 
 MedicationAdministrationRecord_ModelFormSet = modelformset_factory(
