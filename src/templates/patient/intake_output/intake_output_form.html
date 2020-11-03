@@ -15,6 +15,7 @@
 
 {% block javascript %}
     <script src="{% static 'js/jquery.formset.js' %}"></script>
+    <script src="{% static 'js/patient/intake_output.js' %}"></script>
 {% endblock %}
 
 {% block extrahead %}
@@ -29,22 +30,39 @@
 		{{ page_title }}
 	</div>
 
+	<p style="font-size:12px">{% include 'messages.html' %}</p>
+
 	{% include 'patient/patient_formset.html' %}
 
 	<form method="post">
 	{% csrf_token %}
 	{{ formset.management_form }}
 
+	<div class="row" style="width:540px;">
+
+			<div class="col-12 border text-center header_form">
+				<span id="name_title">{% trans "Date" %}:</span>
+			</div>
+
+			<div class="w-100"></div>
+
+			<div class="col-12 border header_form_detail">
+				<span id="name_title">
+					{{ form.date|as_crispy_field }}
+				</span>
+			</div>
+
+		</div>
+
 		<div class="row rounded form_table">
 
 			<table id="form_set" class="table table-bordered">
-				<thead class="thead-light">
+				<thead class="thead_light">
 					<tr>
-						<th class="w-auto text-center" rowspan="3">{% trans "Date" %}</th>
+						<th style="display:none;"></th>
 						<th class="text-center" rowspan="3">{% trans "Time" %}</th>
 						<th class="text-center" colspan="6">{% trans "Intake" %}</th>
 						<th class="text-center" colspan="5">{% trans "Output" %}</th>
-						<th class="text-center" rowspan="3">{% trans "Action" %}</th>
 					</tr>
 					<tr>
 						<th class="text-center" colspan="2">{% trans "Oral" %}</th>
@@ -61,8 +79,8 @@
 						<th class="text-center">{% trans "ml." %}</th>
 						<th class="text-center">{% trans "Type" %}</th>
 						<th class="text-center">{% trans "ml." %}</th>
+						<th class="text-center">{% trans "Type" %}</th>
 						<th class="text-center">{% trans "ml." %}</th>
-						<th class="text-center">{% trans "Cum. Total" %}</th>
 						<th class="text-center">{% trans "ml." %}</th>
 						<th class="text-center">{% trans "Type" %}</th>
 						<th class="text-center">{% trans "ml." %}</th>
@@ -73,7 +91,7 @@
 					{{ formset.management_form }}
 					{% for item in formset.forms %}
 					<tr class="form_row">
-						<td class="date_field">{{ item.date|as_crispy_field }}</td>
+						<td style="display:none;">{{ item.date|as_crispy_field }}</td>
 						<td class="time_field">{{ item.time|as_crispy_field }}</td>
 						<td>{{ item.intake_oral_type|as_crispy_field }}</td>
 						<td class="integer_field">{{ item.intake_oral_ml|as_crispy_field }}</td>
@@ -81,12 +99,11 @@
 						<td class="integer_field">{{ item.intake_parenteral_ml|as_crispy_field }}</td>
 						<td>{{ item.intake_other_type|as_crispy_field }}</td>
 						<td class="integer_field">{{ item.intake_other_ml|as_crispy_field }}</td>
+						<td>{{ item.output_urine_type|as_crispy_field }}</td>
 						<td class="integer_field">{{ item.output_urine_ml|as_crispy_field }}</td>
-						<td>{{ item.output_urine_cum|as_crispy_field }}</td>
 						<td class="integer_field">{{ item.output_gastric_ml|as_crispy_field }}</td>
 						<td>{{ item.output_other_type|as_crispy_field }}</td>
 						<td class="integer_field">{{ item.output_other_ml|as_crispy_field }}</td>
-						<td></td>
 					</tr>
 					{% endfor %}
 				</tbody>
@@ -115,20 +132,18 @@
 	{
 		$('#form_set tbody tr').formset(
 		{
-//			prefix: 'formset',
+			prefix: 'formset',
 //			prefix: '{{ formset.prefix }}',
-			addCssClass: 'btn btn-success',
-			addText: '<i class="fas fa-plus"></i>',
-			deleteCssClass: 'btn btn-danger',
-			deleteText: '<i class="fas fa-minus"></i>',
-			keepFieldValues: '#id_form-0-date, #id_form-0-time, #id_form-0-intake_oral_ml, #id_form-0-intake_parenteral_ml, #id_form-0-intake_other_ml, #id_form-0-output_urine_ml, #id_form-0-output_urine_cum, #id_form-0-output_gastric_ml, #id_form-0-output_gastric_ml, #id_form-0-output_other_ml',
+			addText: '',
+			deleteText: '',
+			keepFieldValues: '#id_form-0-date, #id_form-0-time, #id_form-0-intake_oral_ml, #id_form-0-intake_parenteral_ml, #id_form-0-intake_other_ml, #id_form-0-output_urine_ml, #id_form-0-output_urine_type, #id_form-0-output_gastric_ml, #id_form-0-output_gastric_ml, #id_form-0-output_other_ml',
 //			addContainerClass: 'tambah_row',
 			added: function(row)
 			{
 				$(row).find('[id$="date"]').removeClass('datepickerinput').removeAttr('#id_form-0-date').removeData('DateTimePicker')
 			.unbind().datetimepicker(
 				options={
-					"format": "DD/MM/YYYY",
+					"format": "DD-MM-YYYY",
 				});
 
 				$(row).find('[id$="time"]').removeClass('timepickerinput').removeAttr('#id_form-0-time').removeData('DateTimePicker')
@@ -138,6 +153,16 @@
 				});
 			},
 		});
+	});
+
+	$('#id_date').on('dp.change', function(e)
+	{
+		var datenew = $(this).val();
+		if(datenew != '')
+		{
+			$('[id$="date"]').val(datenew);
+			t.search( this.value ).draw();
+		}
 	});
 
 </script>

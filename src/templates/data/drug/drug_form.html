@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block headtitle %}
+    {{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block styles %}
+	<link href="{% static 'css/staff/staff_records.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block extrahead %}
+	{{ form.media }}
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+	<div class="row formtitle">
+		{{ page_title }}
+	</div>
+
+	<form method="post">
+	{% csrf_token %}
+
+		<div class="row rounded form_table">
+
+			<table id="form_set" class="table table-sm table-bordered">
+				<thead class="thead_light">
+					<tr>
+						<th class="text-center">{% trans "Drug Name" %}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{ form.drug_name|as_crispy_field }}</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+
+		<div class="row">
+
+			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+			<a class="btn btn-danger kirim" href="{% url 'data:data_list' %}">{% trans "Cancel" %}</a>
+
+		</div>
+
+	</form>
+
+</div>
+
+{% endblock %}

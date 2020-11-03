@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block javascript %}
+	<script src="{% static 'js/patient/patient_list.js' %}"></script>
+{% endblock %}
+
+{% block headtitle %}
+{% trans "Data" %} | {{ titles.title }}
+{% endblock %}
+
+{% block styles %}
+	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+
+<div class="messageform">
+	{% include 'messages.html' %}
+</div>
+
+<div class="row">
+
+	{% if user.is_authenticated and user.is_staff %}
+
+	<div class="col-6">
+		<div class="card bg-light mb-3">
+			<div class="card-header">{% trans "Add Data" %}</div>
+				<div class="card-body">
+
+					<div class="col-sm-6 text-sm-left">
+
+					{% for item in patients %}
+						<div class="link_detail">
+							<a class="btn btn-info"href="{% url 'data:drug_create' %}">{% trans "Medicine" %}</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-info"href="{% url 'data:wound_condition_create' %}">{% trans "Wound Condition" %}</a>
+						</div>
+					{% endfor %}
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	<div class="col-6">
+		<div class="card bg-light mb-3">
+			<div class="card-header">{% trans "View Data" %}</div>
+				<div class="card-body">
+
+					<div class="col-sm-6 text-sm-left">
+
+					{% for item in patients %}
+						<div class="link_detail">
+							<a class="btn btn-outline-info"href="{% url 'data:drug_list' %}">{% trans "Medicine" %} ({{ druglist|length }})</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-outline-info"href="{% url 'data:wound_condition_list' %}">{% trans "Wound Condition" %} ({{ woundconditionlist|length }})</a>
+						</div>
+					{% endfor %}
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{% endif %}
+
+	<a class="btn btn-outline-secondary" href="{% url 'patient:patientdata_list' %}">{% trans "Back to Patient" %}</a>
+
+{% endblock %}

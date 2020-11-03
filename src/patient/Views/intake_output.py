@@ -1,27 +1,18 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import connection
-from django.db.models import Sum, Count
+from django.db.models import F, Sum, Count
 from django.shortcuts import render, redirect, get_object_or_404
-from django.utils.translation import ugettext as _
 from django.urls import reverse, reverse_lazy
+from django.utils.translation import ugettext as _
 
 from patient.models import *
+from patient.views import *
 from patient.Forms.intake_output import *
 from accounts.models import *
 from customers.models import *
 
 from bootstrap_modal_forms.generic import *
-
-startdate = datetime.date.today()
-enddate = startdate + datetime.timedelta(days=1)
-
-start_time_day = datetime.datetime.strptime('00:00', '%H:%M').time()
-end_time_day = datetime.datetime.strptime('12:00', '%H:%M').time()
-start_time_night = datetime.datetime.strptime('12:01', '%H:%M').time()
-end_time_night = datetime.datetime.strptime('23:59', '%H:%M').time()
-
-
 
 
 @login_required
@@ -34,43 +25,34 @@ def intake_output_list(request, username):
 	patients = IntakeOutput.objects.filter(patient=patientid)
 	profiles = UserProfile.objects.filter(pk=patientid)
 
-	total_oral_day = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_day, end_time_day)).aggregate(Sum('intake_oral_ml'))
-	total_parental_day = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_day, end_time_day)).aggregate(Sum('intake_parenteral_ml'))
-	total_other_intake_day = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_day, end_time_day)).aggregate(Sum('intake_other_ml'))
-	total_cum_day = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_day, end_time_day)).aggregate(Sum('output_urine_cum'))
-	total_gastric_day = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_day, end_time_day)).aggregate(Sum('output_gastric_ml'))
-	total_other_output_day = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_day, end_time_day)).aggregate(Sum('output_other_ml'))
-
-	total_oral_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_night, end_time_night)).aggregate(Sum('intake_oral_ml'))
-	total_parental_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_night, end_time_night)).aggregate(Sum('intake_parenteral_ml'))
-	total_other_intake_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_night, end_time_night)).aggregate(Sum('intake_other_ml'))
-	total_cum_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_night, end_time_night)).aggregate(Sum('output_urine_cum'))
-	total_gastric_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_night, end_time_night)).aggregate(Sum('output_gastric_ml'))
-	total_other_output_night = IntakeOutput.objects.filter(patient=patientid, date__range=[startdate, enddate], time__range=(start_time_night, end_time_night)).aggregate(Sum('output_other_ml'))
-
-	total_oral = IntakeOutput.objects.filter(patient=patientid).aggregate(Sum(F('intake_oral_ml')))
-	total_parental = IntakeOutput.objects.filter(patient=patientid).aggregate(Sum(F('intake_parenteral_ml')))
-	total_other_intake = IntakeOutput.objects.filter(patient=patientid,).aggregate(Sum(F('intake_other_ml')))
-
-	agg_data = IntakeOutput.objects.aggregate(total_source1=Count('intake_oral_ml'), total_source2=Count('intake_parenteral_ml'), total_source3=Count('intake_other_ml'))
-	total_count = sum(agg_data.values())
-	res = IntakeOutput.objects.all().annotate(total_source1=Count('intake_oral_ml'), total_source2=Count('intake_parenteral_ml'), total_source3=Count('intake_other_ml')).annotate(total_count=F('total_source1') + F('total_source2') + F('total_source3')).order_by('-total_count')
-
-#	total_intake = total_oral+total_parental+total_other_intake
-	total_intake = sum(IntakeOutput.objects.filter(patient=patientid).order_by('date').aggregate(x=Sum('intake_oral_ml'), y=Sum('intake_parenteral_ml'), z=Sum('intake_other_ml')).values())
-
-#	total_intake = IntakeOutput.objects.all().aggregate(latest=Sum(F('output_urine_cum') + F('output_gastric_ml') + F('output_other_ml')))
-
-#	total_intake = IntakeOutput.objects.filter(patient=patientid).annotate(Count('output_urine_cum')).annotate(Count('output_gastric_ml')).annotate(Count('output_other_ml'))
-#   total_output = total_cum+total_gastric+total_other_output
-	total_output = sum(IntakeOutput.objects.filter(patient=patientid).order_by('date').aggregate(x=Sum('output_urine_cum'), y=Sum('output_gastric_ml'), z=Sum('output_other_ml')).values())
-
+	total_intake = IntakeOutput.objects.annotate(sum_abc=F('intake_oral_ml') + F('intake_parenteral_ml') + F('intake_other_ml')).aggregate(total=Sum('sum_abc'))['total'] or 0
+	total_output = IntakeOutput.objects.annotate(sum_abc=F('output_urine_ml') + F('output_gastric_ml') + F('output_other_ml')).aggregate(total=Sum('sum_abc'))['total'] or 0
 	total_balance = total_intake + total_output
 
-	time_range_day = IntakeOutput.objects.filter(patient=patientid, time__range=(start_time_day, end_time_day))
-	time_range_night = IntakeOutput.objects.filter(patient=patientid, time__range=(start_time_night, end_time_night))
+	time_range_day = IntakeOutput.objects.filter(patient=patientid, time__range=[start_time_day, end_time_day])
+	time_range_night = IntakeOutput.objects.filter(patient=patientid, time__range=[start_time_night, end_time_night])
 
-	time_range = IntakeOutput.objects.filter(patient=patientid).order_by('date')
+	intakeoutput_data = IntakeOutput.objects.filter(patient=patientid).exclude(time__isnull=True)
+
+	initial_list = {
+		'date': get_today,
+	}
+
+	if request.method == 'POST':
+		form = IntakeOutputForm(request.POST or None)
+
+		if form.is_valid():
+			profile = IntakeOutput()
+			profile.patient = patients
+			profile.date = form.cleaned_data['date']
+			profile.save()
+
+			messages.success(request, _(page_title + ' form was created.'))
+			return redirect('patient:patientdata_detail', username=patients.username)
+		else:
+			messages.warning(request, form.errors)
+	else:
+		form = IntakeOutputForm(initial=initial_list)
 
 	context = {
 		'logos': logos,
@@ -79,30 +61,14 @@ def intake_output_list(request, username):
 		'patients': patients,
 		'profiles': profiles,
 
-		'total_oral_day': total_oral_day,
-		'total_parental_day': total_parental_day,
-		'total_other_intake_day': total_other_intake_day,
-		'total_cum_day': total_cum_day,
-		'total_gastric_day': total_gastric_day,
-		'total_other_output_day': total_other_output_day,
-
-		'total_oral_night': total_oral_night,
-		'total_parental_night': total_parental_night,
-		'total_other_intake_night': total_other_intake_night,
-		'total_cum_night': total_cum_night,
-		'total_gastric_night': total_gastric_night,
-		'total_other_output_night': total_other_output_night,
-
 		'total_intake': total_intake,
-#       'total_parental': total_parental,
-
-#       'total_intake': total_intake,
 		'total_output': total_output,
 		'total_balance': total_balance,
 
 		'time_range_day': time_range_day,
 		'time_range_night': time_range_night,
-		'time_range': time_range,
+		'intakeoutput_data': intakeoutput_data,
+		'form': form,
 	}
 
 	return render(request, 'patient/intake_output/intake_output_data.html', context)
@@ -115,21 +81,13 @@ def intake_output_create(request, username):
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Intake Output Chart')
 	profiles = UserProfile.objects.filter(username=username)
-	patientid = UserProfile.objects.get(username=username).id
 	patients = get_object_or_404(UserProfile, username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
-	intakeoutput = IntakeOutput.objects.filter(patient=patientid)
 
-	initial = [{
-        'patient': item.full_name,
-    }
-    for item in profiles]
-
-	initial_formset_factory = [
-	{
+	initial_form = {
 		'patient': patients,
-		'ic_number': icnumbers,
-	}]
+		'date': get_today,
+	}
 
 	initial_list = [
 		{'time': '00:00'},
@@ -159,7 +117,14 @@ def intake_output_create(request, username):
 	]
 
 	if request.method == 'POST':
+		form = IntakeOutputForm(request.POST or None)
 		formset = IntakeOutput_FormSet(request.POST or None)
+
+		if form.is_valid():
+			profile_form = IntakeOutput()
+			profile_form.patient = patients
+			profile_form.date = form.cleaned_data['date']
+			profile_form.save()
 
 		if formset.is_valid():
 			for item in formset:
@@ -173,8 +138,8 @@ def intake_output_create(request, username):
 				profile.intake_parenteral_ml = item.cleaned_data['intake_parenteral_ml']
 				profile.intake_other_type = item.cleaned_data['intake_other_type']
 				profile.intake_other_ml = item.cleaned_data['intake_other_ml']
+				profile.output_urine_type = item.cleaned_data['output_urine_type']
 				profile.output_urine_ml = item.cleaned_data['output_urine_ml']
-				profile.output_urine_cum = item.cleaned_data['output_urine_cum']
 				profile.output_gastric_ml = item.cleaned_data['output_gastric_ml']
 				profile.output_other_type = item.cleaned_data['output_other_type']
 				profile.output_other_ml = item.cleaned_data['output_other_ml']
@@ -183,10 +148,10 @@ def intake_output_create(request, username):
 			messages.success(request, _(page_title + ' form was created.'))
 			return redirect('patient:patientdata_detail', username=patients.username)
 		else:
-#           messages.warning(request, form.errors)
+			messages.warning(request, form.errors)
 			messages.warning(request, formset.errors)
 	else:
-#       form = IntakeOutputForm(initial=initial)
+		form = IntakeOutputForm(initial=initial_form)
 		formset = IntakeOutput_FormSet(initial=initial_list)
 
 	context = {
@@ -196,7 +161,7 @@ def intake_output_create(request, username):
 		'patients': patients,
 		'profiles': profiles,
 		'icnumbers': icnumbers,
-#       'form': form,
+		'form': form,
 		'formset': formset,
 	}
 
@@ -212,7 +177,6 @@ class IntakeOutputCreateView(BSModalCreateView):
 	def get_success_url(self):
 		username = self.kwargs['username']
 		return reverse_lazy('patient:patientdata_detail', kwargs={'username': username})
-#       return reverse_lazy('patient:patientdata_detail', kwargs={'username': self.object.username})
 
 	def get_context_data(self, **kwargs):
 		data = super().get_context_data(**kwargs)
@@ -242,13 +206,29 @@ class IntakeOutputCreateView(BSModalCreateView):
 intake_output_new = IntakeOutputCreateView.as_view()
 
 
-
 class IntakeOutputUpdateView(BSModalUpdateView):
 	model = IntakeOutput
 	template_name = 'patient/intake_output/partial_edit.html'
 	form_class = IntakeOutput_ModelForm
 	page_title = _('IntakeOutput Form')
 	success_message = _(page_title + ' form has been save successfully.')
+
+	def get_form(self, form_class=None):
+		form = super().get_form(form_class=None)
+		form.fields['date'].label = _("Date")
+		form.fields['time'].label = _("Time")
+		form.fields['intake_oral_type'].label = _("Intake Oral Type")
+		form.fields['intake_oral_ml'].label = _("Intake Oral ML")
+		form.fields['intake_parenteral_type'].label = _("Intake Parenteral Type")
+		form.fields['intake_parenteral_ml'].label = _("Intake Parenteral ML")
+		form.fields['intake_other_type'].label = _("Intake Other Type")
+		form.fields['intake_other_ml'].label = _("Intake Other ML")
+		form.fields['output_urine_type'].label = _("Output Urine Type")
+		form.fields['output_urine_ml'].label = _("Output Urine ML")
+		form.fields['output_gastric_ml'].label = _("Output Gastric ML")
+		form.fields['output_other_type'].label = _("Output Other Type")
+		form.fields['output_other_ml'].label = _("Output Other ML")
+		return form
 
 	def get_success_url(self):
 		username = self.kwargs['username']

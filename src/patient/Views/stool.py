@@ -14,16 +14,6 @@ from customers.models import *
 
 from bootstrap_modal_forms.generic import *
 
-startdate = datetime.date.today()
-enddate = startdate + datetime.timedelta(days=1)
-
-start_time_day = datetime.datetime.strptime('00:00', '%H:%M').time()
-end_time_day = datetime.datetime.strptime('12:00', '%H:%M').time()
-start_time_night = datetime.datetime.strptime('12:01', '%H:%M').time()
-end_time_night = datetime.datetime.strptime('23:59', '%H:%M').time()
-
-
-
 
 @login_required
 def stool_list(request, username):
@@ -98,13 +88,23 @@ def stool_create(request, username):
 	return render(request, 'patient/stool/stool_form.html', context)
 
 
-
 class StoolUpdateView(BSModalUpdateView):
 	model = Stool
 	template_name = 'patient/stool/partial_edit.html'
 	form_class = Stool_ModelForm
 	page_title = _('Stool Form')
 	success_message = _(page_title + ' form has been save successfully.')
+
+	def get_form(self, form_class=None):
+		form = super().get_form(form_class=None)
+		form.fields['date'].label = _("Date")
+		form.fields['time'].label = _("Time")
+		form.fields['frequency'].label = _("Frequency")
+		form.fields['consistency'].label = _("Consistency")
+		form.fields['amount'].label = _("Amount")
+		form.fields['remark'].label = _("Remark")
+		form.fields['done_by'].label = _("Done by")
+		return form
 
 	def get_success_url(self):
 		username = self.kwargs['username']

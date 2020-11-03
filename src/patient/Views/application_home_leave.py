@@ -7,7 +7,6 @@ from django.db.models.functions import Cast, Concat, ExtractYear, ExtractMonth, 
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 from django.urls import reverse, reverse_lazy
-from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django.views.generic import View
@@ -24,14 +23,6 @@ from bootstrap_modal_forms.generic import *
 from reportlab.pdfgen import canvas
 
 from io import BytesIO
-
-startdate = datetime.date.today()
-enddate = startdate + datetime.timedelta(days=1)
-
-start_time_day = datetime.datetime.strptime('00:00', '%H:%M').time()
-end_time_day = datetime.datetime.strptime('12:00', '%H:%M').time()
-start_time_night = datetime.datetime.strptime('12:01', '%H:%M').time()
-end_time_night = datetime.datetime.strptime('23:59', '%H:%M').time()
 
 
 @login_required
@@ -115,9 +106,11 @@ def application_home_leave_create(request, username):
 
 	return render(request, 'patient/application_home_leave/application_home_leave_form.html', context)
 
+
 class PdfMixin(object):
 	content_type = "application/pdf"
 	response_class = PdfResponse
+
 
 def application_home_leave_pdf(response, username):
 	schema_name = connection.schema_name
@@ -145,7 +138,6 @@ def application_home_leave_pdf(response, username):
 	pdf = buffer.getvalue()
 	buffer.close()
 	response.write(pdf)
-
 
 	context = {
 		'titles': titles,
@@ -199,6 +191,17 @@ class ApplicationForHomeLeaveUpdateView(BSModalUpdateView):
 	form_class = ApplicationForHomeLeave_ModelForm
 	page_title = _('ApplicationForHomeLeave Form')
 	success_message = _(page_title + ' form has been save successfully.')
+
+	def get_form(self, form_class=None):
+		form = super().get_form(form_class=None)
+		form.fields['family_name'].label = _("Family Name")
+		form.fields['family_ic_number'].label = _("Family IC Number")
+		form.fields['family_relationship'].label = _("Family Relationship")
+		form.fields['family_phone'].label = _("Family Phone")
+		form.fields['witnessed_designation'].label = _("Designation")
+		form.fields['witnessed_signature'].label = _("Signature")
+		form.fields['witnessed_date'].label = _("Date")
+		return form
 
 	def get_success_url(self):
 		username = self.kwargs['username']

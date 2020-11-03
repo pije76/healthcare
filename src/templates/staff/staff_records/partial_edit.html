@@ -1,5 +1,17 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
+{% load static %}
+
+{% block extrahead %}
+    {{ form.media }}
+{% endblock %}
+
+{% block javascript %}
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/moment.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+{% endblock %}
 
 <form method="post" action="">
 {% csrf_token %}
@@ -12,16 +24,16 @@
 	<div class="modal-body">
         <div class="form-group">
         	{{ form.staff|as_crispy_field }}
-            {% trans "Year" %}: {{ form.date|as_crispy_field }}
+            {{ form.date|as_crispy_field }}
             {{ form.annual_leave_days|as_crispy_field }}
             {{ form.public_holiday_days|as_crispy_field }}
             {{ form.replacement_public_holiday|as_crispy_field }}
             {{ form.medical_certificate|as_crispy_field }}
             {{ form.siri_no_diagnosis|as_crispy_field }}
-		    {{ form.emergency_leaves }}
-		    {{ form.emergency_leaves_reasons }}
-		    {{ form.unpaid_leaves }}
-		    {{ form.unpaid_leaves_reasons }}
+		    {{ form.emergency_leaves|as_crispy_field }}
+		    {{ form.emergency_leaves_reasons|as_crispy_field }}
+		    {{ form.unpaid_leaves|as_crispy_field }}
+		    {{ form.unpaid_leaves_reasons|as_crispy_field }}
         </div>
 	</div>
 
@@ -31,3 +43,36 @@
 	</div>
 
 </form>
+
+{% block js %}
+    <script type='text/javascript'>
+    $(document).ready(function()
+    {
+
+        $.extend(true, $.fn.datetimepicker.defaults, {
+            icons: {
+                time: 'far fa-clock',
+                date: 'far fa-calendar',
+                up: 'fas fa-arrow-up',
+                down: 'fas fa-arrow-down',
+                previous: 'fas fa-chevron-left',
+                next: 'fas fa-chevron-right',
+                today: 'fas fa-calendar-check',
+                clear: 'far fa-trash-alt',
+                close: 'far fa-times-circle'
+            }
+        });
+
+        $("#id_date_0").datetimepicker(
+            {
+//              format: 'L',
+                format:'YYYY',
+//              defaultDate: currentDate,
+                showTodayButton: true,
+                showClear: true,
+                showClose: true,
+            }
+        );
+    });
+    </script>
+{% endblock %}

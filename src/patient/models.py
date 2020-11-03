@@ -3,160 +3,60 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.validators import RegexValidator
 from django.db.models import F
 from django.utils.safestring import mark_safe
+from django.core.exceptions import ValidationError
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 from accounts.models import *
 from staff.models import *
+from data.models import *
+from .validators import *
 
 from mptt.models import MPTTModel, TreeForeignKey
+from decimal import Decimal
 
 import datetime
 
-messageserror = _('IC Number format needs to be yymmdd-xx-zzzz.')
 
-ic_number_validator = RegexValidator(regex='\d{6}\-\d{2}\-\d{4}', message=messageserror, code="invalid")
+def upload_path_admission(instance, filename):
+	return 'admission/{0}/{1}'.format(instance.patient, filename)
+
+
+def upload_path_dressing(instance, filename):
+	return 'dressing/{0}/{1}'.format(instance.patient, filename)
+
+
+def upload_path_investigation_report(instance, filename):
+	return 'investigation_report/{0}/{1}'.format(instance.patient, filename)
+
+
+def upload_path_physiotherapygeneralassessment(instance, filename):
+	return 'physiotherapy_general_assessment/{0}/{1}'.format(instance.patient, filename)
 
 
 # Create your models here.
 class Admission(models.Model):
-	ADMITTED_CHOICES = (
-		('Hospital', _('Hospital')),
-		('Home', _('Home')),
-		('Others', _('Others')),
-	)
-
-	MODE_CHOICES = (
-		('Walked-in', _('Walked-in')),
-		('Wheelchair', _('Wheelchair')),
-		('Stretcher', _('Stretcher')),
-	)
-
-	GENDER_CHOICES = (
-		('Male', _('Male')),
-		('Female', _('Female')),
-	)
-
-	MARITAL_CHOICES = (
-		('Single', _('Single')),
-		('Married', _('Married')),
-		('Others', _('Others')),
-	)
-
-	RELIGION_CHOICES = (
-		('Buddhist', _('Buddhist')),
-		('Christian', _('Christian')),
-		('Hinduism', _('Hinduism')),
-		('Islam', _('Islam')),
-		('Others', _('Others')),
-	)
-
-	OCCUPATION_CHOICES = (
-		('Retired', _('Retired')),
-		('Housewife', _('Housewife')),
-		('Others', _('Others')),
-	)
-
-	COMMUNICATION_SIGHT_CHOICES = (
-		('Good', _('Good')),
-		('Poor', _('Poor')),
-		('Glasses', _('Glasses')),
-		('Blind', _('Blind')),
-	)
-
-	COMMUNICATION_HEARING_CHOICES = (
-		('Good', _('Good')),
-		('Poor', _('Poor')),
-		('Aid', _('Aid')),
-		('Others', _('Others')),
-	)
-
-	GENERAL_CONDITION_CHOICES = (
-		('Stable', _('Stable')),
-		('Ill', _('Ill')),
-		('Lethargic', _('Lethargic')),
-		('Weak', _('Weak')),
-		('Cachexic', _('Cachexic')),
-		('Coma', _('Coma')),
-		('Restless', _('Restless')),
-		('Depress', _('Depress')),
-		('Agitated', _('Agitated')),
-	)
-
-	INVASIVE_LINE_INSITU_CHOICES = (
-		('ETT', _('ETT')),
-		('Nasogastric tube', _('Nasogastric tube')),
-		('Urinary catheter', _('Urinary catheter')),
-		('Pacemaker', _('Pacemaker')),
-		('Others', _('Others')),
-	)
-
-	MEDICAL_HISTORY_CHOICES = (
-		('No Chronic Illness', _('No Chronic Illness')),
-		('Asthma', _('Asthma')),
-		('Diabetes Mellitus', _('Diabetes Mellitus')),
-		('Hypertension', _('Hypertension')),
-		('Heart Disease', _('Heart Disease')),
-		('High Cholesterol', _('High Cholesterol')),
-		('Dyslipidemia', _('Dyslipidemia')),
-		('Others', _('Others')),
-	)
-
-	MEDICATION_ADMINISTRATION_FREQUENCY_CHOICES = (
-		('OD', _('OD')),
-		('OM', _('OM')),
-		('PM', _('PM')),
-		('ON', _('ON')),
-		('BD', _('BD')),
-		('TDS', _('TDS')),
-		('QID', _('QID')),
-		('EOD', _('EOD')),
-		('PRN', _('PRN')),
-		('OTHERS', _('OTHERS')),
-	)
-
-	ADAPTIVE_AIDS_WITH_PATIENT_CHOICES = (
-		('Denture', _('Denture')),
-		('Upper set', _('Upper set')),
-		('Lower set', _('Lower set')),
-		('Walking aid', _('Walking aid')),
-		('Glasses', _('Glasses')),
-		('Others', _('Others')),
-		('Hearing aid', _('Hearing aid')),
-	)
-
-	ORIENTATION_CHOICES = (
-		('Nurse call system', _('Nurse call system')),
-		('Bed Mechanic', _('Bed Mechanic')),
-		('Bathroom', _('Bathroom')),
-		('Visiting', _('Visiting hours')),
-		('Care of Valuables', _('Care of Valuables')),
-		('Fire Exits', _('Fire Exits')),
-		('No Smoking policy', _('No Smoking policy')),
-		('Patient Right/ Responsibilities', _('Patient Right/ Responsibilities')),
-		('Inform nurse if patient leaving the center', _(
-			'Inform nurse if patient leaving the center')),
-	)
-
-	BOOLEAN_CHOICES = (
-		(False, _('No')),
-		(True, _('Yes')),
-	)
-
-	YES_NO_CHOICES = (
-		('No', _('No')),
-		('Yes', _('Yes')),
-	)
-
-	SURGICAL_CHOICES = (
-		('None', _('None')),
-	)
-
-#	patient = models.OneToOneField(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date_admission = models.DateField(blank=True, null=True)
 	time_admission = models.TimeField(blank=True, null=True)
-	admitted = models.CharField(max_length=255, blank=True, null=True)
+	admitted_admission = models.CharField(max_length=255, blank=True, null=True)
 	admitted_others = models.CharField(max_length=255, blank=True, null=True)
-	mode = models.CharField(max_length=255, blank=True, null=True)
+	mode_admission = models.CharField(max_length=255, blank=True, null=True)
+
+	ic_number = models.CharField(_('IC Number'), max_length=14, validators=[ic_number_validator], unique=True, blank=True, null=True)
+	ic_upload = models.ImageField(_('IC Upload'), upload_to=upload_path_admission, blank=True, null=True)
+	birth_date = models.DateField(blank=True, null=True)
+	age = models.CharField(max_length=255, blank=True, null=True)
+	gender = models.CharField(max_length=255, blank=True, null=True)
+	marital_status = models.CharField(max_length=255, blank=True, null=True)
+	marital_status_others = models.CharField(max_length=255, blank=True, null=True)
+	religion = models.CharField(max_length=255, blank=True, null=True)
+	religion_others = models.CharField(max_length=255, blank=True, null=True)
+	occupation = models.CharField(max_length=255, blank=True, null=True)
+	occupation_others = models.CharField(max_length=255, blank=True, null=True)
+	communication_sight = models.CharField(max_length=255, blank=True, null=True)
+	communication_hearing = models.CharField(max_length=255, blank=True, null=True)
+	communication_hearing_others = models.CharField(max_length=255, blank=True, null=True)
+	address = models.CharField(max_length=255, blank=True, null=True)
 
 	general_condition = models.CharField(max_length=255, blank=True, null=True)
 	vital_sign_temperature = models.PositiveIntegerField(blank=True, null=True)
@@ -176,62 +76,46 @@ class Admission(models.Model):
 	medical_history_others = models.CharField(max_length=255, blank=True, null=True)
 	surgical_history_none = models.CharField(max_length=255, blank=True, null=True)
 	surgical_history = models.CharField(max_length=255, blank=True, null=True)
+
 	date_diagnosis = models.DateField(blank=True, null=True)
 	diagnosis = models.CharField(max_length=255, blank=True, null=True)
+
 	date_operation = models.DateField(blank=True, null=True)
 	operation = models.CharField(max_length=255, blank=True, null=True)
+
 	adaptive_aids_with_patient = models.CharField(max_length=255, blank=True, null=True)
 	adaptive_aids_with_patient_others = models.CharField(max_length=255, blank=True, null=True)
 	orientation = models.CharField(max_length=255, blank=True, null=True)
 	special_information = models.CharField(max_length=255, blank=True, null=True)
 	admission_by = models.CharField(max_length=255, blank=True, null=True)
 
+	own_medication = models.BooleanField(default=False)
+	medication_date = models.DateField(blank=True, null=True)
+	medication_time = models.TimeField(blank=True, null=True)
+	medication_drug_name = models.ForeignKey(Medicine, on_delete=models.CASCADE, blank=True, null=True)
+	medication_dosage = models.PositiveIntegerField(blank=True, null=True)
+	medication_unit = models.CharField(max_length=255, blank=True, null=True)
+	medication_tablet_capsule = models.PositiveIntegerField(blank=True, null=True)
+	medication_frequency = models.CharField(max_length=255, blank=True, null=True)
+
 	def __str__(self):
 		return str(self.patient)
-
-##	def save(self, *args, **kwargs):
-#		if self.age:
-##		today = datetime.date.today()
-##		birth_date = today.year - self.birth_date.year - ((today.month, today.day) < (self.birth_date.month, self.birth_date.day))
-##		self.age = birth_date
-##		for field_name in ['admitted', 'biohazard_infectious_disease', 'invasive_line_insitu', 'medical_history', 'surgical_history', 'adaptive_aids_with_patient', 'special_information', 'diagnosis', 'operation']:
-##			val = getattr(self, field_name, False)
-##			if val:
-##				setattr(self, field_name, val.capitalize())
-##		super().save(*args, **kwargs)
-
-##	@property
-##	def get_age(self):
-##		if self.birth_date:
-##			today = datetime.date.today()
-##			return today.year - self.birth_date.year - ((today.month, today.day) < (self.birth_date.month, self.birth_date.day))
-#		today = datetime.date.today()
-#		sec = time.mktime(birth_date.timetuple())
-#		bod = int(datetime.timedelta(self.birth_date))
-#		convert_duration_year = int((sec / 3600) % 3600)
-#		convert_duration_month = int((sec / 60) % 60)
-#		convert_duration_day = int(self.birth_date)
-#		delta_day = today - self.birth_date
-#		total_age = str(delta_day/365.24219)
-#		total_age = int((delta_day.days / 365.24219))
-#		return int((datetime.now().date() - self.birth_date).days / 365.24219)
-#		return int((datetime.datetime.now().date() - self.birth_date).days / 365.24219  )
-#		return int((get_today - self.birth_date).days / 365.24219)
-#		return total_age
-##		return 0
-
-#	def _get_mode_display(self, field):
-#		value = getattr(self, field.attname)
-#		return force_text(dict(field.flatchoices).get(value, value), strings_only=True)
-
-#	def mode_display(self):
-#		for c in MODE_CHOICES:
-#			if c[0] == self.mode:
-#				return c[1]
 
 	@property
 	def get_ec_name(self):
 		return self.ec_name
+
+	def ic_upload_url(self):
+		if self.ic_upload and hasattr(self.ic_upload, 'url'):
+			return self.ic_upload.url
+
+	def image_img(self):
+		if self.ic_upload and hasattr(self.ic_upload, 'url'):
+			return mark_safe('<img src="%s" style="width: 60px; height: 60px" />' % self.ic_upload.url)
+		else:
+			return _('No Thumbnail')
+
+	image_img.short_description = _('IC Upload')
 
 	class Meta:
 		verbose_name = _('Admission')
@@ -242,13 +126,9 @@ class ApplicationForHomeLeave(models.Model):
 	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	ic_number = models.CharField(_('IC Number'), validators=[ic_number_validator], max_length=14, blank=True, null=True)
 
-#	family_name = models.ForeignKey(Family, verbose_name="Family Name", on_delete=models.CASCADE, blank=False, null=True)
 	family_name = models.CharField(verbose_name="Family Name", max_length=255, blank=True, null=True)
-#	family_name = models.CharField(_('Family Name'), max_length=255, blank=True, null=True)
 	family_ic_number = models.CharField(_('NRIC Number'), validators=[ic_number_validator], max_length=14, blank=True, null=True)
-#	family_ic_number = ChainedForeignKey(Admission, chained_field="ec_name", chained_model_field="family_name", show_all=False, auto_choose=True, sort=True)
 	family_relationship = models.CharField(_('Family Relationship'), max_length=255, blank=True, null=True)
-#	family_phone = PhoneNumberField(_('Phone'), blank=True, validators=[validate_international_phonenumber])
 	family_phone = models.CharField(_('Family Phone'), max_length=255, blank=True, null=True)
 
 	signature_name = models.CharField(verbose_name="Witnessed Name", max_length=255, blank=True, null=True)
@@ -282,11 +162,7 @@ class ApplicationForHomeLeave(models.Model):
 
 class Appointment(models.Model):
 	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
-#	date = models.DateField(blank=True, null=True)
-#	time = models.TimeField(blank=True, null=True)
 	date_time = models.DateTimeField(blank=True, null=True)
-#	remind_date = models.DateTimeField(null=True)
-#	is_notified = models.BooleanField(default=False)
 	hospital_clinic_center = models.CharField(max_length=255, blank=True, null=True)
 	department = models.CharField(max_length=255, blank=True, null=True)
 	planning_investigation = models.CharField(max_length=255, blank=True, null=True)
@@ -297,9 +173,7 @@ class Appointment(models.Model):
 
 	@property
 	def date_time_year(self):
-		#		return self.date_time.year
 		return self.date_time.strftime('%Y')
-#		return unicode(self.date_time.strftime('%Y'))
 
 	def datetime_to_milliseconds(self):
 		timetuple = self.date_time.timetuple()
@@ -328,12 +202,6 @@ class Appointment(models.Model):
 
 
 class Nasogastric(models.Model):
-	NASOGASTRIC_TUBE_TYPE_CHOICES = (
-		('PVC', _('PVC')),
-		('Silicone coated', _('Silicone coated')),
-		('Silicone', _('Silicone')),
-	)
-
 	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	nasogastric_tube_date = models.DateField(blank=True, null=True)
 	nasogastric_tube_size = models.PositiveIntegerField(blank=True, null=True)
@@ -353,11 +221,6 @@ class Nasogastric(models.Model):
 
 
 class Urinary(models.Model):
-	URINARY_CATHETER_TYPE_CHOICES = (
-		('Latex', _('Latex')),
-		('Silicone', _('Silicone')),
-	)
-
 	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	urinary_catheter_date = models.DateField(blank=True, null=True)
 	urinary_catheter_size = models.PositiveIntegerField(blank=True, null=True)
@@ -392,61 +255,38 @@ class Cannula(models.Model):
 		verbose_name_plural = _("Cannula")
 
 
-def upload_path_dressing(instance, filename):
-	return '{0}/{1}'.format('dressing', filename)
+class DischargeCheckList(models.Model):
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
+	date_time = models.DateTimeField(blank=True, null=True)
+	discharge_status = models.CharField(max_length=255, blank=True, null=True)
+	nasogastric_tube_date = models.DateField(blank=True, null=True)
+	nasogastric_tube = models.CharField(max_length=255, blank=True, null=True)
+	urinary_catheter_date = models.DateField(blank=True, null=True)
+	urinary_catheter = models.CharField(max_length=255, blank=True, null=True)
+	surgical_dressing_intact = models.CharField(max_length=255, blank=True, null=True)
+	spectacle_walking_aid_denture = models.CharField(max_length=255, blank=True, null=True)
+	appointment_card_returned = models.CharField(max_length=255, blank=True, null=True)
+	own_medication_return = models.CharField(max_length=255, blank=True, null=True)
+	medication_reconcilation = models.CharField(max_length=255, blank=True, null=True)
+	medication_reconcilation_patient = models.CharField(max_length=255, blank=True, null=True)
+	given_by = models.CharField(max_length=255, blank=True, null=True)
+
+	def __str__(self):
+		return str(self.patient)
+
+	class Meta:
+		verbose_name = _('Discharge CheckList')
+		verbose_name_plural = _("Discharge CheckList")
 
 
 class Dressing(models.Model):
-	WOUND_FREQUENCY_CHOICES = (
-		('OD', 'OD'),
-		('BD', 'BD'),
-		('TDS', 'TDS'),
-		('STAT', 'STAT'),
-	)
-
-	WOUND_LOCATION_CHOICES = (
-		('Head', _('Head')),
-		('Face', _('Face')),
-		('Neck', _('Neck')),
-		('Chest', _('Chest')),
-		('Abdomen', _('Abdomen')),
-		('Back', _('Back')),
-		('Sacral', _('Sacral')),
-		('Buttock', _('Buttock')),
-		('Hand', _('Hand')),
-		('Leg', _('Leg')),
-		('Others', _('Others')),
-	)
-
-	WOUND_CONDITION_CHOICES = (
-		('Clean', _('Clean')),
-		('Slough', _('Slough')),
-		('Eschar', _('Eschar')),
-		('Others', (
-			('Exudate', (
-				('Sanguineous', _('Sanguineous')),
-				('Serous', _('Serous')),
-				('Haemoserous', _('Haemoserous')),
-				('Purulent', _('Purulent')),
-			)),
-			('Amount', (
-				('Scant', _('Scant')),
-				('Minimal', _('Minimal')),
-				('Moderate', _('Moderate')),
-				('Large', _('Large')),
-			)),
-		)),
-	)
-
 	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(blank=True, null=True)
 	time = models.TimeField(blank=True, null=True)
 	frequency_dressing = models.CharField(max_length=255, blank=True, null=True)
 	type_dressing = models.CharField(max_length=255, blank=True, null=True)
 	wound_location = models.CharField(max_length=255, blank=True, null=True)
-	wound_condition = TreeForeignKey(WoundCondition, related_name='wound_conditions', null=True, blank=True, on_delete=models.CASCADE)
-#	wound_condition = models.ForeignKey(WoundCondition, on_delete=models.CASCADE, blank=False, null=True)
-#	wound_condition = models.CharField(max_length=255, blank=True, null=True)
+	wound_condition = TreeForeignKey(WoundCondition, null=True, blank=True, on_delete=models.CASCADE)
 	photos = models.ImageField(upload_to=upload_path_dressing, blank=True, null=True)
 	note = models.CharField(max_length=255, blank=True, null=True)
 	done_by = models.CharField(max_length=255, blank=True, null=True)
@@ -464,7 +304,7 @@ class Dressing(models.Model):
 		else:
 			return _('No Thumbnail')
 
-	image_img.short_description = _('Thumbnail')
+	image_img.short_description = _('Photos')
 
 	class Meta:
 		verbose_name = _('Dressing')
@@ -507,7 +347,6 @@ class HGT(models.Model):
 	date = models.DateField(blank=True, null=True)
 	time = models.TimeField(blank=True, null=True)
 	blood_glucose_reading = models.PositiveIntegerField(blank=True, null=True)
-	frequency = models.CharField(max_length=255, blank=True, null=True)
 	remark = models.CharField(max_length=255, blank=True, null=True)
 	done_by = models.CharField(max_length=255, blank=True, null=True)
 
@@ -529,8 +368,8 @@ class IntakeOutput(models.Model):
 	intake_parenteral_ml = models.PositiveIntegerField(blank=True, null=True)
 	intake_other_type = models.CharField(max_length=255, blank=True, null=True)
 	intake_other_ml = models.PositiveIntegerField(blank=True, null=True)
+	output_urine_type = models.CharField(max_length=255, blank=True, null=True)
 	output_urine_ml = models.PositiveIntegerField(blank=True, null=True)
-	output_urine_cum = models.PositiveIntegerField(blank=True, null=True)
 	output_gastric_ml = models.PositiveIntegerField(blank=True, null=True)
 	output_other_type = models.CharField(max_length=255, blank=True, null=True)
 	output_other_ml = models.PositiveIntegerField(blank=True, null=True)
@@ -543,14 +382,10 @@ class IntakeOutput(models.Model):
 		verbose_name_plural = _("Intake Output")
 
 
-def upload_path_investigationreport(instance, filename):
-	return '{0}/{1}'.format('investigationreport', filename)
-
-
 class InvestigationReport(models.Model):
 	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(blank=True, null=True)
-	file_upload = models.ImageField(upload_to=upload_path_investigationreport, blank=True, null=True)
+	file_upload = models.ImageField(upload_to=upload_path_investigation_report, blank=True, null=True)
 
 	def __str__(self):
 		return str(self.patient)
@@ -565,7 +400,7 @@ class InvestigationReport(models.Model):
 		else:
 			return _('No Thumbnail')
 
-	image_img.short_description = _('Thumbnail')
+	image_img.short_description = _('File Upload')
 
 	class Meta:
 		verbose_name = _('Investigation Report')
@@ -573,12 +408,6 @@ class InvestigationReport(models.Model):
 
 
 class Maintenance(models.Model):
-	STATUS_CHOICES = (
-		('Done', _('Done')),
-		('Pending', _('Pending')),
-		('Cancel', _('Cancel')),
-	)
-
 	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(blank=True, null=True)
 	items = models.CharField(max_length=255, blank=True, null=True)
@@ -597,12 +426,57 @@ class Maintenance(models.Model):
 		verbose_name_plural = _("Maintenance")
 
 
+class MedicationAdministrationRecordTemplate(models.Model):
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
+	own_medication = models.BooleanField(default=False)
+	medication_date = models.DateField(blank=True, null=True)
+	medication_time = models.TimeField(blank=True, null=True)
+	medication_drug_name = models.ForeignKey(Medicine, on_delete=models.CASCADE, blank=True, null=True)
+	medication_dosage = models.PositiveIntegerField(blank=True, null=True)
+	medication_unit = models.CharField(max_length=255, blank=True, null=True)
+	medication_tablet_capsule = models.PositiveIntegerField(blank=True, null=True)
+	medication_frequency = models.CharField(max_length=255, blank=True, null=True)
+
+	def __str__(self):
+		return str(self.patient)
+
+	class Meta:
+		verbose_name = _('Medication Administration Record (Template)')
+		verbose_name_plural = _("Medication Administration Record (Template)")
+
+
+class MedicationAdministrationRecord(models.Model):
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
+	allergy_drug = models.CharField(max_length=255, blank=True, null=True)
+	allergy_food = models.CharField(max_length=255, blank=True, null=True)
+	allergy_others = models.CharField(max_length=255, blank=True, null=True)
+	medication_date = models.DateField(blank=True, null=True)
+	medication_time = models.TimeField(blank=True, null=True)
+	medication_drug_name = models.ForeignKey(Medicine, on_delete=models.CASCADE, blank=True, null=True)
+	medication_dosage = models.PositiveIntegerField(blank=True, null=True)
+	medication_unit = models.CharField(max_length=255, blank=True, null=True)
+	medication_tablet_capsule = models.PositiveIntegerField(blank=True, null=True)
+	medication_frequency = models.CharField(max_length=255, blank=True, null=True)
+	medication_source = models.CharField(max_length=255, blank=True, null=True)
+	medication_route = models.CharField(max_length=255, blank=True, null=True)
+	medication_status = models.CharField(max_length=255, blank=True, null=True)
+	medication_done = models.BooleanField(default=False)
+
+	def __str__(self):
+		return str(self.patient)
+
+	class Meta:
+		verbose_name = _('Medication Administration Record')
+		verbose_name_plural = _("Medication Administration Record")
+
+
 class MedicationRecord(models.Model):
 	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(blank=True, null=True)
 	time = models.TimeField(blank=True, null=True)
 	medication = models.CharField(max_length=255, blank=True, null=True)
 	dosage = models.PositiveIntegerField(blank=True, null=True)
+	unit = models.CharField(max_length=255, blank=True, null=True)
 	topup = models.CharField(max_length=255, blank=True, null=True)
 	balance = models.PositiveIntegerField(blank=True, null=True)
 	remark = models.CharField(max_length=255, blank=True, null=True)
@@ -614,148 +488,6 @@ class MedicationRecord(models.Model):
 	class Meta:
 		verbose_name = _('Medication Record')
 		verbose_name_plural = _("Medication Record")
-
-
-class Allergy(models.Model):
-	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
-	allergy_drug = models.CharField(max_length=255, blank=True, null=True)
-	allergy_food = models.CharField(max_length=255, blank=True, null=True)
-	allergy_others = models.CharField(max_length=255, blank=True, null=True)
-
-	def __str__(self):
-		return '%s (%s - %s)' % (self.allergy_drug, self.allergy_food, self.allergy_others)
-
-	class Meta:
-		verbose_name = _('Allergy')
-		verbose_name_plural = _("Allergy")
-
-
-class Medication(models.Model):
-	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
-#	medication = models.CharField(max_length=255, blank=True, null=True)
-	medication = models.BooleanField(default=False)
-	medication_drug_name = models.CharField(max_length=255, blank=True, null=True)
-	medication_dosage = models.PositiveIntegerField(blank=True, null=True)
-	medication_tablet_capsule = models.PositiveIntegerField(blank=True, null=True)
-	medication_frequency = models.CharField(max_length=255, blank=True, null=True)
-
-	def __str__(self):
-#		return str(self.patient)
-		return '%s (%s - %s - %s)' % (self.medication_drug_name, self.medication_dosage, self.medication_tablet_capsule, self.medication_frequency)
-
-	class Meta:
-		verbose_name = _('Medication Template')
-		verbose_name_plural = _("Medication Template")
-
-
-class MedicationAdministrationRecord(models.Model):
-	TAB_CHOICES = (
-		('1', _('1/1 = 1 Tab')),
-		('2', _('11/11 = 2 Tabs')),
-		('3', _('111/111 = 3 Tabs')),
-		('Half', _('1/2 = Half Tab')),
-		('Others', _('1 1/2 = Others')),
-		('4', _('4 Tabs')),
-	)
-
-	MEDICATION_ADMINISTRATION_FREQUENCY_CHOICES = (
-		('OD', _('OD')),
-		('OM', _('OM')),
-		('PM', _('PM')),
-		('ON', _('ON')),
-		('BD', _('BD')),
-		('TDS', _('TDS')),
-		('QID', _('QID')),
-		('EOD', _('EOD')),
-		('PRN', _('PRN')),
-		('OTHERS', _('OTHERS')),
-	)
-
-	ROUTE_CHOICES = (
-		('Oral', _('Oral')),
-		('IV', 'IV'),
-		('IM', 'IM'),
-		('SC', 'SC'),
-		('SL', 'SL'),
-		('RT', 'RT'),
-		('PR', 'PR'),
-		('LA', 'LA'),
-		('Neb', 'Neb'),
-	)
-
-	SIGNATURE_CHOICES = (
-		('LSS', 'LSS'),
-		('LPC', 'LPC'),
-		('SYA', 'SYA'),
-	)
-
-	STAT_CHOICES = (
-		('NBM', 'N-NBM'),
-		('Omit', 'O-Omit'),
-		('Refused', 'R-Refused'),
-		('Take Away', 'TA-Take Away'),
-		('Taken', 'T-Taken'),
-		('Withold', 'W-Withold'),
-	)
-
-	BOOLEAN_CHOICES = (
-		(False, _('No')),
-		(True, _('Yes')),
-	)
-
-	patient = models.ForeignKey(UserProfile, related_name="patient_medicationadministrationrecord", on_delete=models.CASCADE, blank=False, null=True)
-#	allergy = models.CharField(max_length=255, blank=True, null=True)
-#	allergy = models.ForeignKey(Allergy, related_name="medication_allergy", on_delete=models.CASCADE, blank=False, null=True)
-	allergy = models.OneToOneField(Allergy, related_name="medication_allergy", on_delete=models.CASCADE, blank=False, null=True)
-#	medication_name = models.CharField(max_length=255, blank=True, null=True)
-#	medication_dosage = models.PositiveIntegerField(blank=True, null=True)
-#	medication_tab_cap_mls = models.CharField(max_length=255, blank=True, null=True)
-#	medication_frequency = models.CharField(max_length=255, blank=True, null=True)
-#	medication_route = models.CharField(max_length=255, blank=True, null=True)
-	medication_date = models.DateField(blank=True, null=True)
-	medication_time = models.TimeField(blank=True, null=True)
-	medication = models.ForeignKey(Medication, related_name="medication_admission", on_delete=models.CASCADE, blank=False, null=True)
-	status_nurse = models.CharField(max_length=255, blank=True, null=True)
-	stat = models.CharField(max_length=255, blank=True, null=True)
-	medicationstat_date_time = models.DateTimeField(blank=True, null=True)
-	given_by = models.CharField(max_length=255, blank=True, null=True)
-	done = models.BooleanField(default=False)
-
-	def __str__(self):
-		return str(self.patient)
-
-	def get_fields(self):
-		return [(field.verbose_name, field.value_from_object(self)) for field in self.__class__._meta.fields]
-
-	def get_all_fields(self):
-		fields = []
-		for f in self._meta.fields:
-
-			fname = f.name
-			# resolve picklists/choices, with get_xyz_display() function
-			get_choice = 'get_' + fname + '_display'
-			if hasattr(self, get_choice):
-				value = getattr(self, get_choice)()
-			else:
-				try:
-					value = getattr(self, fname)
-				except AttributeError:
-					value = None
-
-			# only display fields with values and skip some fields entirely
-			if f.editable and value and f.name not in ('id', 'status', 'workshop', 'user', 'complete'):
-				fields.append(
-					{
-						'label': f.verbose_name,
-						'name': f.name,
-						'value': value,
-					}
-				)
-		return fields
-
-	class Meta:
-		verbose_name = _('Medication Administration Record')
-		verbose_name_plural = _("Medication Administration Record")
 
 
 class MiscellaneousChargesSlip(models.Model):
@@ -801,83 +533,7 @@ class Nursing(models.Model):
 		verbose_name_plural = _("Nursing")
 
 
-class OvertimeClaim(models.Model):
-	patient = models.ForeignKey(UserProfile, related_name='patient_overtimeclaim', on_delete=models.CASCADE, blank=False, null=True)
-	date = models.DateField(blank=True, null=True)
-#	date = models.DateTimeField(blank=True, null=True)
-#	duration_time_from = models.DurationField(blank=True, null=True)
-	duration_time_from = models.TimeField(blank=True, null=True)
-#	duration_time_to = models.DurationField(blank=True, null=True)
-	duration_time_to = models.TimeField(blank=True, null=True)
-	hours = models.TimeField(blank=True, null=True)
-	total_hours = models.CharField(max_length=255, blank=True, null=True)
-	checked_sign_by = models.ForeignKey(UserProfile, related_name='checked_sign_by_overtimeclaim', on_delete=models.CASCADE, blank=True, null=True)
-	verify_by = models.ForeignKey(UserProfile, related_name='verify_by_overtimeclaim', default=None, on_delete=models.CASCADE, blank=True, null=True)
-
-	def __str__(self):
-		return str(self.patient)
-
-	def save(self, *args, **kwargs):
-		if self.verify_by is None:
-			self.verify_by = None
-		super().save(*args, **kwargs)
-
-	@property
-	def convert_duration_time(self):
-		sec = self.duration_time.datetime.total_seconds()
-		return '%02d:%02d' % (int((sec / 3600) % 3600), int((sec / 60) % 60))
-
-	@property
-	def convert_duration_hour(self):
-		sec = self.duration_time.total_seconds()
-		return '%02d' % (int((sec / 3600) % 3600))
-
-	@property
-	def convert_duration_minute(self):
-		sec = self.duration_time.total_seconds()
-		return '%02d' % (int((sec / 60) % 60))
-
-	@property
-	def convert_duration_second(self):
-		sec = self.duration_time.total_seconds()
-		return '%02d' % (int(sec))
-
-#	def count_hours(self):
-#		t = datetime.time(convert_duration_hour, convert_duration_minute, convert_duration_second)
-#		return t
-#		OvertimeClaim().hours = t
-
-#	def to_timedelta(self, value):
-#		if not value or value == '0':
-#			return TimeDelta(microseconds=0)
-
-#		pairs = []
-#		for b in value.lower().split():
-#			for index, char in enumerate(b):
-#				if not char.isdigit():
-#					pairs.append((b[:index], b[index:])) #digits, letters
-#					break
-#		if not pairs:
-#			raise ValidationError(self.error_messages['invalid'])
-
-#		microseconds = 0
-#		for digits, chars in pairs:
-#			if not digits or not chars:
-#				raise ValidationError(self.error_messages['invalid'])
-#			microseconds += int(digits) * TimeDelta.values_in_microseconds[chars]
-
-#		return TimeDelta(microseconds=microseconds)
-
-#	def get_duration(self):
-#		return self.datetime.time(convert_duration_time)
-#		return self.datetime.date(date)
-
-	class Meta:
-		verbose_name = _('Overtime Claim')
-		verbose_name_plural = _("Overtime Claim")
-
-
-class PhysioProgressNoteFront(models.Model):
+class PhysioProgressNoteSheet(models.Model):
 	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date_time = models.DateTimeField(blank=True, null=True)
 	report = models.CharField(max_length=255, blank=True, null=True)
@@ -886,49 +542,11 @@ class PhysioProgressNoteFront(models.Model):
 		return str(self.patient)
 
 	class Meta:
-		verbose_name = _('Physio Progress Note Front')
-		verbose_name_plural = _("Physio Progress Note Front")
-
-
-class PhysioProgressNoteBack(models.Model):
-	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
-	date_time = models.DateTimeField(blank=True, null=True)
-	report = models.CharField(max_length=255, blank=True, null=True)
-
-	def __str__(self):
-		return str(self.patient)
-
-	class Meta:
-		verbose_name = _('Physio Progress Note Back')
-		verbose_name_plural = _("Physio Progress Note Back")
-
-
-
-def upload_path_physiotherapygeneralassessment(instance, filename):
-	return '{0}/{1}'.format('physiotherapygeneralassessment', filename)
+		verbose_name = _('Physio Progress Note Sheet')
+		verbose_name_plural = _("Physio Progress Note Sheet")
 
 
 class PhysiotherapyGeneralAssessment(models.Model):
-
-	PAIN_SCALE_CHOICES = (
-		('1', '1'),
-		('2', '2'),
-		('3', '3'),
-		('4', '4'),
-		('5', '5'),
-		('6', '6'),
-		('7', '7'),
-		('8', '8'),
-		('9', '9'),
-		('10', '10'),
-	)
-
-	PHYSICAL_EXAMINATION_MOVEMENT_CHOICES = (
-		('Joint', _('Joint')),
-		('Active', _('Active')),
-		('Passive', _('Passive')),
-	)
-
 	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	doctor_diagnosis = models.CharField(max_length=255, blank=True, null=True)
 	doctor_management = models.CharField(max_length=255, blank=True, null=True)
@@ -983,7 +601,7 @@ class PhysiotherapyGeneralAssessment(models.Model):
 		else:
 			return _('No Front Body Thumbnail')
 
-	front_body_img.short_description = _('Front Body Thumbnail')
+	front_body_img.short_description = _('Front Body')
 
 	def back_body_img(self):
 		if self.back_body and hasattr(self.back_body, 'url'):
@@ -991,8 +609,7 @@ class PhysiotherapyGeneralAssessment(models.Model):
 		else:
 			return _('No Back Body Thumbnail')
 
-	back_body_img.short_description = _('Back Body Thumbnail')
-
+	back_body_img.short_description = _('Back Body')
 
 	class Meta:
 		verbose_name = _('Physiotherapy General Assessment')
@@ -1000,26 +617,7 @@ class PhysiotherapyGeneralAssessment(models.Model):
 
 
 class Stool(models.Model):
-	STOOL_FREQUENCY_CHOICES = (
-		('BO', 'BO'),
-		('BNO', 'BNO'),
-	)
-	CONSISTENCY_CHOICES = (
-		('Normal', _('Normal')),
-		('Hard', _('Hard')),
-		('Loose', _('Loose')),
-		('Watery', _('Watery')),
-	)
-
-	AMOUNT_CHOICES = (
-		('Scanty', _('Scanty')),
-		('Minimal', _('Minimal')),
-		('Moderate', _('Moderate')),
-		('Large', _('Large')),
-	)
-
 	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
-#	patient = models.OneToOneField(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(blank=True, null=True)
 	time = models.TimeField(blank=True, null=True)
 	frequency = models.CharField(max_length=255, blank=True, null=True)
@@ -1055,7 +653,7 @@ class VitalSignFlow(models.Model):
 	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	date = models.DateField(blank=True, null=True)
 	time = models.TimeField(blank=True, null=True)
-	temp = models.PositiveIntegerField(blank=True, null=True)
+	temp = models.DecimalField(validators=[MinValueValidator(Decimal('0.01'))], max_digits=5, decimal_places=2, blank=True, null=True)
 	pulse = models.PositiveIntegerField(blank=True, null=True)
 	blood_pressure_systolic = models.PositiveIntegerField(blank=True, null=True)
 	blood_pressure_diastolic = models.PositiveIntegerField(blank=True, null=True)
@@ -1067,5 +665,5 @@ class VitalSignFlow(models.Model):
 		return str(self.patient)
 
 	class Meta:
-		verbose_name = _('Vital Sign Flow')
-		verbose_name_plural = _("Vital Sign Flow")
+		verbose_name = _('Vital Sign Chart')
+		verbose_name_plural = _("Vital Sign Chart")

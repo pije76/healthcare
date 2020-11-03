@@ -26,6 +26,8 @@
 		{{ page_title }}
 	</div>
 
+	<p style="font-size:12px">{% include 'messages.html' %}</p>
+
 	{% include 'patient/patient_formset.html' %}
 
 	<form method="post" action="" enctype="multipart/form-data">
@@ -48,7 +50,7 @@
 			<div class="col-1 border-top">
 			</div>
 
-			<div class="col-3 col" style="border-left:1px solid #fff;">
+			<div class="col-3 col border-top" style="border-left:1px solid #fff;">
 				<div style="text-align:center;margin-top:10px;">{% trans "Front Body" %}</div>
 				<img src="{% static "images/left_body.png" %}" class="figure-img img-fluid rounded mx-auto d-block" alt="Left Body"/>
 				<div style="display:block;">{% trans "RIGHT" %}
@@ -56,7 +58,7 @@
 				{{ form.front_body|as_crispy_field }}
 			</div>
 
-			<div class="col-3 col" style="border-left:1px solid #fff;">
+			<div class="col-3 col border-top" style="border-left:1px solid #fff;">
 					<div style="text-align:center;margin-top:10px;">{% trans "Back Body" %}</div>
 				<figure class="figure">
 					<img src="{% static "images/right_body.png" %}" class="figure-img img-fluid rounded mx-auto d-block" alt="Right Body"/>
@@ -66,7 +68,7 @@
 				</figure>
 			</div>
 
-			<div class="col-1 col" style="border-left:1px solid #fff;">
+			<div class="col-1 col border-top border-right" style="border-left:1px solid #fff;">
 			</div>
 		</div>
 

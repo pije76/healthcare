@@ -1,0 +1,94 @@
+.detail_form {
+  padding: 10px 0px;
+  width: 540px;
+  background-color: #dee7ef;
+}
+.form_table {
+  padding-top: 10px;
+}
+.isi {
+  height: auto;
+  padding-bottom: 20px;
+}
+
+.footer {
+  height: 151px;
+}
+
+.table-sm {
+  width: 70%;
+}
+
+.ui-icon-trash {
+    display: inline-block;
+}
+
+#id_ic_number {
+    width: 50% !important;
+    margin-top: 5px;
+}
+
+#id_full_name_text {
+    margin-top: 5px;
+}
+
+#id_full_name_on_deck {
+    margin-top: 10px;
+    margin-bottom: -15px;
+}
+
+#div_id_ic_number > div > span {
+    width: 50% !important;
+}
+
+#div_id_full_name > div > span {
+  width: 200px;
+}
+
+#hint_id_full_name {
+  padding-top: 5px;
+}
+
+.custom-control-label {
+  padding-left: 20px;
+}
+
+.table-sm {
+  margin-bottom: 10px;
+}
+.kirim {
+  margin: 0 5px;
+}
+
+.table-sm {
+  margin-bottom: 10px;
+}
+
+.footer_info {
+  display: inline-flex;
+}
+
+#id_duration_time_0, #id_duration_time_1 {
+    margin-right: 5px;
+}
+
+.help {
+    display: none;
+}
+
+.foot_table {
+  margin-bottom: 10px;
+  border: 1px solid #dee2e6!important;
+  padding: 10px 0;
+}
+
+#id_checked_sign_by {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+#id_checked_sign_by {
+  pointer-events: none;
+  background-color: #e9ecef;
+  opacity: 1;
+}

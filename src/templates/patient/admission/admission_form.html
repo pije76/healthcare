@@ -5,16 +5,16 @@
 {% load crispy_forms_tags %}
 
 {% block headtitle %}
-    {{ page_title }} | {{ titles.title }}
+	{{ page_title }} | {{ titles.title }}
 {% endblock %}
 
 {% block extrahead %}
-	{{ patient_form.media }}
-	{{ ec_formset.media }}
+	{{ patientprofile_form.media }}
+	{{ family_formset.media }}
 	{{ admision_form.media }}
 	{{ admision_formset.media }}
 	{{ allergy_form.media }}
-	{{ medication_formset.media }}
+	{{ medication_mart_formset.media }}
 {% endblock %}
 
 {% block styles %}
@@ -35,19 +35,17 @@
 		{{ page_title }}
 	</div>
 
-	{% include 'patient/patient_form.html' %}
+	<p style="font-size:12px">{% include 'messages.html' %}</p>
 
-	<p style="font-size:12px">
-		{% include 'messages.html' %}
-	</p>
+	{% include 'patient/patient_form.html' %}
 
 	<div class="row admissionform">
 
-		<form method="post">
+		<form method="post" action="" enctype="multipart/form-data">
 			{% csrf_token %}
-			{{ ec_formset.management_form }}
+			{{ family_formset.management_form }}
 			{{ admision_formset.management_form }}
-			{{ medication_formset.management_form }}
+			{{ medication_mart_formset.management_form }}
 
 			<div class="row">
 				<div class="col-2 col" style="border-radius: 0.25rem 0 0 0;">
@@ -67,7 +65,7 @@
 					{% trans "Admitted through" %}:
 				</div>
 				<div class="col-4 col">
-					{{ admision_form.admitted|as_crispy_field }}
+					{{ admision_form.admitted_admission|as_crispy_field }}
 				</div>
 				<div class="col-3 col border-left-0">
 					{{ admision_form.admitted_others|as_crispy_field }}
@@ -81,7 +79,7 @@
 					{% trans "Mode of admission" %}:
 				</div>
 				<div class="col-10 col">
-					{{ admision_form.mode|as_crispy_field }}
+					{{ admision_form.mode_admission|as_crispy_field }}
 				</div>
 			</div>
 
@@ -91,20 +89,20 @@
 				</div>
 				<div class="col-4 col">
 					<b>
-						{{ patient_form.full_name|as_crispy_field }}
-						{{ patient_form.username|as_crispy_field }}
-						{{ patient_form.email|as_crispy_field }}
-						{{ patient_form.password|as_crispy_field }}
-						{{ patient_form.date_joined|as_crispy_field }}
-						{{ patient_form.is_patient|as_crispy_field }}
-						{{ patient_form.is_active|as_crispy_field }}
+						{{ patientprofile_form.full_name|as_crispy_field }}
+						{{ patientprofile_form.username|as_crispy_field }}
+						{{ patientprofile_form.email|as_crispy_field }}
+						{{ patientprofile_form.password|as_crispy_field }}
+						{{ patientprofile_form.date_joined|as_crispy_field }}
+						{{ patientprofile_form.is_patient|as_crispy_field }}
+						{{ patientprofile_form.is_active|as_crispy_field }}
 					</b>
 				</div>
 				<div class="col-3 col">
-					<b>{{ patient_form.ic_number|as_crispy_field }}</b>
+					<b>{{ patientprofile_form.ic_number|as_crispy_field }}</b>
 				</div>
 				<div class="col-3 col">
-					<b>{{ patient_form.ic_upload|as_crispy_field }}</b>
+					<b>{{ patientprofile_form.ic_upload|as_crispy_field }}</b>
 				</div>
 			</div>
 
@@ -113,13 +111,13 @@
 					{% trans "Age" %}:
 				</div>
 				<div class="col-4 col">
-					{{ patient_form.age|as_crispy_field }}
+					{{ patientprofile_form.age|as_crispy_field }}
 				</div>
 				<div class="col-2 col">
 					{% trans "Date of birth" %}:
 				</div>
 				<div class="col-4 col">
-					{{ patient_form.birth_date|as_crispy_field }}
+					{{ patientprofile_form.birth_date|as_crispy_field }}
 				</div>
 			</div>
 
@@ -128,7 +126,7 @@
 					{% trans "Sex / Gender" %}:
 				</div>
 				<div class="col-10 col">
-					{{ patient_form.gender|as_crispy_field }}
+					{{ patientprofile_form.gender|as_crispy_field }}
 				</div>
 			</div>
 
@@ -137,10 +135,10 @@
 					{% trans "Marital Status" %}:
 				</div>
 				<div class="col-4 col">
-					{{ patient_form.marital_status|as_crispy_field }}
+					{{ patientprofile_form.marital_status|as_crispy_field }}
 				</div>
 				<div class="col-3 col border-left-0">
-					{{ patient_form.marital_status_others|as_crispy_field }}
+					{{ patientprofile_form.marital_status_others|as_crispy_field }}
 				</div>
 				<div class="col-3 col border-left-0">
 				</div>
@@ -151,10 +149,10 @@
 					{% trans "Religion" %}:
 				</div>
 				<div class="col-6 col">
-					{{ patient_form.religion|as_crispy_field }}
+					{{ patientprofile_form.religion|as_crispy_field }}
 				</div>
 				<div class="col-3 col border-left-0">
-					{{ patient_form.religion_others|as_crispy_field }}
+					{{ patientprofile_form.religion_others|as_crispy_field }}
 				</div>
 				<div class="col-1 col border-left-0">
 				</div>
@@ -165,10 +163,10 @@
 					{% trans "Occupation" %}:
 				</div>
 				<div class="col-4 col">
-					{{ patient_form.occupation|as_crispy_field }}
+					{{ patientprofile_form.occupation|as_crispy_field }}
 				</div>
 				<div class="col-3 col border-left-0">
-					{{ patient_form.occupation_others|as_crispy_field }}
+					{{ patientprofile_form.occupation_others|as_crispy_field }}
 				</div>
 				<div class="col-3 col border-left-0">
 				</div>
@@ -179,7 +177,7 @@
 					{% trans "Communication" %}:
 				</div>
 				<div class="col-10 col">
-					{{ patient_form.communication_sight|as_crispy_field }}
+					{{ patientprofile_form.communication_sight|as_crispy_field }}
 				</div>
 			</div>
 
@@ -187,10 +185,10 @@
 				<div class="col-2 col border-top-0">
 				</div>
 				<div class="col-4 col">
-					{{ patient_form.communication_hearing|as_crispy_field }}
+					{{ patientprofile_form.communication_hearing|as_crispy_field }}
 				</div>
 				<div class="col-3 col border-left-0">
-					{{ patient_form.communication_hearing_others|as_crispy_field }}
+					{{ patientprofile_form.communication_hearing_others|as_crispy_field }}
 				</div>
 				<div class="col-3 col border-left-0">
 				</div>
@@ -201,30 +199,30 @@
 					{% trans "Address" %}:
 				</div>
 				<div class="col-10 col">
-					{{ patient_form.address|as_crispy_field }}
+					{{ patientprofile_form.address|as_crispy_field }}
 				</div>
 			</div>
 
-			<div class="row formSet_Emerg">
-				<div class="col-2 col border-bottom">
+			<div class="row formSet_Emerg border">
+				<div class="col-2 col">
 					{% trans "Emergency contact" %}:
 				</div>
 
-				{% for obj in ec_formset.forms %}
+				{% for item in family_formset.forms %}
 				<div class="col-4 col border-bottom">
-					{{ obj.patient|as_crispy_field }}
+					{{ item.patient|as_crispy_field }}
 					{% trans "Name" %}:
-					{{ obj.ec_name|as_crispy_field }}
+					{{ item.ec_name|as_crispy_field }}
 					{% trans "IC No" %}:
-					{{ obj.ec_ic_number|as_crispy_field }}
-					{% trans "Upload IC" %}:
-					{{ obj.ec_ic_upload|as_crispy_field }}
+					{{ item.ec_ic_number|as_crispy_field }}
+					{% trans "IC Upload" %}:
+					{{ item.ec_ic_upload|as_crispy_field }}
 					{% trans "Relationship" %}:
-					{{ obj.ec_relationship|as_crispy_field }}
+					{{ item.ec_relationship|as_crispy_field }}
 					{% trans "Contact No" %}:
-					{{ obj.ec_phone|as_crispy_field }}
+					{{ item.ec_phone|as_crispy_field }}
 					{% trans "Address" %}:
-					{{ obj.ec_address|as_crispy_field }}
+					{{ item.ec_address|as_crispy_field }}
 				</div>
 				{% endfor %}
 				<div class="col-1 col border-bottom hapus_Emerg"></div>
@@ -353,6 +351,8 @@
 			<div class="row">
 				<div class="col-2 col">
 					{% trans "Allergy" %}:
+					{{ allergy_form.patient|as_crispy_field }}
+					{{ allergy_form.medication_date|as_crispy_field }}
 				</div>
 				<div class="col-3 col">
 					{{ allergy_form.allergy_drug|as_crispy_field }}
@@ -452,6 +452,7 @@
 				<div class="col-6"></div>
 				<div class="col-1"></div>
 			</div>
+			{% endfor %}
 
 			<div class="row">
 				<div class="col-2 col">
@@ -465,8 +466,10 @@
 				</div>
 			</div>
 
+			{% for item in admision_formset.forms %}
 			<div class="row formSet_Opr">
 				<div class="col-2 col border-bottom">
+					{{ item.patient|as_crispy_field }}
 				</div>
 				<div class="col-3 col border-bottom">
 					{{ item.date_operation|as_crispy_field }}
@@ -485,47 +488,62 @@
 			</div>
 			{% endfor %}
 
-			{% for item in medication_formset.forms %}
 			<div class="row">
 				<div class="col-2 col">
 					{% trans "Own medication" %}:
 				</div>
 				<div class="col-10 col">
-					{{ item.medication|as_crispy_field }}
+					{{ own_medication_form_mart.medication_date|as_crispy_field }}
+					{{ own_medication_form_mart.own_medication|as_crispy_field }}
 				</div>
 			</div>
 
 
+			{% for item in medication_mart_formset.forms %}
 			<div class="row">
 				<div class="col-2 col border-top-0">
 				</div>
-				<div class="col-3 col text-center">
-					{% trans "Drug Name" %}:
-				</div>
 				<div class="col-2 col text-center">
-					{% trans "Dosage" %}:
-				</div>
-				<div class="col-2 col text-center">
-					{% trans "Tablet/Capsule/MLS" %}:
+					{% trans "Time" %}
 				</div>
 				<div class="col-3 col text-center">
-					{% trans "Frequency" %}:
+					{% trans "Drug Name" %}
+				</div>
+				<div class="col-2 col text-center">
+					{% trans "Dosage" %}/{% trans "Unit" %}
+				</div>
+				<div class="col-1 col text-center">
+					{% trans "Tab/Cap" %}
+				</div>
+				<div class="col-1 col text-center">
+					{% trans "Frequency" %}
+				</div>
+				<div class="col-1 col">
 				</div>
 			</div>
 
 			<div class="row formSet_Own">
 				<div class="col-2 col border-top-0">
+					{{ item.patient|as_crispy_field }}
+					{{ item.own_medication|as_crispy_field }}
+					{{ item.medication_date|as_crispy_field }}
+				</div>
+				<div class="col-2 col">
+					{{ item.medication_time|as_crispy_field }}
 				</div>
 				<div class="col-3 col">
 					{{ item.medication_drug_name|as_crispy_field }}
 				</div>
-				<div class="col-2 col">
+				<div class="col-1 col">
 					{{ item.medication_dosage|as_crispy_field }}
 				</div>
-				<div class="col-2 col">
+				<div class="col-1 col">
+					{{ item.medication_unit|as_crispy_field }}
+				</div>
+				<div class="col-1 col">
 					{{ item.medication_tablet_capsule|as_crispy_field }}
 				</div>
-				<div class="col-2 col">
+				<div class="col-1 col">
 					{{ item.medication_frequency|as_crispy_field }}
 				</div>
 				<div class="col-1 col hapus_Own"></div>
@@ -604,68 +622,97 @@ $(document).ready(function()
 
 	$(function()
 	{
-	    $('.formSet_Emerg').formset({
-	    	prefix: 'formset',
-	        addCssClass: 'btn btn-success',
-	        addText: '<i class="fas fa-plus"></i>',
-	        deleteCssClass: 'btn btn-danger',
-	        deleteText: '<i class="fas fa-minus"></i>',
-	        keepFieldValues : '#id_ec_formset-0-patient, #id_ec_formset-0-date, #id_ec_formset-0-time, #id_ec_formset-0-done_by',
-	        deleteContainerClass: 'hapus_Emerg',
-	        addContainerClass: 'tambah_Emerg',
-	    })
+		$('.formSet_Emerg').formset({
+			prefix: 'family_formset',
+			addCssClass: 'btn btn-success',
+			addText: '<i class="fas fa-plus"></i>',
+			deleteCssClass: 'btn btn-danger',
+			deleteText: '<i class="fas fa-minus"></i>',
+			keepFieldValues : '#id_family_formset-0-patient, #id_family_formset-0-date, #id_family_formset-0-time, #id_family_formset-0-done_by',
+			deleteContainerClass: 'hapus_Emerg',
+			addContainerClass: 'tambah_Emerg',
+		})
 	});
 
 	$(function()
 	{
-	    $('.formSet_Diag').formset({
-	    	prefix: 'formset',
-	        addCssClass: 'btn btn-success',
-	        addText: '<i class="fas fa-plus"></i>',
-	        deleteCssClass: 'btn btn-danger',
-	        deleteText: '<i class="fas fa-minus"></i>',
-	        keepFieldValues: '#id_admision_formset-0-patient, #id_admision_formset-0-date_diagnosis',
-	        deleteContainerClass: 'hapus_Diag',
-	        addContainerClass: 'tambah_Diag',
-	    })
+		$('.formSet_Diag').formset({
+			prefix: 'admision_formset',
+			addCssClass: 'btn btn-success',
+			addText: '<i class="fas fa-plus"></i>',
+			deleteCssClass: 'btn btn-danger',
+			deleteText: '<i class="fas fa-minus"></i>',
+			keepFieldValues: '#id_admision_formset-0-patient, #id_admision_formset-0-date_diagnosis',
+			deleteContainerClass: 'hapus_Diag',
+			addContainerClass: 'tambah_Diag',
+			added: function(row)
+			{
+				$(row).find('[id$="date_diagnosis"]').removeClass('datepickerinput').removeAttr('#id_admision_formset-0-date_diagnosis').removeData('DateTimePicker').unbind().datetimepicker(
+					options=
+					{
+						"format": "DD-MM-YYYY",
+					});
+			},
+		})
 	});
 
 	$(function()
 	{
-	    $('.formSet_Opr').formset({
-	    	prefix: 'formset',
-	        addCssClass: 'btn btn-success',
-	        addText: '<i class="fas fa-plus"></i>',
-	        deleteCssClass: 'btn btn-danger',
-	        deleteText: '<i class="fas fa-minus"></i>',
-	        keepFieldValues: '#id_admision_formset-0-date_operation',
-	        deleteContainerClass: 'hapus_Opr',
-	        addContainerClass: 'tambah_Opr',
-	    })
+		$('.formSet_Opr').formset({
+			prefix: 'admision_formset',
+			addCssClass: 'btn btn-success',
+			addText: '<i class="fas fa-plus"></i>',
+			deleteCssClass: 'btn btn-danger',
+			deleteText: '<i class="fas fa-minus"></i>',
+			keepFieldValues: '#id_admision_formset-0-patient, #id_admision_formset-0-date_operation',
+			deleteContainerClass: 'hapus_Opr',
+			addContainerClass: 'tambah_Opr',
+			added: function(row)
+			{
+				$(row).find('[id$="date_operation"]').removeClass('datepickerinput').removeAttr('#id_admision_formset-0-date_operation').removeData('DateTimePicker').unbind().datetimepicker(
+					options=
+					{
+						"format": "DD-MM-YYYY",
+					});
+			},
+		})
 	});
 
 	$(function()
 	{
-	    $('.formSet_Own').formset({
-	    	prefix: 'formset',
-	        addCssClass: 'btn btn-success',
-	        addText: '<i class="fas fa-plus"></i>',
-	        deleteCssClass: 'btn btn-danger',
-	        deleteText: '<i class="fas fa-minus"></i>',
-	        keepFieldValues: '#id_medication_formset-0-medication_dosage, #id_medication_formset-0-medication_tablet_capsule, #id_medication_formset-0-medication_frequency',
-	        deleteContainerClass: 'hapus_Own',
-	        addContainerClass: 'tambah_Own',
-	        added: function(row)
-	        {
-	        	$(row).find("[id$='drug_name']").removeClass("disabled_input");
-	        	$(row).find("[id$='dosage']").removeClass("disabled_input");
-	        	$(row).find("[id$='tablet_capsule']").removeClass("disabled_input");
-	        	$(row).find("[id$='frequency']").removeClass("disabled_input");
-	        	$(row).find('.hapus_Own').removeClass("disabled");
-	        	$(row).find('.tambah_Own').removeClass("disabled");
-	        },
+		$('.formSet_Own').formset({
+			prefix: 'medication_mart_formset',
+			addCssClass: 'btn btn-success',
+			addText: '<i class="fas fa-plus"></i>',
+			deleteCssClass: 'btn btn-danger',
+			deleteText: '<i class="fas fa-minus"></i>',
+			keepFieldValues: '#id_medication_mart_formset-0-patient, #id_medication_mart_formset-0-own_medication_2, #id_medication_mart_formset-0-medication_date, #id_medication_mart_formset-0-medication_time, #id_medication_mart_formset-0-medication_dosage, #id_medication_mart_formset-0-medication_unit, #id_medication_mart_formset-0-medication_tablet_capsule, #id_medication_mart_formset-0-medication_frequency',
+			deleteContainerClass: 'hapus_Own',
+			addContainerClass: 'tambah_Own',
+			added: function(row)
+			{
+				$(row).find("[id$='medication_time']").removeClass("disabled_input");
+				$(row).find("[id$='drug_name']").removeClass("disabled_input");
+				$(row).find("[id$='dosage']").removeClass("disabled_input");
+				$(row).find("[id$='unit']").removeClass("disabled_input");
+				$(row).find("[id$='tablet_capsule']").removeClass("disabled_input");
+				$(row).find("[id$='frequency']").removeClass("disabled_input");
+				$(row).find('.hapus_Own').removeClass("disabled");
+				$(row).find('.tambah_Own').removeClass("disabled");
 
-	    })
+				$(row).find('[id$="medication_date"]').removeClass('datepickerinput').removeAttr('#div_id_medication_mart_formset-0-medication_date').removeData('DateTimePicker').unbind().datetimepicker(
+					options=
+					{
+						"format": "DD-MM-YYYY",
+					});
+
+				$(row).find('[id$="medication_time"]').removeClass('timepickerinput').removeAttr('#div_id_medication_mart_formset-0-medication_time').removeData('DateTimePicker').unbind().datetimepicker(
+					options=
+					{
+						"format": "HH:mm",
+					});
+			},
+		})
 	});
 
 

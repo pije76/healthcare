@@ -12,15 +12,6 @@ from customers.models import *
 
 from bootstrap_modal_forms.generic import *
 
-startdate = datetime.date.today()
-enddate = startdate + datetime.timedelta(days=1)
-
-start_time_day = datetime.datetime.strptime('00:00', '%H:%M').time()
-end_time_day = datetime.datetime.strptime('12:00', '%H:%M').time()
-start_time_night = datetime.datetime.strptime('12:01', '%H:%M').time()
-end_time_night = datetime.datetime.strptime('23:59', '%H:%M').time()
-
-
 
 @login_required
 def maintenance_list(request, username):
@@ -104,6 +95,15 @@ class MaintenanceUpdateView(BSModalUpdateView):
     form_class = Maintenance_ModelForm
     page_title = _('Maintenance Form')
     success_message = _(page_title + ' form has been save successfully.')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=None)
+        form.fields['date'].label = _("Date")
+        form.fields['items'].label = _("Items")
+        form.fields['location_room'].label = _("Location Room")
+        form.fields['reported_by'].label = _("Reported by")
+        form.fields['status'].label = _("Status")
+        return form
 
     def get_success_url(self):
         username = self.kwargs['username']

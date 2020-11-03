@@ -6,6 +6,7 @@ from django.utils.datastructures import MultiValueDict
 from ..models import *
 from ..forms import *
 from ..lookups import *
+from ..choices import *
 #from .custom_layout import *
 from accounts.models import *
 
@@ -15,19 +16,28 @@ from bootstrap_modal_forms.forms import *
 class Stool_ModelForm(BSModalModelForm):
 	class Meta:
 		model = Stool
-		fields = '__all__'
+		fields = [
+			'patient',
+			'date',
+			'time',
+			'frequency',
+			'consistency',
+			'amount',
+			'remark',
+			'done_by',
+		]
 		widgets = {
-#           patient': forms.HiddenInput(),
+			'patient': forms.HiddenInput(),
 		}
 
-	patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': "form-control"}))
+#	patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
 	time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
-	frequency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=Stool.STOOL_FREQUENCY_CHOICES)
-	consistency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=Stool.CONSISTENCY_CHOICES)
-	amount = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=Stool.AMOUNT_CHOICES)
+	frequency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=STOOL_FREQUENCY_CHOICES)
+	consistency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=CONSISTENCY_CHOICES)
+	amount = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=AMOUNT_CHOICES)
 	remark = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	done_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	done_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'readonly': 'readonly'}))
 
 
 class Stool_Form(BSModalForm):
@@ -57,14 +67,16 @@ class Stool_Form(BSModalForm):
 
 	patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 #	patient = forms.ModelChoiceField(queryset=None, widget=forms.Select, required=True)
-	date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d/%m/%Y", attrs={'class': "form-control"}))
+	date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
 	time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
-	frequency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=Stool.STOOL_FREQUENCY_CHOICES)
-	consistency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=Stool.CONSISTENCY_CHOICES)
-	amount = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=Stool.AMOUNT_CHOICES)
+	frequency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=STOOL_FREQUENCY_CHOICES)
+	consistency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=CONSISTENCY_CHOICES)
+	amount = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=AMOUNT_CHOICES)
 	remark = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	done_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	done_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'readonly': 'readonly'}))
 
+	def clean_remark(self):
+		return self.cleaned_data['remark'].capitalize()
 
 Stool_ModelFormSet = modelformset_factory(
 	Stool,

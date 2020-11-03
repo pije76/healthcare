@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% load selectable_tags %}
+
+{% block headtitle %}
+    {{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block styles %}
+	<link href="{% static 'css/staff/staff.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/staff/overtime_claim.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'selectable/css/dj.selectable.css' %}" type="text/css" media="all" rel="stylesheet">
+{% endblock %}
+
+{% block extrahead %}
+	{{ form.media }}
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+	<div class="row formtitle">
+		{{ page_title }}
+	</div>
+
+	{% load static %}
+
+	<div class="row border rounded detail_form">
+
+		<div class="col-4">
+			<span id="name_title">{% trans "Name" %}:</span>
+		</div>
+		<div class="col-4">
+			<span id="name_field">
+				{{ staffs }}
+			</span>
+		</div>
+
+		<div class="w-100"></div>
+
+		<div class="col-4">
+			<span id="name_title">{% trans "IC Number" %}:</span>
+		</div>
+		<div class="col-4">
+			<span id="name_field">{{ icnumbers }}</span>
+		</div>
+
+	</div>
+
+	<form method="post">
+	{% csrf_token %}
+
+		<div class="row rounded form_table">
+
+			<table id="form_set" class="table table-bordered">
+				<thead class="thead_light">
+					<tr>
+						<th class="text-center">{% trans "Date" %}</th>
+						<th class="text-center">{% trans "Time From" %}</th>
+						<th class="text-center">{% trans "Time To" %}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{ form.date|as_crispy_field }}</td>
+						<td>
+							{{ form.duration_time_from|as_crispy_field }}
+						</td>
+						<td>
+							{{ form.duration_time_to|as_crispy_field }}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+
+		<div class="row border rounded foot_table">
+
+			<div class="col-3">
+				{% trans "Checked and sign by" %}:
+			</div>
+			<div class="col-3">
+				{{ form.checked_sign_by|as_crispy_field }}
+			</div>
+
+			<div class="w-100"></div>
+
+			<div class="col-3">
+				{% trans "Verify by" %}:
+			</div>
+			<div class="col-4 d-flex">
+				({{ form.verify_by|as_crispy_field }})
+			</div>
+
+		</div>
+
+		<div class="row">
+
+			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+			{% for item in profiles %}
+			<a class="btn btn-outline-primary kirim" href="{% url 'staff:overtime_claim_pdf' item.username %}"><i style="font-size:24px;" class="fa fa fa-print fa-2x"></i> Print</a>
+			<a class="btn btn-danger" href="{% url 'staff:staffdata_detail' item.username %}">{% trans "Cancel" %}</a>
+			{% endfor %}
+
+		</div>
+
+	</form>
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="{% static 'selectable/js/jquery.dj.selectable.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/staff/overtime_claim.js' %}"></script>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+$(document).ready(function()
+{
+	$("#id_checked_sign_by").change(function()
+	{
+		var url = $("#dataForm").attr("data-url");
+		var fullnameId = $(this).val();
+		console.log("url: ", url);
+		console.log("fullnameId: ", fullnameId);
+		$.ajax(
+		{
+			url: url,
+			data:
+			{
+				'full_name': fullnameId,
+			},
+
+			success: function(data)
+			{
+				$("#id_ic_number").val(data);
+			},
+		});
+	});
+});
+</script>
+{% endblock %}

@@ -31,6 +31,8 @@
 		{{ page_title }}
 	</div>
 
+	<p style="font-size:12px">{% include 'messages.html' %}</p>
+
 	{% include 'patient/patient_formset.html' %}
 
 	<form method="post">
@@ -60,25 +62,34 @@
 		<div class="row rounded form_table">
 
 			<table id="form_set" class="table table-bordered">
-				<thead class="thead-light">
+				<thead class="thead_light">
 					<tr>
-						<th class="text-center row_medication_date">{% trans "Date" %}</th>
 						<th class="text-center">{% trans "Time" %}</th>
-						<th class="text-center">{% trans "Medication" %}</th>
-						<th class="text-center">{% trans "Status" %}</th>
-						<th class="text-center">{% trans "Done" %}</th>
-						<th class="text-center">{% trans "Action" %}</th>
+						<th class="text-center" style="width:auto;">{% trans "Medicine" %}</th>
+						<th class="text-center" style="width:auto;">{% trans "Dosage" %}</th>
+						<th class="text-center" style="width:10%;">{% trans "Unit" %}</th>
+						<th class="text-center" style="width:auto;">{% trans "Tab/Cap/MLS" %}</th>
+						<th class="text-center">{% trans "Frequency" %}</th>
+						<th class="text-center" style="width:12%;">{% trans "Source" %}</th>
+						<th class="text-center" style="width:10%;">{% trans "Route" %}</th>
+						<th class="text-center" style="width:10%;">{% trans "Status" %}</th>
+						<th class="text-center custom_checkbox">{% trans "Done" %}</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for item in formset.forms %}
+					{{ item.id|as_crispy_field }}{{ item.patient|as_crispy_field }}{{ item.medication_date|as_crispy_field }}
 					<tr id="{{ item.prefix }}-row">
-						<td class="{{ item.prefix }}_date_field">{{ item.medication_date|as_crispy_field }}</td>
-						<td class="{{ item.prefix }}_time_field">{{ item.medication_time|as_crispy_field }}</td>
-						<td>{{ item.medication|as_crispy_field }}</td>
-						<td>{{ item.status_nurse|as_crispy_field }}</td>
-						<td>{{ item.done|as_crispy_field }}</td>
-						<td class="aksi"></td>
+						<td>{{ item.medication_time|as_crispy_field }}</td>
+						<td>{{ item.medication_drug_name|as_crispy_field }}</td>
+						<td>{{ item.medication_dosage|as_crispy_field }}</td>
+						<td>{{ item.medication_unit|as_crispy_field }}</td>
+						<td>{{ item.medication_tablet_capsule|as_crispy_field }}</td>
+						<td>{{ item.medication_frequency|as_crispy_field }}</td>
+						<td>{{ item.medication_source|as_crispy_field }}</td>
+						<td>{{ item.medication_route|as_crispy_field }}</td>
+						<td>{{ item.medication_status|as_crispy_field }}</td>
+						<td>{{ item.medication_done|as_crispy_field }}</td>
 					</tr>
 					{% endfor %}
 				</tbody>
@@ -117,17 +128,16 @@ $(document).ready(function()
 	{
 		$('#form_set tbody tr').formset(
 		{
-			addCssClass: 'btn btn-success',
-			addText: '<i class="fas fa-plus"></i>',
-			deleteCssClass: 'btn btn-danger',
-			deleteText: '<i class="fas fa-minus"></i>',
-			keepFieldValues: '#id_form-0-medication_date, #id_form-0-medication_time, #id_form-0-medication, #id_form-0-status_nurse',
+			prefix: 'formset',
+			addText: '',
+			deleteText: '',
+			keepFieldValues: '#id_form-0-medication_date, #id_form-0-medication_time, #id_form-0-medication, #id_form-0-medication_status',
 			added: function(row)
 			{
 				$(row).find('[id$="medication_date"]').removeClass('datepickerinput').removeAttr('#id_form-0-medication_date').removeData('DateTimePicker')
 			.unbind().datetimepicker(
 				options={
-					"format": "DD/MM/YYYY",
+					"format": "DD-MM-YYYY",
 				});
 
 				$(row).find('[id$="medication_time"]').removeClass('timepickerinput').removeAttr('#id_form-0-medication_time').removeData('DateTimePicker')
@@ -138,6 +148,18 @@ $(document).ready(function()
 			},
 		});
 	});
+
+	$('#id_medication_date').on('dp.change', function(e)
+	{
+		var datenew = $(this).val();
+		if(datenew != '')
+		{
+			$('.date_filter').val(datenew);
+			t.search(this.value).draw();
+		}
+
+	});
+
 });
 </script>
 {% endblock %}

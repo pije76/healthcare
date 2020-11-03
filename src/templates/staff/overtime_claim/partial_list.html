@@ -1,0 +1,16 @@
+{% for item in staffs %}
+<tr>
+    <td>{{ item.date|date:"d-m-Y" }}</td>
+    <td>{{ item.duration_time_from|date:"H:i" }}</td>
+    <td>{{ item.duration_time_to }}</td>
+    <td>{{ item.total_hours|floatformat:"1" }} hours</td>
+    <td>{{ item.checked_sign_by }}</td>
+    <td>{{ item.verify_by }}</td>
+    <td>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'staff:overtime_claim_edit' item.staff.username item.id %}" data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'staff:overtime_claim_delete' item.staff.username item.id %}" data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
+        </button>
+    </td>
+</tr>
+{% endfor %}

@@ -17,32 +17,32 @@
 {% csrf_token %}
 
 	<div class="modal-header">
-		<h4 class="modal-title">{% trans "Edit Cannulation" %}</h4>
+		<h4 class="modal-title">{% trans "Edit Nasogastric Tube Chart" %}</h4>
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
     </div>
 
 	<div class="modal-body">
         <div class="form-group">
             <div class="col-6 col">
-                {{ form.patient|as_crispy_field }}
+            {{ form.patient|as_crispy_field }}
             </div>
             <div class="col-12 col">
-            {{ form.nasogastric_tube_date }}
+            {{ form.nasogastric_tube_date|as_crispy_field }}
             </div>
             <div class="col-12 col">
-            {{ form.nasogastric_tube_size }}
+            {{ form.nasogastric_tube_size|as_crispy_field }}
             </div>
             <div class="col-12 col">
-            {{ form.nasogastric_tube_type }}
+            {{ form.nasogastric_tube_type|as_crispy_field }}
             </div>
             <div class="col-12 col">
-            {{ form.nasogastric_tube_location }}
+            {{ form.nasogastric_tube_location|as_crispy_field }}
             </div>
             <div class="col-12 col">
-            {{ form.nasogastric_tube_due_date }}
+            {{ form.nasogastric_tube_due_date|as_crispy_field }}
             </div>
             <div class="col-12 col">
-            {{ form.nasogastric_tube_inserted_by }}
+            {{ form.nasogastric_tube_inserted_by|as_crispy_field }}
             </div>
         </div>
 	</div>

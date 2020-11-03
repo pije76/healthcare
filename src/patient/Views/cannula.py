@@ -4,26 +4,20 @@ from django.db import connection
 from django.db.models import F, Func, Value, CharField
 from django.db.models import Value, CharField
 from django.db.models.functions import Cast, Concat, ExtractYear, ExtractMonth, ExtractDay, ExtractHour, ExtractMinute
-from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
+from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 
 from patient.models import *
 from patient.Forms.cannula import *
 from accounts.models import *
 from customers.models import *
+from accounts.models import *
+from accounts.decorators import *
 
 from bootstrap_modal_forms.generic import *
-
-startdate = datetime.date.today()
-enddate = startdate + datetime.timedelta(days=1)
-
-start_time_day = datetime.datetime.strptime('00:00', '%H:%M').time()
-end_time_day = datetime.datetime.strptime('12:00', '%H:%M').time()
-start_time_night = datetime.datetime.strptime('12:01', '%H:%M').time()
-end_time_night = datetime.datetime.strptime('23:59', '%H:%M').time()
 
 
 @login_required
@@ -31,7 +25,7 @@ def cannula_list(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = _('Cannula Chart')
+	page_title = _('Cannulation Chart')
 	patientid = UserProfile.objects.get(username=username).id
 	patients = Cannula.objects.filter(patient=patientid)
 	profiles = UserProfile.objects.filter(pk=patientid)
@@ -52,7 +46,7 @@ def cannula_create(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = _('Cannula Chart')
+	page_title = _('Cannulation Chart')
 	patients = get_object_or_404(UserProfile, username=username)
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
@@ -105,12 +99,23 @@ def cannula_create(request, username):
 	return render(request, 'patient/cannula/cannula_form.html', context)
 
 
+@method_decorator(admin_required, name='dispatch')
 class CannulaUpdateView(BSModalUpdateView):
 	model = Cannula
 	template_name = 'patient/cannula/partial_edit.html'
 	form_class = Cannula_ModelForm
 	page_title = _('Cannula Form')
 	success_message = _(page_title + ' form has been save successfully.')
+
+	def get_form(self, form_class=None):
+		form = super().get_form(form_class=None)
+		form.fields['cannula_date'].label = _("Date")
+		form.fields['cannula_size'].label = _("Size")
+		form.fields['cannula_location'].label = _("Location")
+		form.fields['cannula_due_date'].label = _("Due Date")
+		form.fields['cannula_remove_date'].label = _("Remove Date")
+		form.fields['cannula_remove_by'].label = _("Remove by")
+		return form
 
 	def get_success_url(self):
 		username = self.kwargs['username']
@@ -120,6 +125,7 @@ class CannulaUpdateView(BSModalUpdateView):
 cannula_edit = CannulaUpdateView.as_view()
 
 
+@method_decorator(admin_required, name='dispatch')
 class CannulaDeleteView(BSModalDeleteView):
 	model = Cannula
 	template_name = 'patient/cannula/partial_delete.html'

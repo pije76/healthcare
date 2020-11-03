@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load selectable_tags %}
+
+{% block headtitle %}
+    {{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block content %}
+
+{% block styles %}
+	<link href="{% static 'css/patient/discharge_checklist.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'selectable/css/dj.selectable.css' %}" type="text/css" media="all" rel="stylesheet">
+{% endblock %}
+
+{% block javascript %}
+    <script src="{% static 'js/jquery.formset.js' %}"></script>
+    <script type="text/javascript" src="{% static 'selectable/js/jquery.dj.selectable.js' %}"></script>
+{% endblock %}
+
+{% block extrahead %}
+	{{ form.media }}
+	{{ formset.media }}
+{% endblock %}
+
+<div class="container-fluid">
+
+	<div class="row formtitle">
+		{{ page_title }}
+	</div>
+
+	<p style="font-size:12px">{% include 'messages.html' %}</p>
+
+	<div class="col-12 border" style="padding-top: 10px;padding-bottom: 10px; margin: 10px;">
+
+		<form method="post" id="dataForm" novalidate>
+			{% csrf_token %}
+			{{ formset.management_form }}
+			<div class="discharge_checklist_body">
+
+				<div class="row">
+					<div class="col-2">
+						{% trans "Instruction" %}:
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12 border-bottom">
+						{% trans "Please tick the appropriate boxes / *delete or specify where applicable" %}:
+					</div>
+				</div>
+
+				<br />
+
+				<div class="row">
+					<div class="col-7">
+						<p class="font-weight-bold">{% trans "Discharge Status" %}</p>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-7">
+						{% render_field form.discharge_status class="form-inline discharge" %}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-7">
+						<p class="font-weight-bold">{% trans "Discharge Checklist" %}</p>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-4">
+						{% trans "Nasogastric tube  - Due date" %}:
+					</div>
+					<div class="col-4">
+						{{ form.nasogastric_tube_date|as_crispy_field }}
+					</div>
+					<div class="col-4">
+						{% render_field form.nasogastric_tube class="form-inline discharge" %}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-4">
+						{% trans "Urinary Catheter - Due date" %}:
+					</div>
+					<div class="col-4">
+						{{ form.urinary_catheter_date|as_crispy_field }}
+					</div>
+					<div class="col-4">
+						{% render_field form.urinary_catheter class="form-inline discharge" %}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-4">
+						{% trans "Surgical dressing *intact" %}
+					</div>
+					<div class="col-4">
+					</div>
+					<div class="col-4">
+						{% render_field form.surgical_dressing_intact class="form-inline discharge" %}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-8">
+						{% trans "Spectacle / Walking aid / Denture *returned to patient / relative" %}
+					</div>
+					<div class="col-4">
+						{% render_field form.spectacle_walking_aid_denture class="form-inline discharge" %}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-8">
+						{% trans "Appointment card returned" %}
+					</div>
+					<div class="col-4">
+						{% render_field form.appointment_card_returned class="form-inline discharge" %}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-8">
+						{% trans "Own medication return" %}
+					</div>
+					<div class="col-4">
+						{% render_field form.own_medication_return class="form-inline discharge" %}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-8">
+						{% trans "Medication Reconcilation with patient / relative*" %}
+					</div>
+
+					<div class="col-4">
+						{% render_field form.medication_reconcilation class="form-inline discharge" %}
+					</div>
+
+				</div>
+
+				<div class="row" style="margin-left: 5px;">
+					<ol class="col-md-4 formSet">
+						{% for item in formset.forms %}
+						<li>
+							{{ item.patient|as_crispy_field }}
+							{{ item.medication_reconcilation_patient|as_crispy_field }}
+						</li>
+						{% endfor %}
+					</ol>
+				</div>
+				<div class="row">
+					<div class="col-md-4 tambah_Diag">
+					</div>
+				</div>
+
+				<br />
+
+				<div class="row">
+					<div class="col-6">
+						{% trans "With reference(s) to above information ( where applicable )," %}
+					</div>
+					<div class="col-12">
+						{% trans "I have been instructed of the above information, received the documents and collected all my belongings." %}
+					</div>
+				</div>
+				<br />
+
+				<div class="row">
+					<div class="col-6">
+						{% trans "Name of Patient / Next of Kin" %}:
+					</div>
+					<div class="col-6">
+						<input type="text" name="patient" class="form-control" value="{{ patients }}">
+					</div>
+				</div>
+				<br />
+
+				<div class="row">
+					<div class="col-6">
+						{% trans "Date & Time" %}:
+					</div>
+					<div class="col-6">
+						{{ form.date_time|as_crispy_field }}
+					</div>
+				</div>
+				<br />
+
+				<div class="row">
+					<div class="col-6">
+						{% trans "Item(s) / Information / Advice given by" %}:
+					</div>
+					<div class="col-6">
+						{{ form.given_by|as_crispy_field }}
+					</div>
+				</div>
+				<br />
+			</div>
+			<br />
+			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+			{% for item in profiles %}
+			<a class="btn btn-danger" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+			{% endfor %}
+		</form>
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type='text/javascript'>
+$(document).ready(function()
+{
+	$('[id^="id_date_time"]').wrapAll("<div class='row' style='border:none;'></div>");
+	$('[id^="id_date_time"]').wrap("<div class='col' style='border:none;'></div>");
+
+	$('.formSet li').formset(
+		{
+			prefix: 'form',
+			addCssClass: 'btn btn-success',
+			addText: '<i class="fas fa-plus"></i>',
+			deleteCssClass: 'btn btn-danger',
+			deleteText: '<i class="fas fa-minus"></i>',
+			keepFieldValues: '#id_form-0-medication_reconcilation_patient, #id_form-0-patient',
+//			deleteContainerClass: 'hapus_Diag',
+//			addContainerClass: 'tambah_Diag',
+			added: function(row)
+			{
+				$(row).find('[id$="date"]').removeClass('datepickerinput').removeAttr('#id_form-0-date').removeData('DateTimePicker')
+			.unbind().datetimepicker(
+				options={
+					"format": "DD-MM-YYYY",
+				});
+
+				$(row).find('[id$="time"]').removeClass('timepickerinput').removeAttr('#id_form-0-time').removeData('DateTimePicker')
+			.unbind().datetimepicker(
+				options={
+					"format": "HH:mm",
+				});
+			},
+		});
+});
+</script>
+{% endblock %}

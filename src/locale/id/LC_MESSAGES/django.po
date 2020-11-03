@@ -264,7 +264,7 @@ msgstr ""
 #: patient_data/views.py:575 patient_form/views.py:890
 #: templates/patient_data/patient_detail.html:119
 #: templates/patient_data/patient_detail.html:196
-msgid "Vital Sign Flow Sheet"
+msgid "Vital Sign Chart"
 msgstr ""
 
 #: patient_form/forms.py:28 patient_form/forms.py:43
@@ -314,7 +314,7 @@ msgid "Address:"
 msgstr ""
 
 #: patient_form/forms.py:75
-msgid "Drug(s):"
+msgid "Medicine(s):"
 msgstr ""
 
 #: patient_form/forms.py:76
@@ -459,11 +459,11 @@ msgid "ETT"
 msgstr ""
 
 #: patient_form/models.py:110
-msgid "Nasogastric tube"
+msgid "Nasogastric Tube"
 msgstr ""
 
 #: patient_form/models.py:111
-msgid "Urinary catheter"
+msgid "Urinary Catheter"
 msgstr ""
 
 #: patient_form/models.py:112
@@ -582,11 +582,11 @@ msgstr ""
 #: templates/patient_data/nursing_data.html:99
 #: templates/patient_data/overtime_claim_data.html:106
 #: templates/patient_data/patient_detail.html:206
-#: templates/patient_data/physio_progress_note_data.html:97
+#: templates/patient_data/physio_progress_note_sheet_data.html:97
 #: templates/patient_data/physiotherapy_general_assessment_data.html:149
 #: templates/patient_data/staff_records_data.html:128
 #: templates/patient_data/stool_data.html:109
-#: templates/patient_data/visiting_consultant_records_data.html:102
+#: templates/patient_data/visiting_consultant_data.html:102
 #: templates/patient_data/vital_sign_flow_data.html:123
 msgid "Back"
 msgstr ""
@@ -691,7 +691,7 @@ msgstr ""
 #: templates/patient_form/physiotherapy_general_assessment_form.html:253
 #: templates/patient_form/staff_records_form.html:75
 #: templates/patient_form/stool_form.html:70
-#: templates/patient_form/visiting_consultant_records_form.html:64
+#: templates/patient_form/visiting_consultant_form.html:64
 #: templates/patient_form/vital_sign_flow_form.html:84
 msgid "Cancel"
 msgstr "Batal"
@@ -787,12 +787,12 @@ msgstr ""
 #: templates/patient_data/nursing_data.html:48
 #: templates/patient_data/overtime_claim_data.html:48
 #: templates/patient_data/patient_detail.html:30
-#: templates/patient_data/physio_progress_note_data.html:48
+#: templates/patient_data/physio_progress_note_sheet_data.html:48
 #: templates/patient_data/physiotherapy_general_assessment_data.html:48
 #: templates/patient_data/staff_records_data.html:50
 #: templates/patient_data/stool_data.html:48
 #: templates/patient_data/stool_data.html:80
-#: templates/patient_data/visiting_consultant_records_data.html:48
+#: templates/patient_data/visiting_consultant_data.html:48
 #: templates/patient_data/vital_sign_flow_data.html:48
 #: templates/patient_form/application_homeleave_form.html:38
 #: templates/patient_form/application_homeleave_form.html:130
@@ -815,7 +815,7 @@ msgstr ""
 #: templates/patient_form/staff_records_form.html:35
 #: templates/patient_form/stool_form.html:35
 #: templates/patient_form/stool_form.html:53
-#: templates/patient_form/visiting_consultant_records_form.html:35
+#: templates/patient_form/visiting_consultant_form.html:35
 #: templates/patient_form/vital_sign_flow_form.html:35
 msgid "Name"
 msgstr "Nama"
@@ -914,7 +914,7 @@ msgid "Visiting Consultant"
 msgstr ""
 
 #: patient_form/models.py:800 patient_form/models.py:801
-msgid "Vital Sign Flow"
+msgid "Vital Sign Chart"
 msgstr ""
 
 #: patient_form/views.py:150 templates/patient_data/patient_detail.html:65
@@ -956,11 +956,11 @@ msgstr ""
 #: templates/patient_data/overtime_claim_data.html:52
 #: templates/patient_data/patient_detail.html:34
 #: templates/patient_data/patient_list.html:35
-#: templates/patient_data/physio_progress_note_data.html:52
+#: templates/patient_data/physio_progress_note_sheet_data.html:52
 #: templates/patient_data/physiotherapy_general_assessment_data.html:52
 #: templates/patient_data/staff_records_data.html:54
 #: templates/patient_data/stool_data.html:52
-#: templates/patient_data/visiting_consultant_records_data.html:52
+#: templates/patient_data/visiting_consultant_data.html:52
 #: templates/patient_data/vital_sign_flow_data.html:52
 msgid "IC Number"
 msgstr "Nomor IC"
@@ -1343,7 +1343,7 @@ msgid "HGT"
 msgstr ""
 
 #: templates/patient_data/admission_data.html:103
-msgid "Allergy Drug"
+msgid "Allergy Medicine"
 msgstr ""
 
 #: templates/patient_data/admission_data.html:104
@@ -1426,11 +1426,11 @@ msgstr ""
 #: templates/patient_data/miscellaneous_charges_slip_data.html:78
 #: templates/patient_data/nursing_data.html:76
 #: templates/patient_data/overtime_claim_data.html:80
-#: templates/patient_data/physio_progress_note_data.html:75
+#: templates/patient_data/physio_progress_note_sheet_data.html:75
 #: templates/patient_data/physiotherapy_general_assessment_data.html:101
 #: templates/patient_data/staff_records_data.html:85
 #: templates/patient_data/stool_data.html:81
-#: templates/patient_data/visiting_consultant_records_data.html:78
+#: templates/patient_data/visiting_consultant_data.html:78
 #: templates/patient_data/vital_sign_flow_data.html:82
 msgid "Action"
 msgstr ""
@@ -1694,10 +1694,10 @@ msgstr ""
 
 #: templates/patient_data/medication_administration_data.html:91
 #: templates/patient_data/physiotherapy_general_assessment_data.html:91
-#: templates/patient_data/visiting_consultant_records_data.html:74
+#: templates/patient_data/visiting_consultant_data.html:74
 #: templates/patient_form/medication_administration_form.html:90
 #: templates/patient_form/physiotherapy_general_assessment_form.html:231
-#: templates/patient_form/visiting_consultant_records_form.html:47
+#: templates/patient_form/visiting_consultant_form.html:47
 msgid "Date & Time"
 msgstr ""
 
@@ -1739,7 +1739,7 @@ msgid "Amount/Unit"
 msgstr ""
 
 #: templates/patient_data/nursing_data.html:75
-#: templates/patient_data/physio_progress_note_data.html:74
+#: templates/patient_data/physio_progress_note_sheet_data.html:74
 #: templates/patient_form/nursing_form.html:48
 #: templates/patient_form/physio_progress_note_form.html:51
 msgid "Report"
@@ -1970,17 +1970,17 @@ msgstr ""
 msgid "Amount"
 msgstr ""
 
-#: templates/patient_data/visiting_consultant_records_data.html:75
-#: templates/patient_form/visiting_consultant_records_form.html:48
+#: templates/patient_data/visiting_consultant_data.html:75
+#: templates/patient_form/visiting_consultant_form.html:48
 msgid "Complaints"
 msgstr ""
 
-#: templates/patient_data/visiting_consultant_records_data.html:76
+#: templates/patient_data/visiting_consultant_data.html:76
 msgid "Treatment & Orders"
 msgstr ""
 
-#: templates/patient_data/visiting_consultant_records_data.html:77
-#: templates/patient_form/visiting_consultant_records_form.html:50
+#: templates/patient_data/visiting_consultant_data.html:77
+#: templates/patient_form/visiting_consultant_form.html:50
 msgid "Consultant"
 msgstr ""
 
@@ -2140,7 +2140,7 @@ msgid "Own medication"
 msgstr ""
 
 #: templates/patient_form/admission_form.html:193
-msgid "Drug name"
+msgid "Medicine name"
 msgstr ""
 
 #: templates/patient_form/admission_form.html:197
@@ -2174,7 +2174,7 @@ msgstr ""
 #: templates/patient_form/physiotherapy_general_assessment_form.html:251
 #: templates/patient_form/staff_records_form.html:73
 #: templates/patient_form/stool_form.html:68
-#: templates/patient_form/visiting_consultant_records_form.html:62
+#: templates/patient_form/visiting_consultant_form.html:62
 #: templates/patient_form/vital_sign_flow_form.html:82
 msgid "Submit"
 msgstr "Kirim"
@@ -2197,7 +2197,7 @@ msgstr "Kirim"
 #: templates/patient_form/physiotherapy_general_assessment_form.html:40
 #: templates/patient_form/staff_records_form.html:39
 #: templates/patient_form/stool_form.html:39
-#: templates/patient_form/visiting_consultant_records_form.html:39
+#: templates/patient_form/visiting_consultant_form.html:39
 #: templates/patient_form/vital_sign_flow_form.html:39
 msgid "I/C No"
 msgstr ""
@@ -2412,6 +2412,6 @@ msgstr ""
 msgid "Public Holiday _____ Days (Entitled)"
 msgstr ""
 
-#: templates/patient_form/visiting_consultant_records_form.html:49
+#: templates/patient_form/visiting_consultant_form.html:49
 msgid "Treatment & Orders "
 msgstr ""

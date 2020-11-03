@@ -108,6 +108,7 @@ class ECNumberLookup(ModelLookup):
 registry.register(ECNumberLookup)
 registry.register(FullnameLookup)
 registry.register(FamilyNameLookup)
+registry.register(StaffnameLookup)
 
 
 #@register('full_name')

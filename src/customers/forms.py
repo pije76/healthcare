@@ -8,7 +8,7 @@ from crispy_forms.layout import Submit, Layout, Div, Fieldset
 from patient_form.models import *
 
 
-class AdmissionForm(forms.ModelForm):
+class AdmissionForm(BSModalModelForm):
     def __init__(self, *args, **kwargs):
         super(AdmissionForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()

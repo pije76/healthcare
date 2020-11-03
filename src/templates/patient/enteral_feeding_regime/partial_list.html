@@ -1,6 +1,5 @@
-{% for item in patients %}
-
-{% if user.is_superuser%}
+{% for item in enteralfeedingregime_data %}
+{% if user.is_superuser %}
 <tr>
     <td>{{ item.date|date:"d-m-Y" }}</td>
     <td>{{ item.time|date:"H:i" }}</td>
@@ -8,13 +7,12 @@
     <td>{{ item.amount }}</td>
     <td>{{ item.total_fluids }}</td>
     <td>
-        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:enteral_feeding_regime_edit' item.patient.username item.id %}"data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:enteral_feeding_regime_edit' item.patient.username item.id %}" data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
         </button>
-        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:enteral_feeding_regime_delete' item.patient.username item.id %}"data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:enteral_feeding_regime_delete' item.patient.username item.id %}" data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
         </button>
     </td>
 </tr>
-
 {% elif user.is_staff or user.is_patient %}
 
 <tr>

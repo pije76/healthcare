@@ -1,0 +1,12 @@
+{% for item in datas %}
+<tr>
+    <td>{{ item.id }}</td>
+    <td>{{ item.drug_name }}</td>
+    <td>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'data:drug_edit' %}" data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'data:drug_delete' %}" data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
+        </button>
+    </td>
+</tr>
+{% endfor %}

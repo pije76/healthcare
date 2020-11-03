@@ -7,6 +7,7 @@ from django_tenants.models import TenantMixin, DomainMixin
 # Create your models here.
 def upload_path(instance, filename):
     return '{0}/{1}'.format('logo_location', filename)
+#    return 'logo_location/{0}/{1}'.format(instance.patient, filename)
 
 
 class Client(TenantMixin):

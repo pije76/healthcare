@@ -1,0 +1,26 @@
+{% for item in patients %}
+{% if user.is_superuser %}
+<tr>
+    <td>{{ item.date_time|date:"d-m-Y H:i" }}</td>
+    <td>{{ item.complaints }}</td>
+    <td>{{ item.treatment_orders }}</td>
+    <td>{{ item.consultant }}</td>
+    <td>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:visiting_consultant_edit' item.patient.username item.id %}" data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:visiting_consultant_delete' item.patient.username item.id %}" data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
+        </button>
+    </td>
+</tr>
+
+{% elif user.is_staff or user.is_patient %}
+
+<tr>
+    <td>{{ item.date_time|date:"d-m-Y H:i" }}</td>
+    <td>{{ item.complaints }}</td>
+    <td>{{ item.treatment_orders }}</td>
+    <td>{{ item.consultant }}</td>
+</tr>
+
+{% endif %}
+{% endfor %}

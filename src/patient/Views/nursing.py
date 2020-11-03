@@ -12,14 +12,6 @@ from customers.models import *
 
 from bootstrap_modal_forms.generic import *
 
-startdate = datetime.date.today()
-enddate = startdate + datetime.timedelta(days=1)
-
-start_time_day = datetime.datetime.strptime('00:00', '%H:%M').time()
-end_time_day = datetime.datetime.strptime('12:00', '%H:%M').time()
-start_time_night = datetime.datetime.strptime('12:01', '%H:%M').time()
-end_time_night = datetime.datetime.strptime('23:59', '%H:%M').time()
-
 
 @login_required
 def nursing_list(request, username):
@@ -101,6 +93,12 @@ class NursingUpdateView(BSModalUpdateView):
     form_class = Nursing_ModelForm
     page_title = _('Nursing Form')
     success_message = _(page_title + ' form has been save successfully.')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=None)
+        form.fields['date_time'].label = _("Date/Time")
+        form.fields['report'].label = _("Report")
+        return form
 
     def get_success_url(self):
         username = self.kwargs['username']

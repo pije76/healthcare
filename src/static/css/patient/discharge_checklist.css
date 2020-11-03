@@ -1,0 +1,36 @@
+.isi {
+  height: auto;
+  padding-bottom: 20px;
+}
+
+.footer {
+  height: 151px;
+}
+
+.table-sm {
+  width: 70%;
+  margin-bottom: 10px;
+}
+
+.ui-icon-trash {
+    display: inline-block;
+}
+
+.custom-control-label {
+  padding-left: 20px;
+}
+
+.discharge {
+  list-style-type: none;
+  padding-inline-start: 0px;
+}
+
+input[type=checkbox]
+{
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.list-group-item {
+    display: list-item;
+}

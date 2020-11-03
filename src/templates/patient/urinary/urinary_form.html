@@ -21,7 +21,6 @@
 	{{ formset.media }}
 {% endblock %}
 
-
 {% block content %}
 
 <div class="container-fluid">
@@ -29,6 +28,8 @@
 	<div class="row formtitle">
 		{{ page_title }}
 	</div>
+
+	<p style="font-size:12px">{% include 'messages.html' %}</p>
 
 	{% include 'patient/patient_formset.html' %}
 
@@ -39,16 +40,16 @@
 
 			{{ formset.management_form }}
 			<table id="form_set" class="table table-bordered">
-				<thead class="thead-light">
+				<thead class="thead_light">
 					<tr>
-						<th class="text-center" scope="col">{% trans "Date" %}</th>
-						<th class="text-center" scope="col">{% trans "Size (Fr)" %}</th>
-						<th class="text-center" scope="col">{% trans "Type" %}</th>
-						<th class="text-center" scope="col">{% trans "Due date" %}</th>
-						<th class="text-center" scope="col">{% trans "Inserted by" %}</th>
-						<th class="text-center" scope="col">{% trans "Remove date" %}</th>
-						<th class="text-center remove_by" scope="col">{% trans "Remove by" %}</th>
-						<th class="text-center" scope="col">{% trans "Action" %}</th>
+						<th class="text-center">{% trans "Date" %}</th>
+						<th class="text-center">{% trans "Size (Fr)" %}</th>
+						<th class="text-center" style="width:15%;">{% trans "Type" %}</th>
+						<th class="text-center">{% trans "Due date" %}</th>
+						<th class="text-center">{% trans "Inserted by" %}</th>
+						<th class="text-center">{% trans "Remove date" %}</th>
+						<th class="text-center remove_by">{% trans "Remove by" %}</th>
+						<th class="text-center">{% trans "Action" %}</th>
 					</tr>
 				</thead>
 
@@ -124,7 +125,7 @@ $(document).ready(function()
 				$(row).find('[id$="date"]').removeClass('datepickerinput').removeAttr('#id_form-0-date').removeData('DateTimePicker')
 			.unbind().datetimepicker(
 				options={
-					"format": "DD/MM/YYYY",
+					"format": "DD-MM-YYYY",
 				});
 
 				$(row).find('[id$="time"]').removeClass('timepickerinput').removeAttr('#id_form-0-time').removeData('DateTimePicker')

@@ -17,21 +17,13 @@ from customers.models import *
 
 from bootstrap_modal_forms.generic import *
 
-startdate = datetime.date.today()
-enddate = startdate + datetime.timedelta(days=1)
-
-start_time_day = datetime.datetime.strptime('00:00', '%H:%M').time()
-end_time_day = datetime.datetime.strptime('12:00', '%H:%M').time()
-start_time_night = datetime.datetime.strptime('12:01', '%H:%M').time()
-end_time_night = datetime.datetime.strptime('23:59', '%H:%M').time()
-
 
 @login_required
 def urinary_list(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-    page_title = _('Urinary Chart')
+    page_title = _('Urinary Catheter Chart')
     patientid = UserProfile.objects.get(username=username).id
     patients = Urinary.objects.filter(patient=patientid)
     profiles = UserProfile.objects.filter(pk=patientid)
@@ -52,7 +44,7 @@ def urinary_create(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-    page_title = _('Urinary Chart')
+    page_title = _('Urinary Catheter Chart')
     patients = get_object_or_404(UserProfile, username=username)
     profiles = UserProfile.objects.filter(username=username)
     icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
@@ -107,6 +99,17 @@ class UrinaryUpdateView(BSModalUpdateView):
     form_class = Urinary_ModelForm
     page_title = _('Urinary Form')
     success_message = _(page_title + ' form has been save successfully.')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=None)
+        form.fields['urinary_catheter_date'].label = _("Date")
+        form.fields['urinary_catheter_size'].label = _("Size")
+        form.fields['urinary_catheter_type'].label = _("Type")
+        form.fields['urinary_catheter_due_date'].label = _("Due Date")
+        form.fields['urinary_catheter_inserted_by'].label = _("Inserted by")
+        form.fields['urinary_catheter_remove_date'].label = _("Remove Date")
+        form.fields['urinary_catheter_remove_by'].label = _("Remove by")
+        return form
 
     def get_success_url(self):
         username = self.kwargs['username']

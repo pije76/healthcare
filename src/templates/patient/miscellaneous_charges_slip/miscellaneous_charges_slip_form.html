@@ -29,6 +29,8 @@
 		{{ page_title }}
 	</div>
 
+	<p style="font-size:12px">{% include 'messages.html' %}</p>
+
 	{% include 'patient/patient_formset.html' %}
 
 	<form method="post">
@@ -38,7 +40,7 @@
 
 			{{ formset.management_form }}
 			<table id="form_set" class="table table-bordered">
-				<thead class="thead-light">
+				<thead class="thead_light">
 					<tr>
 						<th class="text-center">{% trans "Date" %}</th>
 						<th class="text-center">{% trans "Items/Procedures" %}</th>
@@ -80,34 +82,34 @@
 
 {% block js %}
 <script type='text/javascript'>
-	$(function()
+$(document).ready(function()
+{
+	$('#form_set tbody tr').formset(
 	{
-		$('#form_set tbody tr').formset(
+//		prefix: 'formset',
+//		prefix: '{{ formset.prefix }}',
+		addCssClass: 'btn btn-success',
+		addText: '<i class="fas fa-plus"></i>',
+		deleteCssClass: 'btn btn-danger',
+		deleteText: '<i class="fas fa-minus"></i>',
+		keepFieldValues: '#id_form-0-date, #id_form-0-unit, #id_form-0-amount, #id_form-0-given_by',
+//		addContainerClass: 'tambah_row',
+		added: function(row)
 		{
-//			prefix: 'formset',
-//			prefix: '{{ formset.prefix }}',
-			addCssClass: 'btn btn-success',
-			addText: '<i class="fas fa-plus"></i>',
-			deleteCssClass: 'btn btn-danger',
-			deleteText: '<i class="fas fa-minus"></i>',
-			keepFieldValues: '#id_form-0-date, #id_form-0-unit, #id_form-0-amount, #id_form-0-given_by',
-//			addContainerClass: 'tambah_row',
-			added: function(row)
-			{
-				$(row).find('[id$="date"]').removeClass('datepickerinput').removeAttr('#id_form-0-date').removeData('DateTimePicker')
-			.unbind().datetimepicker(
-				options={
-					"format": "DD/MM/YYYY",
-				});
+			$(row).find('[id$="date"]').removeClass('datepickerinput').removeAttr('#id_form-0-date').removeData('DateTimePicker')
+		.unbind().datetimepicker(
+			options={
+				"format": "DD-MM-YYYY",
+			});
 
-				$(row).find('[id$="time"]').removeClass('timepickerinput').removeAttr('#id_form-0-time').removeData('DateTimePicker')
-			.unbind().datetimepicker(
-				options={
-					"format": "HH:mm",
-				});
-			},
-		});
+			$(row).find('[id$="time"]').removeClass('timepickerinput').removeAttr('#id_form-0-time').removeData('DateTimePicker')
+		.unbind().datetimepicker(
+			options={
+				"format": "HH:mm",
+			});
+		},
 	});
+});
 
 </script>
 {% endblock %}

@@ -1,0 +1,82 @@
+.isi {
+  height: auto;
+  padding-bottom: 20px;
+}
+
+.footer {
+  height: 151px;
+}
+
+.table-sm {
+  width: 70%;
+}
+
+.ui-icon-trash {
+    display: inline-block;
+}
+
+.table-sm {
+  margin-bottom: 10px;
+}
+
+#medication_administration {
+  padding: 20px;
+}
+
+#medication_administration .col {
+  border: 1px solid #c9c9c9;
+  padding-top: 12px;
+  padding-bottom: 10px;
+}
+
+#medication_administration .col:not(:last-child) {
+  border-right-width: 0;
+}
+
+#medication_administration .row:not(:last-child) .col {
+  border-bottom-width: 0;
+}
+
+.form-row {
+  margin-right: -15px !important;
+  margin-left: -15px !important;
+}
+
+.header_form {
+    color: #495057;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+    padding: .75rem;
+    margin-top: 20px;
+}
+
+.header_form_detail {
+  padding: .75rem;
+}
+
+.row_medication_date, .form-0_date_field, .form-1_date_field, .form-2_date_field, .form-3_date_field, .form-4_date_field, .form-5_date_field,
+.form-6_date_field, .form-7_date_field, .form-8_date_field, .form-9_date_field, .form-10_date_field, .form-11_date_field, .form-12_date_field,
+.form-13_date_field, .form-14_date_field, .form-15_date_field, .form-16_date_field, .form-17_date_field, .form-18_date_field, .form-19_date_field,
+.form-20_date_field, .form-21_date_field, .form-22_date_field, .form-23_date_field, .form-24_date_field {
+  display: none;
+}
+
+.form-0_time_field, .form-1_time_field, .form-2_time_field, .form-3_time_field, .form-4_time_field, .form-5_time_field,
+.form-6_time_field, .form-7_time_field, .form-8_time_field, .form-9_time_field, .form-10_time_field, .form-11_time_field, .form-12_time_field,
+.form-13_time_field, .form-14_time_field, .form-15_time_field, .form-16_time_field, .form-17_time_field, .form-18_time_field, .form-19_time_field,
+.form-20_time_field, .form-21_time_field, .form-22_time_field, .form-23_time_field, .form-24_time_field {
+  width: 30%;
+}
+
+.aksi {
+  width: 5%;
+}
+
+.header_form_inline {
+  display: inline-flex;
+}
+
+.data_detail {
+    margin-left: 0px;
+    margin-right: 0px;
+}

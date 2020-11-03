@@ -1,4 +1,5 @@
-{% for item in time_range %}
+{% for item in intakeoutput_data %}
+{% if user.is_superuser %}
 <tr>
     <td>{{ item.date|date:"d-m-Y" }}</td>
     <td>{{ item.time|date:"H:i" }}</td>
@@ -8,16 +9,36 @@
     <td>{{ item.intake_parenteral_ml }}</td>
     <td>{{ item.intake_other_type }}</td>
     <td>{{ item.intake_other_ml }}</td>
+    <td>{{ item.output_urine_type }}</td>
     <td>{{ item.output_urine_ml }}</td>
-    <td>{{ item.output_urine_cum }}</td>
     <td>{{ item.output_gastric_ml }}</td>
     <td>{{ item.output_other_type }}</td>
     <td>{{ item.output_other_ml }}</td>
     <td>
-        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:intake_output_edit' item.patient.username item.id %}"data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:intake_output_edit' item.patient.username item.id %}" data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
         </button>
-        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:intake_output_delete' item.patient.username item.id %}"data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:intake_output_delete' item.patient.username item.id %}" data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
         </button>
     </td>
 </tr>
+
+{% elif user.is_staff or user.is_patient %}
+
+<tr>
+    <td>{{ item.date|date:"d-m-Y" }}</td>
+    <td>{{ item.time|date:"H:i" }}</td>
+    <td>{{ item.intake_oral_type }}</td>
+    <td>{{ item.intake_oral_ml }}</td>
+    <td>{{ item.intake_parenteral_type }}</td>
+    <td>{{ item.intake_parenteral_ml }}</td>
+    <td>{{ item.intake_other_type }}</td>
+    <td>{{ item.intake_other_ml }}</td>
+    <td>{{ item.output_urine_type }}</td>
+    <td>{{ item.output_urine_ml }}</td>
+    <td>{{ item.output_gastric_ml }}</td>
+    <td>{{ item.output_other_type }}</td>
+    <td>{{ item.output_other_ml }}</td>
+</tr>
+
+{% endif %}
 {% endfor %}

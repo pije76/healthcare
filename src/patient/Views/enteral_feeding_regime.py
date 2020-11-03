@@ -1,32 +1,26 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.db import connection
-from django.db.models import F, Func, Value, CharField
-from django.db.models import Value, CharField
+from django.db.models import F, Func, Value, CharField, Sum, Value, CharField
 from django.db.models.functions import Cast, Concat, ExtractYear, ExtractMonth, ExtractDay, ExtractHour, ExtractMinute
-from django.urls import reverse, reverse_lazy
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
+from django.template.loader import render_to_string, get_template
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.translation import ugettext as _
-from django.db.models import Sum
 
 from patient.models import *
 from patient.Forms.enteral_feeding_regime import *
 from accounts.models import *
 from customers.models import *
+from ..views import *
 
 from bootstrap_modal_forms.generic import *
 
-startdate = datetime.date.today()
-enddate = startdate + datetime.timedelta(days=1)
-
-start_time_day = datetime.datetime.strptime('00:00', '%H:%M').time()
-end_time_day = datetime.datetime.strptime('12:00', '%H:%M').time()
-start_time_night = datetime.datetime.strptime('12:01', '%H:%M').time()
-end_time_night = datetime.datetime.strptime('23:59', '%H:%M').time()
-
 import datetime
+
 
 @login_required
 def enteral_feeding_regime_list(request, username):
@@ -34,32 +28,123 @@ def enteral_feeding_regime_list(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Enteral Feeding Regime')
+	user_name = UserProfile.objects.get(username=username).username
+	patients = get_object_or_404(UserProfile, username=username)
 	patientid = UserProfile.objects.get(username=username).id
-	patients = EnteralFeedingRegime.objects.filter(patient=patientid)
+	enteralfeedingregime_data = EnteralFeedingRegime.objects.filter(patient=patientid).exclude(amount__isnull=True)
 	profiles = UserProfile.objects.filter(pk=patientid)
 	total = EnteralFeedingRegime.objects.aggregate(Sum('amount'))
 	total_feeding = EnteralFeedingRegime.objects.filter(patient=patientid).aggregate(Sum('amount'))
+	total_feeding = total_feeding['amount__sum']
 	total_fluids = EnteralFeedingRegime.objects.filter(patient=patientid).values_list('total_fluids', flat=True).first()
-	all_total_fluids = EnteralFeedingRegime.objects.filter(patient=patientid).aggregate(Sum('total_fluids'))
-	warm_water_before = EnteralFeedingRegime.objects.filter(patient=patientid).values_list('warm_water_before', flat=True).first()
-	warm_water_after = EnteralFeedingRegime.objects.filter(patient=patientid).values_list('warm_water_after', flat=True).first()
+	get_lastdate = EnteralFeedingRegime.objects.filter(patient=patientid).order_by('-date').values_list('date', flat=True).first()
 
-	context = {
-		'logos': logos,
-		'titles': titles,
-		'page_title': page_title,
-		'patients': patients,
-		'profiles': profiles,
-		'total': total,
-		'total_feeding': total_feeding,
-		'total_fluids': total_fluids,
-		'all_total_fluids': all_total_fluids,
-		'warm_water_before': warm_water_before,
-		'warm_water_after': warm_water_after,
+	initial = {
+		'patient': patients,
+		'date': get_lastdate,
 	}
 
-	return render(request, 'patient/enteral_feeding_regime/enteral_feeding_regime_data.html', context)
+	if request.is_ajax and request.method == "GET":
+		form = EnteralFeedingRegime_ModelForm(initial=initial)
+		get_newdate = request.GET.get('get_newdate', None)
+		if get_newdate is not None:
+			set_newdate = datetime.datetime.strptime(get_newdate, '%d-%m-%Y')
+		else:
+			set_newdate = get_today
+#		warm_water_before = 11
+		warm_water_before = EnteralFeedingRegime.objects.filter(patient=patientid, date=set_newdate).values_list('warm_water_before', flat=True).first()
+		warm_water_after = EnteralFeedingRegime.objects.filter(patient=patientid, date=set_newdate).values_list('warm_water_after', flat=True).first()
+#		warm_water_before2 = EnteralFeedingRegime.objects.filter(patient=patientid, date=set_newdate).values_list('warm_water_before', flat=True).first()
+#		warm_water_after2 = EnteralFeedingRegime.objects.filter(patient=patientid, date=set_newdate).values_list('warm_water_after', flat=True).first()
+#		print("get_csrfmiddlewaretoken", get_csrfmiddlewaretoken)
+#		print("get_newdate", get_newdate)
+#		print("set_newdate", set_newdate)
+#		print("warm_water_before", warm_water_before)
+#		print("warm_water_after", warm_water_after)
 
+		context1 = {
+			'logos': logos,
+			'titles': titles,
+			'page_title': page_title,
+			'enteralfeedingregime_data': enteralfeedingregime_data,
+			'profiles': profiles,
+			'user_name': user_name,
+			'total': total,
+			'total_feeding': total_feeding,
+			'total_fluids': total_fluids,
+			'warm_water_before': warm_water_before,
+			'warm_water_after': warm_water_after,
+#			'warm_water_before2': warm_water_before2,
+#			'warm_water_after2': warm_water_after2,
+			'form': form,
+		}
+#		return JsonResponse({}, status=400)
+		return render(request, 'patient/enteral_feeding_regime/enteral_feeding_regime_data.html', context1)
+
+	if request.method == "POST":
+		form = EnteralFeedingRegime_ModelForm(request.POST or None)
+#		set_warm_water_before = request.GET['warm_water_before']
+#		pins = EnteralFeedingRegime.objects.filter(warm_water_before=set_warm_water_before)
+#		warm_water_before = 12
+
+		get_newdate = request.POST.get('get_newdate', None)
+#		get_newdate = request.GET.get('get_newdate')
+#		get_newdate = request.POST.get('get_newdate')
+#		get_newdate = request.GET['get_newdate']
+		if get_newdate is not None:
+			set_newdate = datetime.datetime.strptime(get_newdate, '%d-%m-%Y')
+		else:
+			set_newdate = get_today
+		warm_water_before = EnteralFeedingRegime.objects.filter(patient=patientid, date=set_newdate).values_list('warm_water_before', flat=True).first()
+		warm_water_after = EnteralFeedingRegime.objects.filter(patient=patientid, date=set_newdate).values_list('warm_water_after', flat=True).first()
+
+		print("warm_water_before_post", warm_water_before)
+		print("warm_water_after_post", warm_water_after)
+
+		if form.is_valid():
+			instance = EnteralFeedingRegime()
+#			instance = form.save()
+			instance.patient = patients
+			instance.date = form.cleaned_data['date']
+			instance.warm_water_before = warm_water_before
+			instance.warm_water_after = warm_water_after
+			ser_instance = serializers.serialize('json', warm_water_before)
+			instance.save()
+			print(ser_instance)
+			print("form valid")
+#			return JsonResponse({"instance": ser_instance}, status=200)
+#			return render(request, 'patient/enteral_feeding_regime/enteral_feeding_regime_data.html', ser_instance)
+			return redirect('patient:patientdata_detail', username=patients.username)
+		else:
+			messages.warning(request, form.errors)
+			print(form.errors)
+#			return JsonResponse({"bad error": form.errors}, status=400)
+#		html = render_to_string('patient/enteral_feeding_regime/enteral_feeding_regime_data.html', {'warm_water_before2 ': warm_water_before2})
+
+#	return HttpResponse(html)
+#	return JsonResponse({"error": ""}, status=400)
+#	return render(request, 'patient/enteral_feeding_regime/enteral_feeding_regime_data.html', context)
+#	html = t.render(Context({'warm_water_before2': warm_water_before2, 'warm_water_after2': warm_water_after2}))
+
+
+#	else:
+#		get_newdate = request.GET.get('get_newdate')
+#		set_newdate = datetime.datetime.strptime(get_newdate, '%d-%m-%Y')
+#		warm_water_before = EnteralFeedingRegime.objects.filter(patient=patientid).filter(date=set_newdate).values_list('warm_water_before', flat=True).first()
+#		warm_water_after = EnteralFeedingRegime.objects.filter(patient=patientid).filter(date=set_newdate).values_list('warm_water_after', flat=True).first()
+#		get_newdate = request.GET.get('set_date')
+#		set_newdate = datetime.datetime.strptime(get_newdate, '%d-%m-%Y')
+#		set_newdate = get_today
+#		print("get_newdate_old", get_newdate)
+#		print("set_newdate_old", set_newdate)
+#		warm_water_before = EnteralFeedingRegime.objects.filter(patient=patientid).filter(date=set_newdate).values_list('warm_water_before', flat=True).first()
+#		warm_water_after = EnteralFeedingRegime.objects.filter(patient=patientid).filter(date=set_newdate).values_list('warm_water_after', flat=True).first()
+
+
+#	else:
+#		pass
+
+#	set_newdate = set_newdate
 
 
 @login_required
@@ -87,39 +172,13 @@ def enteral_feeding_regime_create(request, username):
 		{'time': '03:00'},
 		{'time': '04:00'},
 		{'time': '05:00'},
-		{'time': '06:00'},
-		{'time': '07:00'},
-		{'time': '08:00'},
-		{'time': '09:00'},
-		{'time': '10:00'},
-		{'time': '11:00'},
-		{'time': '12:00'},
-		{'time': '13:00'},
-		{'time': '14:00'},
-		{'time': '15:00'},
-		{'time': '16:00'},
-		{'time': '17:00'},
-		{'time': '18:00'},
-		{'time': '19:00'},
-		{'time': '20:00'},
-		{'time': '21:00'},
-		{'time': '22:00'},
-		{'time': '23:00'},
 	]
-
-	initial_formset = [{
-		'patient': item.full_name,
-		'done_by': request.user,
-	}
-	for item in profiles]
-
-	queryset = request.user.username
 
 	if request.method == 'POST':
 		form = EnteralFeedingRegime_Form(request.POST or None)
 		formset = EnteralFeedingRegime_FormSet(request.POST or None)
 
-		if form.is_valid() and formset.is_valid():
+		if form.is_valid():
 
 			profile_form = EnteralFeedingRegime()
 			profile_form.patient = patients
@@ -128,10 +187,13 @@ def enteral_feeding_regime_create(request, username):
 			profile_form.warm_water_after = form.cleaned_data['warm_water_after']
 			profile_form.save()
 
+		if formset.is_valid():
 			for item in formset:
+#				get_date = EnteralFeedingRegime.objects.filter(patient=patients).values_list("date", flat=True).first()
 				profile = EnteralFeedingRegime()
 				profile.patient = patients
 				profile.date = item.cleaned_data['date']
+#				profile.date = get_date
 				profile.time = item.cleaned_data['time']
 				profile.type_of_milk = item.cleaned_data['type_of_milk']
 				profile.amount = item.cleaned_data['amount']
@@ -153,8 +215,6 @@ def enteral_feeding_regime_create(request, username):
 #    for item in data:
 #        ls.append(item)
 
-#        print("delta: ", item)
-#    print("data: ", data)
 #    delta = datetime.datetime.now() + datetime.timedelta(hours=1)
 #    data = list(delta)
 
@@ -171,12 +231,21 @@ def enteral_feeding_regime_create(request, username):
 
 	return render(request, 'patient/enteral_feeding_regime/enteral_feeding_regime_form.html', context)
 
+
 class EnteralFeedingRegimeUpdateView(BSModalUpdateView):
 	model = EnteralFeedingRegime
 	template_name = 'patient/enteral_feeding_regime/partial_edit.html'
 	form_class = EnteralFeedingRegime_ModelForm
 	page_title = _('EnteralFeedingRegime Form')
 	success_message = _(page_title + ' form has been save successfully.')
+
+	def get_form(self, form_class=None):
+		form = super().get_form(form_class=None)
+		form.fields['date'].label = _("Date")
+		form.fields['time'].label = _("Time")
+		form.fields['type_of_milk'].label = _("Type of Milk")
+		form.fields['amount'].label = _("Amount")
+		return form
 
 	def get_success_url(self):
 		username = self.kwargs['username']

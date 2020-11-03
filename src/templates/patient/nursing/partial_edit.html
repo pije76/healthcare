@@ -1,6 +1,17 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
+{% load static %}
 
+{% block extrahead %}
+    {{ form.media }}
+{% endblock %}
+
+{% block javascript %}
+	<script src="{% static 'js/jquery.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/moment.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+{% endblock %}
 <form method="post" action="">
 {% csrf_token %}
 
@@ -11,6 +22,7 @@
 
 	<div class="modal-body">
         <div class="form-group">
+        	{{ form.patient|as_crispy_field }}
             {{ form.date_time|as_crispy_field }}
             {{ form.report|as_crispy_field }}
         </div>
@@ -22,3 +34,42 @@
 	</div>
 
 </form>
+
+{% block js %}
+	<script type='text/javascript'>
+	$(document).ready(function()
+	{
+
+		$.extend(true, $.fn.datetimepicker.defaults, {
+			icons: {
+				time: 'far fa-clock',
+				date: 'far fa-calendar',
+				up: 'fas fa-arrow-up',
+				down: 'fas fa-arrow-down',
+				previous: 'fas fa-chevron-left',
+				next: 'fas fa-chevron-right',
+				today: 'fas fa-calendar-check',
+				clear: 'far fa-trash-alt',
+				close: 'far fa-times-circle'
+			}
+		});
+
+		$("#id_date_time_0").datetimepicker(
+			{
+//				format: 'L',
+				format:'DD-MM-YYYY',
+//				defaultDate: currentDate,
+				showTodayButton: true,
+				showClear: true,
+				showClose: true,
+			}
+		);
+		$("#id_date_time_1").datetimepicker(
+			{
+//				format: 'LT',
+				format: 'HH:mm'
+			}
+		);
+	});
+	</script>
+{% endblock %}

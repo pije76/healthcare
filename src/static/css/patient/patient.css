@@ -1,13 +1,16 @@
 .detail_form {
 	padding: 10px 0px;
 	width: 540px;
-	background-color: #dee7ef;
+/*	background-color: #dee7ef; */
 }
 .detail_data {
 	padding: 10px 0px;
 	width: 540px;
-	background-color: #dee7ef;
+/*	background-color: #dee7ef; */
 	margin-left: 0px;
+}
+.thead_light {
+	background-color: #eff3f7;
 }
 .detail_med {
 	padding: 10px 0px;
@@ -21,7 +24,7 @@
 	margin: 0 0 10px;
 	padding: 10px 0px;
 	width: 540px;
-	background-color: #dee7ef;
+/*	background-color: #dee7ef; */
 }
 .form_table {
 	padding-top: 10px;

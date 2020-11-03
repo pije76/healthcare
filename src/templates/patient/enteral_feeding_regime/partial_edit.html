@@ -15,12 +15,11 @@
 
 	<div class="modal-body">
         <div class="form-group">
+        	{{ form.patient|as_crispy_field }}
             {{ form.date|as_crispy_field }}
             {{ form.time|as_crispy_field }}
             {{ form.type_of_milk|as_crispy_field }}
             {{ form.amount|as_crispy_field }}
-            {{ form.warm_water_before|as_crispy_field }}
-            {{ form.warm_water_after|as_crispy_field }}
         </div>
 	</div>
 
@@ -28,5 +27,5 @@
 		<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 		<button type="submit" class="btn btn-primary"><i class="icon wb-plus" aria-hidden="true"></i>Submit</button>
 	</div>
-	
+
 </form>

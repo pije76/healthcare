@@ -21,7 +21,6 @@
 	{{ formset.media }}
 {% endblock %}
 
-
 {% block content %}
 
 <div class="container-fluid">
@@ -29,6 +28,8 @@
 	<div class="row formtitle">
 		{{ page_title }}
 	</div>
+
+	<p style="font-size:12px">{% include 'messages.html' %}</p>
 
 	{% include 'patient/patient_formset.html' %}
 
@@ -39,7 +40,7 @@
 
 			{{ formset.management_form }}
 			<table id="form_set" class="table table-bordered">
-				<thead class="thead-light">
+				<thead class="thead_light">
 					<tr>
 						<th class="text-center">{% trans "Date" %}</th>
 						<th class="text-center">{% trans "Time" %}</th>
@@ -88,34 +89,69 @@
 
 {% block js %}
 <script type='text/javascript'>
-	$(function()
+$(document).ready(function()
+{
+//	var section_id = "0";
+//	var section_id = 0;
+//	var section_id = $("#id_form-"+i+"-frequency");
+//	$('#'+ section_id + ' -frequency').change(function()
+
+	for(var i=0; i<10; i++)
 	{
-		$('#form_set tbody tr').formset(
+		var section_id = i;
+	}
+
+//	$('#id_form-'+ section_id + '-frequency').change(function()
+    $('#id_form-0-frequency').change(function()
+    {
+    	if($(this).val() == "BNO")
+    	{
+    		$("#id_form-0-consistency").attr("selected", true).val("-");
+//    		$('#id_form-'+ section_id + '-consistency').attr("selected", true).val("-");
+    		$("#id_form-0-amount").attr("selected", true).val("-");
+//    		$('#id_form-'+ section_id + '-amount').attr("selected", true).val("-");
+    	}
+    	else
+    	{
+    		$("#id_form-0-consistency").attr("selected", true).val("Normal");
+//    		$('#id_form-'+ section_id + '-consistency').attr("selected", true).val("Normal");
+    		$("#id_form-0-amount").attr("selected", true).val("Scanty");
+//    		$('#id_form-'+ section_id + '-amount').attr("selected", true).val("Scanty");
+    	}
+    });
+
+//	$('select#id_form-1-frequency').change(function()
+	$('#id_form-1-frequency').change(function()
+    {
+
+    	alert("Test")
+    });
+
+	$('#form_set tbody tr').formset(
+	{
+//		prefix: 'formset',
+//		prefix: '{{ formset.prefix }}',
+		addCssClass: 'btn btn-success',
+		addText: '<i class="fas fa-plus"></i>',
+		deleteCssClass: 'btn btn-danger',
+		deleteText: '<i class="fas fa-minus"></i>',
+		keepFieldValues: '#id_form-0-date, #id_form-0-time, #id_form-0-done_by',
+//		addContainerClass: 'tambah_row',
+		added: function(row)
 		{
-//			prefix: 'formset',
-//			prefix: '{{ formset.prefix }}',
-			addCssClass: 'btn btn-success',
-			addText: '<i class="fas fa-plus"></i>',
-			deleteCssClass: 'btn btn-danger',
-			deleteText: '<i class="fas fa-minus"></i>',
-			keepFieldValues: '#id_form-0-date, #id_form-0-time, #id_form-0-done_by',
-//			addContainerClass: 'tambah_row',
-			added: function(row)
-			{
-				$(row).find('[id$="date"]').removeClass('datepickerinput').removeAttr('#id_form-0-date').removeData('DateTimePicker')
-			.unbind().datetimepicker(
-				options={
-					"format": "DD/MM/YYYY",
-				});
+			$(row).find('[id$="date"]').removeClass('datepickerinput').removeAttr('#id_form-0-date').removeData('DateTimePicker')
+		.unbind().datetimepicker(
+			options={
+				"format": "DD-MM-YYYY",
+			});
 
-				$(row).find('[id$="time"]').removeClass('timepickerinput').removeAttr('#id_form-0-time').removeData('DateTimePicker')
-			.unbind().datetimepicker(
-				options={
-					"format": "HH:mm",
-				});
-			},
-		});
+			$(row).find('[id$="time"]').removeClass('timepickerinput').removeAttr('#id_form-0-time').removeData('DateTimePicker')
+		.unbind().datetimepicker(
+			options={
+				"format": "HH:mm",
+			});
+		},
 	});
-
+});
 </script>
 {% endblock %}

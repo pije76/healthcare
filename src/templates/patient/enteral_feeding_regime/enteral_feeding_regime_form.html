@@ -31,6 +31,8 @@
 		{{ page_title }}
 	</div>
 
+	<p style="font-size:12px">{% include 'messages.html' %}</p>
+
 	{% include 'patient/patient_formset.html' %}
 
 	<form method="post">
@@ -51,15 +53,15 @@
 				</span>
 			</div>
 
-
 		</div>
 
 		<div class="row rounded form_table">
 
 			<table id="form_set" class="table table-bordered">
-				<thead class="thead-light">
+				<thead class="thead_light">
 					<tr>
-						<th class="text-center">{% trans "Date" %}</th>
+						<th style="display:none;"></th>
+						<th class="text-center row_enteral_feeding_regine_date">{% trans "Date" %}</th>
 						<th class="text-center">{% trans "Time" %}</th>
 						<th class="text-center">{% trans "Type Of Milk" %}</th>
 						<th class="text-center">{% trans "Amount (ml)" %}</th>
@@ -69,7 +71,7 @@
 				<tbody>
 					{% for item in formset.forms %}
 					<tr id="{{ item.prefix }}-row">
-						<td class="date_field">{{ item.date|as_crispy_field }}</td>
+						<td style="display:none;">{{ item.date|as_crispy_field }}</td>
 						<td class="time_field">{{ item.time|as_crispy_field }}</td>
 						<td>{{ item.type_of_milk|as_crispy_field }}</td>
 						<td>{{ item.amount|as_crispy_field }}</td>
@@ -136,16 +138,6 @@
 <script type='text/javascript'>
 $(document).ready(function()
 {
-//	var oldDate = new Date();
-//	var oldTime = oldDate.setHours(0, 0, 0);
-//	var hour = oldTime.getHours();
-//	var oldTime = $('#id_form-0-time').val();
-//	var hour = oldTime.getHours();
-//	var newDate = oldTime.setHours(hour + 1);
-//	console.log(oldDate);
-//	console.log(oldTime);
-//	console.log(hour);
-
 	$('.calc').change(function()
 	{
 		var total = 0;
@@ -157,12 +149,6 @@ $(document).ready(function()
 			}
 		});
 		$('#total').html(total);
-	});
-
-	//when the select changes:
-	$('.calc').on("change", function()
-	{
-		$('#total').val($(this).val());
 	});
 
 	$(function()
@@ -179,7 +165,7 @@ $(document).ready(function()
 				$(row).find('[id$="date"]').removeClass('datepickerinput').removeAttr('#id_form-0-date').removeData('DateTimePicker')
 			.unbind().datetimepicker(
 				options={
-					"format": "DD/MM/YYYY",
+					"format": "DD-MM-YYYY",
 				});
 
 				$(row).find('[id$="time"]').removeClass('timepickerinput').removeAttr('#id_form-0-time').removeData('DateTimePicker')
@@ -190,6 +176,17 @@ $(document).ready(function()
 			},
 		});
 	});
+
+	$('#id_date').on('dp.change', function(e)
+	{
+		var datenew = $(this).val();
+		if(datenew != '')
+		{
+			$('[id$="date"]').val(datenew);
+			t.search( this.value ).draw();
+		}
+	});
+
 });
 </script>
 {% endblock %}

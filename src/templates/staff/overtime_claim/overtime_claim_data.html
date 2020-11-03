@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block headtitle %}
+	{{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block styles %}
+	<link href="{% static 'css/staff/staff.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/staff/overtime_claim.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block javascript %}
+	<script src="{% static 'js/staff/overtime_claim.js' %}"></script>
+	<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+		<div class="row formtitle">
+			{{ page_title }}
+		</div>
+
+		<div class="row border rounded detail">
+
+			<div class="col-12">
+				{% if profiles %}
+						{% for item in profiles %}
+						<div class="col-4">
+							<span id="name_title">{% trans "Name" %}:</span>
+							<span id="name_field">{{ item.full_name }}</span>
+						</div>
+						<div class="col-6">
+							<span id="class_title">{% trans "IC Number" %}:</span>
+							<span id="class_field">{{ item.ic_number }}</span>
+						</div>
+						{% endfor %}
+				{% endif %}
+			</div>
+
+		</div>
+
+		<div class="row rounded form_table">
+
+			<div class="col-12">
+				<div class="card">
+
+					<div class="card-body">
+
+						<div class="table-responsive">
+							<form method="post" action="">
+							{% csrf_token %}
+								<table id="t_add_row" class="table table-striped table-bordered">
+									<thead class="thead_light">
+										<tr>
+											<th class="text-center">{% trans "Date" %}</th>
+											<th class="text-center">{% trans "Time From" %}</th>
+											<th class="text-center">{% trans "Time To" %}</th>
+											<th class="text-center">{% trans "Total Hours" %}</th>
+											<th class="text-center">{% trans "Checked Sign by" %}</th>
+											<th class="text-center">{% trans "Verify by" %}</th>
+											<th class="text-center">{% trans "Action" %}</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										{% include 'staff/overtime_claim/partial_list.html' %}
+									</tbody>
+								</table>
+							</form>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<br />
+
+		<div class="row">
+			<div class="col-4">
+				{% for item in profiles %}
+					<a class="btn btn-outline-primary" href="{% url 'staff:staffdata_detail' item.username %}">{% trans "Back" %}</a>
+				{% endfor %}
+			</div>
+		</div>
+
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+$(function()
+{
+	$(".trigger_modal").each(function()
+	{
+		$(this).modalForm(
+		{
+			formURL: $(this).data('form-url')
+		});
+	});
+});
+</script>
+{% endblock %}

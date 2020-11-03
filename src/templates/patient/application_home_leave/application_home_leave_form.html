@@ -9,8 +9,6 @@
     {{ page_title }} | {{ titles.title }}
 {% endblock %}
 
-{% block content %}
-
 {% block styles %}
 	<link href="{% static 'css/patient/application_home_leave.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'selectable/css/dj.selectable.css' %}" type="text/css" media="all" rel="stylesheet">
@@ -20,6 +18,8 @@
 	{{ form.media }}
 {% endblock %}
 
+{% block content %}
+
 <div class="container-fluid">
 
 	<div class="row formtitle">
@@ -28,7 +28,7 @@
 
 	<p style="font-size:12px">{% include 'messages.html' %}</p>
 
-	<div class="col-12">
+	<div class="col-12 border" style="padding-top: 10px;padding-bottom: 10px; margin: 10px;">
 
 		<form method="post" id="dataForm" novalidate>
 			{% csrf_token %}
@@ -242,7 +242,7 @@ $("#id_family_name").change(function()
 {
 	var familynameId = $(this).val();
 //	console.log("url: ", url);
-	console.log("familynameId: ", familynameId);
+//	console.log("familynameId: ", familynameId);
 	$.ajax(
 	{
 		url:'{% url "patient:load_ic_number" %}',

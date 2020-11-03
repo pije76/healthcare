@@ -69,7 +69,9 @@ TENANT_APPS = (
     'django.forms',
 
     'patient',
+#    'patienttemplate',
     'staff',
+    'data',
 
     'post_office',
     'phonenumber_field',
@@ -85,6 +87,8 @@ TENANT_APPS = (
 
     'massadmin',
     'mptt',
+    'django_filters',
+    'django_tables2',
 )
 
 
@@ -213,7 +217,6 @@ SETTINGS_PATH = os.path.join(PROJECT_APP_PATH, 'settings.d')
 with os.scandir(SETTINGS_PATH) as it:
     for entry in it:
         if not entry.name.startswith('.') and entry.name.endswith('.py') and entry.is_file():
-            # print(entry.name)
             import sys
             import imp
             module_name = "{}.{}".format(PROJECT_APP, entry.name)

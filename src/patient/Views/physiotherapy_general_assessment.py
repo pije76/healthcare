@@ -12,15 +12,6 @@ from customers.models import *
 
 from bootstrap_modal_forms.generic import *
 
-startdate = datetime.date.today()
-enddate = startdate + datetime.timedelta(days=1)
-
-start_time_day = datetime.datetime.strptime('00:00', '%H:%M').time()
-end_time_day = datetime.datetime.strptime('12:00', '%H:%M').time()
-start_time_night = datetime.datetime.strptime('12:01', '%H:%M').time()
-end_time_night = datetime.datetime.strptime('23:59', '%H:%M').time()
-
-
 
 @login_required
 def physiotherapy_general_assessment_list(request, username):
@@ -127,6 +118,42 @@ class PhysiotherapyGeneralAssessmentUpdateView(BSModalUpdateView):
     form_class = PhysiotherapyGeneralAssessment_ModelForm
     page_title = _('PhysiotherapyGeneralAssessment Form')
     success_message = _(page_title + ' form has been save successfully.')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=None)
+        form.fields['doctor_diagnosis'].label = _("Doctor Diagnosis")
+        form.fields['doctor_management'].label = _("Doctor Management")
+        form.fields['problem'].label = _("Problem")
+        form.fields['front_body'].label = _("Front Body")
+        form.fields['back_body'].label = _("Back Body")
+        form.fields['pain_scale'].label = _("Pain Scale")
+        form.fields['comments'].label = _("Comments")
+        form.fields['current_history'].label = _("Current History")
+        form.fields['past_history'].label = _("Past History")
+        form.fields['special_question'].label = _("Special Question")
+        form.fields['general_health'].label = _("General Health")
+        form.fields['pmx_surgery'].label = _("PMX Surgery")
+        form.fields['ix_mri_x_ray'].label = _("IX MRI X-Ray")
+        form.fields['medications_steroids'].label = _("Medications Steroids")
+        form.fields['occupation_recreation'].label = _("Occupation Recreation")
+        form.fields['palpation'].label = _("Palpation")
+        form.fields['pacemaker_hearing_aid'].label = _("Pacemaker Hearing Aid")
+        form.fields['splinting'].label = _("Splinting")
+        form.fields['physical_examination_movement'].label = _("Physical Examination Movement")
+        form.fields['neurological_reflexes'].label = _("Neurological Reflexes")
+        form.fields['neurological_motor'].label = _("Neurological Motor")
+        form.fields['neurological_sensation'].label = _("Neurological Sensation")
+        form.fields['muscle_power'].label = _("Muscle Power")
+        form.fields['clearing_test_other_joint'].label = _("Clearing Test Other Joint")
+        form.fields['physiotherapists_impression'].label = _("Physiotherapists Impression")
+        form.fields['functional_activities'].label = _("Functional Activities")
+        form.fields['short_term_goals'].label = _("Short Term Goals")
+        form.fields['long_term_goals'].label = _("Long Term Goals")
+        form.fields['special_test'].label = _("Special Test")
+        form.fields['plan_treatment'].label = _("Plan Treatment")
+        form.fields['date_time'].label = _("Date & Time")
+        form.fields['attending_physiotherapist'].label = _("Attending Physiotherapist")
+        return form
 
     def get_success_url(self):
         username = self.kwargs['username']

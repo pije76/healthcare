@@ -1,6 +1,10 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 
+{% block extrahead %}
+    {{ form.media }}
+{% endblock %}
+
 <form method="post" action="">
 {% csrf_token %}
 

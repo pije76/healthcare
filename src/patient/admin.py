@@ -43,9 +43,22 @@ class AdmissionAdmin(admin.ModelAdmin):
 		'patient',
 		'date_admission',
 		'time_admission',
-		'admitted',
+		'admitted_admission',
 #		'admitted_others',
-		'mode',
+		'mode_admission',
+
+		'ic_number',
+#		'ic_upload',
+		'image_img',
+		'birth_date',
+		'age',
+		'gender',
+		'marital_status',
+		'religion',
+		'occupation',
+		'communication_sight',
+		'communication_hearing',
+		'address',
 
 		'general_condition',
 		'vital_sign_temperature',
@@ -77,7 +90,7 @@ class AdmissionAdmin(admin.ModelAdmin):
 		'admission_by',
 	]
 #	form = AdmissionForm
-#    autocomplete_fields = ['patient', ]
+#	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 #	inlines = [
 #		PatientDataAdmin,
@@ -96,8 +109,9 @@ class ApplicationForHomeLeaveAdmin(admin.ModelAdmin):
 		'witnessed_signature',
 		'witnessed_date',
 	]
-#    autocomplete_fields = ['patient', ]
+#	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
+
 
 class AppointmentAdmin(admin.ModelAdmin):
 #   form = AppointmentForm
@@ -128,7 +142,7 @@ class AppointmentAdmin(admin.ModelAdmin):
 #    readonly_fields = ('patient', 'appointment',)
 #   autocomplete_except = []  # disable adding autocomplete_fields for listed fields
 #   autocomplete_all = False  # disable automatic adding of autocomplete_fields at all
-#    autocomplete_fields = ['patient', ]  # must be a foreign key or a many-to-many field.
+#	autocomplete_fields = ['patient', ]  # must be a foreign key or a many-to-many field.
 	ModelAdmin.ordering = ('id',)
 
 #    def save_model(self, request, obj, form, change):
@@ -141,32 +155,6 @@ class AppointmentAdmin(admin.ModelAdmin):
 #        form = super(AppointmentAdmin, self).get_form(request, obj, **kwargs)
 #        form.base_fields['patient'].label_from_instance = lambda obj: "{} {}".format(obj.id, obj.ic_number)
 #        return form
-class NasogastricAdmin(admin.ModelAdmin):
-	list_display = [
-		'id',
-		'patient',
-		'nasogastric_tube_date',
-		'nasogastric_tube_size',
-		'nasogastric_tube_type',
-		'nasogastric_tube_location',
-		'nasogastric_tube_due_date',
-		'nasogastric_tube_inserted_by',
-	]
-	ModelAdmin.ordering = ('id',)
-
-
-class UrinaryAdmin(admin.ModelAdmin):
-	list_display = [
-		'id',
-		'patient',
-		'urinary_catheter_date',
-		'urinary_catheter_size',
-		'urinary_catheter_type',
-		'urinary_catheter_due_date',
-		'urinary_catheter_inserted_by',
-	]
-	ModelAdmin.ordering = ('id',)
-
 
 
 class CannulaAdmin(admin.ModelAdmin):
@@ -181,7 +169,6 @@ class CannulaAdmin(admin.ModelAdmin):
 	ModelAdmin.ordering = ('id',)
 
 
-
 class DressingAdmin(admin.ModelAdmin):
 	list_display = [
 		'id',
@@ -193,9 +180,32 @@ class DressingAdmin(admin.ModelAdmin):
 		'type_dressing',
 		'wound_location',
 		'wound_condition',
-		'photos',
+#		'photos',
 		'image_img',
 		'done_by',
+	]
+	ModelAdmin.ordering = ('id',)
+
+
+class DischargeCheckListAdmin(admin.ModelAdmin):
+	list_display = [
+		'id',
+		'patient',
+		'date_time',
+		'discharge_status',
+		'nasogastric_tube_date',
+		'nasogastric_tube',
+		'urinary_catheter_date',
+		'nasogastric_tube',
+		'urinary_catheter_date',
+		'urinary_catheter',
+		'surgical_dressing_intact',
+		'spectacle_walking_aid_denture',
+		'appointment_card_returned',
+		'own_medication_return',
+		'medication_reconcilation',
+		'medication_reconcilation_patient',
+		'given_by',
 	]
 	ModelAdmin.ordering = ('id',)
 
@@ -228,6 +238,38 @@ class HGTAdmin(admin.ModelAdmin):
 	ModelAdmin.ordering = ('id',)
 
 
+class IntakeOutputAdmin(admin.ModelAdmin):
+	list_display = [
+		'id',
+		'patient',
+		'date',
+		'time',
+		'intake_oral_type',
+		'intake_oral_ml',
+		'intake_parenteral_type',
+		'intake_parenteral_ml',
+		'intake_other_type',
+		'intake_other_ml',
+		'output_urine_type',
+		'output_urine_ml',
+		'output_gastric_ml',
+		'output_other_type',
+		'output_other_ml',
+	]
+	ModelAdmin.ordering = ('id',)
+
+
+class InvestigationReportAdmin(admin.ModelAdmin):
+	list_display = [
+		'id',
+		'patient',
+		'date',
+#		'file_upload',
+		'image_img',
+	]
+	ModelAdmin.ordering = ('id',)
+
+
 class MaintenanceAdmin(admin.ModelAdmin):
 	list_display = [
 		'id',
@@ -241,37 +283,95 @@ class MaintenanceAdmin(admin.ModelAdmin):
 	ModelAdmin.ordering = ('id',)
 
 
-class MedicationAdmin(admin.ModelAdmin):
+class MedicationAdministrationRecordAdmin(admin.ModelAdmin):
 	list_display = [
 		'id',
 		'patient',
-		'medication',
+#		'allergy',
+		'allergy_drug',
+		'allergy_food',
+		'allergy_others',
+		'medication_date',
+		'medication_time',
 		'medication_drug_name',
 		'medication_dosage',
+		'medication_unit',
+		'medication_tablet_capsule',
+		'medication_frequency',
+		'medication_source',
+		'medication_route',
+		'medication_status',
+		'medication_done',
+	]
+	ModelAdmin.ordering = ('id',)
+
+
+class MedicationAdministrationRecordTemplateAdmin(admin.ModelAdmin):
+	list_display = [
+		'id',
+		'patient',
+		'own_medication',
+		'medication_time',
+		'medication_drug_name',
+		'medication_dosage',
+		'medication_unit',
 		'medication_tablet_capsule',
 		'medication_frequency',
 	]
 	ModelAdmin.ordering = ('id',)
 
 
-class MedicationAdministrationRecordAdmin(admin.ModelAdmin):
+class MultipurposeAdmin(admin.ModelAdmin):
 	list_display = [
 		'id',
 		'patient',
-		'allergy',
-		'medication',
-#		'medication_name',
-#		'medication_dosage',
-#		'medication_tab_cap_mls',
-#		'medication_frequency',
-#		'medication_route',
-		'medication_date',
-		'medication_time',
-		'status_nurse',
-		'done',
-		'stat',
-		'medicationstat_date_time',
+		'date_time',
+		'symptom',
+		'remark',
+	]
+	ModelAdmin.ordering = ('id',)
+
+
+class MiscellaneousChargesSlipAdmin(admin.ModelAdmin):
+	list_display = [
+		'id',
+		'patient',
+		'date',
+		'items_procedures',
+		'unit',
+		'amount',
 		'given_by',
+	]
+	ModelAdmin.ordering = ('id',)
+
+
+class MedicationRecordAdmin(admin.ModelAdmin):
+	list_display = [
+		'id',
+		'patient',
+		'date',
+		'time',
+		'medication',
+		'dosage',
+		'unit',
+		'topup',
+		'balance',
+		'remark',
+		'staff',
+	]
+	ModelAdmin.ordering = ('id',)
+
+
+class NasogastricAdmin(admin.ModelAdmin):
+	list_display = [
+		'id',
+		'patient',
+		'nasogastric_tube_date',
+		'nasogastric_tube_size',
+		'nasogastric_tube_type',
+		'nasogastric_tube_location',
+		'nasogastric_tube_due_date',
+		'nasogastric_tube_inserted_by',
 	]
 	ModelAdmin.ordering = ('id',)
 
@@ -286,50 +386,12 @@ class NursingAdmin(admin.ModelAdmin):
 	ModelAdmin.ordering = ('id',)
 
 
-class IntakeOutputAdmin(admin.ModelAdmin):
+class PhysioProgressNoteSheetAdmin(admin.ModelAdmin):
 	list_display = [
 		'id',
 		'patient',
-		'date',
-		'time',
-		'intake_oral_type',
-		'intake_oral_ml',
-		'intake_parenteral_type',
-		'intake_parenteral_ml',
-		'intake_other_type',
-		'intake_other_ml',
-		'output_urine_ml',
-		'output_urine_cum',
-		'output_gastric_ml',
-		'output_other_type',
-		'output_other_ml',
-	]
-	ModelAdmin.ordering = ('id',)
-
-
-class InvestigationReportAdmin(admin.ModelAdmin):
-	list_display = [
-		'id',
-		'patient',
-		'date',
-		'file_upload',
-		'image_img',
-	]
-	ModelAdmin.ordering = ('id',)
-
-
-
-class OvertimeClaimAdmin(admin.ModelAdmin):
-	list_display = [
-		'id',
-		'patient',
-		'date',
-		'duration_time_from',
-		'duration_time_to',
-		'hours',
-		'total_hours',
-		'checked_sign_by',
-		'verify_by',
+		'date_time',
+		'report',
 	]
 	ModelAdmin.ordering = ('id',)
 
@@ -341,21 +403,11 @@ class PhysiotherapyGeneralAssessmentAdmin(admin.ModelAdmin):
 		'doctor_diagnosis',
 		'doctor_management',
 		'problem',
-		'front_body',
+#		'front_body',
 		'front_body_img',
-		'back_body',
+#		'back_body',
 		'back_body_img',
 		'pain_scale',
-	]
-	ModelAdmin.ordering = ('id',)
-
-
-class PhysioProgressNoteBackAdmin(admin.ModelAdmin):
-	list_display = [
-		'id',
-		'patient',
-		'date_time',
-		'report',
 	]
 	ModelAdmin.ordering = ('id',)
 
@@ -374,40 +426,69 @@ class StoolAdmin(admin.ModelAdmin):
 	ModelAdmin.ordering = ('id',)
 
 
-class AllergyAdmin(admin.ModelAdmin):
+class UrinaryAdmin(admin.ModelAdmin):
 	list_display = [
 		'id',
 		'patient',
-		'allergy_drug',
-		'allergy_food',
-		'allergy_others',
+		'urinary_catheter_date',
+		'urinary_catheter_size',
+		'urinary_catheter_type',
+		'urinary_catheter_due_date',
+		'urinary_catheter_inserted_by',
+	]
+	ModelAdmin.ordering = ('id',)
+
+
+class VitalSignFlowAdmin(admin.ModelAdmin):
+	list_display = [
+		'id',
+		'patient',
+		'date',
+		'time',
+		'temp',
+		'pulse',
+		'blood_pressure_systolic',
+		'blood_pressure_diastolic',
+		'respiration',
+		'spo2_percentage',
+		'spo2_o2',
+	]
+	ModelAdmin.ordering = ('id',)
+
+
+class VisitingConsultantAdmin(admin.ModelAdmin):
+	list_display = [
+		'id',
+		'patient',
+		'date_time',
+		'complaints',
+		'treatment_orders',
+		'consultant',
 	]
 	ModelAdmin.ordering = ('id',)
 
 
 admin.site.register(Admission, AdmissionAdmin)
-admin.site.register(Allergy, AllergyAdmin)
 admin.site.register(ApplicationForHomeLeave, ApplicationForHomeLeaveAdmin)
 admin.site.register(Appointment, AppointmentAdmin)
 admin.site.register(Cannula, CannulaAdmin)
+admin.site.register(DischargeCheckList, DischargeCheckListAdmin)
 admin.site.register(Dressing, DressingAdmin)
 admin.site.register(EnteralFeedingRegime, EnteralFeedingRegimeAdmin)
 admin.site.register(HGT, HGTAdmin)
 admin.site.register(IntakeOutput, IntakeOutputAdmin)
 admin.site.register(InvestigationReport, InvestigationReportAdmin)
 admin.site.register(Maintenance, MaintenanceAdmin)
-admin.site.register(Medication, MedicationAdmin)
 admin.site.register(MedicationAdministrationRecord, MedicationAdministrationRecordAdmin)
-admin.site.register(MedicationRecord)
-admin.site.register(Multipurpose)
-admin.site.register(MiscellaneousChargesSlip)
+admin.site.register(MedicationAdministrationRecordTemplate, MedicationAdministrationRecordTemplateAdmin)
+admin.site.register(MedicationRecord, MedicationRecordAdmin)
+admin.site.register(MiscellaneousChargesSlip, MiscellaneousChargesSlipAdmin)
+admin.site.register(Multipurpose, MultipurposeAdmin)
 admin.site.register(Nasogastric, NasogastricAdmin)
 admin.site.register(Nursing, NursingAdmin)
-admin.site.register(OvertimeClaim, OvertimeClaimAdmin)
-admin.site.register(PhysioProgressNoteBack, PhysioProgressNoteBackAdmin)
-admin.site.register(PhysioProgressNoteFront)
+admin.site.register(PhysioProgressNoteSheet, PhysioProgressNoteSheetAdmin)
 admin.site.register(PhysiotherapyGeneralAssessment, PhysiotherapyGeneralAssessmentAdmin)
 admin.site.register(Stool, StoolAdmin)
 admin.site.register(Urinary, UrinaryAdmin)
-admin.site.register(VitalSignFlow)
-admin.site.register(VisitingConsultant)
+admin.site.register(VisitingConsultant, VisitingConsultantAdmin)
+admin.site.register(VitalSignFlow, VitalSignFlowAdmin)

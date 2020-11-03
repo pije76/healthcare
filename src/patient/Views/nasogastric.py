@@ -17,21 +17,13 @@ from customers.models import *
 
 from bootstrap_modal_forms.generic import *
 
-startdate = datetime.date.today()
-enddate = startdate + datetime.timedelta(days=1)
-
-start_time_day = datetime.datetime.strptime('00:00', '%H:%M').time()
-end_time_day = datetime.datetime.strptime('12:00', '%H:%M').time()
-start_time_night = datetime.datetime.strptime('12:01', '%H:%M').time()
-end_time_night = datetime.datetime.strptime('23:59', '%H:%M').time()
-
 
 @login_required
 def nasogastric_list(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = _('Nasogastric Chart')
+	page_title = _('Nagogastric Tube Chart')
 	patientid = UserProfile.objects.get(username=username).id
 	patients = Nasogastric.objects.filter(patient=patientid)
 	profiles = UserProfile.objects.filter(pk=patientid)
@@ -52,7 +44,7 @@ def nasogastric_create(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = _('Nasogastric Chart')
+	page_title = _('Nagogastric Tube Chart')
 	patients = get_object_or_404(UserProfile, username=username)
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
@@ -108,6 +100,18 @@ class NasogastricUpdateView(BSModalUpdateView):
 	form_class = Nasogastric_ModelForm
 	page_title = _('Nasogastric Form')
 	success_message = _(page_title + ' form has been save successfully.')
+
+	def get_form(self, form_class=None):
+		form = super().get_form(form_class=None)
+		form.fields['nasogastric_tube_date'].label = _("Date")
+		form.fields['nasogastric_tube_size'].label = _("Size")
+		form.fields['nasogastric_tube_type'].label = _("Type")
+		form.fields['nasogastric_tube_location'].label = _("Location")
+		form.fields['nasogastric_tube_due_date'].label = _("Due Date")
+		form.fields['nasogastric_tube_inserted_by'].label = _("Inserted by")
+		form.fields['nasogastric_remove_date'].label = _("Remove Date")
+		form.fields['nasogastric_remove_by'].label = _("Remove by")
+		return form
 
 	def get_success_url(self):
 		username = self.kwargs['username']

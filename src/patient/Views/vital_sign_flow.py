@@ -12,22 +12,13 @@ from customers.models import *
 
 from bootstrap_modal_forms.generic import *
 
-startdate = datetime.date.today()
-enddate = startdate + datetime.timedelta(days=1)
-
-start_time_day = datetime.datetime.strptime('00:00', '%H:%M').time()
-end_time_day = datetime.datetime.strptime('12:00', '%H:%M').time()
-start_time_night = datetime.datetime.strptime('12:01', '%H:%M').time()
-end_time_night = datetime.datetime.strptime('23:59', '%H:%M').time()
-
-
 
 @login_required
 def vital_sign_flow_list(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-    page_title = _('Vital Sign Flow Sheet')
+    page_title = _('Vital Sign Chart')
     patientid = UserProfile.objects.get(username=username).id
     patients = VitalSignFlow.objects.filter(patient=patientid)
     profiles = UserProfile.objects.filter(pk=patientid)
@@ -43,13 +34,12 @@ def vital_sign_flow_list(request, username):
     return render(request, 'patient/vital_sign_flow/vital_sign_flow_data.html', context)
 
 
-
 @login_required
 def vital_sign_flow_create(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
     titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-    page_title = _('Vital Sign Flow Sheet')
+    page_title = _('Vital Sign Chart')
     patients = get_object_or_404(UserProfile, username=username)
     profiles = UserProfile.objects.filter(username=username)
     icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
@@ -103,12 +93,26 @@ def vital_sign_flow_create(request, username):
 
     return render(request, 'patient/vital_sign_flow/vital_sign_flow_form.html', context)
 
+
 class VitalSignFlowUpdateView(BSModalUpdateView):
     model = VitalSignFlow
     template_name = 'patient/vital_sign_flow/partial_edit.html'
     form_class = VitalSignFlow_ModelForm
     page_title = _('VitalSignFlow Form')
     success_message = _(page_title + ' form has been save successfully.')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=None)
+        form.fields['date'].label = _("Date")
+        form.fields['time'].label = _("Time")
+        form.fields['temp'].label = _("Temp")
+        form.fields['pulse'].label = _("Pulse")
+        form.fields['blood_pressure_systolic'].label = _("Blood Pressure Systolic")
+        form.fields['blood_pressure_diastolic'].label = _("Blood Pressure Diastolic")
+        form.fields['respiration'].label = _("Respiration")
+        form.fields['spo2_percentage'].label = _("SPO2-Percentage")
+        form.fields['spo2_o2'].label = _("SPO2-O2")
+        return form
 
     def get_success_url(self):
         username = self.kwargs['username']

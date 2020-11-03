@@ -1,7 +1,19 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
+{% load static %}
 
-<form method="post" action="">
+{% block extrahead %}
+    {{ form.media }}
+{% endblock %}
+
+{% block javascript %}
+	<script src="{% static 'js/jquery.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/moment.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+{% endblock %}
+
+<form method="post" action="" enctype="multipart/form-data">
 {% csrf_token %}
 
 	<div class="modal-header">
@@ -11,45 +23,38 @@
 
 	<div class="modal-body">
 		<div class="form-group">
-			<td>{{ form.doctor_diagnosis|as_crispy_field }}
-			<td>{{ form.doctor_management|as_crispy_field }}
-			<td>{{ form.problem|as_crispy_field }}
-			<td>
-				<a href="{{ item.front_body_url }}">
-					<img class="image_physiotherapy_general_assessment" src="{{ item.front_body_url }}">
-				</a>
-			</td>
-			<td>
-				<a href="{{ item.back_body_url }}">
-					<img class="image_physiotherapy_general_assessment" src="{{ item.back_body_url }}">
-				</a>
-			</td>
-			<td>{{ form.pain_scale|as_crispy_field }}
-			<td>{{ form.comments|as_crispy_field }}
-			<td>{{ form.special_question|as_crispy_field }}
-			<td>{{ form.general_health|as_crispy_field }}
-			<td>{{ form.pmx_surgery|as_crispy_field }}
-			<td>{{ form.ix_mri_x_ray|as_crispy_field }}
-			<td>{{ form.medications_steroids|as_crispy_field }}
-			<td>{{ form.occupation_recreation|as_crispy_field }}
-			<td>{{ form.pacemaker_hearing_aid|as_crispy_field }}
-			<td>{{ form.splinting|as_crispy_field }}
-			<td>{{ form.physical_examination_movement|as_crispy_field }}
-			<td>{{ form.muscle_power|as_crispy_field }}
-			<td>{{ form.functional_activities|as_crispy_field }}
-			<td>{{ form.special_test|as_crispy_field }}
-			<td>{{ form.date_time|as_crispy_field }}
-			<td>{{ form.attending_physiotherapist|as_crispy_field }}
-			<td>{{ form.current_history|as_crispy_field }}
-			<td>{{ form.past_history|as_crispy_field }}
-			<td>{{ form.neurological_reflexes|as_crispy_field }}
-			<td>{{ form.neurological_motor|as_crispy_field }}
-			<td>{{ form.neurological_sensation|as_crispy_field }}
-			<td>{{ form.clearing_test_other_joint|as_crispy_field }}
-			<td>{{ form.physiotherapists_impression|as_crispy_field }}
-			<td>{{ form.short_term_goals|as_crispy_field }}
-			<td>{{ form.long_term_goals|as_crispy_field }}
-			<td>{{ form.plan_treatment|as_crispy_field }}
+			<div class="col-12 col">{{ form.patient|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.doctor_diagnosis|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.doctor_management|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.problem|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.front_body|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.back_body|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.pain_scale|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.comments|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.special_question|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.general_health|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.pmx_surgery|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.ix_mri_x_ray|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.medications_steroids|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.occupation_recreation|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.pacemaker_hearing_aid|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.splinting|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.physical_examination_movement|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.muscle_power|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.functional_activities|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.special_test|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.date_time|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.attending_physiotherapist|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.current_history|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.past_history|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.neurological_reflexes|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.neurological_motor|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.neurological_sensation|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.clearing_test_other_joint|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.physiotherapists_impression|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.short_term_goals|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.long_term_goals|as_crispy_field }}</div>
+			<div class="col-12 col">{{ form.plan_treatment|as_crispy_field }}</div>
 
 		</div>
 	</div>
@@ -60,3 +65,42 @@
 	</div>
 
 </form>
+
+{% block js %}
+	<script type='text/javascript'>
+	$(document).ready(function()
+	{
+
+		$.extend(true, $.fn.datetimepicker.defaults, {
+			icons: {
+				time: 'far fa-clock',
+				date: 'far fa-calendar',
+				up: 'fas fa-arrow-up',
+				down: 'fas fa-arrow-down',
+				previous: 'fas fa-chevron-left',
+				next: 'fas fa-chevron-right',
+				today: 'fas fa-calendar-check',
+				clear: 'far fa-trash-alt',
+				close: 'far fa-times-circle'
+			}
+		});
+
+		$("#id_date_time_0").datetimepicker(
+			{
+//				format: 'L',
+				format:'DD-MM-YYYY',
+//				defaultDate: currentDate,
+				showTodayButton: true,
+				showClear: true,
+				showClose: true,
+			}
+		);
+		$("#id_date_time_1").datetimepicker(
+			{
+//				format: 'LT',
+				format: 'HH:mm'
+			}
+		);
+	});
+	</script>
+{% endblock %}

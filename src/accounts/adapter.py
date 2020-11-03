@@ -1,46 +1,35 @@
+from django import forms
 from django.conf import settings
+from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
-
+from django.utils.translation import ugettext as _
 
 from allauth.account.adapter import DefaultAccountAdapter
-
+from .views import *
 from patient import urls
-#from patient.urls impport *
+
 
 class AccountAdapter(DefaultAccountAdapter):
 	def get_login_redirect_url(self, request):
-#		path = super().get_login_redirect_url(request)
 		user = request.user
 
 		if user.is_superuser:
-#			path = "/staff/"
 			path = reverse('staff:staffdata_list')
 			return path
 
 		if user.is_staff:
-#			path = "/patient/"
 			path = reverse('patient:patientdata_list')
 			return path
 
 		if user.is_patient:
 			path = "/patient/{username}/"
-#			path = reverse_lazy('patient:patientdata_detail', username=user.username)
-#			path = reverse('patient:patientdata_detail', username=user.username).format(username=user.username)
-#			path = reverse_lazy('patient:patientdata_detail', username=user.username)
 			return path.format(username=user.username)
-#			return path
 
-
-#	def save_user(self, request, user, form, commit=False):
-#		data = form.cleaned_data
-#		user.first_name = data['first_name']
-#		user.last_name = data['last_name']
-#		user.ic_number = data['ic_number']
-#		if 'password1' in data:
-#			user.set_password(data['password1'])
-#		else:
-#			user.set_unusable_password()
-#		self.populate_username(request, user)
-#		user.save()
-#		return user
+	def clean_password(self, password, user=None):
+		min_length = settings.PASSWORD_MIN_LENGTH
+		if len(password) < min_length:
+			raise forms.ValidationError(_("Password must be a minimum of {0} characters.").format(min_length))
+			validate_password(password, user)
+		return password

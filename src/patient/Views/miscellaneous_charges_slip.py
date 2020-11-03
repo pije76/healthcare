@@ -12,13 +12,7 @@ from customers.models import *
 
 from bootstrap_modal_forms.generic import *
 
-startdate = datetime.date.today()
-enddate = startdate + datetime.timedelta(days=1)
 
-start_time_day = datetime.datetime.strptime('00:00', '%H:%M').time()
-end_time_day = datetime.datetime.strptime('12:00', '%H:%M').time()
-start_time_night = datetime.datetime.strptime('12:01', '%H:%M').time()
-end_time_night = datetime.datetime.strptime('23:59', '%H:%M').time()
 
 
 @login_required
@@ -103,6 +97,15 @@ class MiscellaneousChargesSlipUpdateView(BSModalUpdateView):
     form_class = MiscellaneousChargesSlip_ModelForm
     page_title = _('MiscellaneousChargesSlip Form')
     success_message = _(page_title + ' form has been save successfully.')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=None)
+        form.fields['date'].label = _("Date")
+        form.fields['items_procedures'].label = _("Items Procedures")
+        form.fields['unit'].label = _("Unit")
+        form.fields['amount'].label = _("Amount")
+        form.fields['given_by'].label = _("Given by")
+        return form
 
     def get_success_url(self):
         username = self.kwargs['username']

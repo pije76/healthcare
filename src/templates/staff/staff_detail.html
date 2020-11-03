@@ -8,14 +8,14 @@
 	<script src="{% static 'js/staff/staff_list.js' %}"></script>
 {% endblock %}
 
+{% block styles %}
+	<link href="{% static 'css/staff/staff.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
 {% block headtitle %}
 {% for item in staffs %}
 	{{ item.full_name }} | {{ titles.title }}
 {% endfor %}
-{% endblock %}
-
-{% block styles %}
-	<link href="{% static 'css/staff/staff.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block content %}
@@ -61,6 +61,9 @@
 							{% for item in staffs %}
 							<input type="hidden" name="fullname" value="{{ item.username }}">
 							<div class="link_detail">
+								<a class="btn btn-primary"href="{% url 'staff:overtime_claim_create' item.username %}">{% trans "Overtime Claim" %}</a>
+							</div>
+							<div class="link_detail">
 								<a class="btn btn-primary"href="{% url 'staff:staff_records_create' item.username %}">{% trans "Staff Records" %}</a>
 							</div>
 							{% endfor %}
@@ -72,13 +75,16 @@
 
 	<div class="col-6">
 		<div class="card bg-light mb-3">
-			<div class="card-header">{% trans "View Data" %}</div>
+			<div class="card-header">{% trans "View Form" %}</div>
 				<div class="card-body">
 
 					<div class="col-sm-6 text-sm-left">
 						{% for item in staffs %}
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'staff:staff_records_list' item.username %}">{% trans "Staff Records" %}</a>
+							<a class="btn btn-outline-primary"href="{% url 'staff:overtime_claim_list' item.username %}">{% trans "Overtime Claim" %} ({{ overtimeclaim|length }})</a>
+						</div>
+						<div class="link_detail">
+							<a class="btn btn-outline-primary"href="{% url 'staff:staff_records_list' item.username %}">{% trans "Staff Records" %}  ({{ staffrecords|length }})</a></a>
 						</div>
 						{% endfor %}
 					</div>

@@ -17,10 +17,12 @@
     <div class="row isi">
         <div class="account_form">
             <h1>{% trans "Register Patient" %}</h1>
-            <form class="signup" method="post" action="{% url 'account_signup' %}">
+            <form class="signup" method="post" action="">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <input type="hidden" name="{{ redirect_field_name }}" value="" />
+                {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{% url 'patient:patientdata_list' %}" />
+                {% endif %}
                 <button type="submit" class="btn btn-primary btn_account">{% trans "Register" %}</button>
             </form>
             <p>

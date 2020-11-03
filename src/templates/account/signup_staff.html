@@ -5,39 +5,43 @@
 {% load crispy_forms_tags %}
 
 {% block styles %}
-    <link href="{% static 'css/account.css' %}" rel="stylesheet" type="text/css" />
+	<link href="{% static 'css/account.css' %}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block headtitle %}{% trans "Register Staff" %}{% endblock %}
 
 {% block content %}
 
-    {% if user.is_authenticated %}
+	{% if user.is_authenticated %}
 
-    <div class="row isi">
-        <div class="account_form">
-            <h1>{% trans "Register Staff" %}</h1>
-            <form class="signup" method="post" action="{% url 'account_signup' %}">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <input type="hidden" name="{{ redirect_field_name }}" value="" />
-                <button type="submit" class="btn btn-primary btn_account">{% trans "Register" %}</button>
-            </form>
-            <p>
-                Back to <a href="{% url 'accounts:signup_view' %}">{% trans "Register" %}</a> options.
-            </p>
-        </div>
+	<div class="row isi">
+		<div class="account_form">
+			<h1>{% trans "Register Staff" %}</h1>
+				<form class="signup" method="post" action="">
+				{% csrf_token %}
+				{{ form|crispy }}
+					{% if user.is_authenticated and user.is_superuser %}
+						<input type="hidden" name="{{ redirect_field_name }}" value="{% url 'staff:staffdata_list' %}" />
+					{% elif user.is_authenticated and user.is_staff %}
+						<input type="hidden" name="{{ redirect_field_name }}" value="/patient/" />
+					{% endif %}
+				<button type="submit" class="btn btn-primary btn_account">{% trans "Register" %}</button>
+			</form>
+			<p>
+				Back to <a href="{% url 'accounts:signup_view' %}">{% trans "Register" %}</a> options.
+			</p>
+		</div>
 
-    </div>
+	</div>
 
-    {% else %}
+	{% else %}
 
-    <div class="row isi">
-        <div class="col-sm-2 col-md-2 col-lg-2">
-        </div>
-    </div>
+	<div class="row isi">
+		<div class="col-sm-2 col-md-2 col-lg-2">
+		</div>
+	</div>
 
-    {% endif %}
+	{% endif %}
 
 
 {% endblock %}

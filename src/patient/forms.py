@@ -45,15 +45,15 @@ import datetime
 
 def get_datetime():
 	return timezone.now()
-#	return datetime.date.strftime(datetime.today().date(), format="%d/%m/%Y %H:%M")
-#	return datetime.now().strftime("%d/%m/%Y %H:%M")
-#	return datetime.date.today().strftime('%d/%m/%Y %H:%M"')
+#	return datetime.date.strftime(datetime.today().date(), format="%d-%m-%Y %H:%M")
+#	return datetime.now().strftime("%d-%m-%Y %H:%M")
+#	return datetime.date.today().strftime('%d-%m-%Y %H:%M"')
 
 
 def get_today():
-	#	return date.strftime(datetime.now().date(), format="%d/%m/%Y")
-	return datetime.date.today().strftime('%d/%m/%Y')
-#	return datetime.now().strftime('%d/%m/%Y')
+	#	return date.strftime(datetime.now().date(), format="%d-%m-%Y")
+	return datetime.date.today().strftime('%d-%m-%Y')
+#	return datetime.now().strftime('%d-%m-%Y')
 #	return date.today
 #	return datetime.now().date()
 

@@ -26,18 +26,28 @@
 					{% if user.is_authenticated and user.is_superuser %}
 
 					<li class="nav-item">
-						<a class="nav-link" href="{% url 'patient:patientdata_list' %}"><i class="fas fa-hospital-user"></i>&nbsp;{% trans "Patient Data" %}</a>
+						<a class="nav-link" href="{% url 'patient:patientdata_list' %}"><i class="fas fa-hospital-user"></i>&nbsp;{% trans "Patient" %}</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{% url 'staff:staffdata_list' %}"><i class="fas fa-user-nurse"></i>&nbsp;{% trans "Staff Management" %}</a>
+						<a class="nav-link" href="{% url 'staff:staffdata_list' %}"><i class="fas fa-user-nurse"></i>&nbsp;{% trans "Staff" %}</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'data:data_list' %}"><i class="fas fa-table"></i>&nbsp;{% trans "Data" %}</a>
 					</li>
 
-					{% elif user.is_authenticated and user.is_patient or user.is_staff%}
+					{% elif user.is_authenticated and user.is_staff %}
 
 					<li class="nav-item">
-						<a class="nav-link" href="{% url 'patient:patientdata_list' %}">
-							<i class="fas fa-hospital-user"></i>&nbsp;{% trans "Patient Data" %}
-						</a>
+						<a class="nav-link" href="{% url 'patient:patientdata_list' %}"><i class="fas fa-hospital-user"></i>&nbsp;{% trans "Patient" %}</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'data:data_list' %}"><i class="fas fa-table"></i>&nbsp;{% trans "Data" %}</a>
+					</li>
+
+					{% elif user.is_authenticated and user.is_patient %}
+
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'patient:patientdata_list' %}"><i class="fas fa-hospital-user"></i>&nbsp;{% trans "Patient" %}</a>
 					</li>
 
 					{% endif %}

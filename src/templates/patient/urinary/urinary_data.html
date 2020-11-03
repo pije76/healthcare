@@ -27,6 +27,8 @@
 		{{ page_title }}
 	</div>
 
+	<p style="font-size:12px">{% include 'messages.html' %}</p>
+
 	{% include 'patient/patient_data.html' %}
 
 	<div class="row rounded form_table">
@@ -40,7 +42,7 @@
 						<form method="post" action="">
 						{% csrf_token %}
 							<table id="t_add_row" class="table table-striped table-bordered">
-								<thead>
+								<thead class="thead_light">
 									<tr>
 										<th class="text-center">{% trans "Date" %}</th>
 										<th class="text-center">{% trans "Size (Fr)" %}</th>

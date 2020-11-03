@@ -19,10 +19,14 @@ urlpatterns = [
 #    re_path(r'^staff/(?P<pk>\d+)/delete', staffdata_delete, name='staffdata_delete'),
 #    re_path(r'^load_ic_number/$', load_ic_number, name='load_ic_number'),
 
-    re_path(r'^(?P<username>\w+)/staff-records/$', staff_records_list, name='staff_records_list'),
+    path('<username>/overtime-claim/', overtime_claim_list, name='overtime_claim_list'),
+    path('overtime-claim/<username>/', overtime_claim_create, name='overtime_claim_create'),
+    path('<username>/overtime-claim/<int:pk>/edit', overtime_claim_edit, name='overtime_claim_edit'),
+    path('<username>/overtime-claim/<int:pk>/delete', overtime_claim_delete, name='overtime_claim_delete'),
+    path('<username>/overtime-claim/pdf', overtime_claim_pdf, name='overtime_claim_pdf'),
 
+    re_path(r'^(?P<username>\w+)/staff-records/$', staff_records_list, name='staff_records_list'),
     re_path(r'^staff-records/(?P<username>\w+)/$', staff_records_create, name='staff_records_create'),
     re_path(r'^(?P<username>\w+)/staff-records/(?P<pk>\d+)/edit', staff_records_edit, name='staff_records_edit'),
     re_path(r'^(?P<username>\w+)/staff-records/(?P<pk>\d+)/delete', staff_records_delete, name='staff_records_delete'),
-
 ]

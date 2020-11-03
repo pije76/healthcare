@@ -1,4 +1,5 @@
 {% for item in patients %}
+{% if user.is_superuser %}
 <tr>
     <td>{{ item.date|date:"d-m-Y" }}</td>
     <td>{{ item.items_procedures }}</td>
@@ -6,10 +7,22 @@
     <td>{{ item.amount }}</td>
     <td>{{ item.given_by }}</td>
     <td>
-        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:miscellaneous_charges_slip_edit' item.patient.username item.id %}"data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:miscellaneous_charges_slip_edit' item.patient.username item.id %}" data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
         </button>
-        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:miscellaneous_charges_slip_delete' item.patient.username item.id %}"data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:miscellaneous_charges_slip_delete' item.patient.username item.id %}" data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
         </button>
     </td>
 </tr>
+
+{% elif user.is_staff or user.is_patient %}
+
+<tr>
+    <td>{{ item.date|date:"d-m-Y" }}</td>
+    <td>{{ item.items_procedures }}</td>
+    <td>{{ item.unit }}</td>
+    <td>{{ item.amount }}</td>
+    <td>{{ item.given_by }}</td>
+</tr>
+
+{% endif %}
 {% endfor %}

@@ -16,19 +16,20 @@
 
 	<div class="modal-body">
         <div class="form-group">
-            <td>{{ form.date|as_crispy_field }}
-			<td>{{ form.time|as_crispy_field }}
-			<td>{{ form.intake_oral_type|as_crispy_field }}
-			<td>{{ form.intake_oral_ml|as_crispy_field }}
-			<td>{{ form.intake_parenteral_type|as_crispy_field }}
-			<td>{{ form.intake_parenteral_ml|as_crispy_field }}
-			<td>{{ form.intake_other_type|as_crispy_field }}
-			<td>{{ form.intake_other_ml|as_crispy_field }}
-			<td>{{ form.output_urine_ml|as_crispy_field }}
-			<td>{{ form.output_urine_cum|as_crispy_field }}
-			<td>{{ form.output_gastric_ml|as_crispy_field }}
-			<td>{{ form.output_other_type|as_crispy_field }}
-			<td>{{ form.output_other_ml|as_crispy_field }}
+        	{{ form.patient|as_crispy_field }}
+			{{ form.date|as_crispy_field }}
+			{{ form.time|as_crispy_field }}
+			{{ form.intake_oral_type|as_crispy_field }}
+			{{ form.intake_oral_ml|as_crispy_field }}
+			{{ form.intake_parenteral_type|as_crispy_field }}
+			{{ form.intake_parenteral_ml|as_crispy_field }}
+			{{ form.intake_other_type|as_crispy_field }}
+			{{ form.intake_other_ml|as_crispy_field }}
+			{{ form.output_urine_ml|as_crispy_field }}
+			{{ form.output_urine_type|as_crispy_field }}
+			{{ form.output_gastric_ml|as_crispy_field }}
+			{{ form.output_other_type|as_crispy_field }}
+			{{ form.output_other_ml|as_crispy_field }}
         </div>
 	</div>
 

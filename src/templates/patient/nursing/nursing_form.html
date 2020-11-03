@@ -29,6 +29,8 @@
 		{{ page_title }}
 	</div>
 
+	<p style="font-size:12px">{% include 'messages.html' %}</p>
+
 	{% include 'patient/patient_formset.html' %}
 
 	<form method="post">
@@ -38,19 +40,19 @@
 		<div class="row rounded form_table">
 
 			<table id="form_set" class="table table-bordered">
-				<thead class="thead-light">
+				<thead class="thead_light">
 					<tr class="d-flex">
 						<th class="col-2 text-center">{% trans "Date/Time" %}</th>
-						<th class="col-10 text-center">{% trans "Report" %}</th>
-						<th class="text-center" scope="col">{% trans "Action" %}</th>
+						<th class="col-9 text-center">{% trans "Report" %}</th>
+						<th class="col-1 text-center">{% trans "Action" %}</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for item in formset.forms %}
 					<tr id="{{ item.prefix }}-row" class="d-flex">
 						<td class="col-2">{{ item.date_time|as_crispy_field }}</td>
-						<td class="col-10">{{ item.report|as_crispy_field }}</td>
-						<td></td>
+						<td class="col-9">{{ item.report|as_crispy_field }}</td>
+						<td class="col-1"></td>
 					</tr>
 					<tr class="tambah_row"></tr>
 					{% endfor %}
@@ -93,7 +95,7 @@ $(document).ready(function()
 				$(row).find('[id$="date"]').removeClass('datetimepickerinput').removeAttr('#id_form-0-date_time').removeData('DateTimePicker')
 			.unbind().datetimepicker(
 				options={
-					"format": "DD/MM/YYYY HH:mm",
+					"format": "DD-MM-YYYY HH:mm",
 				});
 			},
 		});

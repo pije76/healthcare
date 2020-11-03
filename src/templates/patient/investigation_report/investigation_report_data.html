@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block headtitle %}
+	{{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block styles %}
+	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/patient/investigation_report.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block javascript %}
+	<script src="{% static 'js/patient/investigation_report.js' %}"></script>
+	<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+	<div class="row formtitle">
+		{{ page_title }}
+	</div>
+
+	<p style="font-size:12px">{% include 'messages.html' %}</p>
+
+	{% include 'patient/patient_data.html' %}
+
+	<div class="row rounded form_table">
+
+		<div class="col-12">
+			<div class="card">
+
+				<div class="card-body">
+
+					<div class="table-responsive">
+						<form method="post" action="">
+						{% csrf_token %}
+							<table id="t_add_row" class="table table-striped table-bordered">
+								<thead class="thead_light">
+									{% if user.is_superuser %}
+									<tr>
+										<th class="text-center">{% trans "Date" %}</th>
+										<th class="text-center">{% trans "File Upload" %}</th>
+										<th class="text-center">{% trans "Action" %}</th>
+									</tr>
+									{% elif user.is_staff or user.is_patient %}
+									<tr>
+										<th class="text-center">{% trans "Date" %}</th>
+										<th class="text-center">{% trans "File Upload" %}</th>
+									</tr>
+									{% endif %}
+								</thead>
+								<tbody>
+									{% include 'patient/investigation_report/partial_list.html' %}
+								</tfoot>
+							</table>
+						</form>
+					</div>
+
+				</div>
+
+            </div>
+        </div>
+
+    </div>
+
+	<br />
+
+	<div class="row">
+		<div class="col-4">
+			{% for item in profiles %}
+				<a class="btn btn-outline-primary" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Back" %}</a>
+			{% endfor %}
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+$(function()
+{
+	$(".trigger_modal").each(function()
+	{
+		$(this).modalForm(
+		{
+			formURL: $(this).data('form-url')
+		});
+	});
+});
+</script>
+{% endblock %}

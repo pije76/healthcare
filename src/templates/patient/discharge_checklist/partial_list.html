@@ -1,0 +1,44 @@
+{% for item in patients %}
+{% if user.is_superuser %}
+<tr>
+    <td>{{ item.date_time|date:"d-m-Y H:i" }}</td>
+    <td>{{ item.patient }}</td>
+    <td>{{ item.discharge_status|safe }}</td>
+    <td>{{ item.nasogastric_tube_date }}</td>
+    <td>{{ item.nasogastric_tube }}</td>
+    <td>{{ item.urinary_catheter_date }}</td>
+    <td>{{ item.urinary_catheter }}</td>
+    <td>{{ item.surgical_dressing_intact }}</td>
+    <td>{{ item.spectacle_walking_aid_denture }}</td>
+    <td>{{ item.appointment_card_returned }}</td>
+    <td>{{ item.own_medication_return }}</td>
+    <td>{{ item.medication_reconcilation }}</td>
+    <td>{{ item.given_by }}</td>
+
+    <td>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:discharge_checklist_edit' item.patient.username item.id %}" data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:discharge_checklist_delete' item.patient.username item.id %}" data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
+        </button>
+    </td>
+</tr>
+
+{% elif user.is_staff or user.is_patient %}
+
+<tr>
+    <td>{{ item.date_time|date:"d-m-Y H:i" }}</td>
+    <td>{{ item.patient }}</td>
+    <td>{{ item.discharge_status }}</td>
+    <td>{{ item.nasogastric_tube_date }}</td>
+    <td>{{ item.nasogastric_tube }}</td>
+    <td>{{ item.urinary_catheter_date }}</td>
+    <td>{{ item.urinary_catheter }}</td>
+    <td>{{ item.surgical_dressing_intact }}</td>
+    <td>{{ item.spectacle_walking_aid_denture }}</td>
+    <td>{{ item.appointment_card_returned }}</td>
+    <td>{{ item.own_medication_return }}</td>
+    <td>{{ item.medication_reconcilation }}</td>
+    <td>{{ item.given_by }}</td>
+</tr>
+{% endif %}
+{% endfor %}

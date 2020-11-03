@@ -7,6 +7,16 @@ from accounts.models import *
 from customers.models import *
 from .models import *
 
+import datetime
+
+get_today = datetime.date.today()
+enddate = get_today + datetime.timedelta(days=1)
+
+start_time_day = datetime.datetime.strptime('00:00', '%H:%M').time()
+end_time_day = datetime.datetime.strptime('12:00', '%H:%M').time()
+start_time_night = datetime.datetime.strptime('12:01', '%H:%M').time()
+end_time_night = datetime.datetime.strptime('23:59', '%H:%M').time()
+
 
 # Create your views here.
 def load_ic_number(request):
@@ -25,7 +35,6 @@ def load_ic_number(request):
 def load_relationship(request):
 	fullname_data = request.GET.get('full_name')
 	familyname_data = request.GET.get('ec_name')
-	relationship_data = request.GET.get('ec_relationship')
 	fullname_results = UserProfile.objects.filter(full_name=fullname_data).order_by('full_name')
 	familyname_results = Family.objects.filter(ec_name=familyname_data).order_by('ec_name')
 	familyrelationship_results = Family.objects.filter(ec_name=familyname_data).values_list('ec_relationship', flat=True).first()
@@ -78,18 +87,9 @@ def patientdata_list(request):
 
 	if request.user.is_superuser or request.user.is_staff:
 		datastaff = UserProfile.objects.filter(is_patient=True).order_by("id")
-#		q = Q()
-#		for item in city_list:
-#			q = q | Q(address__city__icontains=city)
-#		fullname_data = datastaff.values_list('id', flat=True)
-#		datapatients = Admission.objects.filter(patient__in=fullname_data).order_by('patient')
-#		datapatients = UserProfile.objects.filter(username=request.user.username)
-#		datapatients = Admission.objects.all()
-#		results = chain(datapatients, datastaff)
 
 	if request.user.is_patient:
 		datastaff = UserProfile.objects.filter(full_name=request.user).order_by("id")
-#		datapatients = Admission.objects.filter(patient__in=datastaff)
 
 	context = {
 		'patients': patients,
@@ -108,35 +108,33 @@ def patientdata_detail(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	patients = UserProfile.objects.filter(username=username)
-#	patients = UserProfile.objects.filter(patient=id)
-#	patients = UserProfile.objects.filter(pk=id).values_list('patient', flat=True).first()
+	patientid = UserProfile.objects.get(username=username).id
 	page_title = _('Patient Detail')
 	icnumbers = Admission.objects.filter(patient=request.user)
-	admission = Admission.objects.all()
-	admission = Admission.objects.all()
-	application_home_leave = ApplicationForHomeLeave.objects.all()
-	appointment = Appointment.objects.all()
-	cannula = Cannula.objects.all()
-	dressing = Dressing.objects.all()
-	enteralfeedingregime = EnteralFeedingRegime.objects.all()
-	hgt = HGT.objects.all()
-	intakeoutput = IntakeOutput.objects.all()
-	investigationreport = InvestigationReport.objects.all()
-	maintenance = Maintenance.objects.all()
-	medicationadministrationrecord = MedicationAdministrationRecord.objects.all()
-	medicationrecord = MedicationRecord.objects.all()
-	multipurpose = Multipurpose.objects.all()
-	miscellaneouschargesslip = MiscellaneousChargesSlip.objects.all()
-	nasogastric = Nasogastric.objects.all()
-	nursing = Nursing.objects.all()
-	overtimeclaim = OvertimeClaim.objects.all()
-	physioprogressnoteback = PhysioProgressNoteBack.objects.all()
-	physioprogressnotefront = PhysioProgressNoteFront.objects.all()
-	physiotherapygeneralassessment = PhysiotherapyGeneralAssessment.objects.all()
-	stool = Stool.objects.all()
-	urinary = Urinary.objects.all()
-	vitalsignflow = VitalSignFlow.objects.all()
-	visitingconsultant = VisitingConsultant.objects.all()
+	admission = Admission.objects.filter(patient=patientid)
+	application_home_leave = ApplicationForHomeLeave.objects.filter(patient=patientid)
+	appointment = Appointment.objects.filter(patient=patientid)
+	cannula = Cannula.objects.filter(patient=patientid)
+	dischargechecklist = DischargeCheckList.objects.filter(patient=patientid)
+	dressing = Dressing.objects.filter(patient=patientid)
+	enteralfeedingregime = EnteralFeedingRegime.objects.filter(patient=patientid)
+	hgt = HGT.objects.filter(patient=patientid)
+	intakeoutput = IntakeOutput.objects.filter(patient=patientid)
+	investigation_report = InvestigationReport.objects.filter(patient=patientid)
+	maintenance = Maintenance.objects.filter(patient=patientid)
+	medicationadministrationrecord = MedicationAdministrationRecord.objects.filter(patient=patientid)
+	medicationtemplate = MedicationAdministrationRecordTemplate.objects.filter(patient=patientid)
+	medicationrecord = MedicationRecord.objects.filter(patient=patientid)
+	multipurpose = Multipurpose.objects.filter(patient=patientid)
+	miscellaneouschargesslip = MiscellaneousChargesSlip.objects.filter(patient=patientid)
+	nasogastric = Nasogastric.objects.filter(patient=patientid)
+	nursing = Nursing.objects.filter(patient=patientid)
+	physioprogressnotesheet = PhysioProgressNoteSheet.objects.filter(patient=patientid)
+	physiotherapygeneralassessment = PhysiotherapyGeneralAssessment.objects.filter(patient=patientid)
+	stool = Stool.objects.filter(patient=patientid)
+	urinary = Urinary.objects.filter(patient=patientid)
+	vitalsignflow = VitalSignFlow.objects.filter(patient=patientid)
+	visitingconsultant = VisitingConsultant.objects.filter(patient=patientid)
 
 	context = {
 		'titles': titles,
@@ -149,20 +147,20 @@ def patientdata_detail(request, username):
 		'appointment': appointment,
 		'cannula': cannula,
 		'dressing': dressing,
+		'dischargechecklist': dischargechecklist,
 		'enteralfeedingregime': enteralfeedingregime,
 		'hgt': hgt,
 		'intakeoutput': intakeoutput,
-		'investigationreport': investigationreport,
+		'investigation_report': investigation_report,
 		'maintenance': maintenance,
 		'medicationadministrationrecord': medicationadministrationrecord,
+		'medicationtemplate': medicationtemplate,
 		'medicationrecord': medicationrecord,
 		'multipurpose': multipurpose,
 		'miscellaneouschargesslip': miscellaneouschargesslip,
 		'nasogastric': nasogastric,
 		'nursing': nursing,
-		'overtimeclaim': overtimeclaim,
-		'physioprogressnoteback': physioprogressnoteback,
-		'physioprogressnotefront': physioprogressnotefront,
+		'physioprogressnotesheet': physioprogressnotesheet,
 		'physiotherapygeneralassessment': physiotherapygeneralassessment,
 		'stool': stool,
 		'urinary': urinary,
@@ -171,5 +169,3 @@ def patientdata_detail(request, username):
 	}
 
 	return render(request, 'patient/patient_detail.html', context)
-
-

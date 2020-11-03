@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block headtitle %}
+    {{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block content %}
+
+{% block styles %}
+	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/patient/physio_progress_note_sheet.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block extrahead %}
+	{{ form.media }}
+{% endblock %}
+
+<div class="container-fluid">
+
+	<div class="row formtitle">
+		{{ page_title }}
+	</div>
+
+	<p style="font-size:12px">{% include 'messages.html' %}</p>
+
+	{% include 'patient/patient_formset.html' %}
+
+	<form method="post">
+	{% csrf_token %}
+
+		<div class="row rounded form_table">
+
+			<table class="table table-bordered">
+				<thead class="thead_light">
+					<tr class="d-flex">
+						<th class="col-2 text-center">{% trans "Date/Time" %}</th>
+						<th class="col-10 text-center">{% trans "Report" %}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="d-flex">
+						{{ form.patient|as_crispy_field }}
+						<td class="col-2">{{ form.date_time|as_crispy_field }}</td>
+						<td class="col-10">{{ form.report|as_crispy_field }}</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+			{% for item in profiles %}
+			<a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+			{% endfor %}
+
+		</div>
+
+	</form>
+
+</div>
+
+{% endblock %}

@@ -48,3 +48,12 @@
 .header_form_detail {
   padding: .75rem;
 }
+
+.row_enteral_feeding_regine_date {
+  display: none;
+}
+
+.data_detail {
+    margin-left: 0px;
+    margin-right: 0px;
+}

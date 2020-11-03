@@ -52,6 +52,8 @@
 		{{ page_title }}
 	</div>
 
+	<p style="font-size:12px">{% include 'messages.html' %}</p>
+
 	{% include 'patient/patient_data.html' %}
 
 	<div class="row rounded form_table">
@@ -67,25 +69,25 @@
 						{% csrf_token %}
 						{% endfor %}
 							<table id="t_add_row" class="table table-striped table-bordered">
-								<thead>
+								<thead class="thead_light">
 									{% if user.is_superuser %}
 									<tr>
 										<th class="text-center">{% trans "Date" %}</th>
 										<th class="text-center">{% trans "Time" %}</th>
-										<th class="text-center">{% trans "Hospital / Clinic" %}</th>
+										<th class="text-center">{% trans "Hospital/Clinic" %}</th>
 										<th class="text-center">{% trans "Department" %}</th>
-										<th class="text-center">{% trans "Appointment" %}</th>
-										<th class="text-center">{% trans "Treatment / Order" %}</th>
+										<th class="text-center">{% trans "Planning Investigation" %}</th>
+										<th class="text-center">{% trans "Treatment/Order" %}</th>
 										<th class="text-center">{% trans "Action" %}</th>
 									</tr>
 									{% elif user.is_staff or user.is_patient %}
 									<tr>
 										<th class="text-center">{% trans "Date" %}</th>
 										<th class="text-center">{% trans "Time" %}</th>
-										<th class="text-center">{% trans "Hospital / Clinic" %}</th>
+										<th class="text-center">{% trans "Hospital/Clinic" %}</th>
 										<th class="text-center">{% trans "Department" %}</th>
-										<th class="text-center">{% trans "Appointment" %}</th>
-										<th class="text-center">{% trans "Treatment/Order after follow up" %}</th>
+										<th class="text-center">{% trans "Planning Investigation" %}</th>
+										<th class="text-center">{% trans "Treatment/Order" %}</th>
 									</tr>
 									{% endif %}
 								</thead>
@@ -154,7 +156,7 @@ $(function()
 		$("#id_date_time_0").datetimepicker(
 			{
 //				format: 'L',
-				format:'DD/MM/YYYY',
+				format:'DD-MM-YYYY',
 //              defaultDate: currentDate,
 				showTodayButton: true,
 				showClear: true,
