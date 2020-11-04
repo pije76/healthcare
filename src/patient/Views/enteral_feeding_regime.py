@@ -20,6 +20,7 @@ from ..views import *
 from bootstrap_modal_forms.generic import *
 
 import datetime
+import json
 
 
 @login_required
@@ -33,118 +34,105 @@ def enteral_feeding_regime_list(request, username):
 	patientid = UserProfile.objects.get(username=username).id
 	enteralfeedingregime_data = EnteralFeedingRegime.objects.filter(patient=patientid).exclude(amount__isnull=True)
 	profiles = UserProfile.objects.filter(pk=patientid)
-	total = EnteralFeedingRegime.objects.aggregate(Sum('amount'))
-	total_feeding = EnteralFeedingRegime.objects.filter(patient=patientid).aggregate(Sum('amount'))
-	total_feeding = total_feeding['amount__sum']
-	total_fluids = EnteralFeedingRegime.objects.filter(patient=patientid).values_list('total_fluids', flat=True).first()
-	get_lastdate = EnteralFeedingRegime.objects.filter(patient=patientid).order_by('-date').values_list('date', flat=True).first()
+
+	get_lastdate = EnteralFeedingRegime.objects.filter(patient=patientid).order_by('-date').exclude(amount__isnull=True).values_list('date', flat=True).first()
+	get_warm_water_before = EnteralFeedingRegime.objects.filter(patient=patientid).filter(date=get_lastdate).values_list('warm_water_before', flat=True).first()
+	get_warm_water_after = EnteralFeedingRegime.objects.filter(patient=patientid).filter(date=get_lastdate).values_list('warm_water_after', flat=True).first()
 
 	initial = {
 		'patient': patients,
 		'date': get_lastdate,
+		'warm_water_before': get_warm_water_before,
+		'warm_water_after': get_warm_water_after,
 	}
 
-	if request.is_ajax and request.method == "GET":
-		form = EnteralFeedingRegime_ModelForm(initial=initial)
+	data = dict()
+
+	if request.method == "GET":
+		form = EnteralFeedingRegime_Water_ModelForm(initial=initial)
+
 		get_newdate = request.GET.get('get_newdate', None)
 		if get_newdate is not None:
 			set_newdate = datetime.datetime.strptime(get_newdate, '%d-%m-%Y')
 		else:
-			set_newdate = get_today
-#		warm_water_before = 11
+			set_newdate = get_lastdate
+
 		warm_water_before = EnteralFeedingRegime.objects.filter(patient=patientid, date=set_newdate).values_list('warm_water_before', flat=True).first()
 		warm_water_after = EnteralFeedingRegime.objects.filter(patient=patientid, date=set_newdate).values_list('warm_water_after', flat=True).first()
-#		warm_water_before2 = EnteralFeedingRegime.objects.filter(patient=patientid, date=set_newdate).values_list('warm_water_before', flat=True).first()
-#		warm_water_after2 = EnteralFeedingRegime.objects.filter(patient=patientid, date=set_newdate).values_list('warm_water_after', flat=True).first()
-#		print("get_csrfmiddlewaretoken", get_csrfmiddlewaretoken)
-#		print("get_newdate", get_newdate)
-#		print("set_newdate", set_newdate)
-#		print("warm_water_before", warm_water_before)
-#		print("warm_water_after", warm_water_after)
+		total_feeding = EnteralFeedingRegime.objects.filter(patient=patientid).filter(date=set_newdate).aggregate(Sum('amount'))
+		get_total_feeding = total_feeding['amount__sum']
+		get_total_fluids = warm_water_before + warm_water_after + get_total_feeding
+
+		if warm_water_before and warm_water_after is not None:
+			total_warm_water = warm_water_before + warm_water_after
+		else:
+			pass
 
 		context1 = {
 			'logos': logos,
 			'titles': titles,
 			'page_title': page_title,
-			'enteralfeedingregime_data': enteralfeedingregime_data,
 			'profiles': profiles,
 			'user_name': user_name,
-			'total': total,
-			'total_feeding': total_feeding,
-			'total_fluids': total_fluids,
-			'warm_water_before': warm_water_before,
-			'warm_water_after': warm_water_after,
-#			'warm_water_before2': warm_water_before2,
-#			'warm_water_after2': warm_water_after2,
+			'total_feeding': get_total_feeding,
+			'total_fluids': get_total_fluids,
+			'enteralfeedingregime_data': enteralfeedingregime_data,
+			'warm_water_before': get_warm_water_before,
+			'warm_water_after': get_warm_water_after,
 			'form': form,
 		}
-#		return JsonResponse({}, status=400)
+
 		return render(request, 'patient/enteral_feeding_regime/enteral_feeding_regime_data.html', context1)
 
-	if request.method == "POST":
-		form = EnteralFeedingRegime_ModelForm(request.POST or None)
-#		set_warm_water_before = request.GET['warm_water_before']
-#		pins = EnteralFeedingRegime.objects.filter(warm_water_before=set_warm_water_before)
-#		warm_water_before = 12
+	if request.method == "POST" and request.is_ajax:
+		form = EnteralFeedingRegime_Water_ModelForm(request.POST or None)
 
 		get_newdate = request.POST.get('get_newdate', None)
-#		get_newdate = request.GET.get('get_newdate')
-#		get_newdate = request.POST.get('get_newdate')
-#		get_newdate = request.GET['get_newdate']
 		if get_newdate is not None:
 			set_newdate = datetime.datetime.strptime(get_newdate, '%d-%m-%Y')
 		else:
-			set_newdate = get_today
+			set_newdate = get_lastdate
+
 		warm_water_before = EnteralFeedingRegime.objects.filter(patient=patientid, date=set_newdate).values_list('warm_water_before', flat=True).first()
 		warm_water_after = EnteralFeedingRegime.objects.filter(patient=patientid, date=set_newdate).values_list('warm_water_after', flat=True).first()
-
-		print("warm_water_before_post", warm_water_before)
-		print("warm_water_after_post", warm_water_after)
+		total_feeding = EnteralFeedingRegime.objects.filter(patient=patientid).filter(date=set_newdate).aggregate(Sum('amount'))
+		get_total_feeding = total_feeding['amount__sum']
+		get_total_fluids = warm_water_before + warm_water_after + get_total_feeding
 
 		if form.is_valid():
-			instance = EnteralFeedingRegime()
-#			instance = form.save()
-			instance.patient = patients
-			instance.date = form.cleaned_data['date']
-			instance.warm_water_before = warm_water_before
-			instance.warm_water_after = warm_water_after
-			ser_instance = serializers.serialize('json', warm_water_before)
-			instance.save()
-			print(ser_instance)
-			print("form valid")
-#			return JsonResponse({"instance": ser_instance}, status=200)
-#			return render(request, 'patient/enteral_feeding_regime/enteral_feeding_regime_data.html', ser_instance)
-			return redirect('patient:patientdata_detail', username=patients.username)
+			form.save()
+
+			if warm_water_before and warm_water_after is not None:
+				total_warm_water = warm_water_before + warm_water_after
+			else:
+				pass
+
+			data['warm_water_before'] = warm_water_before
+			data['warm_water_after'] = warm_water_after
+			data['total_warm_water'] = total_warm_water
+			data['total_feeding'] = get_total_feeding
+			data['total_fluids'] = get_total_fluids
+
+			return JsonResponse(data)
 		else:
-			messages.warning(request, form.errors)
-			print(form.errors)
-#			return JsonResponse({"bad error": form.errors}, status=400)
-#		html = render_to_string('patient/enteral_feeding_regime/enteral_feeding_regime_data.html', {'warm_water_before2 ': warm_water_before2})
+#			messages.warning(request, form.errors)
+			return JsonResponse({"response error": form.errors}, status=400)
 
-#	return HttpResponse(html)
-#	return JsonResponse({"error": ""}, status=400)
-#	return render(request, 'patient/enteral_feeding_regime/enteral_feeding_regime_data.html', context)
-#	html = t.render(Context({'warm_water_before2': warm_water_before2, 'warm_water_after2': warm_water_after2}))
+	context3 = {
+		'logos': logos,
+		'titles': titles,
+		'page_title': page_title,
+		'profiles': profiles,
+		'user_name': user_name,
+		'total_feeding': get_total_feeding,
+		'total_fluids': get_total_fluids,
+		'enteralfeedingregime_data': enteralfeedingregime_data,
+		'warm_water_before': warm_water_before,
+		'warm_water_after': warm_water_after,
+		'form': form,
+	}
 
-
-#	else:
-#		get_newdate = request.GET.get('get_newdate')
-#		set_newdate = datetime.datetime.strptime(get_newdate, '%d-%m-%Y')
-#		warm_water_before = EnteralFeedingRegime.objects.filter(patient=patientid).filter(date=set_newdate).values_list('warm_water_before', flat=True).first()
-#		warm_water_after = EnteralFeedingRegime.objects.filter(patient=patientid).filter(date=set_newdate).values_list('warm_water_after', flat=True).first()
-#		get_newdate = request.GET.get('set_date')
-#		set_newdate = datetime.datetime.strptime(get_newdate, '%d-%m-%Y')
-#		set_newdate = get_today
-#		print("get_newdate_old", get_newdate)
-#		print("set_newdate_old", set_newdate)
-#		warm_water_before = EnteralFeedingRegime.objects.filter(patient=patientid).filter(date=set_newdate).values_list('warm_water_before', flat=True).first()
-#		warm_water_after = EnteralFeedingRegime.objects.filter(patient=patientid).filter(date=set_newdate).values_list('warm_water_after', flat=True).first()
-
-
-#	else:
-#		pass
-
-#	set_newdate = set_newdate
+	return render(request, 'patient/enteral_feeding_regime/enteral_feeding_regime_data.html', context3)
 
 
 @login_required

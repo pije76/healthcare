@@ -321,7 +321,7 @@ class AnnotationManager(models.Manager):
 
 
 class EnteralFeedingRegime(models.Model):
-	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=True, null=True)
 	date = models.DateField(blank=True, null=True)
 	time = models.TimeField(blank=True, null=True)
 	type_of_milk = models.CharField(max_length=255, blank=True, null=True)

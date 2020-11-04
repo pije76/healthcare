@@ -37,7 +37,7 @@
 	{% include 'patient/patient_data.html' %}
 	<div class="userroles" data-username="{{ user_name }}"></div>
 
-	<form id="friend-form">
+	<form id="friend-form" method="post">
 	{% csrf_token %}
 
 		<div class="row data_detail">
@@ -47,14 +47,8 @@
 			<div class="w-100"></div>
 			<div class="col-6 border header_form_detail" style="border-radius: 0px 0px 0px .25rem;">
 				<span id="name_title">
-					{{ form.patient|as_crispy_field }}
 					{{ form.date|as_crispy_field }}
 				</span>
-				<div class="row data_detail">
-					<div class="col-3 input_warm_water_before">{{ form.warm_water_before|as_crispy_field }}</div>
-					<div class="col-3 input_warm_water_after">{{ form.warm_water_after|as_crispy_field }}</div>
-					<input type="submit" class="btn btn-primary" value="Send" />
-				</div>
 			</div>
 		</div>
 
@@ -94,19 +88,19 @@
 										{% if user.is_superuser %}
 										<tr>
 											<td colspan="3"><b>TOTAL FEEDING :</b></td>
-											<td></td>
+											<td class="input_total_feeding">{{ total_feeding }}</td>
 											<td></td>
 											<td></td>
 										</tr>
 										<tr>
 											<td colspan="2">{% trans "Flush with warm water before" %}</td>
-											<td><b>{{ warm_water_before }}</b> (mls)</td>
+											<td class="input_warm_water_before" id="get_warm_water_before"><b>{{ warm_water_before }}</b> (mls)</td>
 											<td colspan="2">{% trans "Flush with warm water after" %}</td>
-											<td><b>{{ warm_water_after }}</b> (mls)</td>
+											<td class="input_warm_water_after" id="get_warm_water_after"><b>{{ warm_water_after }}</b> (mls)</td>
 										</tr>
 										<tr>
 											<td colspan="3"><b>TOTAL FLUIDS :</b></td>
-											<td><span id="total_fluids"></span></td>
+											<td class="input_total_fluids">{{ total_fluids }}</td>
 											<td></td>
 											<td></td>
 										</tr>
@@ -159,7 +153,6 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
-	// using jQuery to define CSRF token
 	function getCookie(name)
 	{
 		var cookieValue = null;
@@ -169,7 +162,6 @@ $(document).ready(function()
 			for (var i = 0; i < cookies.length; i++)
 			{
 				var cookie = jQuery.trim(cookies[i]);
-				// Does this cookie string begin with the name we want?
 				if (cookie.substring(0, name.length + 1) === (name + '='))
 				{
 					cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
@@ -195,10 +187,71 @@ $(document).ready(function()
 
 	var setdate = $('#id_date').val();
 
+	$('div.dataTables_filter input').addClass('date_filter');
+
+	var username_data = "{{ user_name }}";
+	var urls = "/patient/" + username_data + "/enteral-feeding-regime/";
+
+	$('#id_date').on('dp.change', function(e)
+	{
+
+		e.preventDefault();
+
+		var datenew = $(this).val();
+		if(datenew != '')
+		{
+			$('.date_filter').val(datenew);
+			t.search(this.value).draw();
+		}
+
+		$.ajax(
+		{
+			type: 'GET',
+			url: urls,
+			data: {
+				'get_newdate':datenew,
+				'csrfmiddlewaretoken': csrftoken,
+			},
+		});
+	});
+
+	$('#id_date').on('dp.change', function(e)
+	{
+		e.preventDefault();
+
+		var datenew = $(this).val();
+		if(datenew != '')
+		{
+			$('.date_filter').val(datenew);
+			t.search(this.value).draw();
+		}
+
+		$.ajax(
+		{
+			type: 'POST',
+			dataType: 'json',
+			url: urls,
+			data: {
+				'get_newdate':datenew,
+				'csrfmiddlewaretoken': csrftoken,
+			},
+			success: function(data)
+			{
+				if(!data["valid"])
+				{
+					$(".input_warm_water_before").html(data.warm_water_before);
+					$(".input_warm_water_after").html(data.warm_water_after);
+					$(".input_total_warm_water").html(data.total_warm_water);
+					$(".input_total_feeding").html(data.total_feeding);
+					$(".input_total_fluids").html(data.total_fluids);
+                }
+            },
+		});
+	});
+
 	var t = $('#t_add_row').DataTable(
 	{
 		"order": [[ 0, "desc" ], [ 1, "asc" ]],
-//		"pageLength": 24,
 		"displayLength": 24,
 		"lengthMenu": [ 24, 48, 72, 96, 120],
 		"columnDefs": [
@@ -256,11 +309,8 @@ $(document).ready(function()
 				return intVal(a) + intVal(b);
 			}, 0);
 
-			$(api.column(1).footer()).html('<b>' + 'TOTAL FEEDING' + '</b>');
-            $(api.column(3).footer()).html('<div class="total_feeding">' + pageTotal + '</div>');
-
-            var get_warm_water_before = $(".input_warm_water_before").text();
-			var get_warm_water_after = $(".input_warm_water_before").text();
+            var get_warm_water_before = $("#get_warm_water_before").text();
+			var get_warm_water_after = $("#get_warm_water_after").text();
 
 			var sumwater = parseInt(pageTotal) + parseInt(get_warm_water_before) + parseInt(get_warm_water_after);
 			var sumwaterzero = parseInt(get_warm_water_before) + parseInt(get_warm_water_after);
@@ -268,129 +318,15 @@ $(document).ready(function()
 			if(pageTotal > 0)
 			{
 				$("#total_fluids").html(sumwater);
-//				$('#warm_water_before').html(get_warm_water_before);
-//				$('#warm_water_after').html(get_warm_water_after);
 			}
 			else
 			{
 				$("#total_fluids").html(sumwaterzero);
-//				$('#warm_water_before').html(get_warm_water_before);
-//				$('#warm_water_after').html(get_warm_water_after);
 			};
 
         },
 	});
-
-	$('div.dataTables_filter input').addClass('date_filter');
-
-	$('#id_date').on('dp.change', function(e)
-	{
-
-		e.preventDefault();
-
-		var datenew = $(this).val();
-		if(datenew != '')
-		{
-			$('.date_filter').val(datenew);
-			t.search(this.value).draw();
-		}
-
-		var username_data = "{{ user_name }}";
-		var urls = "/patient/" + username_data + "/enteral-feeding-regime/";
-
-		$.ajax(
-		{
-			type: 'GET',
-			url: urls,
-			data: {
-				'get_newdate':datenew,
-				'csrfmiddlewaretoken': csrftoken,
-			},
-			success: function(data)
-			{
-				if(!data["valid"])
-				{
-//					console.log("valid");
-                }
-//                console.log(datenew);
-            },
-            error: function(xhr, status, error)
-            {
-            	console.log(xhr);
-            	console.log(status);
-            	console.log(error);
-            },
-		});
-
-	});
-
-//	$('#id_date').on('dp.change', function(e)
-	$("#id_date-form").submit(function (e)
-//	$("#id_date").focusout(function(e)
-	{
-		e.preventDefault();
-		var serializedData = $(this).serialize();
-
-		var datenew = $(this).val();
-		if(datenew != '')
-		{
-			$('.date_filter').val(datenew);
-			t.search(this.value).draw();
-		}
-
-		var username_data = "{{ user_name }}";
-		var urls = "/patient/" + username_data + "/enteral-feeding-regime/";
-
-		$.ajax(
-		{
-//			method: "GET",
-			type: 'POST',
-//			type: 'GET',
-			dataType: 'json',
-//			dataType: 'text',
-//			headers: { "X-CSRFToken": csrftoken },
-//			data: serializeData,
-			async: 'true',
-			url: urls,
-//			data: serializedData,
-			data: {
-				serializedData,
-				'get_newdate':datenew,
-//				'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val(),
-				'csrfmiddlewaretoken': csrftoken,
-			},
-			success: function (response)
-			{
-				if(!response["valid"])
-				{
-					console.log("valid");
-                }
-//                console.log(datenew);
-                // on successfull creating object
-                // 1. clear the form.
-                $(".input_warm_water_before").trigger('reset');
-                // 2. focus to nickname input
-                $(".input_warm_water_before").focus();
-
-                // display the newly friend to table.
-                var instance = JSON.parse(response["instance"]);
-                var set_warm_water_before = JSON.parse(response["warm_water_before"]);
-//                var fields = instance[0]["fields"];
-
-                $(".input_warm_water_before").prepend(
-                    `${fields["warm_water_before"]||""}`
-                )
-            },
-            error: function(xhr, status, error)
-//            error: function (response)
-            {
-            	console.log(xhr);
-            	console.log(status);
-            	console.log(error);
-            },
-		});
-
-	});
+	console.log(pageTotal);
 
 });
 
