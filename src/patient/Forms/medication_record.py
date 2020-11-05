@@ -18,7 +18,7 @@ class MedicationRecord_ModelForm(BSModalModelForm):
 			'patient',
 			'date',
 			'time',
-			'medication',
+			'medication_drug_name',
 			'dosage',
 			'unit',
 			'topup',
@@ -32,7 +32,7 @@ class MedicationRecord_ModelForm(BSModalModelForm):
 
 	date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
 	time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
-	medication = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	medication_drug_name = forms.ModelChoiceField(queryset=Medicine.objects.all(), required=False, label="", widget=forms.Select(attrs={'class': "form-control"}))
 	dosage = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
 	unit = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=UNIT_CHOICES)
 	topup = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
@@ -46,7 +46,7 @@ class MedicationRecord_Form(BSModalForm):
 	patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
 	time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
-	medication = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	medication_drug_name = forms.ModelChoiceField(queryset=Medicine.objects.all(), required=False, label="", widget=forms.Select(attrs={'class': "form-control"}))
 	dosage = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
 	unit = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=UNIT_CHOICES)
 	topup = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
@@ -55,7 +55,7 @@ class MedicationRecord_Form(BSModalForm):
 	staff = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'readonly': 'readonly'}))
 
 	def clean_medication(self):
-		return self.cleaned_data['medication'].capitalize()
+		return self.cleaned_data['medication_drug_name'].capitalize()
 
 	def clean_topup(self):
 		return self.cleaned_data['topup'].capitalize()

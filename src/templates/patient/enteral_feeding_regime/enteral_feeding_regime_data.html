@@ -104,21 +104,22 @@
 											<td></td>
 											<td></td>
 										</tr>
+
 										{% elif user.is_staff or user.is_patient %}
 										<tr>
 											<td colspan="3"><b>TOTAL FEEDING :</b></td>
-											<td></td>
+											<td class="input_total_feeding">{{ total_feeding }}</td>
 											<td></td>
 										</tr>
 										<tr>
 											<td colspan="2">{% trans "Flush with warm water before" %}</td>
-											<td><b>{{ warm_water_before }}</b> (mls)</td>
+											<td class="input_warm_water_before" id="get_warm_water_before"><b>{{ warm_water_before }}</b> (mls)</td>
 											<td colspan="1">{% trans "Flush with warm water after" %}</td>
-											<td><b>{{ warm_water_after }}</b> (mls)</td>
+											<td class="input_warm_water_after" id="get_warm_water_after"><b>{{ warm_water_after }}</b> (mls)</td>
 										</tr>
 										<tr>
 											<td colspan="3"><b>TOTAL FLUIDS :</b></td>
-											<td><span id="total_fluids"></span></td>
+											<td class="input_total_fluids">{{ total_fluids }}</td>
 											<td></td>
 										</tr>
 										{% endif %}
@@ -212,6 +213,13 @@ $(document).ready(function()
 				'get_newdate':datenew,
 				'csrfmiddlewaretoken': csrftoken,
 			},
+			success: function(data)
+			{
+				if(!data["valid"])
+				{
+//					console.log(datenew);
+                }
+            },
 		});
 	});
 
@@ -239,9 +247,10 @@ $(document).ready(function()
 			{
 				if(!data["valid"])
 				{
+//					console.log(data.total_feeding);
+//					console.log(data.total_fluids);
 					$(".input_warm_water_before").html(data.warm_water_before);
 					$(".input_warm_water_after").html(data.warm_water_after);
-					$(".input_total_warm_water").html(data.total_warm_water);
 					$(".input_total_feeding").html(data.total_feeding);
 					$(".input_total_fluids").html(data.total_fluids);
                 }

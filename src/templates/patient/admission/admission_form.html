@@ -287,10 +287,15 @@
 				<div class="col-3 col">
 					{% trans "BP (mmHg)" %}:
 				</div>
-				<div class="col-4 col">
-					{{ admision_form.vital_sign_bp|as_crispy_field }}
+				<div class="col-3 col">
+					{% trans "Upper" %}:
+					{{ admision_form.vital_sign_bp_upper|as_crispy_field }}
 				</div>
-				<div class="col-3 col border-left-0">
+				<div class="col-3 col">
+					{% trans "Lower" %}:
+					{{ admision_form.vital_sign_bp_lower|as_crispy_field }}
+				</div>
+				<div class="col-1 col border-left-0">
 				</div>
 			</div>
 

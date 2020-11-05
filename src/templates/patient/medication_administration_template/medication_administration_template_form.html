@@ -45,8 +45,10 @@
 						<th class="text-center">{% trans "Time" %}</th>
 						<th class="text-center">{% trans "Medicine" %}</th>
 						<th class="text-center">{% trans "Dosage" %}</th>
+						<th class="text-center">{% trans "Unit" %}</th>
 						<th class="text-center">{% trans "Tab/Cap/MLS" %}</th>
 						<th class="text-center">{% trans "Frequency" %}</th>
+						<th class="text-center">{% trans "Action" %}</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -56,8 +58,10 @@
 						<td>{{ item.medication_time|as_crispy_field }}</td>
 						<td>{{ item.medication_drug_name|as_crispy_field }}</td>
 						<td>{{ item.medication_dosage|as_crispy_field }}</td>
+						<td>{{ item.medication_unit|as_crispy_field }}</td>
 						<td>{{ item.medication_tablet_capsule|as_crispy_field }}</td>
 						<td>{{ item.medication_frequency|as_crispy_field }}</td>
+						<td></td>
 					</tr>
 					{% endfor %}
 				</tbody>
@@ -90,8 +94,10 @@ $(document).ready(function()
 	{
 		prefix: 'formset',
 //		prefix: '{{ formset.prefix }}',
-		addText: '',
-		deleteText: '',
+		addCssClass: 'btn btn-success',
+		addText: '<i class="fas fa-plus"></i>',
+		deleteCssClass: 'btn btn-danger',
+		deleteText: '<i class="fas fa-minus"></i>',
 		keepFieldValues: '#id_form-0-date, #id_form-0-time, #id_form-0-dosage, #id_form-0-balance, #id_form-0-staff',
 //		addContainerClass: 'tambah_row',
 		added: function(row)

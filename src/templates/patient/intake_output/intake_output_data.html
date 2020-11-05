@@ -10,7 +10,7 @@
 
 {% block styles %}
 	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
-	<link href="{% static 'css/patient/enteral_feeding_regine.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'css/patient/intake_output.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block javascript %}
@@ -104,12 +104,17 @@
 									{% if user.is_superuser %}
 									<tr>
 										<th colspan="2"></th>
-										<th colspan="2"></th>
-										<th colspan="2"></th>
-										<th colspan="2"></th>
-										<th colspan="2"></th>
 										<th></th>
-										<th colspan="2"></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
 									</tr>
 									<tr>
 										<td colspan="3"><b>24-HOUR TOTAL</b></td>
@@ -123,12 +128,17 @@
 									{% elif user.is_staff or user.is_patient %}
 									<tr>
 										<th colspan="2"></th>
-										<th colspan="2"></th>
-										<th colspan="2"></th>
-										<th colspan="2"></th>
-										<th colspan="2"></th>
 										<th></th>
-										<th colspan="2"></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
 									</tr>
 									<tr>
 										<td colspan="2"><b>24-HOUR TOTAL</b></td>
@@ -260,11 +270,16 @@ $(document).ready(function()
 			}, 0);
 
 
+            $(api.column(2).footer()).html('Oral:');
             $(api.column(3).footer()).html('<div class="total_intake1">' + totalIntake1 + '</div>');
+            $(api.column(4).footer()).html('Parenteral:');
             $(api.column(5).footer()).html('<div class="total_intake2">' + totalIntake2 + '</div>');
+            $(api.column(6).footer()).html('Other:');
             $(api.column(7).footer()).html('<div class="total_intake3">' + totalIntake3 + '</div>');
+            $(api.column(8).footer()).html('Urine:');
             $(api.column(9).footer()).html('<div class="total_output1">' + totalOutput1 + '</div>');
             $(api.column(10).footer()).html('<div class="total_output2">' + totalOutput2 + '</div>');
+            $(api.column(11).footer()).html('Other:');
             $(api.column(12).footer()).html('<div class="total_output3">' + totalOutput3 + '</div>');
 
             var total_intake1 = $(".total_intake1").text();

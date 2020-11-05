@@ -249,7 +249,7 @@ STOOL_FREQUENCY_CHOICES = (
 
 
 SURGICAL_CHOICES = (
-	('None', _('None')),
+	('', _('')),
 )
 
 TAB_CHOICES = (

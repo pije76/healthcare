@@ -20,7 +20,7 @@ from ..views import *
 from bootstrap_modal_forms.generic import *
 
 import datetime
-import json
+#import json
 
 
 @login_required
@@ -100,7 +100,7 @@ def enteral_feeding_regime_list(request, username):
 		get_total_fluids = warm_water_before + warm_water_after + get_total_feeding
 
 		if form.is_valid():
-			form.save()
+#			form.save()
 
 			if warm_water_before and warm_water_after is not None:
 				total_warm_water = warm_water_before + warm_water_after
@@ -117,23 +117,6 @@ def enteral_feeding_regime_list(request, username):
 		else:
 #			messages.warning(request, form.errors)
 			return JsonResponse({"response error": form.errors}, status=400)
-
-	context3 = {
-		'logos': logos,
-		'titles': titles,
-		'page_title': page_title,
-		'profiles': profiles,
-		'user_name': user_name,
-		'total_feeding': get_total_feeding,
-		'total_fluids': get_total_fluids,
-		'enteralfeedingregime_data': enteralfeedingregime_data,
-		'warm_water_before': warm_water_before,
-		'warm_water_after': warm_water_after,
-		'form': form,
-	}
-
-	return render(request, 'patient/enteral_feeding_regime/enteral_feeding_regime_data.html', context3)
-
 
 @login_required
 def enteral_feeding_regime_create(request, username):

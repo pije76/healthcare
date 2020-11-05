@@ -20,6 +20,7 @@ class MedicationAdministrationRecordTemplate_ModelForm(BSModalModelForm):
 			'medication_time',
 			'medication_drug_name',
 			'medication_dosage',
+			'medication_unit',
 			'medication_tablet_capsule',
 			'medication_frequency',
 		]
@@ -36,6 +37,7 @@ class MedicationAdministrationRecordTemplate_ModelForm(BSModalModelForm):
 #    medication_drug_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	medication_drug_name = forms.ModelChoiceField(queryset=Medicine.objects.all(), required=False, label="", widget=forms.Select(attrs={'class': "form-control"}))
 	medication_dosage = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
+	medication_unit = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=UNIT_CHOICES)
 	medication_tablet_capsule = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
 	medication_frequency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MEDICATION_ADMINISTRATION_FREQUENCY_CHOICES)
 

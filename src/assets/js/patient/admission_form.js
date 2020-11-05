@@ -8,7 +8,7 @@ $(document).ready(function()
 	$("#id_patientprofile_form-communication_hearing_others").prop("disabled", true);
 	$("#id_admision_form-vital_sign_on_oxygen_therapy_1").filter('[value="False"]').attr('checked', true)
 	$("#id_admision_form-vital_sign_on_oxygen_therapy_flow_rate").prop("disabled", true);
-	$("#id_admision_form-biohazard_infectious_disease_1").filter('[value="False"]').attr('checked', true)
+	$("#id_admision_form-biohazard_infectious_disease_1").filter('[value="No"]').attr('checked', true)
 	$("#id_admision_form-biohazard_infectious_disease_others").prop("disabled", true);
 	$("#id_admision_form-invasive_line_insitu_others").prop("disabled", true);
 	$("#id_admision_form-medical_history_others").prop("disabled", true);
@@ -18,7 +18,7 @@ $(document).ready(function()
 	$("#id_admision_form-surgical_history").prop("disabled", true);
 	$("#id_admision_form-surgical_history_none_1").attr("checked", true);
 
-	$("#id_own_medication_form_mart-own_medication_1").filter('[value="False"]').attr('checked', true)
+	$("#id_own_medication_form_mart-own_medication_1").filter('[value="No"]').attr('checked', true)
 	$('.hapus_Own').addClass("disabled");
 	$('.tambah_Own').addClass("disabled");
 	$("[id$='time']").addClass("disabled_input");
@@ -758,7 +758,8 @@ $(document).ready(function()
 		var $this = $(this);
 		if ($this.is("#id_admision_form-invasive_line_insitu_5"))
 		{
-			if ($("#id_admision_form-invasive_line_insitu_5:checked").is(':checked') == true)
+//			if ($("#id_admision_form-invasive_line_insitu_5:checked").is(':checked') == true)
+			if ($("#id_admision_form-invasive_line_insitu_5:checked").length > 0)
 			{
 				$("#id_admision_form-invasive_line_insitu_others").prop("disabled", false);
 			}
@@ -774,7 +775,8 @@ $(document).ready(function()
 		var $this = $(this);
 		if ($this.is("#id_admision_form-medical_history_8"))
 		{
-			if ($("#id_admision_form-medical_history_8").is(':checked') == true)
+//			if ($("#id_admision_form-medical_history_8").is(':checked') == true)
+			if ($("#id_admision_form-medical_history_8:checked").length > 0)
 			{
 				$("#id_admision_form-medical_history_others").prop("disabled", false);
 			}
@@ -791,7 +793,8 @@ $(document).ready(function()
 		var $this = $(this);
 		if ($this.is("#id_own_medication_form_mart-own_medication_1"))
 		{
-			if ($("#id_own_medication_form_mart-own_medication_1").filter('[value="True"]').attr('checked', true))
+			if ($("#id_own_medication_form_mart-own_medication_1").filter('[value="Yes"]').attr('checked', true))
+//			if ($("#id_own_medication_form_mart-own_medication_1:checked").filter('[value="Yes"]').length > 0)
 			{
 				$('.hapus_Own').addClass("disabled");
 				$('.tambah_Own').addClass("disabled");
@@ -816,7 +819,8 @@ $(document).ready(function()
 		}
 		else if ($this.is("#id_own_medication_form_mart-own_medication_2"))
 		{
-			if ($("#id_own_medication_form_mart-own_medication_2").filter('[value="True"]').attr('checked', true))
+			if ($("#id_own_medication_form_mart-own_medication_2").filter('[value="Yes"]').attr('checked', true))
+//			if ($("#id_own_medication_form_mart-own_medication_2:checked").filter('[value="Yes"]').length > 0)
 			{
 				$('.hapus_Own').removeClass("disabled");
 				$('.tambah_Own').removeClass("disabled");
@@ -847,7 +851,8 @@ $(document).ready(function()
 		var $this = $(this);
 		if ($this.is("#id_admision_form-adaptive_aids_with_patient_6"))
 		{
-			if ($("#id_admision_form-adaptive_aids_with_patient_6").is(':checked') == true)
+//			if ($("#id_admision_form-adaptive_aids_with_patient_6").is(':checked') == true)
+			if ($("#id_admision_form-adaptive_aids_with_patient_6:checked").length > 0)
 			{
 				$("#id_admision_form-adaptive_aids_with_patient_others").prop("disabled", false);
 			}

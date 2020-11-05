@@ -31,21 +31,21 @@ def intake_output_list(request, username):
 
 	time_range_day = IntakeOutput.objects.filter(patient=patientid, time__range=[start_time_day, end_time_day])
 	time_range_night = IntakeOutput.objects.filter(patient=patientid, time__range=[start_time_night, end_time_night])
-
-	intakeoutput_data = IntakeOutput.objects.filter(patient=patientid).exclude(time__isnull=True)
+	get_lastdate = IntakeOutput.objects.filter(patient=patientid).order_by('-date').exclude(time__isnull=True).values_list('date', flat=True).first()
+	intakeoutput_data = IntakeOutput.objects.filter(patient=patientid).filter(date=get_lastdate).exclude(time__isnull=True)
 
 	initial_list = {
-		'date': get_today,
+		'date': get_lastdate,
 	}
 
 	if request.method == 'POST':
 		form = IntakeOutputForm(request.POST or None)
 
 		if form.is_valid():
-			profile = IntakeOutput()
-			profile.patient = patients
-			profile.date = form.cleaned_data['date']
-			profile.save()
+#			profile = IntakeOutput()
+#			profile.patient = patients
+#			profile.date = form.cleaned_data['date']
+#			profile.save()
 
 			messages.success(request, _(page_title + ' form was created.'))
 			return redirect('patient:patientdata_detail', username=patients.username)

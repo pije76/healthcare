@@ -74,6 +74,7 @@
 						<th class="text-center" style="width:10%;">{% trans "Route" %}</th>
 						<th class="text-center" style="width:10%;">{% trans "Status" %}</th>
 						<th class="text-center custom_checkbox">{% trans "Done" %}</th>
+						<th class="text-center">{% trans "Action" %}</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -90,6 +91,7 @@
 						<td>{{ item.medication_route|as_crispy_field }}</td>
 						<td>{{ item.medication_status|as_crispy_field }}</td>
 						<td>{{ item.medication_done|as_crispy_field }}</td>
+						<td></td>
 					</tr>
 					{% endfor %}
 				</tbody>
@@ -129,8 +131,10 @@ $(document).ready(function()
 		$('#form_set tbody tr').formset(
 		{
 			prefix: 'formset',
-			addText: '',
-			deleteText: '',
+			addCssClass: 'btn btn-success',
+			addText: '<i class="fas fa-plus"></i>',
+			deleteCssClass: 'btn btn-danger',
+			deleteText: '<i class="fas fa-minus"></i>',
 			keepFieldValues: '#id_form-0-medication_date, #id_form-0-medication_time, #id_form-0-medication, #id_form-0-medication_status',
 			added: function(row)
 			{

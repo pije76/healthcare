@@ -63,7 +63,8 @@ class AdmissionAdmin(admin.ModelAdmin):
 		'general_condition',
 		'vital_sign_temperature',
 		'vital_sign_pulse',
-		'vital_sign_bp',
+		'vital_sign_bp_upper',
+		'vital_sign_bp_lower',
 		'vital_sign_resp',
 		'vital_sign_spo2',
 		'vital_sign_on_oxygen_therapy',
@@ -75,7 +76,7 @@ class AdmissionAdmin(admin.ModelAdmin):
 #		'invasive_line_insitu_others',
 		'medical_history',
 #		'medical_history_others',
-		'surgical_history_none',
+#		'surgical_history_none',
 		'surgical_history',
 
 		'date_diagnosis',
@@ -321,6 +322,23 @@ class MedicationAdministrationRecordTemplateAdmin(admin.ModelAdmin):
 	ModelAdmin.ordering = ('id',)
 
 
+class MedicationRecordAdmin(admin.ModelAdmin):
+	list_display = [
+		'id',
+		'patient',
+		'date',
+		'time',
+		'medication_drug_name',
+		'dosage',
+		'unit',
+		'topup',
+		'balance',
+		'remark',
+		'staff',
+	]
+	ModelAdmin.ordering = ('id',)
+
+
 class MultipurposeAdmin(admin.ModelAdmin):
 	list_display = [
 		'id',
@@ -341,23 +359,6 @@ class MiscellaneousChargesSlipAdmin(admin.ModelAdmin):
 		'unit',
 		'amount',
 		'given_by',
-	]
-	ModelAdmin.ordering = ('id',)
-
-
-class MedicationRecordAdmin(admin.ModelAdmin):
-	list_display = [
-		'id',
-		'patient',
-		'date',
-		'time',
-		'medication',
-		'dosage',
-		'unit',
-		'topup',
-		'balance',
-		'remark',
-		'staff',
 	]
 	ModelAdmin.ordering = ('id',)
 

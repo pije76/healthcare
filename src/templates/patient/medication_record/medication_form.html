@@ -44,7 +44,7 @@
 					<tr>
 						<th class="text-center">{% trans "Date" %}</th>
 						<th class="text-center">{% trans "Time" %}</th>
-						<th class="text-center">{% trans "Medication" %}</th>
+						<th class="text-center">{% trans "Drug Name" %}</th>
 						<th class="text-center">{% trans "Dosage" %}</th>
 						<th class="text-center" style="width:10%;">{% trans "Unit" %}</th>
 						<th class="text-center">{% trans "Top Up" %}</th>
@@ -59,7 +59,7 @@
 					<tr id="{{ item.prefix }}-row">
 						<td>{{ item.date|as_crispy_field }}</td>
 						<td>{{ item.time|as_crispy_field }}</td>
-						<td>{{ item.medication|as_crispy_field }}</td>
+						<td>{{ item.medication_drug_name|as_crispy_field }}</td>
 						<td>{{ item.dosage|as_crispy_field }}</td>
 						<td>{{ item.unit|as_crispy_field }}</td>
 						<td>{{ item.topup|as_crispy_field }}</td>

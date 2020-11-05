@@ -23,7 +23,7 @@ def nasogastric_list(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = _('Nagogastric Tube Chart')
+	page_title = _('Nasogastric Tube Chart')
 	patientid = UserProfile.objects.get(username=username).id
 	patients = Nasogastric.objects.filter(patient=patientid)
 	profiles = UserProfile.objects.filter(pk=patientid)
@@ -44,7 +44,7 @@ def nasogastric_create(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = _('Nagogastric Tube Chart')
+	page_title = _('Nasogastric Tube Chart')
 	patients = get_object_or_404(UserProfile, username=username)
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()

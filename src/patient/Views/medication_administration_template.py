@@ -62,11 +62,13 @@ def medication_administration_template_create(request, username):
 				mart_save = item.save(commit=False)
 				mart_save.patient = patients
 #				mart_save.patient = item.cleaned_data['patient']
-				mart_save.own_medication = True
+#				mart_save.own_medication = True
+				mart_save.own_medication = 'Yes'
 				mart_save.medication_date = item.cleaned_data['medication_date']
 				mart_save.medication_time = item.cleaned_data['medication_time']
 				mart_save.medication_drug_name = item.cleaned_data['medication_drug_name']
 				mart_save.medication_dosage = item.cleaned_data['medication_dosage']
+				mart_save.medication_unit = item.cleaned_data['medication_unit']
 				mart_save.medication_tablet_capsule = item.cleaned_data['medication_tablet_capsule']
 				mart_save.medication_frequency = item.cleaned_data['medication_frequency']
 				mart_save.save()
@@ -105,6 +107,7 @@ class MedicationAdministrationRecordTemplateUpdateView(BSModalUpdateView):
 		form.fields['medication_time'].label = _("Time")
 		form.fields['medication_drug_name'].label = _("Drug Name")
 		form.fields['medication_dosage'].label = _("Dosage")
+		form.fields['medication_unit'].label = _("Unit")
 		form.fields['medication_tablet_capsule'].label = _("Tablet/Capsule")
 		form.fields['medication_frequency'].label = _("Frequency")
 		return form

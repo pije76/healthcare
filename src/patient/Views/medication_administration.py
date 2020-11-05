@@ -36,14 +36,35 @@ def medication_administration_list(request, username):
 #	allergies = MedicationAdministrationRecord.objects.filter(patient=patientid).values_list('allergy', flat=True).first()
 	medicine_date = MedicationAdministrationRecord.objects.filter(patient=patientid).values_list('medication_date', flat=True).first()
 #	medicine_data = MedicationAdministrationRecord.objects.filter(patient=patientid)
-	medicine_data = MedicationAdministrationRecord.objects.filter(patient=patientid).exclude(medication_time__isnull=True)
+	get_lastdate = MedicationAdministrationRecord.objects.filter(patient=patientid).order_by('-medication_date').exclude(medication_time__isnull=True).values_list('medication_date', flat=True).first()
+	medicine_data = MedicationAdministrationRecord.objects.filter(patient=patientid).filter(medication_date=get_lastdate).exclude(medication_time__isnull=True)
 	medicine_stat = MedicationAdministrationRecord.objects.filter(patient=patientid).exclude(medication_time__isnull=True)
 	allergy_drug_data = Allergy.objects.filter(patient=patientid).values_list('allergy_drug', flat=True).first()
 	allergy_food_data = Allergy.objects.filter(patient=patientid).values_list('allergy_food', flat=True).first()
 	allergy_others_data = Allergy.objects.filter(patient=patientid).values_list('allergy_others', flat=True).first()
 
 #	if request.method == 'GET':
-	form = MedicationAdministrationRecord_Form()
+#	form = MedicationAdministrationRecord_Form()
+
+	initial_list = {
+		'medication_date': get_lastdate,
+	}
+
+	if request.method == 'POST':
+		form = MedicationAdministrationRecord_Form(request.POST or None)
+
+		if form.is_valid():
+#			profile = IntakeOutput()
+#			profile.patient = patients
+#			profile.date = form.cleaned_data['date']
+#			profile.save()
+
+			messages.success(request, _(page_title + ' form was created.'))
+			return redirect('patient:patientdata_detail', username=patients.username)
+		else:
+			messages.warning(request, form.errors)
+	else:
+		form = MedicationAdministrationRecord_Form(initial=initial_list)
 
 	context = {
 		'logos': logos,

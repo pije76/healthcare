@@ -64,7 +64,7 @@ def medication_record_create(request, username):
                 profile.patient = patients
                 profile.date = item.cleaned_data['date']
                 profile.time = item.cleaned_data['time']
-                profile.medication = item.cleaned_data['medication']
+                profile.medication_drug_name = item.cleaned_data['medication_drug_name']
                 profile.dosage = item.cleaned_data['dosage']
                 profile.unit = item.cleaned_data['unit']
                 profile.topup = item.cleaned_data['topup']
@@ -104,7 +104,7 @@ class MedicationRecordUpdateView(BSModalUpdateView):
         form = super().get_form(form_class=None)
         form.fields['date'].label = _("Date")
         form.fields['time'].label = _("Time")
-        form.fields['medication'].label = _("Medication")
+        form.fields['medication_drug_name'].label = _("Drug Name")
         form.fields['dosage'].label = _("Dosage")
         form.fields['unit'].label = _("Unit")
         form.fields['topup'].label = _("Top Up")
@@ -133,4 +133,3 @@ class MedicationRecordDeleteView(BSModalDeleteView):
 
 
 medication_record_delete = MedicationRecordDeleteView.as_view()
-

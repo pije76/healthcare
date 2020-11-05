@@ -91,3 +91,7 @@
     margin-left: 0px;
     margin-right: 0px;
 }
+
+#total_intake, #total_output, #total_balance {
+  font-weight: bold;
+}

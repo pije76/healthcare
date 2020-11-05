@@ -191,10 +191,11 @@ def admission_create(request, username):
             admision.communication_hearing = get_communication_hearing
             admision.address = get_address
 
-            admision.general_condition = admision_form.cleaned_data['general_condition']
+            admision.general_condition = ', '.join(admision_form.cleaned_data['general_condition'])
             admision.vital_sign_temperature = admision_form.cleaned_data['vital_sign_temperature']
             admision.vital_sign_pulse = admision_form.cleaned_data['vital_sign_pulse']
-            admision.vital_sign_bp = admision_form.cleaned_data['vital_sign_bp']
+            admision.vital_sign_bp_upper = admision_form.cleaned_data['vital_sign_bp_upper']
+            admision.vital_sign_bp_lower = admision_form.cleaned_data['vital_sign_bp_lower']
             admision.vital_sign_resp = admision_form.cleaned_data['vital_sign_resp']
             admision.vital_sign_spo2 = admision_form.cleaned_data['vital_sign_spo2']
             admision.vital_sign_on_oxygen_therapy = admision_form.cleaned_data['vital_sign_on_oxygen_therapy']
@@ -203,13 +204,13 @@ def admission_create(request, username):
 
             admision.biohazard_infectious_disease = admision_form.cleaned_data['biohazard_infectious_disease']
             admision.invasive_line_insitu = admision_form.cleaned_data['invasive_line_insitu']
-            admision.medical_history = admision_form.cleaned_data['medical_history']
-            admision.surgical_history_none = admision_form.cleaned_data['surgical_history_none']
-            admision.surgical_history = admision_form.cleaned_data['surgical_history']
+            admision.medical_history = ', '.join(admision_form.cleaned_data['medical_history'])
+            admision.surgical_history_none = ''.join(admision_form.cleaned_data['surgical_history_none'])
+            admision.surgical_history = ''.join(admision_form.cleaned_data['surgical_history'])
 
-            admision.adaptive_aids_with_patient = admision_form.cleaned_data['adaptive_aids_with_patient']
+            admision.adaptive_aids_with_patient = ', '.join(admision_form.cleaned_data['adaptive_aids_with_patient'])
             admision.adaptive_aids_with_patient_others = admision_form.cleaned_data['adaptive_aids_with_patient_others']
-            admision.orientation = admision_form.cleaned_data['orientation']
+            admision.orientation = ', '.join(admision_form.cleaned_data['orientation'])
             admision.special_information = admision_form.cleaned_data['special_information']
             admision.admission_by = admision_form.cleaned_data['admission_by']
             admision.save()
@@ -256,7 +257,8 @@ def admission_create(request, username):
                 medication_savemart_formset.medication_unit = item.cleaned_data['medication_unit']
                 medication_savemart_formset.medication_tablet_capsule = item.cleaned_data['medication_tablet_capsule']
                 medication_savemart_formset.medication_frequency = item.cleaned_data['medication_frequency']
-                medication_savemart_formset.own_medication = True
+#                medication_savemart_formset.own_medication = True
+                medication_savemart_formset.own_medication = 'Yes'
                 medication_savemart_formset.save()
 
                 medication_savemart_form = MedicationAdministrationRecord()
@@ -283,30 +285,30 @@ def admission_create(request, username):
             get_medication_mart_date = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).values_list("medication_date", flat=True).first()
             get_medication_mar_date = MedicationAdministrationRecord.objects.filter(patient=patients).values_list("medication_date", flat=True).first()
 
-            create_time_mart0 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='00:00')
-            create_time_mart1 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='01:00')
-            create_time_mart2 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='02:00')
-            create_time_mart3 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='03:00')
-            create_time_mart4 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='04:00')
-            create_time_mart5 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='05:00')
-            create_time_mart6 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='06:00')
-            create_time_mart7 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='07:00')
-            create_time_mart8 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='08:00')
-            create_time_mart9 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='09:00')
-            create_time_mart10 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='10:00')
-            create_time_mart11 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='11:00')
-            create_time_mart12 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='12:00')
-            create_time_mart13 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='13:00')
-            create_time_mart14 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='14:00')
-            create_time_mart15 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='15:00')
-            create_time_mart16 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='16:00')
-            create_time_mart17 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='17:00')
-            create_time_mart18 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='18:00')
-            create_time_mart19 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='19:00')
-            create_time_mart20 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='20:00')
-            create_time_mart21 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='21:00')
-            create_time_mart22 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='22:00')
-            create_time_mart23 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication=True, medication_date=get_medication_mart_date, medication_time='23:00')
+            create_time_mart0 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='00:00')
+            create_time_mart1 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='01:00')
+            create_time_mart2 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='02:00')
+            create_time_mart3 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='03:00')
+            create_time_mart4 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='04:00')
+            create_time_mart5 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='05:00')
+            create_time_mart6 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='06:00')
+            create_time_mart7 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='07:00')
+            create_time_mart8 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='08:00')
+            create_time_mart9 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='09:00')
+            create_time_mart10 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='10:00')
+            create_time_mart11 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='11:00')
+            create_time_mart12 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='12:00')
+            create_time_mart13 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='13:00')
+            create_time_mart14 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='14:00')
+            create_time_mart15 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='15:00')
+            create_time_mart16 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='16:00')
+            create_time_mart17 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='17:00')
+            create_time_mart18 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='18:00')
+            create_time_mart19 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='19:00')
+            create_time_mart20 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='20:00')
+            create_time_mart21 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='21:00')
+            create_time_mart22 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='22:00')
+            create_time_mart23 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='23:00')
 
             create_time_mar0 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='00:00')
             create_time_mar1 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='01:00')
@@ -613,7 +615,8 @@ class AdmissionUpdateView(BSModalUpdateView):
         form.fields['general_condition'].label = _("General Condition")
         form.fields['vital_sign_temperature'].label = _("Vital Sign-Temperature")
         form.fields['vital_sign_pulse'].label = _("Vital Sign-Pulse")
-        form.fields['vital_sign_bp'].label = _("Vital Sign-BP")
+        form.fields['vital_sign_bp_upper'].label = _("Vital Sign-BP Upper")
+        form.fields['vital_sign_bp_lower'].label = _("Vital Sign-BP Lower")
         form.fields['vital_sign_resp'].label = _("Vital Sign-Resp")
         form.fields['vital_sign_spo2'].label = _("Vital Sign-SPO2")
         form.fields['vital_sign_on_oxygen_therapy'].label = _("Vital Sign-On Oxygen Therapy")
