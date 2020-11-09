@@ -37,31 +37,31 @@ class ApplicationForHomeLeave_ModelForm(BSModalModelForm):
 #       self.fields['ic_number'].queryset = UserProfile.objects.none()
 #       self.fields['ic_number'].label = ''
 
-    ic_number = forms.CharField(max_length=14, required=False, label="", validators=[ic_number_validator], widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("yymmdd-xx-zzzz")}))
-    family_name = forms.CharField(required=False, label="", widget=AutoCompleteWidget(FamilyNameLookup, attrs={'class': "form-control", 'placeholder': _("type min. 3 characters & select")}))
-    family_ic_number = forms.CharField(required=False, label="", validators=[ic_number_validator], widget=AutoCompleteWidget(ECNumberLookup, attrs={'class': "form-control", 'placeholder': _("yymmdd-xx-zzzz")}))
-    family_relationship = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("myself or relationship")}))
-    family_phone = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("+6012345678")}))
-    witnessed_designation = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("designation")}))
-    witnessed_signature = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("signature")}))
+    ic_number = forms.CharField(max_length=14, required=False, label="", validators=[ic_number_validator], widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("autofill")}))
+    family_name = forms.CharField(required=False, label="", widget=AutoCompleteWidget(FamilyNameLookup, attrs={'class': "form-control", 'placeholder': _("(type min. 3 characters & select)")}))
+    family_ic_number = forms.CharField(required=False, label="", validators=[ic_number_validator], widget=AutoCompleteWidget(ECNumberLookup, attrs={'class': "form-control", 'placeholder': _("autofill")}))
+    family_relationship = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("autofill")}))
+    family_phone = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("autofill")}))
+    witnessed_designation = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("(designation)")}))
+    witnessed_signature = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("(signature)")}))
     witnessed_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
 
 
 class ApplicationForHomeLeave_Form(BSModalForm):
-    patient = forms.CharField(required=False, label="", widget=AutoCompleteWidget(FullnameLookup, attrs={'class': "form-control", 'placeholder': _("type min. 3 characters & select")}))
-    ic_number = forms.CharField(max_length=14, required=False, label="", validators=[ic_number_validator], widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("yymmdd-xx-zzzz")}))
-    family_name = forms.CharField(required=False, label="", widget=AutoCompleteWidget(FamilyNameLookup, attrs={'class': "form-control", 'placeholder': _("type min. 3 characters & select")}))
-    family_ic_number = forms.CharField(max_length=14, required=False, label="", validators=[ic_number_validator], widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("yymmdd-xx-zzzz")}))
-    family_relationship = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("myself or relationship")}))
-    family_phone = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("+6012345678")}))
+    patient = forms.CharField(required=False, label="", widget=AutoCompleteWidget(FullnameLookup, attrs={'class': "form-control", 'placeholder': _("(type min. 3 characters & select)")}))
+    ic_number = forms.CharField(max_length=14, required=False, label="", validators=[ic_number_validator], widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("autofill")}))
+    family_name = forms.CharField(required=False, label="", widget=AutoCompleteWidget(FamilyNameLookup, attrs={'class': "form-control", 'placeholder': _("(type min. 3 characters & select)")}))
+    family_ic_number = forms.CharField(max_length=14, required=False, label="", validators=[ic_number_validator], widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("autofill")}))
+    family_relationship = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("autofill")}))
+    family_phone = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("autofill")}))
 
-    signature_name = forms.CharField(required=False, label="", widget=AutoCompleteWidget(FamilyNameLookup, attrs={'class': "form-control", 'placeholder': _("type min. 3 characters & select")}))
-    signature_relationship = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("myself or relationship")}))
-    signature_ic_number = forms.CharField(max_length=14, required=False, label="", validators=[ic_number_validator], widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("yymmdd-xx-zzzz")}))
+    signature_name = forms.CharField(required=False, label="", widget=AutoCompleteWidget(FamilyNameLookup, attrs={'class': "form-control", 'placeholder': _("autofill")}))
+    signature_relationship = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("autofill")}))
+    signature_ic_number = forms.CharField(max_length=14, required=False, label="", validators=[ic_number_validator], widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("autofill")}))
 
-    witnessed_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-    witnessed_designation = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("designation")}))
-    witnessed_signature = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("signature")}))
+    witnessed_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("autofill")}))
+    witnessed_designation = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("(designation)")}))
+    witnessed_signature = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': _("(signature)")}))
     witnessed_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
 
     def clean_witnessed_designation(self):

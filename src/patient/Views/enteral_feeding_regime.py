@@ -32,12 +32,20 @@ def enteral_feeding_regime_list(request, username):
 	user_name = UserProfile.objects.get(username=username).username
 	patients = get_object_or_404(UserProfile, username=username)
 	patientid = UserProfile.objects.get(username=username).id
-	enteralfeedingregime_data = EnteralFeedingRegime.objects.filter(patient=patientid).exclude(amount__isnull=True)
+	enteralfeedingregime_data = EnteralFeedingRegime.objects.filter(patient=patientid).exclude(type_of_milk__isnull=True).exclude(amount__exact='0')
 	profiles = UserProfile.objects.filter(pk=patientid)
+
+	get_warm_water_before = 0
+	get_warm_water_after = 0
+	get_warm_water_total = 0
+	total_fluids = 0
+	data = dict()
 
 	get_lastdate = EnteralFeedingRegime.objects.filter(patient=patientid).order_by('-date').exclude(amount__isnull=True).values_list('date', flat=True).first()
 	get_warm_water_before = EnteralFeedingRegime.objects.filter(patient=patientid).filter(date=get_lastdate).values_list('warm_water_before', flat=True).first()
 	get_warm_water_after = EnteralFeedingRegime.objects.filter(patient=patientid).filter(date=get_lastdate).values_list('warm_water_after', flat=True).first()
+	get_warm_water_total = EnteralFeedingRegime.objects.filter(patient=patientid, date=get_lastdate).filter(amount__isnull=False).exclude(amount__exact='0').annotate(total_warm=F('warm_water_before') + F('warm_water_after') + F('amount'))
+	total_fluids = get_warm_water_total.aggregate(Sum('total_warm'))['total_warm__sum'] if get_warm_water_total else 0
 
 	initial = {
 		'patient': patients,
@@ -45,8 +53,6 @@ def enteral_feeding_regime_list(request, username):
 		'warm_water_before': get_warm_water_before,
 		'warm_water_after': get_warm_water_after,
 	}
-
-	data = dict()
 
 	if request.method == "GET":
 		form = EnteralFeedingRegime_Water_ModelForm(initial=initial)
@@ -60,13 +66,9 @@ def enteral_feeding_regime_list(request, username):
 		warm_water_before = EnteralFeedingRegime.objects.filter(patient=patientid, date=set_newdate).values_list('warm_water_before', flat=True).first()
 		warm_water_after = EnteralFeedingRegime.objects.filter(patient=patientid, date=set_newdate).values_list('warm_water_after', flat=True).first()
 		total_feeding = EnteralFeedingRegime.objects.filter(patient=patientid).filter(date=set_newdate).aggregate(Sum('amount'))
-		get_total_feeding = total_feeding['amount__sum']
-		get_total_fluids = warm_water_before + warm_water_after + get_total_feeding
-
-		if warm_water_before and warm_water_after is not None:
-			total_warm_water = warm_water_before + warm_water_after
-		else:
-			pass
+		total_feeding = total_feeding['amount__sum'] if total_feeding else 0
+		get_warm_water_total = EnteralFeedingRegime.objects.filter(patient=patientid, date=set_newdate).filter(amount__isnull=False).exclude(amount__exact='0').annotate(total_warm=F('warm_water_before') + F('warm_water_after') + F('amount'))
+		total_fluids = get_warm_water_total.aggregate(Sum('total_warm'))['total_warm__sum'] if get_warm_water_total else 0
 
 		context1 = {
 			'logos': logos,
@@ -74,11 +76,12 @@ def enteral_feeding_regime_list(request, username):
 			'page_title': page_title,
 			'profiles': profiles,
 			'user_name': user_name,
-			'total_feeding': get_total_feeding,
-			'total_fluids': get_total_fluids,
+			'total_feeding': total_feeding,
+			'total_fluids': total_fluids,
 			'enteralfeedingregime_data': enteralfeedingregime_data,
 			'warm_water_before': get_warm_water_before,
 			'warm_water_after': get_warm_water_after,
+			'get_warm_water_total': get_warm_water_total,
 			'form': form,
 		}
 
@@ -91,32 +94,29 @@ def enteral_feeding_regime_list(request, username):
 		if get_newdate is not None:
 			set_newdate = datetime.datetime.strptime(get_newdate, '%d-%m-%Y')
 		else:
-			set_newdate = get_lastdate
+			set_newdate = get_newdate
 
 		warm_water_before = EnteralFeedingRegime.objects.filter(patient=patientid, date=set_newdate).values_list('warm_water_before', flat=True).first()
 		warm_water_after = EnteralFeedingRegime.objects.filter(patient=patientid, date=set_newdate).values_list('warm_water_after', flat=True).first()
-		total_feeding = EnteralFeedingRegime.objects.filter(patient=patientid).filter(date=set_newdate).aggregate(Sum('amount'))
-		get_total_feeding = total_feeding['amount__sum']
-		get_total_fluids = warm_water_before + warm_water_after + get_total_feeding
+		totalfeeding = EnteralFeedingRegime.objects.filter(patient=patientid).filter(date=set_newdate)
+		total_feeding = totalfeeding.aggregate(Sum('amount'))['amount__sum'] if totalfeeding else 0
+		get_warm_water_total = EnteralFeedingRegime.objects.filter(patient=patientid, date=set_newdate).filter(amount__isnull=False).exclude(amount__exact='0').annotate(total_warm=F('warm_water_before') + F('warm_water_after') + F('amount'))
+		total_fluids = get_warm_water_total.aggregate(Sum('total_warm'))['total_warm__sum'] if get_warm_water_total else 0
+		print("total_fluids2: ", total_fluids)
 
 		if form.is_valid():
 #			form.save()
 
-			if warm_water_before and warm_water_after is not None:
-				total_warm_water = warm_water_before + warm_water_after
-			else:
-				pass
-
 			data['warm_water_before'] = warm_water_before
 			data['warm_water_after'] = warm_water_after
-			data['total_warm_water'] = total_warm_water
-			data['total_feeding'] = get_total_feeding
-			data['total_fluids'] = get_total_fluids
+			data['total_feeding'] = total_feeding
+			data['total_fluids'] = total_fluids
 
 			return JsonResponse(data)
 		else:
 #			messages.warning(request, form.errors)
 			return JsonResponse({"response error": form.errors}, status=400)
+
 
 @login_required
 def enteral_feeding_regime_create(request, username):
@@ -160,7 +160,8 @@ def enteral_feeding_regime_create(request, username):
 
 		if formset.is_valid():
 			for item in formset:
-#				get_date = EnteralFeedingRegime.objects.filter(patient=patients).values_list("date", flat=True).first()
+				get_warm_water_before = EnteralFeedingRegime.objects.filter(patient=patients).values_list("warm_water_before", flat=True).first()
+				get_warm_water_after = EnteralFeedingRegime.objects.filter(patient=patients).values_list("warm_water_after", flat=True).first()
 				profile = EnteralFeedingRegime()
 				profile.patient = patients
 				profile.date = item.cleaned_data['date']
@@ -168,6 +169,8 @@ def enteral_feeding_regime_create(request, username):
 				profile.time = item.cleaned_data['time']
 				profile.type_of_milk = item.cleaned_data['type_of_milk']
 				profile.amount = item.cleaned_data['amount']
+				profile.warm_water_before = get_warm_water_before
+				profile.warm_water_after = get_warm_water_after
 				profile.save()
 
 			messages.success(request, _(page_title + ' form was created.'))

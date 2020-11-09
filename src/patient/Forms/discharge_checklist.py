@@ -52,6 +52,30 @@ class DischargeCheckList_ModelForm(BSModalModelForm):
 	given_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'readonly': 'readonly'}))
 
 
+DischargeCheckList_ModelFormSet = modelformset_factory(
+	DischargeCheckList,
+	form=DischargeCheckList_ModelForm,
+	fields=(
+		'date_time',
+		'discharge_status',
+		'nasogastric_tube_date',
+		'nasogastric_tube',
+		'urinary_catheter_date',
+		'urinary_catheter',
+		'surgical_dressing_intact',
+		'spectacle_walking_aid_denture',
+		'appointment_card_returned',
+		'own_medication_return',
+		'medication_reconcilation',
+		'medication_reconcilation_patient',
+		'given_by',
+	),
+	extra=0,
+#    max_num=0,
+#   can_delete=True,
+)
+
+
 class DischargeCheckList_Form_Set(BSModalForm):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)

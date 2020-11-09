@@ -1468,7 +1468,7 @@ msgstr ""
 #: templates/patient_form/cannula_form.html:55
 #: templates/patient_form/cannula_form.html:61
 #: templates/patient_form/cannula_form.html:67
-msgid "Size (Fr)"
+msgid "Size (G)"
 msgstr ""
 
 #: templates/patient_data/cannula_data.html:82

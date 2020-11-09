@@ -1,5 +1,8 @@
 from django import template
 
+from ..models import *
+
+
 import json
 
 register = template.Library()

@@ -14,7 +14,6 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="{% static 'js/patient/physiotherapy_general_assessment.js' %}"></script>
 	<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
 	<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
 {% endblock %}
@@ -107,8 +106,13 @@
 
 {% block js %}
 <script type="text/javascript">
-$(function()
+$(document).ready(function()
 {
+	var t = $('#t_add_row').DataTable(
+	{
+		"order": [[ 0, "desc" ]]
+	});
+
 	$(".trigger_modal").each(function()
 	{
 		$(this).modalForm(

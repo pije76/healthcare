@@ -61,7 +61,7 @@ class Admission_Form(BSModalForm):
 	special_information = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	admission_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'readonly': 'readonly'}))
 
-	own_medication = forms.ChoiceField(required=False, label="", widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=YES_NO_CHOICES)
+	own_medication = forms.ChoiceField(required=False, label="", initial='No', widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=YES_NO_CHOICES)
 	medication_time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
 	medication_drug_name = forms.ModelChoiceField(queryset=Medicine.objects.all(), required=False, label="", widget=forms.Select(attrs={'class': "form-control"}))
 	medication_dosage = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
@@ -105,10 +105,6 @@ class Admission_Form(BSModalForm):
 		communication_hearing_others = cleaned_data.get('communication_hearing_others')
 		vital_sign_on_oxygen_therapy_flow_rate = cleaned_data.get('vital_sign_on_oxygen_therapy_flow_rate')
 		biohazard_infectious_disease_others = cleaned_data.get('biohazard_infectious_disease_others')
-		invasive_line_insitu_others = cleaned_data.get('invasive_line_insitu_others')
-		medical_history_others = cleaned_data.get('medical_history_others')
-		adaptive_aids_with_patient_others = cleaned_data.get('adaptive_aids_with_patient_others')
-		surgical_history_none = cleaned_data.get('surgical_history_none')
 
 		if admitted_others:
 			cleaned_data['admitted'] = admitted_others
@@ -124,14 +120,6 @@ class Admission_Form(BSModalForm):
 			cleaned_data['vital_sign_on_oxygen_therapy'] = vital_sign_on_oxygen_therapy_flow_rate
 		if biohazard_infectious_disease_others:
 			cleaned_data['biohazard_infectious_disease'] = biohazard_infectious_disease_others
-		if invasive_line_insitu_others:
-			cleaned_data['invasive_line_insitu'] = invasive_line_insitu_others
-		if medical_history_others:
-			cleaned_data['medical_history'] = medical_history_others
-		if surgical_history_none:
-			cleaned_data['surgical_history'] = surgical_history_none
-		if adaptive_aids_with_patient_others:
-			cleaned_data['adaptive_aids_with_patient'] = adaptive_aids_with_patient_others
 		return cleaned_data
 
 
@@ -222,7 +210,7 @@ class Admission_ModelForm_Update(BSModalModelForm):
 	date_operation = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
 	operation = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 4, 'cols': 15}))
 
-	own_medication = forms.ChoiceField(required=False, label="", widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=YES_NO_CHOICES)
+	own_medication = forms.ChoiceField(required=False, label="", initial='No', widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=YES_NO_CHOICES)
 	medication_time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
 	medication_drug_name = forms.ModelChoiceField(queryset=Medicine.objects.all(), required=False, label="", widget=forms.Select(attrs={'class': "form-control"}))
 	medication_dosage = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
@@ -243,8 +231,7 @@ class Admission_ModelForm_Update(BSModalModelForm):
 		return self.cleaned_data['biohazard_infectious_disease_others'].capitalize()
 
 	def clean_invasive_line_insitu_others(self):
-		return ','.join(self.cleaned_data['invasive_line_insitu']).capitalize()
-#		return self.cleaned_data['invasive_line_insitu_others'].capitalize()
+		return self.cleaned_data['invasive_line_insitu_others'].capitalize()
 
 	def clean_medical_history_others(self):
 		return self.cleaned_data['medical_history_others'].capitalize()
@@ -273,10 +260,6 @@ class Admission_ModelForm_Update(BSModalModelForm):
 		communication_hearing_others = cleaned_data.get('communication_hearing_others')
 		vital_sign_on_oxygen_therapy_flow_rate = cleaned_data.get('vital_sign_on_oxygen_therapy_flow_rate')
 		biohazard_infectious_disease_others = cleaned_data.get('biohazard_infectious_disease_others')
-		invasive_line_insitu_others = cleaned_data.get('invasive_line_insitu_others')
-		medical_history_others = cleaned_data.get('medical_history_others')
-		adaptive_aids_with_patient_others = cleaned_data.get('adaptive_aids_with_patient_others')
-#		surgical_history_none = cleaned_data.get('surgical_history_none')
 
 		if admitted_others:
 			cleaned_data['admitted'] = admitted_others
@@ -292,14 +275,6 @@ class Admission_ModelForm_Update(BSModalModelForm):
 			cleaned_data['vital_sign_on_oxygen_therapy'] = vital_sign_on_oxygen_therapy_flow_rate
 		if biohazard_infectious_disease_others:
 			cleaned_data['biohazard_infectious_disease'] = biohazard_infectious_disease_others
-		if invasive_line_insitu_others:
-			cleaned_data['invasive_line_insitu'] = invasive_line_insitu_others
-		if medical_history_others:
-			cleaned_data['medical_history'] = medical_history_others
-		if surgical_history_none:
-			cleaned_data['surgical_history'] = 'None'
-		if adaptive_aids_with_patient_others:
-			cleaned_data['adaptive_aids_with_patient'] = adaptive_aids_with_patient_others
 		return cleaned_data
 
 
@@ -351,7 +326,7 @@ class Admission_ModelForm(forms.ModelForm):
 	date_operation = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
 	operation = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 4, 'cols': 15}))
 
-	own_medication = forms.ChoiceField(required=False, label="", widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=YES_NO_CHOICES)
+	own_medication = forms.ChoiceField(required=False, label="", initial='No', widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=YES_NO_CHOICES)
 	medication_time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
 	medication_drug_name = forms.ModelChoiceField(queryset=Medicine.objects.all(), required=False, label="", widget=forms.Select(attrs={'class': "form-control"}))
 	medication_dosage = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
@@ -401,10 +376,6 @@ class Admission_ModelForm(forms.ModelForm):
 		communication_hearing_others = cleaned_data.get('communication_hearing_others')
 		vital_sign_on_oxygen_therapy_flow_rate = cleaned_data.get('vital_sign_on_oxygen_therapy_flow_rate')
 		biohazard_infectious_disease_others = cleaned_data.get('biohazard_infectious_disease_others')
-		invasive_line_insitu_others = cleaned_data.get('invasive_line_insitu_others')
-		medical_history_others = cleaned_data.get('medical_history_others')
-		adaptive_aids_with_patient_others = cleaned_data.get('adaptive_aids_with_patient_others')
-		surgical_history_none = cleaned_data.get('surgical_history_none')
 
 		if admitted_others:
 			cleaned_data['admitted'] = admitted_others
@@ -420,14 +391,6 @@ class Admission_ModelForm(forms.ModelForm):
 			cleaned_data['vital_sign_on_oxygen_therapy'] = vital_sign_on_oxygen_therapy_flow_rate
 		if biohazard_infectious_disease_others:
 			cleaned_data['biohazard_infectious_disease'] = biohazard_infectious_disease_others
-		if invasive_line_insitu_others:
-			cleaned_data['invasive_line_insitu'] = invasive_line_insitu_others
-		if medical_history_others:
-			cleaned_data['medical_history'] = medical_history_others
-		if surgical_history_none:
-			cleaned_data['surgical_history'] = surgical_history_none
-		if adaptive_aids_with_patient_others:
-			cleaned_data['adaptive_aids_with_patient'] = adaptive_aids_with_patient_others
 		return cleaned_data
 
 
@@ -440,7 +403,7 @@ Admission_ModelFormSet = formset_factory(
 
 class MedicationAdministrationRecordTemplate_Form(BSModalForm):
 	patient = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control", 'style': "display:none;"}))
-	own_medication = forms.ChoiceField(required=False, label="", widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=YES_NO_CHOICES)
+	own_medication = forms.ChoiceField(required=False, label="", initial='No', widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=YES_NO_CHOICES)
 	medication_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
 	medication_time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
 	medication_drug_name = forms.ModelChoiceField(queryset=Medicine.objects.all(), required=False, label="", widget=forms.Select(attrs={'class': "form-control"}))
@@ -468,7 +431,7 @@ MedicationAdministrationRecordTemplate_FormSet = formset_factory(
 
 class MedicationAdministrationRecordTemplate_OwnForm(BSModalForm):
 	patient = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control", 'style': "display:none;"}))
-	own_medication = forms.ChoiceField(required=False, label="", widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=YES_NO_CHOICES)
+	own_medication = forms.ChoiceField(required=False, label="", initial='No', widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=YES_NO_CHOICES)
 	medication_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
 
 	def __init__(self, *args, **kwargs):

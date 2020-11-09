@@ -91,6 +91,7 @@
 <script type='text/javascript'>
 $(document).ready(function()
 {
+
 //	var section_id = "0";
 //	var section_id = 0;
 //	var section_id = $("#id_form-"+i+"-frequency");
@@ -101,31 +102,27 @@ $(document).ready(function()
 		var section_id = i;
 	}
 
-//	$('#id_form-'+ section_id + '-frequency').change(function()
-    $('#id_form-0-frequency').change(function()
-    {
-    	if($(this).val() == "BNO")
-    	{
-    		$("#id_form-0-consistency").attr("selected", true).val("-");
+	$('select[id$="-frequency"]').each(function()
+	{
+		$(this).siblings('select[id$="-frequency"]').change(function()
+		{
+			alert("Test")
+			if($(this).val() == "BNO")
+	    	{
+	    		$("#id_form-0-consistency").attr("selected", true).val("-").addClass("consistency0");
 //    		$('#id_form-'+ section_id + '-consistency').attr("selected", true).val("-");
-    		$("#id_form-0-amount").attr("selected", true).val("-");
+	    		$("#id_form-0-amount").attr("selected", true).val("-");
 //    		$('#id_form-'+ section_id + '-amount').attr("selected", true).val("-");
-    	}
-    	else
-    	{
-    		$("#id_form-0-consistency").attr("selected", true).val("Normal");
+	    	}
+	    	else
+	    	{
+	    		$("#id_form-0-consistency").attr("selected", true).val("Normal").removeClass("consistency0");
 //    		$('#id_form-'+ section_id + '-consistency').attr("selected", true).val("Normal");
-    		$("#id_form-0-amount").attr("selected", true).val("Scanty");
+	    		$("#id_form-0-amount").attr("selected", true).val("Scanty");
 //    		$('#id_form-'+ section_id + '-amount').attr("selected", true).val("Scanty");
-    	}
-    });
-
-//	$('select#id_form-1-frequency').change(function()
-	$('#id_form-1-frequency').change(function()
-    {
-
-    	alert("Test")
-    });
+	    	}
+		});
+	});
 
 	$('#form_set tbody tr').formset(
 	{
@@ -150,6 +147,8 @@ $(document).ready(function()
 			options={
 				"format": "HH:mm",
 			});
+
+			$(row).find("#id_form-0-frequency").remove();
 		},
 	});
 });

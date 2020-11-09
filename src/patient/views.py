@@ -85,11 +85,11 @@ def patientdata_list(request):
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Patient List')
 
-	if request.user.is_superuser or request.user.is_staff:
-		datastaff = UserProfile.objects.filter(is_patient=True).order_by("id")
+#	if request.user.is_superuser or request.user.is_staff:
+	datastaff = UserProfile.objects.filter(is_patient=True).order_by("id")
 
-	if request.user.is_patient:
-		datastaff = UserProfile.objects.filter(full_name=request.user).order_by("id")
+#	if request.user.is_patient:
+#		datastaff = UserProfile.objects.filter(full_name=request.user).order_by("id")
 
 	context = {
 		'patients': patients,
@@ -108,22 +108,22 @@ def patientdata_detail(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	patients = UserProfile.objects.filter(username=username)
-	patientid = UserProfile.objects.get(username=username).id
+	patientid = UserProfile.objects.filter(username=username).values_list('id', flat=True).first()
 	page_title = _('Patient Detail')
 	icnumbers = Admission.objects.filter(patient=request.user)
-	admission = Admission.objects.filter(patient=patientid)
+	admission = Admission.objects.filter(patient=patientid).exclude(date_admission__isnull=True)
 	application_home_leave = ApplicationForHomeLeave.objects.filter(patient=patientid)
 	appointment = Appointment.objects.filter(patient=patientid)
 	cannula = Cannula.objects.filter(patient=patientid)
-	dischargechecklist = DischargeCheckList.objects.filter(patient=patientid)
+	dischargechecklist = DischargeCheckList.objects.filter(patient=patientid).exclude(medication_reconcilation_patient__isnull=True)
 	dressing = Dressing.objects.filter(patient=patientid)
-	enteralfeedingregime = EnteralFeedingRegime.objects.filter(patient=patientid)
+	enteralfeedingregime = EnteralFeedingRegime.objects.filter(patient=patientid).exclude(time__isnull=True)
 	hgt = HGT.objects.filter(patient=patientid)
-	intakeoutput = IntakeOutput.objects.filter(patient=patientid)
+	intakeoutput = IntakeOutput.objects.filter(patient=patientid).exclude(time__isnull=True)
 	investigation_report = InvestigationReport.objects.filter(patient=patientid)
 	maintenance = Maintenance.objects.filter(patient=patientid)
-	medicationadministrationrecord = MedicationAdministrationRecord.objects.filter(patient=patientid)
-	medicationtemplate = MedicationAdministrationRecordTemplate.objects.filter(patient=patientid)
+	medicationadministrationrecord = MedicationAdministrationRecord.objects.filter(patient=patientid).exclude(medication_time__isnull=True)
+	medicationtemplate = MedicationAdministrationRecordTemplate.objects.filter(patient=patientid).exclude(medication_time__isnull=True)
 	medicationrecord = MedicationRecord.objects.filter(patient=patientid)
 	multipurpose = Multipurpose.objects.filter(patient=patientid)
 	miscellaneouschargesslip = MiscellaneousChargesSlip.objects.filter(patient=patientid)

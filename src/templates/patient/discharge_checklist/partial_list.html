@@ -4,15 +4,16 @@
     <td>{{ item.date_time|date:"d-m-Y H:i" }}</td>
     <td>{{ item.patient }}</td>
     <td>{{ item.discharge_status|safe }}</td>
-    <td>{{ item.nasogastric_tube_date }}</td>
+    <td>{{ item.nasogastric_tube_date|date:"d-m-Y" }}</td>
     <td>{{ item.nasogastric_tube }}</td>
-    <td>{{ item.urinary_catheter_date }}</td>
+    <td>{{ item.urinary_catheter_date|date:"d-m-Y" }}</td>
     <td>{{ item.urinary_catheter }}</td>
     <td>{{ item.surgical_dressing_intact }}</td>
     <td>{{ item.spectacle_walking_aid_denture }}</td>
     <td>{{ item.appointment_card_returned }}</td>
     <td>{{ item.own_medication_return }}</td>
     <td>{{ item.medication_reconcilation }}</td>
+    <td>{{ item.medication_reconcilation_patient }}</td>
     <td>{{ item.given_by }}</td>
 
     <td>
@@ -29,15 +30,16 @@
     <td>{{ item.date_time|date:"d-m-Y H:i" }}</td>
     <td>{{ item.patient }}</td>
     <td>{{ item.discharge_status }}</td>
-    <td>{{ item.nasogastric_tube_date }}</td>
+    <td>{{ item.nasogastric_tube_date|date:"d-m-Y" }}</td>
     <td>{{ item.nasogastric_tube }}</td>
-    <td>{{ item.urinary_catheter_date }}</td>
+    <td>{{ item.urinary_catheter_date|date:"d-m-Y" }}</td>
     <td>{{ item.urinary_catheter }}</td>
     <td>{{ item.surgical_dressing_intact }}</td>
     <td>{{ item.spectacle_walking_aid_denture }}</td>
     <td>{{ item.appointment_card_returned }}</td>
     <td>{{ item.own_medication_return }}</td>
     <td>{{ item.medication_reconcilation }}</td>
+    <td>{{ item.medication_reconcilation_patient }}</td>
     <td>{{ item.given_by }}</td>
 </tr>
 {% endif %}

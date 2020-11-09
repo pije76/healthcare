@@ -78,6 +78,7 @@ class Stool_Form(BSModalForm):
 	def clean_remark(self):
 		return self.cleaned_data['remark'].capitalize()
 
+
 Stool_ModelFormSet = modelformset_factory(
 	Stool,
 	form=Stool_ModelForm,

@@ -14,7 +14,6 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="{% static 'js/patient/cannula.js' %}"></script>
 	<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
     <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
 {% endblock %}
@@ -48,7 +47,7 @@
 									{% if user.is_superuser %}
 									<tr>
 										<th class="text-center">{% trans "Date" %}</th>
-										<th class="text-center">{% trans "Size (Fr)" %}</th>
+										<th class="text-center">{% trans "Size (G)" %}</th>
 										<th class="text-center">{% trans "Location" %}</th>
 										<th class="text-center">{% trans "Due date" %}</th>
 										<th class="text-center">{% trans "Remove date" %}</th>
@@ -58,7 +57,7 @@
 									{% elif user.is_staff or user.is_patient %}
 									<tr>
 										<th class="text-center">{% trans "Date" %}</th>
-										<th class="text-center">{% trans "Size (Fr)" %}</th>
+										<th class="text-center">{% trans "Size (G)" %}</th>
 										<th class="text-center">{% trans "Location" %}</th>
 										<th class="text-center">{% trans "Due date" %}</th>
 										<th class="text-center">{% trans "Remove date" %}</th>
@@ -98,8 +97,14 @@
 
 {% block js %}
 <script type="text/javascript">
-$(function()
+$(document).ready(function()
 {
+	var t = $('#t_add_row').DataTable(
+	{
+		"order": [[ 0, "desc" ]],
+		responsive: true
+	});
+
 	$(".trigger_modal").each(function()
 	{
 		$(this).modalForm(

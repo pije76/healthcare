@@ -15,7 +15,6 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="{% static 'js/patient/enteral_feeding_regime.js' %}"></script>
 	<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
     <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
 {% endblock %}
@@ -37,7 +36,7 @@
 	{% include 'patient/patient_data.html' %}
 	<div class="userroles" data-username="{{ user_name }}"></div>
 
-	<form id="friend-form" method="post">
+	<form method="post">
 	{% csrf_token %}
 
 		<div class="row data_detail">
@@ -320,9 +319,10 @@ $(document).ready(function()
 
             var get_warm_water_before = $("#get_warm_water_before").text();
 			var get_warm_water_after = $("#get_warm_water_after").text();
+			var get_warm_water_total = get_warm_water_before + get_warm_water_after;
 
-			var sumwater = parseInt(pageTotal) + parseInt(get_warm_water_before) + parseInt(get_warm_water_after);
-			var sumwaterzero = parseInt(get_warm_water_before) + parseInt(get_warm_water_after);
+			var sumwater = parseInt(pageTotal) + parseInt(get_warm_water_total);
+			var sumwaterzero = parseInt(get_warm_water_total);
 
 			if(pageTotal > 0)
 			{

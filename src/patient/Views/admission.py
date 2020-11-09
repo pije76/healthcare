@@ -203,7 +203,7 @@ def admission_create(request, username):
             admision.vital_sign_hgt = admision_form.cleaned_data['vital_sign_hgt']
 
             admision.biohazard_infectious_disease = admision_form.cleaned_data['biohazard_infectious_disease']
-            admision.invasive_line_insitu = admision_form.cleaned_data['invasive_line_insitu']
+            admision.invasive_line_insitu = ', '.join(admision_form.cleaned_data['invasive_line_insitu'])
             admision.medical_history = ', '.join(admision_form.cleaned_data['medical_history'])
             admision.surgical_history_none = ''.join(admision_form.cleaned_data['surgical_history_none'])
             admision.surgical_history = ''.join(admision_form.cleaned_data['surgical_history'])

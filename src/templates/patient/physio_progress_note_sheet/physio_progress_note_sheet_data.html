@@ -15,7 +15,6 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="{% static 'js/patient/physio_progress_note_sheet.js' %}"></script>
     <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
 	<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
 {% endblock %}
@@ -80,8 +79,13 @@
 
 {% block js %}
 <script type="text/javascript">
-$(function()
+$(document).ready(function()
 {
+	var t = $('#t_add_row').DataTable(
+	{
+		"order": [[ 0, "desc" ]]
+	});
+
 	$(".trigger_modal").each(function()
 	{
 		$(this).modalForm(
@@ -89,14 +93,8 @@ $(function()
 			formURL: $(this).data('form-url')
 		});
 	});
-});
-</script>
 
-<script type='text/javascript'>
-	$(document).ready(function()
-	{
-
-		$.fn.datetimepicker.defaults.icons = {
+	$.fn.datetimepicker.defaults.icons = {
 			time: 'fas fa-clock',
 			date: 'fas fa-calendar',
 			up: 'fas fa-chevron-up',
@@ -106,18 +104,18 @@ $(function()
 			today: 'fas fa-calendar-alt',
 			clear: 'fas fa-trash',
 			close: 'fas fa-times'
-		};
+	};
 
-		$("#id_date_time").datetimepicker(
-			{
+	$("#id_date_time").datetimepicker(
+		{
 //				format: 'L',
-				format:'DD-MM-YYYY HH:mm',
+			format:'DD-MM-YYYY HH:mm',
 //              defaultDate: currentDate,
-				showTodayButton: true,
-				showClear: true,
-				showClose: true,
-			}
-		);
-	});
+			showTodayButton: true,
+			showClear: true,
+			showClose: true,
+		}
+	);
+});
 </script>
 {% endblock %}

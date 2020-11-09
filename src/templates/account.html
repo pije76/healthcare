@@ -70,7 +70,7 @@
 							<div class="form-group row">
 								<label for="icnumber" class="col-4 col-form-label">{% trans "Birth Date" %}</label>
 								<div class="col-6">
-									{{ item.birth_date }}
+									{{ item.birth_date|date:"d-m-Y" }}
 								</div>
 							</div>
 					</div>

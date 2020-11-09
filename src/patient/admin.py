@@ -91,7 +91,7 @@ class AdmissionAdmin(admin.ModelAdmin):
 		'admission_by',
 	]
 #	form = AdmissionForm
-#	autocomplete_fields = ['patient', ]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 #	inlines = [
 #		PatientDataAdmin,
@@ -110,7 +110,7 @@ class ApplicationForHomeLeaveAdmin(admin.ModelAdmin):
 		'witnessed_signature',
 		'witnessed_date',
 	]
-#	autocomplete_fields = ['patient', ]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -143,7 +143,7 @@ class AppointmentAdmin(admin.ModelAdmin):
 #    readonly_fields = ('patient', 'appointment',)
 #   autocomplete_except = []  # disable adding autocomplete_fields for listed fields
 #   autocomplete_all = False  # disable automatic adding of autocomplete_fields at all
-#	autocomplete_fields = ['patient', ]  # must be a foreign key or a many-to-many field.
+	autocomplete_fields = ['patient', ]  # must be a foreign key or a many-to-many field.
 	ModelAdmin.ordering = ('id',)
 
 #    def save_model(self, request, obj, form, change):
@@ -167,6 +167,7 @@ class CannulaAdmin(admin.ModelAdmin):
 		'cannula_location',
 		'cannula_due_date',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -185,6 +186,7 @@ class DressingAdmin(admin.ModelAdmin):
 		'image_img',
 		'done_by',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -208,6 +210,7 @@ class DischargeCheckListAdmin(admin.ModelAdmin):
 		'medication_reconcilation_patient',
 		'given_by',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -223,6 +226,7 @@ class EnteralFeedingRegimeAdmin(admin.ModelAdmin):
 		'warm_water_after',
 #        'total_fluids',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -236,6 +240,7 @@ class HGTAdmin(admin.ModelAdmin):
 		'remark',
 		'done_by',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -257,6 +262,7 @@ class IntakeOutputAdmin(admin.ModelAdmin):
 		'output_other_type',
 		'output_other_ml',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -268,6 +274,7 @@ class InvestigationReportAdmin(admin.ModelAdmin):
 #		'file_upload',
 		'image_img',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -281,6 +288,7 @@ class MaintenanceAdmin(admin.ModelAdmin):
 		'reported_by',
 		'status',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -304,6 +312,7 @@ class MedicationAdministrationRecordAdmin(admin.ModelAdmin):
 		'medication_status',
 		'medication_done',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -319,6 +328,7 @@ class MedicationAdministrationRecordTemplateAdmin(admin.ModelAdmin):
 		'medication_tablet_capsule',
 		'medication_frequency',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -336,6 +346,7 @@ class MedicationRecordAdmin(admin.ModelAdmin):
 		'remark',
 		'staff',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -347,6 +358,7 @@ class MultipurposeAdmin(admin.ModelAdmin):
 		'symptom',
 		'remark',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -360,6 +372,7 @@ class MiscellaneousChargesSlipAdmin(admin.ModelAdmin):
 		'amount',
 		'given_by',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -374,6 +387,7 @@ class NasogastricAdmin(admin.ModelAdmin):
 		'nasogastric_tube_due_date',
 		'nasogastric_tube_inserted_by',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -384,6 +398,7 @@ class NursingAdmin(admin.ModelAdmin):
 		'date_time',
 		'report',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -394,6 +409,7 @@ class PhysioProgressNoteSheetAdmin(admin.ModelAdmin):
 		'date_time',
 		'report',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -410,6 +426,7 @@ class PhysiotherapyGeneralAssessmentAdmin(admin.ModelAdmin):
 		'back_body_img',
 		'pain_scale',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -424,6 +441,7 @@ class StoolAdmin(admin.ModelAdmin):
 		'remark',
 		'done_by',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -437,6 +455,7 @@ class UrinaryAdmin(admin.ModelAdmin):
 		'urinary_catheter_due_date',
 		'urinary_catheter_inserted_by',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -454,6 +473,7 @@ class VitalSignFlowAdmin(admin.ModelAdmin):
 		'spo2_percentage',
 		'spo2_o2',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
@@ -466,6 +486,7 @@ class VisitingConsultantAdmin(admin.ModelAdmin):
 		'treatment_orders',
 		'consultant',
 	]
+	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
 
 
