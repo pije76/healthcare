@@ -77,9 +77,9 @@ TENANT_APPS = (
     'phonenumber_field',
 
     'bootstrap_modal_forms',
-    'bootstrap3',
+    'bootstrap4',
+    'bootstrap_ui',
     'pure_pagination',
-    'popupcrud',
     'crispy_forms',
     'widget_tweaks',
     'selectable',

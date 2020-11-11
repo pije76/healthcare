@@ -9,7 +9,7 @@
 	{{ page_title }} | {{ titles.title }}
 {% endblock %}
 
-{% block styles %}
+{% block style %}
 	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/patient/admission.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet" type="text/css">
@@ -195,7 +195,7 @@
 
 {% endblock %}
 
-{% block js %}
+{% block jscript %}
 <script type="text/javascript">
 $(document).ready(function()
 {

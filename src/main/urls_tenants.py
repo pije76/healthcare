@@ -24,6 +24,7 @@ urlpatterns = [
 	path(_('account/'), include('accounts.urls')),
 	re_path(r'^selectable/', include('selectable.urls')),
 	path('summernote/', include('django_summernote.urls')),
+	re_path(r"^bootstrap_ui/", include("bootstrap_ui.urls")),
 #	path('load_ic_number', load_ic_number, name='load_ic_number'),
 #	path('load_relationship', load_relationship, name='load_relationship'),
 

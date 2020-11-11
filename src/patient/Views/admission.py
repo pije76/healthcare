@@ -35,7 +35,7 @@ def admission_list(request, username):
 #    admissionform = [item for item in admissionform]
 #    admissionform = list(admissionform)
 #    admissionform = str(admissionform)
-    print(len(admissionform))
+#    print(len(admissionform))
 
     profiles = UserProfile.objects.filter(pk=patientid)
     allergyform = Allergy.objects.filter(patient=patientid)
@@ -88,20 +88,20 @@ def admission_create(request, username):
         'patient': patients,
         'medication_date': get_today,
         'medication_time': '00:00',
-        'medicationstat_date_time': get_datetime,
+        'date_admission': get_datetime,
         'admission_by': request.user,
     }
     for item in profiles]
 
-    initial_medication_mart_formset = [{
+    initial_martformset_medication = [{
         'patient': item.id,
-        'own_medication': True,
+        'own_medication': 'Yes',
     }
     for item in profiles]
 
     initial_own_medication = {
         'patient': patients,
-        'own_medication': False,
+        'own_medication': 'No',
     }
 
     initial_allergy = {
@@ -119,8 +119,8 @@ def admission_create(request, username):
         admision_form = Admission_ModelForm(request.POST or None, request.FILES or None, prefix="admision_form")
         admision_formset = Admission_FormSet(request.POST or None, prefix="admision_formset")
         allergy_form = Allergy_Model_Form(request.POST or None, prefix="allergy_form")
-        medication_mart_formset = MedicationAdministrationRecordTemplate_FormSet(request.POST or None, prefix="medication_mart_formset")
-        own_medication_form_mart = MedicationAdministrationRecordTemplate_OwnForm(request.POST or None, prefix="own_medication_form_mart")
+        martformset_medication = MedicationAdministrationRecordTemplate_FormSet(request.POST or None, prefix="martformset_medication")
+        martform_own_medication = MedicationAdministrationRecordTemplate_OwnForm(request.POST or None, prefix="martform_own_medication")
 
         if patientprofile_form.is_valid():
             profile = patientprofile_form.save(commit=False)
@@ -148,17 +148,8 @@ def admission_create(request, username):
             profile.address = patientprofile_form.cleaned_data['address']
             profile.save()
 
-        if admision_formset.is_valid():
-            for item in admision_formset:
-                admision_formset_profile = Admission()
-                admision_formset_profile.patient = patients
-                admision_formset_profile.date_diagnosis = item.cleaned_data['date_diagnosis']
-                admision_formset_profile.diagnosis = item.cleaned_data['diagnosis']
-                admision_formset_profile.date_operation = item.cleaned_data['date_operation']
-                admision_formset_profile.operation = item.cleaned_data['operation']
-                admision_formset_profile.save()
-
         if admision_form.is_valid():
+
             get_ic_number = UserProfile.objects.filter(full_name=patients).values_list("ic_number", flat=True).first()
             get_ic_upload = UserProfile.objects.filter(full_name=patients).values_list("ic_upload", flat=True).first()
             get_ic_birth_date = UserProfile.objects.filter(full_name=patients).values_list("birth_date", flat=True).first()
@@ -215,6 +206,95 @@ def admission_create(request, username):
             admision.admission_by = admision_form.cleaned_data['admission_by']
             admision.save()
 
+        if admision_formset.is_valid():
+            get_admission_date_admission = Admission.objects.filter(patient=patients).values_list("date_admission", flat=True).first()
+            get_admission_time_admission = Admission.objects.filter(patient=patients).values_list("time_admission", flat=True).first()
+            get_admission_admitted_admission = Admission.objects.filter(patient=patients).values_list("admitted_admission", flat=True).first()
+            get_admission_mode_admission = Admission.objects.filter(patient=patients).values_list("mode_admission", flat=True).first()
+            get_admission_ic_number = Admission.objects.filter(patient=patients).values_list("ic_number", flat=True).first()
+            get_admission_ic_upload = Admission.objects.filter(patient=patients).values_list("ic_upload", flat=True).first()
+            get_admission_birth_date = Admission.objects.filter(patient=patients).values_list("birth_date", flat=True).first()
+            get_admission_age = Admission.objects.filter(patient=patients).values_list("age", flat=True).first()
+            get_admission_gender = Admission.objects.filter(patient=patients).values_list("gender", flat=True).first()
+            get_admission_marital_status = Admission.objects.filter(patient=patients).values_list("marital_status", flat=True).first()
+            get_admission_religion = Admission.objects.filter(patient=patients).values_list("religion", flat=True).first()
+            get_admission_occupation = Admission.objects.filter(patient=patients).values_list("occupation", flat=True).first()
+            get_admission_communication_sight = Admission.objects.filter(patient=patients).values_list("communication_sight", flat=True).first()
+            get_admission_communication_hearing = Admission.objects.filter(patient=patients).values_list("communication_hearing", flat=True).first()
+            get_admission_address = Admission.objects.filter(patient=patients).values_list("address", flat=True).first()
+            get_admission_general_condition = Admission.objects.filter(patient=patients).values_list("general_condition", flat=True).first()
+            get_admission_vital_sign_temperature = Admission.objects.filter(patient=patients).values_list("vital_sign_temperature", flat=True).first()
+            get_admission_vital_sign_pulse = Admission.objects.filter(patient=patients).values_list("vital_sign_pulse", flat=True).first()
+            get_admission_vital_sign_bp_upper = Admission.objects.filter(patient=patients).values_list("vital_sign_bp_upper", flat=True).first()
+            get_admission_vital_sign_bp_lower = Admission.objects.filter(patient=patients).values_list("vital_sign_bp_lower", flat=True).first()
+            get_admission_vital_sign_resp = Admission.objects.filter(patient=patients).values_list("vital_sign_resp", flat=True).first()
+            get_admission_vital_sign_spo2 = Admission.objects.filter(patient=patients).values_list("vital_sign_spo2", flat=True).first()
+            get_admission_vital_sign_on_oxygen_therapy = Admission.objects.filter(patient=patients).values_list("vital_sign_on_oxygen_therapy", flat=True).first()
+            get_admission_vital_sign_on_oxygen_therapy_flow_rate = Admission.objects.filter(patient=patients).values_list("vital_sign_on_oxygen_therapy_flow_rate", flat=True).first()
+            get_admission_vital_sign_hgt = Admission.objects.filter(patient=patients).values_list("vital_sign_hgt", flat=True).first()
+            get_admission_biohazard_infectious_disease = Admission.objects.filter(patient=patients).values_list("biohazard_infectious_disease", flat=True).first()
+            get_admission_invasive_line_insitu = Admission.objects.filter(patient=patients).values_list("invasive_line_insitu", flat=True).first()
+            get_admission_medical_history = Admission.objects.filter(patient=patients).values_list("medical_history", flat=True).first()
+            get_admission_surgical_history_none = Admission.objects.filter(patient=patients).values_list("surgical_history_none", flat=True).first()
+            get_admission_surgical_history = Admission.objects.filter(patient=patients).values_list("surgical_history", flat=True).first()
+            get_admission_adaptive_aids_with_patient = Admission.objects.filter(patient=patients).values_list("adaptive_aids_with_patient", flat=True).first()
+            get_admission_adaptive_aids_with_patient_others = Admission.objects.filter(patient=patients).values_list("adaptive_aids_with_patient_others", flat=True).first()
+            get_admission_orientation = Admission.objects.filter(patient=patients).values_list("orientation", flat=True).first()
+            get_admission_special_information = Admission.objects.filter(patient=patients).values_list("special_information", flat=True).first()
+            get_admission_admission_by = Admission.objects.filter(patient=patients).values_list("admission_by", flat=True).first()
+
+            get_admission_date_admission = datetime.datetime.strftime(get_admission_date_admission, '%Y-%m-%d')
+            get_admission_time_admission = datetime.time.strftime(get_admission_time_admission, '%H:%M')
+            get_admission_birth_date = datetime.datetime.strftime(get_admission_birth_date, '%Y-%m-%d')
+
+            for item in admision_formset:
+                admision_formset_profile = Admission()
+                admision_formset_profile.patient = patients
+                admision_formset_profile.date_admission = get_admission_date_admission
+                admision_formset_profile.time_admission = get_admission_time_admission
+                admision_formset_profile.admitted_admission = str(get_admission_admitted_admission)
+                admision_formset_profile.mode_admission = str(get_admission_mode_admission)
+#                admision_formset_profile.ic_number = str(get_admission_ic_number)
+                admision_formset_profile.ic_upload = get_admission_ic_upload
+                admision_formset_profile.birth_date = get_admission_birth_date
+                admision_formset_profile.age = str(get_admission_age)
+                admision_formset_profile.gender = str(get_admission_gender)
+                admision_formset_profile.marital_status = str(get_admission_marital_status)
+                admision_formset_profile.religion = str(get_admission_religion)
+                admision_formset_profile.occupation = str(get_admission_occupation)
+                admision_formset_profile.communication_sight = str(get_admission_communication_sight)
+                admision_formset_profile.communication_hearing = str(get_admission_communication_hearing)
+                admision_formset_profile.address = str(get_admission_address)
+                admision_formset_profile.general_condition = str(get_admission_general_condition)
+                admision_formset_profile.vital_sign_temperature = str(get_admission_vital_sign_temperature)
+                admision_formset_profile.vital_sign_pulse = str(get_admission_vital_sign_pulse)
+                admision_formset_profile.vital_sign_bp_upper = str(get_admission_vital_sign_bp_upper)
+                admision_formset_profile.vital_sign_bp_lower = str(get_admission_vital_sign_bp_lower)
+                admision_formset_profile.vital_sign_resp = str(get_admission_vital_sign_resp)
+                admision_formset_profile.vital_sign_spo2 = str(get_admission_vital_sign_spo2)
+                admision_formset_profile.vital_sign_on_oxygen_therapy = str(get_admission_vital_sign_on_oxygen_therapy)
+                admision_formset_profile.vital_sign_on_oxygen_therapy_flow_rate = str(get_admission_vital_sign_on_oxygen_therapy_flow_rate)
+                admision_formset_profile.vital_sign_hgt = str(get_admission_vital_sign_hgt)
+                admision_formset_profile.biohazard_infectious_disease = str(get_admission_biohazard_infectious_disease)
+                admision_formset_profile.invasive_line_insitu = str(get_admission_invasive_line_insitu)
+                admision_formset_profile.medical_history = str(get_admission_medical_history)
+                admision_formset_profile.surgical_history_none = str(get_admission_surgical_history_none)
+                admision_formset_profile.surgical_history = str(get_admission_surgical_history)
+                admision_formset_profile.adaptive_aids_with_patient = str(get_admission_adaptive_aids_with_patient)
+                admision_formset_profile.adaptive_aids_with_patient_others = str(get_admission_adaptive_aids_with_patient_others)
+                admision_formset_profile.orientation = str(get_admission_orientation)
+                admision_formset_profile.special_information = str(get_admission_special_information)
+                admision_formset_profile.admission_by = str(get_admission_admission_by)
+
+                admision_formset_profile.date_diagnosis = item.cleaned_data['date_diagnosis']
+                admision_formset_profile.diagnosis = item.cleaned_data['diagnosis']
+                admision_formset_profile.date_operation = item.cleaned_data['date_operation']
+                admision_formset_profile.operation = item.cleaned_data['operation']
+
+                admision_formset_profile.save()
+
+
+
         if allergy_form.is_valid():
 #            allergy_data = Allergy()
             allergy_data = allergy_form.save(commit=False)
@@ -246,8 +326,8 @@ def admission_create(request, username):
                 ec_profile.ec_address = item.cleaned_data['ec_address']
                 ec_profile.save()
 
-        if medication_mart_formset.is_valid():
-            for item in medication_mart_formset:
+        if martformset_medication.is_valid():
+            for item in martformset_medication:
                 medication_savemart_formset = MedicationAdministrationRecordTemplate()
                 medication_savemart_formset.patient = patients
                 medication_savemart_formset.medication_date = item.cleaned_data['medication_date']
@@ -257,280 +337,255 @@ def admission_create(request, username):
                 medication_savemart_formset.medication_unit = item.cleaned_data['medication_unit']
                 medication_savemart_formset.medication_tablet_capsule = item.cleaned_data['medication_tablet_capsule']
                 medication_savemart_formset.medication_frequency = item.cleaned_data['medication_frequency']
-#                medication_savemart_formset.own_medication = True
                 medication_savemart_formset.own_medication = 'Yes'
                 medication_savemart_formset.save()
 
-                medication_savemart_form = MedicationAdministrationRecord()
-                medication_savemart_form.patient = patients
-                medication_savemart_form.medication_date = item.cleaned_data['medication_date']
-                medication_savemart_form.medication_time = item.cleaned_data['medication_time'].replace(minute=0, second=0)
-                medication_savemart_form.medication_drug_name = item.cleaned_data['medication_drug_name']
-                medication_savemart_form.medication_dosage = item.cleaned_data['medication_dosage']
-                medication_savemart_form.medication_unit = item.cleaned_data['medication_unit']
-                medication_savemart_form.medication_tablet_capsule = item.cleaned_data['medication_tablet_capsule']
-                medication_savemart_form.medication_frequency = item.cleaned_data['medication_frequency']
-                medication_savemart_form.save()
+#                medication_savemart_form = MedicationAdministrationRecord()
+#                medication_savemart_form.patient = patients
+#                medication_savemart_form.medication_template = item.cleaned_data['medication_template']
+#                medication_savemart_form.medication_date = item.cleaned_data['medication_date']
+#                medication_savemart_form.medication_time = item.cleaned_data['medication_time'].replace(minute=0, second=0)
+#                medication_savemart_form.medication_drug_name = item.cleaned_data['medication_drug_name']
+#                medication_savemart_form.medication_dosage = item.cleaned_data['medication_dosage']
+#                medication_savemart_form.medication_unit = item.cleaned_data['medication_unit']
+#                medication_savemart_form.medication_tablet_capsule = item.cleaned_data['medication_tablet_capsule']
+#                medication_savemart_form.medication_frequency = item.cleaned_data['medication_frequency']
+#                medication_savemart_form.save()
 
-        if own_medication_form_mart.is_valid():
+        if martform_own_medication.is_valid():
+            get_medication_mart_date = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).values_list("medication_date", flat=True).first()
+
             own_medication_data_mart = MedicationAdministrationRecordTemplate()
             own_medication_data_mart.patient = patients
-            own_medication_data_mart.medication_date = own_medication_form_mart.cleaned_data['medication_date']
-            own_medication_data_mart.own_medication = own_medication_form_mart.cleaned_data['own_medication']
+            own_medication_data_mart.medication_date = martform_own_medication.cleaned_data['medication_date']
+            own_medication_data_mart.own_medication = martform_own_medication.cleaned_data['own_medication']
+
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="00:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='00:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="01:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='01:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="02:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='02:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="03:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='03:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="04:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='04:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="05:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='05:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="06:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='06:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="07:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='07:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="08:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='08:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="09:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='09:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="10:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='10:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="11:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='11:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="12:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='12:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="13:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='13:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="14:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='14:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="15:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='15:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="16:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='16:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="17:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='17:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="18:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='18:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="19:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='19:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="20:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='20:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="21:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='21:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="22:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='22:00')
+            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time="23:00").exists():
+                pass
+            else:
+                own_medication_data_mart.medication_time = MedicationAdministrationRecordTemplate.objects.create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='23:00')
+
 
             own_medication_mar = MedicationAdministrationRecord()
             own_medication_mar.patient = patients
-#            own_medication_mar.medication_date = own_medication_form_mart.cleaned_data['medication_date']
+#            own_medication_mar.medication_date = martform_own_medication.cleaned_data['medication_date']
 
-            get_medication_mart_date = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).values_list("medication_date", flat=True).first()
-            get_medication_mar_date = MedicationAdministrationRecord.objects.filter(patient=patients).values_list("medication_date", flat=True).first()
+            get_medication_mart_time0 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='00:00').first()
+            get_medication_mart_time1 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='01:00').first()
+            get_medication_mart_time2 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='02:00').first()
+            get_medication_mart_time3 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='03:00').first()
+            get_medication_mart_time4 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='04:00').first()
+            get_medication_mart_time5 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='05:00').first()
+            get_medication_mart_time6 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='06:00').first()
+            get_medication_mart_time7 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='07:00').first()
+            get_medication_mart_time8 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='08:00').first()
+            get_medication_mart_time9 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='09:00').first()
+            get_medication_mart_time10 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='10:00').first()
+            get_medication_mart_time11 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='11:00').first()
+            get_medication_mart_time12 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='12:00').first()
+            get_medication_mart_time13 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='13:00').first()
+            get_medication_mart_time14 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='14:00').first()
+            get_medication_mart_time15 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='15:00').first()
+            get_medication_mart_time16 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='16:00').first()
+            get_medication_mart_time17 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='17:00').first()
+            get_medication_mart_time18 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='18:00').first()
+            get_medication_mart_time19 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='19:00').first()
+            get_medication_mart_time20 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='20:00').first()
+            get_medication_mart_time21 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='21:00').first()
+            get_medication_mart_time22 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='22:00').first()
+            get_medication_mart_time23 = MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_time='23:00').first()
 
-            create_time_mart0 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='00:00')
-            create_time_mart1 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='01:00')
-            create_time_mart2 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='02:00')
-            create_time_mart3 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='03:00')
-            create_time_mart4 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='04:00')
-            create_time_mart5 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='05:00')
-            create_time_mart6 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='06:00')
-            create_time_mart7 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='07:00')
-            create_time_mart8 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='08:00')
-            create_time_mart9 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='09:00')
-            create_time_mart10 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='10:00')
-            create_time_mart11 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='11:00')
-            create_time_mart12 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='12:00')
-            create_time_mart13 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='13:00')
-            create_time_mart14 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='14:00')
-            create_time_mart15 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='15:00')
-            create_time_mart16 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='16:00')
-            create_time_mart17 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='17:00')
-            create_time_mart18 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='18:00')
-            create_time_mart19 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='19:00')
-            create_time_mart20 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='20:00')
-            create_time_mart21 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='21:00')
-            create_time_mart22 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='22:00')
-            create_time_mart23 = MedicationAdministrationRecordTemplate.objects.get_or_create(patient=patients, own_medication="Yes", medication_date=get_medication_mart_date, medication_time='23:00')
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time0).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time0)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time1).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time1)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time2).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time2)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time3).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time3)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time4).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time4)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time5).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time5)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time6).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time6)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time7).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time7)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time8).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time8)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time9).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time9)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time10).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time10)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time11).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time11)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time12).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time12)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time13).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time13)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time14).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time14)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time15).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time15)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time16).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time16)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time17).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time17)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time18).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time18)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time19).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time19)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time20).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time20)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time21).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time21)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time22).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time22)
+            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_template=get_medication_mart_time23).exists():
+                pass
+            else:
+                own_medication_mar.medication_time = MedicationAdministrationRecord.objects.create(patient=patients, medication_template=get_medication_mart_time23)
 
-            create_time_mar0 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='00:00')
-            create_time_mar1 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='01:00')
-            create_time_mar2 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='02:00')
-            create_time_mar3 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='03:00')
-            create_time_mar4 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='04:00')
-            create_time_mar5 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='05:00')
-            create_time_mar6 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='06:00')
-            create_time_mar7 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='07:00')
-            create_time_mar8 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='08:00')
-            create_time_mar9 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='09:00')
-            create_time_mar10 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='10:00')
-            create_time_mar11 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='11:00')
-            create_time_mar12 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='12:00')
-            create_time_mar13 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='13:00')
-            create_time_mar14 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='14:00')
-            create_time_mar15 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='15:00')
-            create_time_mar16 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='16:00')
-            create_time_mar17 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='17:00')
-            create_time_mar18 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='18:00')
-            create_time_mar19 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='19:00')
-            create_time_mar20 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='20:00')
-            create_time_mar21 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='21:00')
-            create_time_mar22 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='22:00')
-            create_time_mar23 = MedicationAdministrationRecord.objects.get_or_create(patient=patients, medication_date=get_medication_mar_date, medication_time='23:00')
-
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=0).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart0.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=1).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart1.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=2).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart2.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=3).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart3.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=4).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart4.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=5).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart5.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=6).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart6.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=7).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart7.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=8).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart8.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=9).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart9.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=10).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart10.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=11).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart11.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=12).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart12.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=13).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart13.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=14).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart14.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=15).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart15.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=16).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart16.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=17).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart17.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=18).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart18.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=19).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart19.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=20).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart20.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=21).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart21.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=22).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart22.medication_time
-            if MedicationAdministrationRecordTemplate.objects.filter(patient=patients).filter(medication_date=get_medication_mart_date, medication_time__hour=23).exists():
-                pass
-            else:
-                own_medication_data_mart.medication_time = create_time_mart23.medication_time
-
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=0).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar0.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=1).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar1.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=2).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar2.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=3).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar3.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=4).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar4.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=5).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar5.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=6).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar6.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=7).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar7.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=8).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar8.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=9).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar9.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=10).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar10.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=11).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar11.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=12).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar12.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=13).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar13.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=14).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar14.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=15).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar15.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=16).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar16.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=17).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar17.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=18).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar18.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=19).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar19.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=20).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar20.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=21).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar21.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=22).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar22.medication_time
-            if MedicationAdministrationRecord.objects.filter(patient=patients).filter(medication_date=get_medication_mar_date, medication_time__hour=23).exists():
-                pass
-            else:
-                own_medication_mar.medication_time = create_time_mar23.medication_time
-
-            own_medication_data_mart.save()
-            own_medication_mar.save()
+#            own_medication_data_mart.save()
+#            own_medication_mar.save()
 
             messages.success(request, _(page_title + ' form was created.'))
             return redirect('patient:patientdata_detail', username=patientusername)
@@ -541,8 +596,8 @@ def admission_create(request, username):
             messages.warning(request, admision_form.errors)
             messages.warning(request, admision_formset.errors)
             messages.warning(request, allergy_form.errors)
-            messages.warning(request, medication_mart_formset.errors)
-            messages.warning(request, own_medication_form_mart.errors)
+            messages.warning(request, martformset_medication.errors)
+            messages.warning(request, martform_own_medication.errors)
 
     else:
         patientprofile_form = PatientProfile_ModelForm(initial=initial, instance=patients, prefix="patientprofile_form")
@@ -550,8 +605,8 @@ def admission_create(request, username):
         admision_form = Admission_ModelForm(initial=initial, prefix="admision_form")
         admision_formset = Admission_FormSet(initial=initial_admision_formset, prefix="admision_formset")
         allergy_form = Allergy_Model_Form(initial=initial_allergy, instance=patients, prefix="allergy_form")
-        medication_mart_formset = MedicationAdministrationRecordTemplate_FormSet(initial=initial_medication_mart_formset, prefix="medication_mart_formset")
-        own_medication_form_mart = MedicationAdministrationRecordTemplate_OwnForm(initial=initial_own_medication, prefix="own_medication_form_mart")
+        martformset_medication = MedicationAdministrationRecordTemplate_FormSet(initial=initial_martformset_medication, prefix="martformset_medication")
+        martform_own_medication = MedicationAdministrationRecordTemplate_OwnForm(initial=initial_own_medication, prefix="martform_own_medication")
 
     context = {
         'logos': logos,
@@ -565,8 +620,8 @@ def admission_create(request, username):
         'admision_form': admision_form,
         'admision_formset': admision_formset,
         'allergy_form': allergy_form,
-        'medication_mart_formset': medication_mart_formset,
-        'own_medication_form_mart': own_medication_form_mart,
+        'martformset_medication': martformset_medication,
+        'martform_own_medication': martform_own_medication,
     }
 
     return render(request, 'patient/admission/admission_form.html', context)

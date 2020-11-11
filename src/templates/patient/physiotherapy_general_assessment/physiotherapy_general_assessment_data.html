@@ -8,7 +8,7 @@
 	{{ page_title }} | {{ titles.title }}
 {% endblock %}
 
-{% block styles %}
+{% block style %}
 <link href="{% static 'css/patient/physiotherapy_general_assessment.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
@@ -52,7 +52,7 @@
 										<th class="text-center">{% trans "Comments" %}</th>
 										<th class="text-center">{% trans "Special Question" %}</th>
 										<th class="text-center">{% trans "General Health" %}</th>
-										<th class="text-center">{% trans "PMX / Surgery" %}</th>
+										<th class="text-center">{% trans "PMX/Surgery" %}</th>
 										<th class="text-center">{% trans "IX/MRI/X-Ray" %}</th>
 										<th class="text-center">{% trans "Medications/Steroids" %}</th>
 										<th class="text-center">{% trans "Palpation" %}</th>
@@ -104,7 +104,7 @@
 
 {% endblock %}
 
-{% block js %}
+{% block jscript %}
 <script type="text/javascript">
 $(document).ready(function()
 {

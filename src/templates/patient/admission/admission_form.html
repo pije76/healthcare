@@ -14,16 +14,15 @@
 	{{ admision_form.media }}
 	{{ admision_formset.media }}
 	{{ allergy_form.media }}
-	{{ medication_mart_formset.media }}
+	{{ martformset_medication.media }}
 {% endblock %}
 
-{% block styles %}
+{% block style %}
 	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/patient/admission.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block javascript %}
-	<script src="{% static 'js/patient/admission_form.js' %}" type="text/javascript"></script>
 	<script src="{% static 'js/jquery.formset.js' %}" type="text/javascript"></script>
 {% endblock %}
 
@@ -45,7 +44,7 @@
 			{% csrf_token %}
 			{{ family_formset.management_form }}
 			{{ admision_formset.management_form }}
-			{{ medication_mart_formset.management_form }}
+			{{ martformset_medication.management_form }}
 			<div class="userroles" data-username="{{ user_name }}"></div>
 
 			<div class="row">
@@ -124,7 +123,7 @@
 
 			<div class="row">
 				<div class="col-2 col">
-					{% trans "Sex / Gender" %}:
+					{% trans "Sex/Gender" %}:
 				</div>
 				<div class="col-10 col">
 					{{ patientprofile_form.gender|as_crispy_field }}
@@ -458,7 +457,6 @@
 				<div class="col-6"></div>
 				<div class="col-1"></div>
 			</div>
-			{% endfor %}
 
 			<div class="row">
 				<div class="col-2 col">
@@ -472,7 +470,6 @@
 				</div>
 			</div>
 
-			{% for item in admision_formset.forms %}
 			<div class="row formSet_Opr">
 				<div class="col-2 col border-bottom">
 					{{ item.patient|as_crispy_field }}
@@ -499,13 +496,13 @@
 					{% trans "Own medication" %}:
 				</div>
 				<div class="col-10 col">
-					{{ own_medication_form_mart.medication_date|as_crispy_field }}
-					{{ own_medication_form_mart.own_medication|as_crispy_field }}
+					{{ martform_own_medication.medication_date|as_crispy_field }}
+					{{ martform_own_medication.own_medication|as_crispy_field }}
 				</div>
 			</div>
 
 
-			{% for item in medication_mart_formset.forms %}
+			{% for item in martformset_medication.forms %}
 			<div class="row">
 				<div class="col-2 col border-top-0">
 				</div>
@@ -533,6 +530,7 @@
 					{{ item.patient|as_crispy_field }}
 					{{ item.own_medication|as_crispy_field }}
 					{{ item.medication_date|as_crispy_field }}
+					{{ item.medication_template|as_crispy_field }}
 				</div>
 				<div class="col-2 col">
 					{{ item.medication_time|as_crispy_field }}
@@ -621,7 +619,7 @@
 
 {% endblock %}
 
-{% block js %}
+{% block jscript %}
 <script type='text/javascript'>
 $(document).ready(function()
 {
@@ -686,12 +684,12 @@ $(document).ready(function()
 	$(function()
 	{
 		$('.formSet_Own').formset({
-			prefix: 'medication_mart_formset',
+			prefix: 'martformset_medication',
 			addCssClass: 'btn btn-success',
 			addText: '<i class="fas fa-plus"></i>',
 			deleteCssClass: 'btn btn-danger',
 			deleteText: '<i class="fas fa-minus"></i>',
-			keepFieldValues: '#id_medication_mart_formset-0-patient, #id_medication_mart_formset-0-own_medication_2, #id_medication_mart_formset-0-medication_date, #id_medication_mart_formset-0-medication_time, #id_medication_mart_formset-0-medication_dosage, #id_medication_mart_formset-0-medication_unit, #id_medication_mart_formset-0-medication_tablet_capsule, #id_medication_mart_formset-0-medication_frequency',
+			keepFieldValues: '#id_martformset_medication-0-patient, #id_martformset_medication-0-own_medication_2, #id_martformset_medication-0-medication_date, #id_martformset_medication-0-medication_time, #id_martformset_medication-0-medication_dosage, #id_martformset_medication-0-medication_unit, #id_martformset_medication-0-medication_tablet_capsule, #id_martformset_medication-0-medication_frequency',
 			deleteContainerClass: 'hapus_Own',
 			addContainerClass: 'tambah_Own',
 			added: function(row)
@@ -705,13 +703,13 @@ $(document).ready(function()
 				$(row).find('.hapus_Own').removeClass("disabled");
 				$(row).find('.tambah_Own').removeClass("disabled");
 
-				$(row).find('[id$="medication_date"]').removeClass('datepickerinput').removeAttr('#div_id_medication_mart_formset-0-medication_date').removeData('DateTimePicker').unbind().datetimepicker(
+				$(row).find('[id$="medication_date"]').removeClass('datepickerinput').removeAttr('#div_id_martformset_medication-0-medication_date').removeData('DateTimePicker').unbind().datetimepicker(
 					options=
 					{
 						"format": "DD-MM-YYYY",
 					});
 
-				$(row).find('[id$="medication_time"]').removeClass('timepickerinput').removeAttr('#div_id_medication_mart_formset-0-medication_time').removeData('DateTimePicker').unbind().datetimepicker(
+				$(row).find('[id$="medication_time"]').removeClass('timepickerinput').removeAttr('#div_id_martformset_medication-0-medication_time').removeData('DateTimePicker').unbind().datetimepicker(
 					options=
 					{
 						"format": "HH:mm",
@@ -737,7 +735,7 @@ $(document).ready(function()
 	$("#id_admision_form-surgical_history").prop("disabled", true);
 	$("#id_admision_form-surgical_history_none_1").attr("checked", true);
 
-	$("#id_own_medication_form_mart-own_medication_1").filter('[value="No"]').attr('checked', true)
+	$("#id_martform_own_medication-own_medication_1").filter('[value="No"]').attr('checked', true)
 	$('.hapus_Own').addClass("disabled");
 	$('.tambah_Own').addClass("disabled");
 	$("[id$='time']").addClass("disabled_input");
@@ -1506,14 +1504,14 @@ $(document).ready(function()
 		}
 	});
 
-	$(':radio[id^="id_own_medication_form_mart-own_medication_"]').click(function()
+	$(':radio[id^="id_martform_own_medication-own_medication_"]').click(function()
 	{
 
 		var $this = $(this);
-		if ($this.is("#id_own_medication_form_mart-own_medication_1"))
+		if ($this.is("#id_martform_own_medication-own_medication_1"))
 		{
-			if ($("#id_own_medication_form_mart-own_medication_1").filter('[value="Yes"]').attr('checked', true))
-//			if ($("#id_own_medication_form_mart-own_medication_1:checked").filter('[value="Yes"]').length > 0)
+			if ($("#id_martform_own_medication-own_medication_1").filter('[value="Yes"]').attr('checked', true))
+//			if ($("#id_martform_own_medication-own_medication_1:checked").filter('[value="Yes"]').length > 0)
 			{
 				$('.hapus_Own').addClass("disabled");
 				$('.tambah_Own').addClass("disabled");
@@ -1536,10 +1534,10 @@ $(document).ready(function()
 				$("[id$='frequency']").removeClass("disabled_input");
 			}
 		}
-		else if ($this.is("#id_own_medication_form_mart-own_medication_2"))
+		else if ($this.is("#id_martform_own_medication-own_medication_2"))
 		{
-			if ($("#id_own_medication_form_mart-own_medication_2").filter('[value="Yes"]').attr('checked', true))
-//			if ($("#id_own_medication_form_mart-own_medication_2:checked").filter('[value="Yes"]').length > 0)
+			if ($("#id_martform_own_medication-own_medication_2").filter('[value="Yes"]').attr('checked', true))
+//			if ($("#id_martform_own_medication-own_medication_2:checked").filter('[value="Yes"]').length > 0)
 			{
 				$('.hapus_Own').removeClass("disabled");
 				$('.tambah_Own').removeClass("disabled");

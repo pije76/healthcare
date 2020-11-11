@@ -12,14 +12,14 @@
 
 {% block content %}
 
-{% block styles %}
+{% block style %}
 	<link href="{% static 'css/patient/discharge_checklist.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'selectable/css/dj.selectable.css' %}" type="text/css" media="all" rel="stylesheet">
 {% endblock %}
 
 {% block javascript %}
     <script src="{% static 'js/jquery.formset.js' %}"></script>
-    <script type="text/javascript" src="{% static 'selectable/js/jquery.dj.selectable.js' %}"></script>
+    <script src="{% static 'selectable/js/jquery.dj.selectable.js' %}"></script>
 {% endblock %}
 
 {% block extrahead %}
@@ -49,7 +49,7 @@
 				</div>
 				<div class="row">
 					<div class="col-12 border-bottom">
-						{% trans "Please tick the appropriate boxes / *delete or specify where applicable" %}:
+						{% trans "Please tick the appropriate boxes/*delete or specify where applicable" %}:
 					</div>
 				</div>
 
@@ -110,7 +110,7 @@
 
 				<div class="row">
 					<div class="col-8">
-						{% trans "Spectacle / Walking aid / Denture *returned to patient / relative" %}
+						{% trans "Spectacle/Walking aid/Denture *returned to patient/relative" %}
 					</div>
 					<div class="col-4">
 						{% render_field form.spectacle_walking_aid_denture class="form-inline discharge" %}
@@ -137,7 +137,7 @@
 
 				<div class="row">
 					<div class="col-8">
-						{% trans "Medication Reconcilation with patient / relative*" %}
+						{% trans "Medication Reconcilation with patient/relative*" %}
 					</div>
 
 					<div class="col-4">
@@ -175,7 +175,7 @@
 
 				<div class="row">
 					<div class="col-6">
-						{% trans "Name of Patient / Next of Kin" %}:
+						{% trans "Name of Patient/Next of Kin" %}:
 					</div>
 					<div class="col-6">
 						<input type="text" name="patient" class="form-control" value="{{ patients }}">
@@ -195,7 +195,7 @@
 
 				<div class="row">
 					<div class="col-6">
-						{% trans "Item(s) / Information / Advice given by" %}:
+						{% trans "Item(s)/Information/Advice given by" %}:
 					</div>
 					<div class="col-6">
 						{{ form.given_by|as_crispy_field }}
@@ -215,7 +215,7 @@
 
 {% endblock %}
 
-{% block js %}
+{% block jscript %}
 <script type='text/javascript'>
 $(document).ready(function()
 {

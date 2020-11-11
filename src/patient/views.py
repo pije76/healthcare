@@ -122,7 +122,7 @@ def patientdata_detail(request, username):
 	intakeoutput = IntakeOutput.objects.filter(patient=patientid).exclude(time__isnull=True)
 	investigation_report = InvestigationReport.objects.filter(patient=patientid)
 	maintenance = Maintenance.objects.filter(patient=patientid)
-	medicationadministrationrecord = MedicationAdministrationRecord.objects.filter(patient=patientid).exclude(medication_time__isnull=True)
+	medicationadministrationrecord = MedicationAdministrationRecord.objects.filter(patient=patientid).exclude(medication_template__medication_time__isnull=True)
 	medicationtemplate = MedicationAdministrationRecordTemplate.objects.filter(patient=patientid).exclude(medication_time__isnull=True)
 	medicationrecord = MedicationRecord.objects.filter(patient=patientid)
 	multipurpose = Multipurpose.objects.filter(patient=patientid)

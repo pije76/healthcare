@@ -58,11 +58,8 @@ def medication_administration_template_create(request, username):
 		formset = MedicationAdministrationRecordTemplate_FormSet(request.POST or None)
 		if formset.is_valid():
 			for item in formset:
-#				mart_save = MedicationAdministrationRecordTemplate()
 				mart_save = item.save(commit=False)
 				mart_save.patient = patients
-#				mart_save.patient = item.cleaned_data['patient']
-#				mart_save.own_medication = True
 				mart_save.own_medication = 'Yes'
 				mart_save.medication_date = item.cleaned_data['medication_date']
 				mart_save.medication_time = item.cleaned_data['medication_time']
@@ -78,7 +75,6 @@ def medication_administration_template_create(request, username):
 		else:
 			messages.warning(request, formset.errors)
 	else:
-#		formset = MedicationAdministrationRecordTemplate_FormSet(initial=[{'id': x, 'patient': y} for x,y in mart_profiles], queryset=patients_templates)
 		formset = MedicationAdministrationRecordTemplate_FormSet(initial=initial_mart_formset, queryset=patients_templates)
 
 	context = {

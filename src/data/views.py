@@ -59,7 +59,7 @@ def drug_list(request):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = _('Medicine List')
+	page_title = _('Medicine View')
 #    patientid = UserProfile.objects.get(username=username).id
 #    patients = HGT.objects.filter(patient=patientid)
 #    profiles = UserProfile.objects.filter(pk=patientid)
@@ -157,7 +157,7 @@ def wound_condition_list(request):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = _('Wound Condition')
+	page_title = _('Wound Condition View')
 #    patientid = UserProfile.objects.get(username=username).id
 #    patients = HGT.objects.filter(patient=patientid)
 #    profiles = UserProfile.objects.filter(pk=patientid)

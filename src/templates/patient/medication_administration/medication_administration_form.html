@@ -8,7 +8,7 @@
 	{{ page_title }} | {{ titles.title }}
 {% endblock %}
 
-{% block styles %}
+{% block style %}
 	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/patient/medication_administration.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
@@ -78,22 +78,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% for item in formset.forms %}
-					{{ item.id|as_crispy_field }}{{ item.patient|as_crispy_field }}{{ item.medication_date|as_crispy_field }}
-					<tr id="{{ item.prefix }}-row">
-						<td>{{ item.medication_time|as_crispy_field }}</td>
-						<td>{{ item.medication_drug_name|as_crispy_field }}</td>
-						<td>{{ item.medication_dosage|as_crispy_field }}</td>
-						<td>{{ item.medication_unit|as_crispy_field }}</td>
-						<td>{{ item.medication_tablet_capsule|as_crispy_field }}</td>
-						<td>{{ item.medication_frequency|as_crispy_field }}</td>
-						<td>{{ item.medication_source|as_crispy_field }}</td>
-						<td>{{ item.medication_route|as_crispy_field }}</td>
-						<td>{{ item.medication_status|as_crispy_field }}</td>
-						<td>{{ item.medication_done|as_crispy_field }}</td>
-						<td></td>
-					</tr>
-					{% endfor %}
+					{{ formset }}
 				</tbody>
 			</table>
 
@@ -113,7 +98,7 @@
 {% endblock %}
 
 
-{% block js %}
+{% block jscript %}
 <script type='text/javascript'>
 $(document).ready(function()
 {

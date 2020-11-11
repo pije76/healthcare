@@ -33,6 +33,18 @@ class Medicine(models.Model):
 		verbose_name_plural = _("Medicine")
 
 
+class MedicationReconcilationPatient(models.Model):
+	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
+	medication_reconcilation_patient = models.CharField(max_length=255, blank=True, null=True)
+
+	def __str__(self):
+		return str(self.medication_reconcilation_patient)
+
+	class Meta:
+		verbose_name = _('Medication Reconcilation Patient')
+		verbose_name_plural = _("Medication Reconcilation Patient")
+
+
 class WoundCondition(MPTTModel):
 	name = models.CharField(max_length=255, blank=True, null=True)
 	parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True, on_delete=models.CASCADE)

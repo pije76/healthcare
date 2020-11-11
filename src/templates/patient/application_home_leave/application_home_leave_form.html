@@ -9,7 +9,7 @@
     {{ page_title }} | {{ titles.title }}
 {% endblock %}
 
-{% block styles %}
+{% block style %}
 	<link href="{% static 'css/patient/application_home_leave.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'selectable/css/dj.selectable.css' %}" type="text/css" media="all" rel="stylesheet">
 {% endblock %}
@@ -92,7 +92,7 @@
 
 				<div class="row">
 					<div class="col-6">
-						{% trans "hereby wish to apply from" %} {{ titles }} {% trans "for self / patient" %}
+						{% trans "hereby wish to apply from" %} {{ titles }} {% trans "for self/patient" %}
 					</div>
 					<div class="col-6">
 						<input type="text" name="patient" class="form-control" value="{{ patients }}">
@@ -104,7 +104,7 @@
 						{% trans "to leave the care center at own risk as per attachment." %}
 						<br />
 						<br />
-						{% trans "I am fully responsible towards myself / this patient whilst out of the center," %} {{ titles }} {% trans "and its staff of all liabilities in the event of my / the patient’s decline in health or any accidents which may occur whilst I am / said patient is out of the center." %}
+						{% trans "I am fully responsible towards myself/this patient whilst out of the center," %} {{ titles }} {% trans "and its staff of all liabilities in the event of my/the patient’s decline in health or any accidents which may occur whilst I am/said patient is out of the center." %}
 					</div>
 				</div>
 
@@ -118,7 +118,7 @@
 
 					<div class="col-6">
 						{{ form.signature_name|as_crispy_field }}
-						<b>({% trans "Patient / Family Responsible" %})</b>
+						<b>({% trans "Patient/Family Responsible" %})</b>
 					</div>
 				</div>
 
@@ -196,10 +196,10 @@
 {% endblock %}
 
 {% block javascript %}
-    <script type="text/javascript" src="{% static 'selectable/js/jquery.dj.selectable.js' %}"></script>
+    <script src="{% static 'selectable/js/jquery.dj.selectable.js' %}"></script>
 {% endblock %}
 
-{% block js %}
+{% block jscript %}
 <script type="text/javascript">
 //$(document).ready(function()
 //{

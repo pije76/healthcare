@@ -142,45 +142,77 @@ def discharge_checklist_create(request, username):
 	return render(request, 'patient/discharge_checklist/discharge_checklist_form.html', context)
 
 
-class DischargeCheckListUpdateView(BSModalUpdateView):
-	model = DischargeCheckList
-#	fields = '__all__'
-	template_name = 'patient/discharge_checklist/partial_edit.html'
-	form_class = DischargeCheckList_Form_Set
-	page_title = _('Discharge CheckList Form')
-	success_message = _(page_title + ' form has been save successfully.')
+@login_required
+def discharge_checklist_edit(request, username, pk):
+	schema_name = connection.schema_name
+	logos = Client.objects.filter(schema_name=schema_name)
+	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+	page_title = _('Edit Discharge Checklist')
+	patients = get_object_or_404(UserProfile, username=username)
+	patientid = UserProfile.objects.get(username=username).id
+	profiles = UserProfile.objects.filter(username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	admissions = DischargeCheckList.objects.get(patient_id=patientid, id=pk)
+	print(admissions)
 
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		if self.request.POST:
-			context['formset'] = DischargeCheckList_FormSet(self.request.POST)
+	initial = {
+		'id': pk,
+		'patient': patients,
+		'given_by': request.user,
+	}
+
+	initial_formset = [{
+		'patient': item,
+#		'patient': item.id,
+#		'patient': item.username,
+#		'patient': patients,
+		'given_by': request.user,
+	}
+	for item in profiles]
+
+	if request.method == 'POST':
+		formset = DischargeCheckList_ModelFormSet(request.POST or None, queryset=DischargeCheckList.objects.filter(patient_id=patientid).filter(id=pk))
+
+		if formset.is_valid():
+			for item in formset:
+#				discharge_formset_data = DischargeCheckList()
+				discharge_formset_data = item.save(commit=False)
+				discharge_formset_data.patient = patients
+#				discharge_formset_data.id = pk
+#				discharge_formset_data.id = item.cleaned_data['id']
+				discharge_formset_data.date_time = item.cleaned_data['date_time']
+				discharge_formset_data.discharge_status = ', '.join(item.cleaned_data['discharge_status'])
+				discharge_formset_data.nasogastric_tube_date = item.cleaned_data['nasogastric_tube_date']
+				discharge_formset_data.nasogastric_tube = ', '.join(item.cleaned_data['nasogastric_tube'])
+				discharge_formset_data.urinary_catheter_date = item.cleaned_data['urinary_catheter_date']
+				discharge_formset_data.urinary_catheter = ', '.join(item.cleaned_data['urinary_catheter'])
+				discharge_formset_data.surgical_dressing_intact = ', '.join(item.cleaned_data['surgical_dressing_intact'])
+				discharge_formset_data.spectacle_walking_aid_denture = ', '.join(item.cleaned_data['spectacle_walking_aid_denture'])
+				discharge_formset_data.appointment_card_returned = ', '.join(item.cleaned_data['appointment_card_returned'])
+				discharge_formset_data.own_medication_return = ', '.join(item.cleaned_data['own_medication_return'])
+				discharge_formset_data.medication_reconcilation = ', '.join(item.cleaned_data['medication_reconcilation'])
+				discharge_formset_data.given_by = item.cleaned_data['given_by']
+				discharge_formset_data.medication_reconcilation_patient = item.cleaned_data['medication_reconcilation_patient']
+				discharge_formset_data.save()
+
+			messages.success(request, _(page_title + ' form has been save successfully.'))
+			return redirect('patient:discharge_checklist_list', username=patients.username)
 		else:
-			context['formset'] = DischargeCheckList_FormSet()
-		return context
+			messages.warning(request, formset.errors)
+	else:
+		formset = DischargeCheckList_ModelFormSet(queryset=DischargeCheckList.objects.filter(patient_id=patientid).filter(id=pk))
 
-	def get_form(self, form_class=None):
-		form = super().get_form(form_class=None)
-		form.fields['date_time'].label = _("Date & Time")
-		form.fields['discharge_status'].label = _("Status")
-		form.fields['nasogastric_tube_date'].label = _("Nasogastric Date")
-		form.fields['nasogastric_tube'].label = _("Nasogastric")
-		form.fields['urinary_catheter_date'].label = _("Urinary Date")
-		form.fields['urinary_catheter'].label = _("Urinary")
-		form.fields['surgical_dressing_intact'].label = _("Surgical Intact")
-		form.fields['spectacle_walking_aid_denture'].label = _("Spectacle/Walking Aid/Denture")
-		form.fields['appointment_card_returned'].label = _("Appointment")
-		form.fields['own_medication_return'].label = _("Own Medication")
-		form.fields['medication_reconcilation'].label = _("Medication Reconcilation")
-		form.fields['medication_reconcilation_patient'].label = _("Medication Reconcilation Patient/Relative")
-		form.fields['given_by'].label = _("Given by")
-		return form
+	context = {
+		'logos': logos,
+		'titles': titles,
+		'page_title': page_title,
+		'patients': patients,
+		'profiles': profiles,
+		'icnumbers': icnumbers,
+		'formset': formset,
+	}
 
-	def get_success_url(self):
-		username = self.kwargs['username']
-		return reverse_lazy('patient:discharge_checklist_list', kwargs={'username': username})
-
-
-discharge_checklist_edit = DischargeCheckListUpdateView.as_view()
+	return render(request, 'patient/discharge_checklist/partial_edit.html', context)
 
 
 class DischargeCheckListDeleteView(BSModalDeleteView):

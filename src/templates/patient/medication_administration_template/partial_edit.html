@@ -24,6 +24,7 @@
 	<div class="modal-body">
         <div class="form-group">
         	{{ form.patient|as_crispy_field }}
+            {{ form.medication_date|as_crispy_field }}
             {{ form.medication_time|as_crispy_field }}
             {{ form.medication_drug_name|as_crispy_field }}
             {{ form.medication_dosage|as_crispy_field }}
@@ -39,7 +40,7 @@
 
 </form>
 
-{% block js %}
+{% block jscript %}
 	<script type='text/javascript'>
 	$(document).ready(function()
 	{

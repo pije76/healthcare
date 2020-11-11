@@ -59,7 +59,7 @@ class Admission(models.Model):
 	address = models.CharField(max_length=255, blank=True, null=True)
 
 	general_condition = models.CharField(max_length=255, blank=True, null=True)
-	vital_sign_temperature = models.DecimalField(validators=[MinValueValidator(Decimal('0.01'))], max_digits=5, decimal_places=2, blank=True, null=True)
+	vital_sign_temperature = models.DecimalField(validators=[MinValueValidator(Decimal('0.01'))], max_digits=10, decimal_places=2, blank=True, null=True)
 	vital_sign_pulse = models.PositiveIntegerField(blank=True, null=True)
 	vital_sign_bp_upper = models.PositiveIntegerField(blank=True, null=True)
 	vital_sign_bp_lower = models.PositiveIntegerField(blank=True, null=True)
@@ -97,7 +97,7 @@ class Admission(models.Model):
 	medication_drug_name = models.ForeignKey(Medicine, on_delete=models.CASCADE, blank=True, null=True)
 	medication_dosage = models.PositiveIntegerField(blank=True, null=True)
 	medication_unit = models.CharField(max_length=255, blank=True, null=True)
-	medication_tablet_capsule = models.PositiveIntegerField(blank=True, null=True)
+	medication_tablet_capsule = models.DecimalField(validators=[MinValueValidator(Decimal('0.1'))], max_digits=10, decimal_places=1, blank=True, null=True)
 	medication_frequency = models.CharField(max_length=255, blank=True, null=True)
 
 	def __str__(self):
@@ -437,11 +437,14 @@ class MedicationAdministrationRecordTemplate(models.Model):
 	medication_drug_name = models.ForeignKey(Medicine, on_delete=models.CASCADE, blank=True, null=True)
 	medication_dosage = models.PositiveIntegerField(_('Dosage'), blank=True, null=True)
 	medication_unit = models.CharField(_('Unit'), max_length=255, blank=True, null=True)
-	medication_tablet_capsule = models.PositiveIntegerField(_('Tablet/Capsule'), blank=True, null=True)
+	medication_tablet_capsule = models.DecimalField(validators=[MinValueValidator(Decimal('0.1'))], max_digits=10, decimal_places=1, blank=True, null=True)
 	medication_frequency = models.CharField(_('Frequency'), max_length=255, blank=True, null=True)
 
 	def __str__(self):
 		return str(self.patient)
+#		return str(self.medication_time)
+#		return '%s: %s' % (self.medication_time, self.medication_drug_name)
+#		return '%s %s: %s' % (self.medication_date, self.medication_time, self.medication_drug_name)
 
 	class Meta:
 		verbose_name = _('Medication Administration Record (Template)')
@@ -453,13 +456,14 @@ class MedicationAdministrationRecord(models.Model):
 	allergy_drug = models.CharField(max_length=255, blank=True, null=True)
 	allergy_food = models.CharField(max_length=255, blank=True, null=True)
 	allergy_others = models.CharField(max_length=255, blank=True, null=True)
-	medication_date = models.DateField(_('Date'), blank=True, null=True)
-	medication_time = models.TimeField(_('Time'), blank=True, null=True)
-	medication_drug_name = models.ForeignKey(Medicine, on_delete=models.CASCADE, blank=True, null=True)
-	medication_dosage = models.PositiveIntegerField(_('Dosage'), blank=True, null=True)
-	medication_unit = models.CharField(_('Unit'), max_length=255, blank=True, null=True)
-	medication_tablet_capsule = models.PositiveIntegerField(_('Tablet/Capsule'), blank=True, null=True)
-	medication_frequency = models.CharField(_('Frequency'), max_length=255, blank=True, null=True)
+	medication_template = models.ForeignKey(MedicationAdministrationRecordTemplate, on_delete=models.CASCADE, blank=False, null=True)
+#	medication_date = models.DateField(_('Date'), blank=True, null=True)
+#	medication_time = models.TimeField(_('Time'), blank=True, null=True)
+#	medication_drug_name = models.ForeignKey(Medicine, on_delete=models.CASCADE, blank=True, null=True)
+#	medication_dosage = models.PositiveIntegerField(_('Dosage'), blank=True, null=True)
+#	medication_unit = models.CharField(_('Unit'), max_length=255, blank=True, null=True)
+#	medication_tablet_capsule = models.DecimalField(validators=[MinValueValidator(Decimal('0.1'))], max_digits=10, decimal_places=1, blank=True, null=True)
+#	medication_frequency = models.CharField(_('Frequency'), max_length=255, blank=True, null=True)
 	medication_source = models.CharField(_('Source'), max_length=255, blank=True, null=True)
 	medication_route = models.CharField(_('Route'), max_length=255, blank=True, null=True)
 	medication_status = models.CharField(_('Status'), max_length=255, blank=True, null=True)
@@ -467,6 +471,10 @@ class MedicationAdministrationRecord(models.Model):
 
 	def __str__(self):
 		return str(self.patient)
+
+	@property
+	def get_medication_date(self):
+		return self.medication_template.medication_date
 
 	class Meta:
 		verbose_name = _('Medication Administration Record')

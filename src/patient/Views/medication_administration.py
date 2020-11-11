@@ -34,11 +34,11 @@ def medication_administration_list(request, username):
 	full_name_profiles = UserProfile.objects.filter(username=username).values_list('full_name', flat=True).first()
 	profiles = UserProfile.objects.filter(pk=patientid)
 #	allergies = MedicationAdministrationRecord.objects.filter(patient=patientid).values_list('allergy', flat=True).first()
-	medicine_date = MedicationAdministrationRecord.objects.filter(patient=patientid).values_list('medication_date', flat=True).first()
+	medicine_date = MedicationAdministrationRecord.objects.filter(patient=patientid).values_list('medication_template__medication_date', flat=True).first()
 #	medicine_data = MedicationAdministrationRecord.objects.filter(patient=patientid)
-	get_lastdate = MedicationAdministrationRecord.objects.filter(patient=patientid).order_by('-medication_date').exclude(medication_time__isnull=True).values_list('medication_date', flat=True).first()
-	medicine_data = MedicationAdministrationRecord.objects.filter(patient=patientid).filter(medication_date=get_lastdate).exclude(medication_time__isnull=True)
-	medicine_stat = MedicationAdministrationRecord.objects.filter(patient=patientid).exclude(medication_time__isnull=True)
+	get_lastdate = MedicationAdministrationRecord.objects.filter(patient=patientid).order_by('-medication_template__medication_date').exclude(medication_template__medication_time__isnull=True).values_list('medication_template__medication_date', flat=True).first()
+	medicine_data = MedicationAdministrationRecord.objects.filter(patient=patientid).filter(medication_template__medication_date=get_lastdate).exclude(medication_template__medication_time__isnull=True)
+	medicine_stat = MedicationAdministrationRecord.objects.filter(patient=patientid).exclude(medication_template__medication_time__isnull=True)
 	allergy_drug_data = Allergy.objects.filter(patient=patientid).values_list('allergy_drug', flat=True).first()
 	allergy_food_data = Allergy.objects.filter(patient=patientid).values_list('allergy_food', flat=True).first()
 	allergy_others_data = Allergy.objects.filter(patient=patientid).values_list('allergy_others', flat=True).first()
@@ -102,7 +102,8 @@ def medication_administration_create(request, username):
 	allergy_food = Allergy.objects.filter(patient=patientid).values_list('allergy_food', flat=True).first()
 	allergy_others = Allergy.objects.filter(patient=patientid).values_list('allergy_others', flat=True).first()
 
-	patients_templates = MedicationAdministrationRecord.objects.filter(patient=patientid).filter(medication_time__in=['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']).order_by("medication_time")
+	patients_templates = MedicationAdministrationRecord.objects.filter(patient=patientid).filter(medication_template__medication_time__in=['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']).order_by("medication_template__medication_time")
+	mar_profiles = MedicationAdministrationRecord.objects.filter(patient=patientid)
 
 	initial_form = {
 		'patient': patients,
@@ -116,10 +117,20 @@ def medication_administration_create(request, username):
 		'allergy_others': allergy_others,
 	}
 
+	initial_mar_formset = [{
+		'id': item.id,
+		'patient': item.patient,
+		'medication_date': item.medication_template,
+		'medication_template': item.medication_template,
+		'medication_route': item.medication_route,
+	}
+	for item in mar_profiles]
+
+
 	if request.method == 'POST':
 
-		form = MedicationAdministrationRecord_Model_Form(request.POST or None)
-		formset = MedicationAdministrationRecord_ModelForm_Set(request.POST or None)
+		form = MedicationAdministrationRecord_ModelForm(request.POST or None)
+		formset = MedicationAdministrationRecord_ModelFormSet(request.POST or None)
 		allergy_form = Allergy_Model_Form(request.POST or None)
 
 		if form.is_valid():
@@ -172,9 +183,18 @@ def medication_administration_create(request, username):
 			messages.warning(request, formset.errors)
 			messages.warning(request, allergy_form.errors)
 	else:
-		form = MedicationAdministrationRecord_Model_Form(initial=initial_form)
-#		form = MedicationAdministrationRecord_ModelForm_Set(initial=[{'medication_date': get_today} for medication_date in queryset])
-		formset = MedicationAdministrationRecord_ModelForm_Set(initial=[{'patient': x} for x in profiles], queryset=patients_templates)
+		form = MedicationAdministrationRecord_ModelForm(initial=initial_form)
+#		form = MedicationAdministrationRecord_ModelFormSet(initial=[{'medication_date': get_today} for medication_date in queryset])
+#		formset = MedicationAdministrationRecord_ModelFormSet(initial=[{'patient': x} for x in profiles], queryset=patients_templates)
+#		formset = MedicationAdministrationRecord_ModelFormSet(initial=[{'patient': x} for x in profiles])
+#		formset = MedicationAdministrationRecord_ModelFormSet(initial=initial_mar_formset, queryset=patients_templates)
+#		formset = MedicationAdministrationRecord_ModelFormSet(initial=initial_mar_formset)
+#		formset = MedicationAdministrationRecord_ModelFormSet(queryset=patients_templates)
+#		formset = MedicationAdministrationRecord_ModelFormSet(instance=mar_profiles)
+#		formset = MedicationAdministrationRecord_ModelFormSet(instance=mar_profiles, queryset=patients_templates)
+#		formset = MedicationAdministrationRecord_ModelFormSet(instance=mar_profiles)
+#		formset = MedicationAdministrationRecord_ModelFormSet(queryset=patients_templates)
+		formset = MedicationAdministrationRecord_ModelFormSet()
 		allergy_form = Allergy_Model_Form(initial=initial_allergy)
 
 	context = {
