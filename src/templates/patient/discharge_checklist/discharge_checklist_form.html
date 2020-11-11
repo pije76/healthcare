@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "bootstrap_ui/bootstrap4-skeleton.html" %}
 
 {% load static %}
 {% load crispy_forms_tags %}
@@ -6,18 +6,18 @@
 {% load i18n %}
 {% load selectable_tags %}
 
-{% block headtitle %}
+{% block head-title %}
     {{ page_title }} | {{ titles.title }}
 {% endblock %}
 
-{% block content %}
+{% block body-content %}
 
-{% block style %}
+{% block head-css %}
 	<link href="{% static 'css/patient/discharge_checklist.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'selectable/css/dj.selectable.css' %}" type="text/css" media="all" rel="stylesheet">
 {% endblock %}
 
-{% block javascript %}
+{% block head-javascript %}
     <script src="{% static 'js/jquery.formset.js' %}"></script>
     <script src="{% static 'selectable/js/jquery.dj.selectable.js' %}"></script>
 {% endblock %}
@@ -215,7 +215,7 @@
 
 {% endblock %}
 
-{% block jscript %}
+{% block body-javascript %}
 <script type='text/javascript'>
 $(document).ready(function()
 {

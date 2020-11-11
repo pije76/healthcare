@@ -1,26 +1,26 @@
-{% extends 'base.html' %}
+{% extends "bootstrap_ui/bootstrap4-skeleton.html" %}
 
 {% load crispy_forms_tags %}
 {% load i18n %}
 {% load static %}
 {% load custom_tags %}
 
-{% block headtitle %}
+{% block head-title %}
 	{{ page_title }} | {{ titles.title }}
 {% endblock %}
 
-{% block style %}
+{% block head-css %}
 	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/patient/admission.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
-{% block javascript %}
+{% block head-javascript %}
 	<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
     <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
 {% endblock %}
 
-{% block content %}
+{% block body-content %}
 
 <div class="container-fluid">
 
@@ -195,7 +195,7 @@
 
 {% endblock %}
 
-{% block jscript %}
+{% block body-javascript %}
 <script type="text/javascript">
 $(document).ready(function()
 {

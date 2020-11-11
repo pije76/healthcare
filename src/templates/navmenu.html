@@ -63,22 +63,22 @@
 				<form method="post" action="{% url 'set_theme' %}">
 				{% csrf_token %}
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<a class="nav-link dropdown-toggle" href="#" id="userMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<span class='caret'></span>
 						</a>
-						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
-						<a type="submit" class="dropdown-item" href="{% url 'index' %}">
-							<input type="hidden" name="next" value="/"/>
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu1">
+						<a type="submit" class="dropdown-item" href="/set_theme/bootstrap/">
+							<input type="hidden" name="next" value="bootstrap">
 							<input type="hidden" name="theme" value="bootstrap"/>
 							{% trans "Default" %}
 						</a>
-						<a type="submit" class="dropdown-item" href="{% url 'index' %}">
-							<input type="hidden" name="next" value="/"/>
+						<a type="submit" class="dropdown-item" href="/set_theme/bootswatch-cosmo/">
+							<input type="hidden" name="next" value="bootswatch-cosmo"/>
 							<input type="hidden" name="theme" value="bootswatch-cosmo"/>
 							{% trans "Cosmo" %}
 						</a>
-						<a type="submit" class="dropdown-item" href="{% url 'index' %}">
-							<input type="hidden" name="next" value="/"/>
+						<a type="submit" class="dropdown-item" href="/set_theme/bootswatch-darkly/">
+							<input type="hidden" name="next" value="bootswatch-darkly"/>
 							<input type="hidden" name="theme" value="bootswatch-darkly"/>
 							{% trans "Darkly" %}
 						</a>

@@ -1,18 +1,18 @@
-{% extends 'base.html' %}
+{% extends "bootstrap_ui/bootstrap4-skeleton.html" %}
 
 {% load account %}
 {% load static %}
 {% load i18n %}
 
-{% block style %}
+{% block head-css %}
 	<link href="{% static 'css/account.css' %}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
-{% block headtitle %}
+{% block head-title %}
 	{{ page_title }} | {{ titles.title }}
 {% endblock %}
 
-{% block content %}
+{% block body-content %}
 
 	<div class="row isi dataaccount">
 
