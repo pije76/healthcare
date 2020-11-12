@@ -1,13 +1,13 @@
-{% extends "bootstrap_ui/bootstrap4-skeleton.html" %}
+{% extends 'base.html' %}
 
 {% load static %}
 {% load i18n %}
 
-{% block head-javascript %}
+{% block javascript %}
 	<script src="{% static 'js/patient/patient_list.js' %}"></script>
 {% endblock %}
 
-{% block body-content %}
+{% block content %}
 
 <div class="container-fluid">
 

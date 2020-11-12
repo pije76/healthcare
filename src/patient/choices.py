@@ -247,9 +247,8 @@ STOOL_FREQUENCY_CHOICES = (
 	('BNO', 'BNO'),
 )
 
-
 SURGICAL_CHOICES = (
-	('', _('')),
+	('None', _('None')),
 )
 
 TAB_CHOICES = (

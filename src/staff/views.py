@@ -79,7 +79,7 @@ def overtime_claim_create(request, username):
 			profile.checked_sign_by = staffchecked
 			verify_by_data = form.cleaned_data['verify_by'] or None
 			staffverify = get_object_or_404(UserProfile, full_name=verify_by_data)
-			print(verify_by_data)
+
 			if verify_by_data is not None:
 				profile.verify_by = staffverify
 #				profile.verify_by = verify_by_data
@@ -242,9 +242,9 @@ def staffdata_detail(request, username):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	staffs = UserProfile.objects.filter(username=username)
-	staffid = UserProfile.objects.filter(username=username).id
-	overtimeclaim = OvertimeClaim.objects.filter(staff=staffid)
-	staffrecords = StaffRecords.objects.filter(staff=staffid)
+#	staffid = UserProfile.objects.filter(username=username).id
+	overtimeclaim = OvertimeClaim.objects.filter(staff=staffs)
+	staffrecords = StaffRecords.objects.filter(staff=staffs)
 #	staffs = UserProfile.objects.filter(staff=id)
 #	staffs = UserProfile.objects.filter(pk=id).values_list('staff', flat=True).first()
 	page_title = _('Staff Detail')

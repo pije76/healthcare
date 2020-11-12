@@ -6,7 +6,7 @@
     {{ form.media }}
 {% endblock %}
 
-{% block head-javascript %}
+{% block javascript %}
 	<script src="{% static 'js/jquery.min.js' %}"></script>
 	<script src="{% static 'js/bootstrap.min.js' %}"></script>
 	<script src="{% static 'js/moment.min.js' %}"></script>
@@ -38,7 +38,7 @@
 
 </form>
 
-{% block body-javascript %}
+{% block jscript %}
 	<script type='text/javascript'>
 	$(document).ready(function()
 	{

@@ -153,7 +153,6 @@ def discharge_checklist_edit(request, username, pk):
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 	admissions = DischargeCheckList.objects.get(patient_id=patientid, id=pk)
-	print(admissions)
 
 	initial = {
 		'id': pk,

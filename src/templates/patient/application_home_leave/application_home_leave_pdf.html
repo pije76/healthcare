@@ -3,7 +3,7 @@
 {% load i18n %}
 {% load selectable_tags %}
 
-{% block head-css %}
+{% block style %}
 	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
 	<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
 	<link href="{% static 'css/navmenu.css' %}" rel="stylesheet" type="text/css" />
@@ -20,7 +20,7 @@
 {% block extrahead %}
 {% endblock %}
 
-{% block body-content %}
+{% block content %}
 
 <div class="container-fluid">
 
@@ -194,11 +194,11 @@
 
 {% endblock %}
 
-{% block head-javascript %}
+{% block javascript %}
     <script src="{% static 'selectable/js/jquery.dj.selectable.js' %}"></script>
 {% endblock %}
 
-{% block body-javascript %}
+{% block jscript %}
 <script type="text/javascript">
 //$(document).ready(function()
 //{

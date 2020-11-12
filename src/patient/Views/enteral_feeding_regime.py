@@ -102,7 +102,6 @@ def enteral_feeding_regime_list(request, username):
 		total_feeding = totalfeeding.aggregate(Sum('amount'))['amount__sum'] if totalfeeding else 0
 		get_warm_water_total = EnteralFeedingRegime.objects.filter(patient=patientid, date=set_newdate).filter(amount__isnull=False).exclude(amount__exact='0').annotate(total_warm=F('warm_water_before') + F('warm_water_after') + F('amount'))
 		total_fluids = get_warm_water_total.aggregate(Sum('total_warm'))['total_warm__sum'] if get_warm_water_total else 0
-		print("total_fluids2: ", total_fluids)
 
 		if form.is_valid():
 #			form.save()

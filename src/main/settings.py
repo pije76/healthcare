@@ -77,9 +77,9 @@ TENANT_APPS = (
     'phonenumber_field',
 
     'bootstrap_modal_forms',
-    'bootstrap4',
-    'bootstrap_ui',
-    'pure_pagination',
+#    'bootstrap4',
+    'bootstrap_themes',
+#    'pure_pagination',
     'crispy_forms',
     'widget_tweaks',
     'selectable',
@@ -90,8 +90,7 @@ TENANT_APPS = (
 
     'massadmin',
     'mptt',
-    'django_filters',
-    'django_tables2',
+#    'django_filters',
 )
 
 

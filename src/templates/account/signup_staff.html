@@ -1,16 +1,16 @@
-{% extends "bootstrap_ui/bootstrap4-skeleton.html" %}
+{% extends 'base.html' %}
 
 {% load static %}
 {% load i18n %}
 {% load crispy_forms_tags %}
 
-{% block head-css %}
+{% block style %}
 	<link href="{% static 'css/account.css' %}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
-{% block head-title %}{% trans "Register Staff" %}{% endblock %}
+{% block headtitle %}{% trans "Register Staff" %}{% endblock %}
 
-{% block body-content %}
+{% block content %}
 
 	{% if user.is_authenticated %}
 

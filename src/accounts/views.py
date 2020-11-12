@@ -1,11 +1,14 @@
-from django.db import connection
-from django.utils.translation import ugettext as _
-from django.contrib.auth.decorators import login_required
-from django.dispatch import receiver
-from django.utils import translation
+from django import http
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+from django.db import connection
+from django.dispatch import receiver
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
+from django.utils import translation
+from django.utils.http import is_safe_url
+from django.utils.translation import ugettext as _
+
 
 from customers.models import *
 from .models import *
@@ -16,27 +19,8 @@ from allauth.account.signals import user_signed_up
 from allauth.exceptions import ImmediateHttpResponse
 from allauth.account import signals
 
+
 # Create your views here.
-def set_language_from_url(request, user_language):
-	schema_name = connection.schema_name
-	patients = UserProfile.objects.filter(username=request.user.username)
-	logos = Client.objects.filter(schema_name=schema_name)
-	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = _('Home')
-
-	translation.activate(user_language)
-	request.session[translation.LANGUAGE_SESSION_KEY] = user_language
-
-	context = {
-		'patients': patients,
-		'logos': logos,
-		'titles': titles,
-		'page_title': page_title,
-	}
-
-	return render(request, 'index.html', context)
-
-
 def index(request):
 	schema_name = connection.schema_name
 	patients = UserProfile.objects.filter(username=request.user.username)
@@ -50,6 +34,84 @@ def index(request):
 		'titles': titles,
 		'page_title': page_title,
 	}
+	return render(request, 'index.html', context)
+
+
+def set_theme(request):
+	next = request.POST.get('next', request.GET.get('next'))
+
+	if not is_safe_url(url=next, allowed_hosts=request.get_host()):
+		next = request.META.get('HTTP_REFERER')
+
+		if not is_safe_url(url=next, allowed_hosts=request.get_host()):
+			next = '/'
+
+	response = http.HttpResponseRedirect(next)
+
+	if request.method == 'POST':
+		theme = request.POST.get('theme', None)
+
+		if theme:
+			if hasattr(request, 'session'):
+				request.session['DJANGO_BOOTSTRAP_UI_THEME'] = theme
+			else:
+				response.set_cookie('DJANGO_BOOTSTRAP_UI_THEME', theme)
+
+	return response
+	if request.method == 'POST':
+#	request.session['theme'] = "bootstrap"
+#	theme = request.POST.get('theme', None)
+#	data = request.session['DJANGO_BOOTSTRAP_UI_THEME'] = theme
+#	theme = request.session['DJANGO_BOOTSTRAP_UI_THEME'] = "bootstrap"
+#	print("theme", theme)
+#	data = request.POST.get('theme')
+		data = request.POST.get('next')
+#		data = request.POST.get('theme', None)
+#	data = request.GET.get('next')
+#	data = request.POST.get('next')
+#	data = request.GET.get(next, '')
+#	data = request.POST.get(next, '')
+#	data = request.REQUEST.get('next', '')
+#	data = request.POST[theme]
+
+		print("data:", data)
+
+	# set session data
+#	request.session['theme'] = "bootstrap"
+#	referer = "/"
+#	if "HTTP_REFERER" in request.META:
+#		referer = request.META["HTTP_REFERER"]
+#		resp = HttpResponseRedirect(referer)
+#		resp.set_cookie(theme, 0)
+	else:
+		data = request.POST.get('next')
+		theme = request.session.get('next')
+#	theme = request.session['theme']
+		print("theme:", data)
+
+	# delete session data
+#	del request.session['user_id']
+
+
+def set_language_from_url(request, user_language):
+	schema_name = connection.schema_name
+	patients = UserProfile.objects.filter(username=request.user.username)
+	logos = Client.objects.filter(schema_name=schema_name)
+	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+	page_title = _('Home')
+
+	translation.activate(user_language)
+	request.session[translation.LANGUAGE_SESSION_KEY] = user_language
+	path = request.META.get('HTTP_REFERER', '')
+
+	context = {
+		'patients': patients,
+		'logos': logos,
+		'titles': titles,
+		'page_title': page_title,
+		'path': path,
+	}
+
 	return render(request, 'index.html', context)
 
 
@@ -198,7 +260,6 @@ def change_profile(request):
 	page_title = _('Change Profile')
 	icnumbers = UserProfile.objects.filter(full_name=request.user)
 	initial_icnumber = UserProfile.objects.filter(full_name=request.user).values_list('ic_number', flat=True).first()
-
 	aform = ChangeAdmission(prefix='admission', initial={'icnumbers': "icnumbers"})
 	form = ChangeUserProfile(prefix='profile')
 

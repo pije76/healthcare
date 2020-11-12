@@ -1,4 +1,4 @@
-{% extends "bootstrap_ui/bootstrap4-skeleton.html" %}
+{% extends 'base.html' %}
 
 {% load i18n avatar_tags %}
 {% load account %}
@@ -6,8 +6,8 @@
 
 {% block head_title %}{% trans "Account" %}{% endblock %}
 
-{% block body-content %}
-<div class="container">
+{% block content %}
+<div class="container-fluid">
 
 	{% block navmenu %}
 		{% include "navmenu.html" %}

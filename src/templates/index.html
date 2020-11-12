@@ -1,14 +1,14 @@
-{% extends "bootstrap_ui/bootstrap4-skeleton.html" %}
+{% extends 'base.html' %}
 
 {% load account %}
 {% load static %}
 {% load i18n %}
 
-{% block head-css %}
+{% block style %}
     <link href="{% static 'css/account.css' %}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
-{% block body-content %}
+{% block content %}
 
 <div class="container-fluid">
     <div class="col-12">

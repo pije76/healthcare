@@ -13,6 +13,8 @@ from accounts.views import *
 
 urlpatterns = [
 	path('', index, name='index'),
+	re_path(r'^set_theme/$', set_theme, name='set_theme'),
+#	path('set_theme/', set_theme, name='set_theme'),
 #	path('', RedirectView.as_view(url='accounts/login/', permanent=False), name='index'),
 	path('patient/', include('patient.urls')),
 #	path('template/', include('patienttemplate.urls')),
@@ -24,10 +26,9 @@ urlpatterns = [
 	path(_('account/'), include('accounts.urls')),
 	re_path(r'^selectable/', include('selectable.urls')),
 	path('summernote/', include('django_summernote.urls')),
-	re_path(r"^bootstrap_ui/", include("bootstrap_ui.urls")),
 #	path('load_ic_number', load_ic_number, name='load_ic_number'),
 #	path('load_relationship', load_relationship, name='load_relationship'),
-
+#	re_path(r'^lang/(?P<user_language>\w+)/$', set_language_from_url, name='set_language_from_url'),
 	re_path(r'(?P<user_language>\w+)/$', set_language_from_url, name="set_language_from_url")
 ]
 

@@ -1,22 +1,22 @@
-{% extends "bootstrap_ui/bootstrap4-skeleton.html" %}
+{% extends 'base.html' %}
 
 {% load static %}
 {% load i18n %}
 {% load crispy_forms_tags %}
 
-{% block head-javascript %}
+{% block javascript %}
 	<script src="{% static 'js/patient/patient_list.js' %}"></script>
 {% endblock %}
 
-{% block head-title %}
+{% block headtitle %}
 {% trans "Data" %} | {{ titles.title }}
 {% endblock %}
 
-{% block head-css %}
+{% block style %}
 	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
-{% block body-content %}
+{% block content %}
 
 <div class="messageform">
 	{% include 'messages.html' %}

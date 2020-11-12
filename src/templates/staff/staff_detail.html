@@ -1,24 +1,24 @@
-{% extends "bootstrap_ui/bootstrap4-skeleton.html" %}
+{% extends 'base.html' %}
 
 {% load static %}
 {% load i18n %}
 {% load crispy_forms_tags %}
 
-{% block head-javascript %}
+{% block javascript %}
 	<script src="{% static 'js/staff/staff_list.js' %}"></script>
 {% endblock %}
 
-{% block head-css %}
+{% block style %}
 	<link href="{% static 'css/staff/staff.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
-{% block head-title %}
+{% block headtitle %}
 {% for item in staffs %}
 	{{ item.full_name }} | {{ titles.title }}
 {% endfor %}
 {% endblock %}
 
-{% block body-content %}
+{% block content %}
 
 <div class="row border rounded staff_detail">
 	{% if staffs %}

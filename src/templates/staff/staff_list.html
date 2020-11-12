@@ -1,17 +1,17 @@
-{% extends "bootstrap_ui/bootstrap4-skeleton.html" %}
+{% extends 'base.html' %}
 
 {% load static %}
 {% load i18n %}
 
-{% block head-javascript %}
+{% block javascript %}
 	<script src="{% static 'js/staff/staff_list.js' %}"></script>
 {% endblock %}
 
-{% block head-css %}
+{% block style %}
 	<link href="{% static 'css/staff/staff.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
-{% block body-content %}
+{% block content %}
 
 <div class="container-fluid">
 

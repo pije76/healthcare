@@ -2,10 +2,10 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 
-{% block head-title %}
+{% block headtitle %}
 {% endblock %}
 
-{% block head-css %}
+{% block style %}
 	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
 	<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
 	<link href="{% static 'css/navmenu.css' %}" rel="stylesheet" type="text/css" />
@@ -23,7 +23,7 @@
 {% block extrahead %}
 {% endblock %}
 
-{% block body-content %}
+{% block content %}
 
 <div class="container-fluid">
 
@@ -92,12 +92,12 @@
 
 {% endblock %}
 
-{% block head-javascript %}
+{% block javascript %}
     <script src="{% static 'selectable/js/jquery.dj.selectable.js' %}"></script>
     <script src="{% static 'js/staff/overtime_claim.js' %}"></script>
 {% endblock %}
 
-{% block body-javascript %}
+{% block jscript %}
 <script type='text/javascript'>
 $(document).ready(function()
 {
