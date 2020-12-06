@@ -26,7 +26,7 @@ class MedicationAdministrationRecord_ModelForm(forms.ModelForm):
 			'allergy_drug',
 			'allergy_food',
 			'allergy_others',
-			'medication_template',
+#			'medication_template',
 #			'medication_date',
 #			'medication_time',
 #			'medication_drug_name',
@@ -42,11 +42,16 @@ class MedicationAdministrationRecord_ModelForm(forms.ModelForm):
 		widgets = {
 			'id': forms.HiddenInput(),
 			'patient': forms.HiddenInput(),
-#			'medication_date': forms.HiddenInput(),
+			'medication_template': forms.HiddenInput(),
 		}
 		labels = {
 			'medication_done': '',
 		}
+
+#	def __init__(self, user, *args, **kwargs):
+#		super().__init__(*args, **kwargs)
+#		self.fields['medication_date'].queryset = MedicationAdministrationRecord.objects.filter(patient=user)
+#		self.request = request
 
 #	patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 #	allergy = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
@@ -56,7 +61,7 @@ class MedicationAdministrationRecord_ModelForm(forms.ModelForm):
 #	medication = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 #	medication = forms.ModelChoiceField(queryset=MedicationAdministrationRecordTemplate.objects.all(), required=False, label="", widget=forms.Select(attrs={'class': "form-control"}))
 
-	medication_template = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+#	medication_template = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	medication_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
 	medication_time = forms.TimeField(required=False, label="", input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
 #    medication_drug_name = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))

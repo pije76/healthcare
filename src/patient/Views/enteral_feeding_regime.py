@@ -34,6 +34,7 @@ def enteral_feeding_regime_list(request, username):
 	patientid = UserProfile.objects.get(username=username).id
 	enteralfeedingregime_data = EnteralFeedingRegime.objects.filter(patient=patientid).exclude(type_of_milk__isnull=True).exclude(amount__exact='0')
 	profiles = UserProfile.objects.filter(pk=patientid)
+	themes = request.session.get('theme')
 
 	get_warm_water_before = 0
 	get_warm_water_after = 0
@@ -83,6 +84,7 @@ def enteral_feeding_regime_list(request, username):
 			'warm_water_after': get_warm_water_after,
 			'get_warm_water_total': get_warm_water_total,
 			'form': form,
+			"themes": themes,
 		}
 
 		return render(request, 'patient/enteral_feeding_regime/enteral_feeding_regime_data.html', context1)
@@ -128,6 +130,7 @@ def enteral_feeding_regime_create(request, username):
 	patients = get_object_or_404(UserProfile, username=username)
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	themes = request.session.get('theme')
 #	EnteralFeedingRegime_FormSet = formset_factory(EnteralFeedingRegime_Form, extra=24, formset=TestBaseFormSet)
 
 	initial = {
@@ -200,6 +203,7 @@ def enteral_feeding_regime_create(request, username):
 		'icnumbers': icnumbers,
 		'form': form,
 		'formset': formset,
+		"themes": themes,
 	}
 
 	return render(request, 'patient/enteral_feeding_regime/enteral_feeding_regime_form.html', context)

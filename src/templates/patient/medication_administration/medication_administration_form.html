@@ -14,7 +14,6 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="{% static 'js/patient/medication_administration.js' %}" type="text/javascript"></script>
 	<script src="{% static 'js/jquery.formset.js' %}"></script>
 {% endblock %}
 
@@ -40,19 +39,19 @@
 	{{ formset.management_form }}
 
 		<div class="row">
-			<div class="col-5 border text-center header_form">
+			<div class="col-4 border text-center header_form">
 				<span id="name_title">{% trans "Date" %}:</span>
 			</div>
-			<div class="col-7 border text-center header_form">
+			<div class="col-8 border text-center header_form">
 				<span id="name_title">{% trans "Allergy" %}:</span>
 			</div>
 			<div class="w-100"></div>
-			<div class="col-5 border header_form_detail">
+			<div class="col-4 border header_form_detail">
 				<span id="name_title">
 					{{ form.medication_date|as_crispy_field }}
 				</span>
 			</div>
-			<div class="col-7 border header_form_detail header_form_inline form-inline">
+			<div class="col-8 border header_form_detail header_form_inline form-inline">
 				<span id="name_title">
 					{{ allergy_form }}
 				</span>
@@ -78,7 +77,24 @@
 					</tr>
 				</thead>
 				<tbody>
-					{{ formset }}
+					{% for item in formset.forms %}
+					{{ item.id|as_crispy_field }}
+					{{ item.patient|as_crispy_field }}
+					<p style="display:none;">{{ item.medication_template|as_crispy_field }}</p>
+					<tr id="{{ item.prefix }}-row">
+						<td>{{ item.medication_time|as_crispy_field }}</td>
+						<td>{{ item.medication_drug_name|as_crispy_field }}</td>
+						<td>{{ item.medication_dosage|as_crispy_field }}</td>
+						<td>{{ item.medication_unit|as_crispy_field }}</td>
+						<td>{{ item.medication_tablet_capsule|as_crispy_field }}</td>
+						<td>{{ item.medication_frequency|as_crispy_field }}</td>
+						<td>{{ item.medication_source|as_crispy_field }}</td>
+						<td>{{ item.medication_route|as_crispy_field }}</td>
+						<td>{{ item.medication_status|as_crispy_field }}</td>
+						<td>{{ item.medication_done|as_crispy_field }}</td>
+						<td></td>
+					</tr>
+					{% endfor %}
 				</tbody>
 			</table>
 

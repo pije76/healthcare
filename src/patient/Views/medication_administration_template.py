@@ -22,6 +22,7 @@ def medication_administration_template_list(request, username):
 	patientid = UserProfile.objects.get(username=username).id
 	patients = MedicationAdministrationRecordTemplate.objects.filter(patient=patientid)
 	profiles = UserProfile.objects.filter(pk=patientid)
+	themes = request.session.get('theme')
 
 	context = {
 		'logos': logos,
@@ -29,6 +30,7 @@ def medication_administration_template_list(request, username):
 		'page_title': page_title,
 		'patients': patients,
 		'profiles': profiles,
+		"themes": themes,
 	}
 
 	return render(request, 'patient/medication_administration_template/medication_administration_template_data.html', context)
@@ -47,6 +49,7 @@ def medication_administration_template_create(request, username):
 	mart_profiles = MedicationAdministrationRecordTemplate.objects.filter(patient=patientid)
 	templates = MedicationAdministrationRecordTemplate.objects.filter(patient=patientid).values_list('medication_time')
 	patients_templates = MedicationAdministrationRecordTemplate.objects.filter(patient=patientid).filter(medication_time__in=['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']).order_by("medication_time")
+	themes = request.session.get('theme')
 
 	initial_mart_formset = [{
 		'id': item.id,
@@ -85,6 +88,7 @@ def medication_administration_template_create(request, username):
 		'profiles': profiles,
 		'icnumbers': icnumbers,
 		'formset': formset,
+		"themes": themes,
 	}
 
 	return render(request, 'patient/medication_administration_template/medication_administration_template_form.html', context)

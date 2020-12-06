@@ -23,7 +23,7 @@
 		{% if user.is_superuser %}
 		<div class="col-2 addstaff">
 			<form method="post">
-				<a href="{% url 'accounts:staff_signup' %}" class="btn btn-outline-primary pull-right btn_admin" role="button"><i class="fas fa-user-nurse"></i> Add Staff</a>
+				<a href="{% url 'accounts:staff_signup' %}" class="btn btn-outline-primary pull-right btn_admin" role="button"><i class="fas fa-user-nurse"></i> {% trans "Add Staff" %}</a>
 			</form>
 		</div>
 		{% endif %}

@@ -28,6 +28,7 @@ def discharge_checklist_list(request, username):
 	profiles = UserProfile.objects.filter(pk=patientid)
 	get_lastdate = DischargeCheckList.objects.filter(patient=patientid).order_by('-date_time').values_list('date_time', flat=True).first()
 	patients = DischargeCheckList.objects.filter(patient=patientid, date_time=get_lastdate).filter(medication_reconcilation_patient__isnull=False)
+	themes = request.session.get('theme')
 
 	context = {
 		'logos': logos,
@@ -35,6 +36,7 @@ def discharge_checklist_list(request, username):
 		'page_title': page_title,
 		'patients': patients,
 		'profiles': profiles,
+		"themes": themes,
 	}
 
 	return render(request, 'patient/discharge_checklist/discharge_checklist_data.html', context)
@@ -49,6 +51,7 @@ def discharge_checklist_create(request, username):
 	patients = get_object_or_404(UserProfile, username=username)
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	themes = request.session.get('theme')
 
 	initial = {
 		'patient': patients,
@@ -137,6 +140,7 @@ def discharge_checklist_create(request, username):
 		'icnumbers': icnumbers,
 		'form': form,
 		'formset': formset,
+		"themes": themes,
 	}
 
 	return render(request, 'patient/discharge_checklist/discharge_checklist_form.html', context)
@@ -153,6 +157,7 @@ def discharge_checklist_edit(request, username, pk):
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 	admissions = DischargeCheckList.objects.get(patient_id=patientid, id=pk)
+	themes = request.session.get('theme')
 
 	initial = {
 		'id': pk,
@@ -209,6 +214,7 @@ def discharge_checklist_edit(request, username, pk):
 		'profiles': profiles,
 		'icnumbers': icnumbers,
 		'formset': formset,
+		"themes": themes,
 	}
 
 	return render(request, 'patient/discharge_checklist/partial_edit.html', context)

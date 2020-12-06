@@ -185,7 +185,7 @@
 			<br />
 			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 			{% for item in profiles %}
-			<a class="btn btn-outline-primary kirim" href="{% url 'patient:application_home_leave_pdf' item.username %}"><i style="font-size:24px;" class="fa fa fa-print fa-2x"></i> Print</a>
+			<a class="btn btn-outline-primary kirim" href="{% url 'patient:application_home_leave_pdf' item.username %}"><i style="font-size:20px;" class="fa fa fa-print fa-2x"></i> Print</a>
 			<a class="btn btn-danger" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
 			{% endfor %}
 		</form>
@@ -201,8 +201,12 @@
 
 {% block jscript %}
 <script type="text/javascript">
-//$(document).ready(function()
-//{
+$(document).ready(function()
+{
+	$('.kirim').click(function()
+	{
+		name = $('#id_family_relationship').val();
+		console.log(name);
 //	function newParameters(query)
 //	{
 //		query.full_name = $('#id_patient').val();
@@ -212,117 +216,116 @@
 
 //	$('#id_patient').djselectable('option', 'minLength', 3);
 //	$('#id_family_name').djselectable('option', 'minLength', 3);
-//});
-</script>
-
-<script type="text/javascript">
-$("#id_patient").change(function()
-{
-//	var url = $("#dataForm").attr("data-url");
-
-	var fullnameId = $(this).val();
-//	console.log("url: ", url);
-//	console.log("fullnameId: ", fullnameId);
-	$.ajax(
-	{
-		url:'{% url "patient:load_ic_number" %}',
-		data:
-		{
-			'full_name': fullnameId,
-		},
-
-		success: function(data)
-		{
-			$("#id_ic_number").val(data);
-		},
 	});
-});
 
-$("#id_family_name").change(function()
-{
-	var familynameId = $(this).val();
-//	console.log("url: ", url);
-//	console.log("familynameId: ", familynameId);
-	$.ajax(
+	$("#id_patient").change(function()
 	{
-		url:'{% url "patient:load_ic_number" %}',
-		data:
-		{
-			'ec_name': familynameId,
-//			'ec_relationship': familynameId.ec_relationship,
-		},
+	//	var url = $("#dataForm").attr("data-url");
 
-		success: function(data)
+		var fullnameId = $(this).val();
+	//	console.log("url: ", url);
+	//	console.log("fullnameId: ", fullnameId);
+		$.ajax(
 		{
-			$("#id_family_ic_number").val(data);
-			$("#id_signature_ic_number").val(data);
-		},
+			url:'{% url "patient:load_ic_number" %}',
+			data:
+			{
+				'full_name': fullnameId,
+			},
+
+			success: function(data)
+			{
+				$("#id_ic_number").val(data);
+			},
+		});
 	});
-});
 
-
-$("#id_family_name").change(function()
-{
-	var familynameId = $(this).val();
-	$.ajax(
+	$("#id_family_name").change(function()
 	{
-		url:'{% url "patient:load_relationship" %}',
-		data:
+		var familynameId = $(this).val();
+	//	console.log("url: ", url);
+	//	console.log("familynameId: ", familynameId);
+		$.ajax(
 		{
-			'ec_name': familynameId,
-//			'ec_relationship': familynameId,
-		},
+			url:'{% url "patient:load_ic_number" %}',
+			data:
+			{
+				'ec_name': familynameId,
+	//			'ec_relationship': familynameId.ec_relationship,
+			},
 
-		success: function(data)
-		{
-			$("#id_family_relationship").val(data);
-			$("#id_signature_relationship").val(data);
-//			$("#id_patient").val(data);
-		},
+			success: function(data)
+			{
+				$("#id_family_ic_number").val(data);
+				$("#id_signature_ic_number").val(data);
+			},
+		});
 	});
-});
 
-$("#id_family_name").change(function()
-{
-	var familynameId = $(this).val();
-	$.ajax(
+
+	$("#id_family_name").change(function()
 	{
-		url:'{% url "patient:load_signature" %}',
-		data:
+		var familynameId = $(this).val();
+		$.ajax(
 		{
-			'ec_name': familynameId,
-//			'ec_relationship': familynameId,
-		},
+			url:'{% url "patient:load_relationship" %}',
+			data:
+			{
+				'ec_name': familynameId,
+	//			'ec_relationship': familynameId,
+			},
 
-		success: function(data)
-		{
-			$("#id_signature_name").val(data);
-			$("#id_witnessed_name").val(data);
-//			$("#id_patient").val(data);
-		},
+			success: function(data)
+			{
+				$("#id_family_relationship").val(data);
+				$("#id_signature_relationship").val(data);
+	//			$("#id_patient").val(data);
+			},
+		});
 	});
-});
 
-
-$("#id_family_name").change(function()
-{
-	var familynameId = $(this).val();
-	$.ajax(
+	$("#id_family_name").change(function()
 	{
-		url:'{% url "patient:load_phone" %}',
-		data:
+		var familynameId = $(this).val();
+		$.ajax(
 		{
-			'ec_name': familynameId,
-//			'ec_relationship': familynameId,
-		},
+			url:'{% url "patient:load_signature" %}',
+			data:
+			{
+				'ec_name': familynameId,
+	//			'ec_relationship': familynameId,
+			},
 
-		success: function(data)
-		{
-			$("#id_family_phone").val(data);
-//			$("#id_patient").val(data);
-		},
+			success: function(data)
+			{
+				$("#id_signature_name").val(data);
+				$("#id_witnessed_name").val(data);
+	//			$("#id_patient").val(data);
+			},
+		});
 	});
-});
 
+
+	$("#id_family_name").change(function()
+	{
+		var familynameId = $(this).val();
+		$.ajax(
+		{
+			url:'{% url "patient:load_phone" %}',
+			data:
+			{
+				'ec_name': familynameId,
+	//			'ec_relationship': familynameId,
+			},
+
+			success: function(data)
+			{
+				$("#id_family_phone").val(data);
+	//			$("#id_patient").val(data);
+			},
+		});
+	});
+
+});
 </script>
 {% endblock %}

@@ -33,7 +33,7 @@ class Urinary_ModelForm(BSModalModelForm):
 	urinary_catheter_type = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=URINARY_CATHETER_TYPE_CHOICES)
 	urinary_catheter_due_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
 	urinary_catheter_inserted_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'readonly': 'readonly'}))
-	urinary_catheter_remove_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
+	urinary_catheter_remove_date = forms.DateField(required=False, label="", input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
 	urinary_catheter_remove_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'readonly': 'readonly'}))
 
 	def __init__(self, *args, **kwargs):
@@ -50,7 +50,7 @@ class Urinary_Form(BSModalForm):
 	urinary_catheter_type = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=URINARY_CATHETER_TYPE_CHOICES)
 	urinary_catheter_due_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
 	urinary_catheter_inserted_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'readonly': 'readonly'}))
-	urinary_catheter_remove_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
+	urinary_catheter_remove_date = forms.DateField(required=False, label="", input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
 	urinary_catheter_remove_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'readonly': 'readonly'}))
 
 	def __init__(self, *args, **kwargs):

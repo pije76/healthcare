@@ -98,7 +98,7 @@
 								<a class="btn btn-primary"href="{% url 'patient:maintenance_create' item.username %}">{% trans "Maintenance Form" %}</a>
 							</div>
                             <div class="link_detail">
-                                <a class="btn btn-primary"href="{% url 'patient:medication_administration_create' item.username %}">{% trans "Medication Administration Record" %}</a>
+                                <a class="btn btn-danger"href="{% url 'patient:medication_administration_create' item.username %}">{% trans "Medication Administration Record" %}</a>
                             </div>
                             <div class="link_detail">
                                 <a class="btn btn-primary"href="{% url 'patient:medication_administration_template_create' item.username %}">{% trans "Medication Administration Record (Template)" %}</a>
@@ -125,7 +125,7 @@
 								<a class="btn btn-primary"href="{% url 'patient:physiotherapy_general_assessment_create' item.username %}">{% trans "Physiotherapy - General Assessment Form" %}</a>
 							</div>
 							<div class="link_detail">
-								<a class="btn btn-primary"href="{% url 'patient:stool_create' item.username %}">{% trans "Stool Chart" %}</a>
+								<a class="btn btn-danger"href="{% url 'patient:stool_create' item.username %}">{% trans "Stool Chart" %}</a>
 							</div>
 							<div class="link_detail">
 								<a class="btn btn-primary"href="{% url 'patient:urinary_create' item.username %}">{% trans "Urinary Catheter Chart" %}</a>
@@ -186,7 +186,7 @@
 							<a class="btn btn-outline-primary"href="{% url 'patient:maintenance_list' item.username %}">{% trans "Maintenance Form" %} ({{ maintenance|length }})</a>
 						</div>
 						<div class="link_detail">
-							<a class="btn btn-outline-primary"href="{% url 'patient:medication_administration_list' item.username %}">{% trans "Medication Administration Record" %} ({{ medicationadministrationrecord|length }})</a>
+							<a class="btn btn-outline-danger"href="{% url 'patient:medication_administration_list' item.username %}">{% trans "Medication Administration Record" %} ({{ medicationadministrationrecord|length }})</a>
 						</div>
 						<div class="link_detail">
 							<a class="btn btn-outline-primary"href="{% url 'patient:medication_administration_template_list' item.username %}">{% trans "Medication Administration Record (Template)" %} ({{ medicationtemplate|length }})</a>

@@ -449,14 +449,15 @@ class MedicationAdministrationRecordTemplate(models.Model):
 	class Meta:
 		verbose_name = _('Medication Administration Record (Template)')
 		verbose_name_plural = _("Medication Administration Record (Template)")
+#		abstract = True
 
 
-class MedicationAdministrationRecord(models.Model):
-	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
+class MedicationAdministrationRecord(MedicationAdministrationRecordTemplate):
+#	patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
 	allergy_drug = models.CharField(max_length=255, blank=True, null=True)
 	allergy_food = models.CharField(max_length=255, blank=True, null=True)
 	allergy_others = models.CharField(max_length=255, blank=True, null=True)
-	medication_template = models.ForeignKey(MedicationAdministrationRecordTemplate, on_delete=models.CASCADE, blank=False, null=True)
+#	medication_template = models.ForeignKey(MedicationAdministrationRecordTemplate, on_delete=models.DO_NOTHING, blank=False, null=True)
 #	medication_date = models.DateField(_('Date'), blank=True, null=True)
 #	medication_time = models.TimeField(_('Time'), blank=True, null=True)
 #	medication_drug_name = models.ForeignKey(Medicine, on_delete=models.CASCADE, blank=True, null=True)

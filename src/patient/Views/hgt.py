@@ -30,6 +30,7 @@ def hgt_list(request, username):
 	patients = HGT.objects.filter(patient=patientid)
 	profiles = UserProfile.objects.filter(pk=patientid)
 	username = UserProfile.objects.get(username=username).username
+	themes = request.session.get('theme')
 
 	context = {
 		'logos': logos,
@@ -38,6 +39,7 @@ def hgt_list(request, username):
 		'patients': patients,
 		'profiles': profiles,
 		'username': username,
+		"themes": themes,
 	}
 
 	return render(request, 'patient/hgt/hgt_data.html', context)
@@ -52,6 +54,7 @@ def hgt_create(request, username):
 	patients = get_object_or_404(UserProfile, username=username)
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	themes = request.session.get('theme')
 
 	initial = [{
 		'patient': item.full_name,
@@ -94,6 +97,7 @@ def hgt_create(request, username):
 		'profiles': profiles,
 		'icnumbers': icnumbers,
 		'formset': formset,
+		"themes": themes,
 	}
 
 	return render(request, 'patient/hgt/hgt_form.html', context)

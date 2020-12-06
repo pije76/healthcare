@@ -1,19 +1,22 @@
 from django.conf import settings
-from django.conf.urls.i18n import i18n_patterns
+from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.http import HttpResponse
 from django.urls import include, path, re_path
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import RedirectView
 from django.views.i18n import set_language
-from django.http import HttpResponse
-from django.utils.translation import gettext_lazy as _
+
 
 from patient.views import *
 from accounts.views import *
 
 urlpatterns = [
 	path('', index, name='index'),
-	re_path(r'^set_theme/$', set_theme, name='set_theme'),
+	re_path(r'^i18n/', include('django.conf.urls.i18n')),
+#	re_path(r'^set_theme/$', set_theme, name='set_theme'),
+	re_path(r'set_theme/(?P<theme>\w+)/$', set_theme, name="set_theme"),
 #	path('set_theme/', set_theme, name='set_theme'),
 #	path('', RedirectView.as_view(url='accounts/login/', permanent=False), name='index'),
 	path('patient/', include('patient.urls')),

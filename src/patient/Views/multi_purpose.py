@@ -22,6 +22,7 @@ def multi_purpose_list(request, username):
     patientid = UserProfile.objects.get(username=username).id
     patients = Multipurpose.objects.filter(patient=patientid)
     profiles = UserProfile.objects.filter(pk=patientid)
+    themes = request.session.get('theme')
 
     context = {
         'logos': logos,
@@ -29,6 +30,7 @@ def multi_purpose_list(request, username):
         'page_title': page_title,
         'patients': patients,
         'profiles': profiles,
+        "themes": themes,
     }
 
     return render(request, 'patient/multi_purpose/multi_purpose_chart_data.html', context)
@@ -43,6 +45,7 @@ def multi_purpose_create(request, username):
     patients = get_object_or_404(UserProfile, username=username)
     profiles = UserProfile.objects.filter(username=username)
     icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+    themes = request.session.get('theme')
 
     initial = [{
         'patient': item.full_name,
@@ -82,6 +85,7 @@ def multi_purpose_create(request, username):
         'profiles': profiles,
         'icnumbers': icnumbers,
         'formset': formset,
+        "themes": themes,
     }
 
     return render(request, 'patient/multi_purpose/multi_purpose_chart_form.html', context)

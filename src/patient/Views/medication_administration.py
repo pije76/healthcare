@@ -42,6 +42,7 @@ def medication_administration_list(request, username):
 	allergy_drug_data = Allergy.objects.filter(patient=patientid).values_list('allergy_drug', flat=True).first()
 	allergy_food_data = Allergy.objects.filter(patient=patientid).values_list('allergy_food', flat=True).first()
 	allergy_others_data = Allergy.objects.filter(patient=patientid).values_list('allergy_others', flat=True).first()
+	themes = request.session.get('theme')
 
 #	if request.method == 'GET':
 #	form = MedicationAdministrationRecord_Form()
@@ -51,7 +52,7 @@ def medication_administration_list(request, username):
 	}
 
 	if request.method == 'POST':
-		form = MedicationAdministrationRecord_Form(request.POST or None)
+		form = MedicationAdministrationRecord_ModelForm(request.POST or None)
 
 		if form.is_valid():
 #			profile = IntakeOutput()
@@ -64,7 +65,7 @@ def medication_administration_list(request, username):
 		else:
 			messages.warning(request, form.errors)
 	else:
-		form = MedicationAdministrationRecord_Form(initial=initial_list)
+		form = MedicationAdministrationRecord_ModelForm(initial=initial_list)
 
 	context = {
 		'logos': logos,
@@ -82,6 +83,7 @@ def medication_administration_list(request, username):
 		'medicine_data': medicine_data,
 		'medicine_stat': medicine_stat,
 		'form': form,
+		"themes": themes,
 	}
 
 	return render(request, 'patient/medication_administration/medication_administration_data.html', context)
@@ -97,10 +99,12 @@ def medication_administration_create(request, username):
 	patientid = UserProfile.objects.get(username=username).id
 	icnumbers = UserProfile.objects.get(username=username).ic_number
 	profiles = UserProfile.objects.filter(username=username)
+	usernameid = UserProfile.objects.filter(username=username).values_list('id', flat=True).first()
 	patients = get_object_or_404(UserProfile, username=username)
 	allergy_drug = Allergy.objects.filter(patient=patientid).values_list('allergy_drug', flat=True).first()
 	allergy_food = Allergy.objects.filter(patient=patientid).values_list('allergy_food', flat=True).first()
 	allergy_others = Allergy.objects.filter(patient=patientid).values_list('allergy_others', flat=True).first()
+	themes = request.session.get('theme')
 
 	patients_templates = MedicationAdministrationRecord.objects.filter(patient=patientid).filter(medication_template__medication_time__in=['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']).order_by("medication_template__medication_time")
 	mar_profiles = MedicationAdministrationRecord.objects.filter(patient=patientid)
@@ -130,6 +134,7 @@ def medication_administration_create(request, username):
 	if request.method == 'POST':
 
 		form = MedicationAdministrationRecord_ModelForm(request.POST or None)
+#		form = MedicationAdministrationRecord_ModelForm(request.POST or None, instance=mar_profiles)
 		formset = MedicationAdministrationRecord_ModelFormSet(request.POST or None)
 		allergy_form = Allergy_Model_Form(request.POST or None)
 
@@ -183,7 +188,9 @@ def medication_administration_create(request, username):
 			messages.warning(request, formset.errors)
 			messages.warning(request, allergy_form.errors)
 	else:
-		form = MedicationAdministrationRecord_ModelForm(initial=initial_form)
+		form = MedicationAdministrationRecord_ModelForm(initial=initial_mar_formset)
+#		form = MedicationAdministrationRecord_ModelForm(request=request.user, initial=initial_form)
+#		form = MedicationAdministrationRecord_ModelForm(user=profiles)
 #		form = MedicationAdministrationRecord_ModelFormSet(initial=[{'medication_date': get_today} for medication_date in queryset])
 #		formset = MedicationAdministrationRecord_ModelFormSet(initial=[{'patient': x} for x in profiles], queryset=patients_templates)
 #		formset = MedicationAdministrationRecord_ModelFormSet(initial=[{'patient': x} for x in profiles])
@@ -207,6 +214,7 @@ def medication_administration_create(request, username):
 		'form': form,
 		'formset': formset,
 		'allergy_form': allergy_form,
+		"themes": themes,
 	}
 
 	return render(request, 'patient/medication_administration/medication_administration_form.html', context)

@@ -55,19 +55,19 @@
 	</div>
 
 	<div class="row data_detail">
-		<div class="col-6 border text-center header_form" style="border-radius: .25rem 0px 0px 0px;">
+		<div class="col-4 border text-center header_form" style="border-radius: .25rem 0px 0px 0px;">
 			<span id="name_title">{% trans "Date" %}:</span>
 		</div>
-		<div class="col-6 border text-center header_form" style="border-radius: 0px .25rem 0px 0px;">
+		<div class="col-8 border text-center header_form" style="border-radius: 0px .25rem 0px 0px;">
 			<span id="name_title">{% trans "Allergy" %}:</span>
 		</div>
 		<div class="w-100"></div>
-		<div class="col-6 border header_form_detail" style="border-radius: 0px 0px 0px .25rem;">
+		<div class="col-4 border header_form_detail" style="border-radius: 0px 0px 0px .25rem;">
 			<span id="name_title">
 				{{ form.medication_date|as_crispy_field }}
 			</span>
 		</div>
-		<div class="col-6 border header_form_detail header_form_inline" style="border-radius: 0px 0px .25rem 0px;">
+		<div class="col-8 border header_form_detail header_form_inline" style="border-radius: 0px 0px .25rem 0px;">
 			<span id="name_title">
 				{{ allergy_drug_data }},
 				{{ allergy_food_data }},

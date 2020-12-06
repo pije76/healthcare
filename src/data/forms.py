@@ -30,6 +30,7 @@ import datetime
 
 get_today = datetime.date.today()
 
+
 class Medicine_ModelForm(BSModalModelForm):
 	class Meta:
 		model = Medicine
@@ -98,9 +99,11 @@ class Allergy_Model_Form(forms.ModelForm):
 		]
 		widgets = {
 			'patient': forms.HiddenInput(),
+			'medication_date': forms.HiddenInput(),
 		}
 
-	medication_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control", 'style': "display:none;"}))
+#	medication_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control", 'style': "display:none;"}))
+	medication_date = forms.CharField(required=False, label="", widget=forms.HiddenInput(attrs={'class': "form-control"}))
 	allergy_drug = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	allergy_food = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	allergy_others = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))

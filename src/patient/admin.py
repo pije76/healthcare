@@ -18,6 +18,8 @@ from accounts.models import UserProfile
 from .models import *
 from .forms import *
 
+from .Forms.medication_administration import *
+from .Forms.medication_administration_template import *
 
 #class PatientDataAdmin(admin.StackedInline):
 #	model = UserProfile
@@ -300,7 +302,7 @@ class MedicationAdministrationRecordAdmin(admin.ModelAdmin):
 		'allergy_drug',
 		'allergy_food',
 		'allergy_others',
-		'medication_template',
+#		'medication_template',
 #		'medication_date',
 #		'medication_time',
 #		'medication_drug_name',
@@ -315,6 +317,7 @@ class MedicationAdministrationRecordAdmin(admin.ModelAdmin):
 	]
 	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
+#	form = MedicationAdministrationRecord_ModelForm
 
 
 class MedicationAdministrationRecordTemplateAdmin(admin.ModelAdmin):
@@ -332,6 +335,7 @@ class MedicationAdministrationRecordTemplateAdmin(admin.ModelAdmin):
 	]
 	autocomplete_fields = ['patient', ]
 	ModelAdmin.ordering = ('id',)
+#	form = MedicationAdministrationRecordTemplate_ModelForm
 
 
 class MedicationRecordAdmin(admin.ModelAdmin):
@@ -504,7 +508,8 @@ admin.site.register(IntakeOutput, IntakeOutputAdmin)
 admin.site.register(InvestigationReport, InvestigationReportAdmin)
 admin.site.register(Maintenance, MaintenanceAdmin)
 admin.site.register(MedicationAdministrationRecord, MedicationAdministrationRecordAdmin)
-admin.site.register(MedicationAdministrationRecordTemplate, MedicationAdministrationRecordTemplateAdmin)
+#admin.site.register(MedicationAdministrationRecordTemplate, MedicationAdministrationRecordTemplateAdmin)
+#admin.site.register(MedicationAdministrationRecordTemplate)
 admin.site.register(MedicationRecord, MedicationRecordAdmin)
 admin.site.register(MiscellaneousChargesSlip, MiscellaneousChargesSlipAdmin)
 admin.site.register(Multipurpose, MultipurposeAdmin)

@@ -73,11 +73,13 @@ TENANT_APPS = (
     'staff',
     'data',
 
+#    'polymorphic',
     'post_office',
     'phonenumber_field',
 
     'bootstrap_modal_forms',
-#    'bootstrap4',
+    'bootstrap4',
+    'weasyprint',
     'bootstrap_themes',
 #    'pure_pagination',
     'crispy_forms',
@@ -180,7 +182,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Jakarta'
 
 USE_I18N = True
 
@@ -205,6 +207,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Post office email
 EMAIL_BACKEND = 'post_office.EmailBackend'
 
+#SOLID_I18N_USE_REDIRECTS = False
 
 # Override settings here
 try:

@@ -1,7 +1,7 @@
 {% for item in patients %}
 {% if user.is_superuser %}
 <tr>
-    <td>{{ item.date_time|date:"d/m/Y" }}</td>
+    <td>{{ item.date_time|date:"d-m-Y" }}</td>
     <td>{{ item.date_time|date:"H:i" }}</td>
     <td>{{ item.hospital_clinic_center }}</td>
     <td>{{ item.department }}</td>
@@ -20,7 +20,7 @@
 {% elif user.is_staff or user.is_patient %}
 
 <tr>
-    <td>{{ item.date_time|date:"d/m/Y" }}</td>
+    <td>{{ item.date_time|date:"d-m-Y" }}</td>
     <td>{{ item.date_time|date:"H:i" }}</td>
     <td>{{ item.hospital_clinic_center }}</td>
     <td>{{ item.department }}</td>

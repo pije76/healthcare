@@ -33,6 +33,7 @@ def intake_output_list(request, username):
 	time_range_night = IntakeOutput.objects.filter(patient=patientid, time__range=[start_time_night, end_time_night])
 	get_lastdate = IntakeOutput.objects.filter(patient=patientid).order_by('-date').exclude(time__isnull=True).values_list('date', flat=True).first()
 	intakeoutput_data = IntakeOutput.objects.filter(patient=patientid).filter(date=get_lastdate).exclude(time__isnull=True)
+	themes = request.session.get('theme')
 
 	initial_list = {
 		'date': get_lastdate,
@@ -69,6 +70,7 @@ def intake_output_list(request, username):
 		'time_range_night': time_range_night,
 		'intakeoutput_data': intakeoutput_data,
 		'form': form,
+		"themes": themes,
 	}
 
 	return render(request, 'patient/intake_output/intake_output_data.html', context)
@@ -83,6 +85,7 @@ def intake_output_create(request, username):
 	profiles = UserProfile.objects.filter(username=username)
 	patients = get_object_or_404(UserProfile, username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	themes = request.session.get('theme')
 
 	initial_form = {
 		'patient': patients,
@@ -163,6 +166,7 @@ def intake_output_create(request, username):
 		'icnumbers': icnumbers,
 		'form': form,
 		'formset': formset,
+		"themes": themes,
 	}
 
 	return render(request, 'patient/intake_output/intake_output_form.html', context)

@@ -13,7 +13,22 @@
 		{% endblock %}
 	</title>
 
-	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+	{% if themes == 'default' %}
+		<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+	{% elif themes == 'cosmo' %}
+		<link href="{% static 'css/themes/cosmo.css' %}" rel="stylesheet" type="text/css" />
+	{% elif themes == 'flatly' %}
+		<link href="{% static 'css/themes/flatly.css' %}" rel="stylesheet" type="text/css" />
+	{% elif themes == 'yeti' %}
+		<link href="{% static 'css/themes/yeti.css' %}" rel="stylesheet" type="text/css" />
+	{% elif themes == 'simplex' %}
+		<link href="{% static 'css/themes/simplex.css' %}" rel="stylesheet" type="text/css" />
+	{% elif themes == 'minty' %}
+		<link href="{% static 'css/themes/minty.css' %}" rel="stylesheet" type="text/css" />
+	{% else %}
+		<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+	{% endif %}
+
 	<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
 	<link href="{% static 'css/navmenu.css' %}" rel="stylesheet" type="text/css" />
 	<link href="{% static 'css/sprite-flags-16x16.css' %}" rel="stylesheet" type="text/css" />

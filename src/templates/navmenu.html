@@ -1,9 +1,8 @@
 {% load static %}
 {% load i18n %}
-{% load bootstrap_ui_tags %}
+{% load i18n %}
 
 {% get_available_languages as languages %}
-{% get_value_from_session_or_cookie 'DJANGO_BOOTSTRAP_UI_THEME' as theme %}
 
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 border-bottom box-shadow bg-light">
 	<h5 class="my-0 mr-md-auto font-weight-normal text-center">
@@ -60,31 +59,43 @@
 						</a>
 					</li>
 
-					<form method="post" action="{% url 'set_theme' %}">
+					<form id="myform" method="POST" action="">
 					{% csrf_token %}
 					<li id="theme-button" class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="themeMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<span class='caret'></span>
 						</a>
-						<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="themeMenu">
-							<li><a name="current" class="dropdown-item" href="#">
-								{% trans "Default" %}
-							</a></li>
-							<li class="divider"></li>
-							<li><a name="cosmo" class="dropdown-item" href="#">
-								{% trans "Cosmo" %}
-							</a></li>
-							<li><a name="flatly" class="dropdown-item" href="#">
-								{% trans "Flatly" %}
-							</a></li>
-							<li><a name="simplex" class="dropdown-item" href="#">
-								{% trans "Simplex" %}
-							</a></li>
-							<a type="submit" class="dropdown-item" href="{% url 'set_theme' %}">
-							<input type="hidden" name="next" value="paper"/>
-							<input type="hidden" name="theme" value="paper"/>
-							{% trans "Paper" %}
-						</a>
+						<ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="themeMenu">
+							<li>
+								<a type="submit" class="dropdown-item {% if themes == 'default' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='default' %}">
+									<input type="hidden" name="theme" value="default">{% trans "Default" %}
+								</a>
+							</li>
+							<li>
+								<a type="submit" class="dropdown-item {% if themes == 'cosmo' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='cosmo' %}">
+									<input type="hidden" name="theme" value="cosmo">{% trans "Cosmo" %}
+								</a>
+							</li>
+							<li>
+								<a type="submit" class="dropdown-item {% if themes == 'flatly' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='flatly' %}">
+									<input type="hidden" name="theme" value="flatly">{% trans "Flatly" %}
+								</a>
+							</li>
+							<li>
+								<a type="submit" class="dropdown-item {% if themes == 'minty' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='minty' %}">
+									<input type="hidden" name="theme" value="minty">{% trans "Minty" %}
+								</a>
+							</li>
+							<li>
+								<a type="submit" class="dropdown-item {% if themes == 'simplex' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='simplex' %}">
+									<input type="hidden" name="theme" value="simplex">{% trans "Simplex" %}
+								</a>
+							</li>
+							<li>
+								<a type="submit" class="dropdown-item {% if themes == 'yeti' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='yeti' %}">
+									<input type="hidden" name="theme" value="yeti">{% trans "Yeti" %}
+								</a>
+							</li>
 						</ul>
 					</li>
 					</form>
@@ -95,18 +106,23 @@
 						</a>
 					</li>
 
+					<form method="POST" action="">
+					{% csrf_token %}
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="langMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<span class='caret'></span>
 						</a>
-						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="langMenu">
-						<a class="dropdown-item" href="{% url 'set_language_from_url' user_language='en' %}">
+						<div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="langMenu">
+						<a type="submit" class="dropdown-item" href="{% url 'set_language_from_url' user_language='en' %}">
+							<input type="hidden" name="next" value="{{ previous }}"/>
 							<i class="flag flag-16 flag-us"></i>{% trans "English" %}
 						</a>
-						<a class="dropdown-item" href="{% url 'set_language_from_url' user_language='id' %}">
+						<a type="submit" class="dropdown-item" href="{% url 'set_language_from_url' user_language='id' %}">
+							<input type="hidden" name="next" value="{{ previous }}"/>
 							<i class="flag flag-16 flag-id"></i>{% trans "Indonesia" %}
 						</a>
 					</li>
+					</form>
 
 					{% if user.is_authenticated %}
 					<li class="nav-item">
@@ -130,7 +146,7 @@
 
 						{% if user.is_authenticated and user.is_superuser or user.is_staff%}
 
-						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="accountMenu">
+						<div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="accountMenu">
 							<a class="dropdown-item" href="{% url 'accounts:account' %}">
 								<i class="fas fa-user-cog"></i>&nbsp;{% trans "My Account" %}
 							</a>
@@ -148,7 +164,7 @@
 
 						{% elif user.is_authenticated and user.is_patient %}
 
-						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+						<div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="userMenu">
 							<a class="dropdown-item" href="{% url 'accounts:account' %}">
 								<i class="fas fa-user-cog"></i>&nbsp;{% trans "My Account" %}
 							</a>
@@ -163,7 +179,7 @@
 
 						{% else %}
 
-						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+						<div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="userMenu">
 							<a class="dropdown-item" href="{% url 'accounts:login_view' %}"><i class="fas fa-sign-in-alt"></i>&nbsp;{% trans "Login" %}</a>
 						</div>
 
@@ -185,11 +201,6 @@ $(document).ready(function()
 	{
 		if ($(this).attr('name') != 'current')
 		{
-			var urlbeg = 'https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/'
-			var urlend = '/bootstrap.min.css'
-			var themeurl = urlbeg + $(this).text().toLowerCase() + urlend;
-			var link = $('link[rel="stylesheet"][href$="/bootstrap.min.css"]').attr('href', themeurl);
-
 			$('#theme-button ul a[name="current"]').text($(this).text());
 		}
 	});

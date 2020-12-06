@@ -10,10 +10,6 @@
 	<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
 	<link href="{% static 'css/navmenu.css' %}" rel="stylesheet" type="text/css" />
 	<link href="{% static 'css/sprite-flags-16x16.css' %}" rel="stylesheet" type="text/css" />
-	<link href="{% static 'fontawesome/css/all.min.css' %}" rel="stylesheet" type="text/css" />
-	<link href="{% static 'css/jquery-ui.css' %}" rel="stylesheet" type="text/css" />
-	<link href="{% static 'css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
-	<link href="{% static 'css/buttons.dataTables.min.css' %}" rel="stylesheet" type="text/css" />
 	<link href="{% static 'css/rowGroup.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
 	<link href="{% static 'css/staff/staff.css' %}" rel="stylesheet" type="text/css">
 	<link href="{% static 'css/staff/overtime_claim.css' %}" rel="stylesheet" type="text/css">
@@ -31,7 +27,28 @@
 		{{ page_title }}
 	</div>
 
-	{% include 'patient/patient_formset.html' %}
+	<div class="row border rounded detail_form">
+
+		<div class="col-4">
+			<span id="name_title">{% trans "Name" %}:</span>
+		</div>
+		<div class="col-4">
+			<span id="name_field">
+				{{ staffs }}
+			</span>
+		</div>
+
+		<div class="w-100"></div>
+
+		<div class="col-4">
+			<span id="name_title">{% trans "IC Number" %}:</span>
+		</div>
+		<div class="col-4">
+			<span id="name_field">{{ icnumbers }}</span>
+		</div>
+
+	</div>
+
 
 	<form method="post">
 	{% csrf_token %}

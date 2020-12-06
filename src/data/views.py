@@ -25,6 +25,7 @@ def data_list(request):
 	page_title = _('Data List')
 	druglist = Medicine.objects.all()
 	woundconditionlist = WoundCondition.objects.all()
+	themes = request.session.get('theme')
 
 #	if request.user.is_superuser or request.user.is_staff:
 #		datastaff = UserProfile.objects.filter(is_patient=True).order_by("id")
@@ -49,6 +50,7 @@ def data_list(request):
 #		'datastaff': datastaff,
 		'druglist': druglist,
 		'woundconditionlist': woundconditionlist,
+		"themes": themes,
 	}
 
 	return render(request, 'data/data_list.html', context)
@@ -64,6 +66,7 @@ def drug_list(request):
 #    patients = HGT.objects.filter(patient=patientid)
 #    profiles = UserProfile.objects.filter(pk=patientid)
 	datas = Medicine.objects.all()
+	themes = request.session.get('theme')
 
 	context = {
 		'logos': logos,
@@ -72,6 +75,7 @@ def drug_list(request):
 #        'patients': patients,
 #        'profiles': profiles,
 		'datas': datas,
+		"themes": themes,
 	}
 
 	return render(request, 'data/drug/drug_data.html', context)
@@ -83,6 +87,7 @@ def drug_create(request):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Medicine')
+	themes = request.session.get('theme')
 
 	initial = {
 #		'staff': staffs,
@@ -110,6 +115,7 @@ def drug_create(request):
 		'titles': titles,
 		'page_title': page_title,
 		'form': form,
+		"themes": themes,
 	}
 
 	return render(request, 'data/drug/drug_form.html', context)
@@ -162,6 +168,7 @@ def wound_condition_list(request):
 #    patients = HGT.objects.filter(patient=patientid)
 #    profiles = UserProfile.objects.filter(pk=patientid)
 	woundconditions = WoundCondition.objects.all()
+	themes = request.session.get('theme')
 
 	context = {
 		'logos': logos,
@@ -170,6 +177,7 @@ def wound_condition_list(request):
 #        'patients': patients,
 #        'profiles': profiles,
 		'woundconditions': woundconditions,
+		"themes": themes,
 	}
 
 	return render(request, 'data/wound_condition/wound_condition_data.html', context)
@@ -181,6 +189,7 @@ def wound_condition_create(request):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Wound Condition')
+	themes = request.session.get('theme')
 
 	initial = {
 #		'staff': staffs,
@@ -209,6 +218,7 @@ def wound_condition_create(request):
 		'titles': titles,
 		'page_title': page_title,
 		'form': form,
+		"themes": themes,
 	}
 
 	return render(request, 'data/wound_condition/wound_condition_form.html', context)

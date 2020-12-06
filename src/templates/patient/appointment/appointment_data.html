@@ -30,11 +30,10 @@
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Appointment</h4>
+					<h4 class="modal-title" style="margin: 0 auto;">Today Appointment</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 				</div>
 				<div class="modal-body">
-					<p class="text-center">Today Appointment</p>
 					<div id="tanggal"></div>
 				</div>
 
@@ -125,6 +124,8 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
+	$("#tanggal").css('pointer-events', 'none');
+
 	var t = $('#t_add_row').DataTable(
 	{
 		"order": [[ 0, "desc" ]]
@@ -137,6 +138,48 @@ $(document).ready(function()
 			formURL: $(this).data('form-url')
 		});
 	});
+
+	var returnedYear = "{{ datetimeyear.str_datetime|safe }}";
+	var returnedMonth = "{{ datetimemonth.str_datetime|safe }}";
+	var returnedDay = "{{ datetimeday.str_datetime|safe }}";
+	var returnedHour = "{{ datetimehour.str_datetime|safe }}";
+	var returnedMinute = "{{ datetimeminute.str_datetime|safe }}";
+
+	returnedYear = returnedYear.toString();
+	returnedMonth = returnedMonth.toString();
+	returnedDay = returnedDay.toString();
+	returnedHour = returnedHour.toString();
+	returnedMinute = returnedMinute.toString();
+
+    var mydate = new Date(returnedYear, returnedMonth, returnedDay, returnedHour, returnedMinute);
+
+	$("#myModal").modal("show");
+
+	$.extend(true, $.fn.datetimepicker.defaults, {
+		icons: {
+			time: 'far fa-clock',
+			date: 'far fa-calendar',
+			up: '',
+			down: '',
+			previous: '',
+			next: '',
+			today: 'fas fa-calendar-check',
+			clear: 'far fa-trash-alt',
+			close: 'far fa-times-circle'
+		}
+	});
+
+	$('#tanggal').datetimepicker({
+		format: 'DD-MM-YYYY HH:mm',
+		inline: true,
+		useCurrent:false,
+		defaultDate: mydate,
+		sideBySide: true,
+		showTodayButton: false,
+		showClear: false,
+		showClose: false,
+	});
+
 
 	$.fn.datetimepicker.defaults.icons = {
 		time: 'fas fa-clock-o',

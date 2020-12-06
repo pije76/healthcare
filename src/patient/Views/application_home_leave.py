@@ -21,7 +21,9 @@ from ..utils import *
 
 from bootstrap_modal_forms.generic import *
 from reportlab.pdfgen import canvas
+from weasyprint import HTML
 
+import tempfile
 from io import BytesIO
 
 
@@ -34,6 +36,7 @@ def application_home_leave_list(request, username):
 	patientid = UserProfile.objects.get(username=username).id
 	patients = ApplicationForHomeLeave.objects.filter(patient=patientid)
 	profiles = UserProfile.objects.filter(pk=patientid)
+	themes = request.session.get('theme')
 
 	context = {
 		'logos': logos,
@@ -41,6 +44,7 @@ def application_home_leave_list(request, username):
 		'page_title': page_title,
 		'patients': patients,
 		'profiles': profiles,
+		"themes": themes,
 	}
 
 	return render(request, 'patient/application_home_leave/application_home_leave_data.html', context)
@@ -57,6 +61,7 @@ def application_home_leave_create(request, username):
 #	families = get_object_or_404(Family, patient=patientid)
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	themes = request.session.get('theme')
 
 	initial = {
 		'patient': patients,
@@ -102,6 +107,7 @@ def application_home_leave_create(request, username):
 		'profiles': profiles,
 		'icnumbers': icnumbers,
 		'form': form,
+		"themes": themes,
 	}
 
 	return render(request, 'patient/application_home_leave/application_home_leave_form.html', context)
@@ -127,6 +133,7 @@ def application_home_leave_pdf(response, username):
 	application_data = ApplicationForHomeLeave.objects.all()
 #	application_data = ApplicationForHomeLeave.objects.all[0].name
 	detail_application_data = u", ".join(str(obj) for obj in application_data)
+#	themes = response.session.get('theme')
 
 	buffer = BytesIO()
 	p = canvas.Canvas(buffer)
@@ -145,7 +152,8 @@ def application_home_leave_pdf(response, username):
 		'pdfname': pdfname,
 		'patients': patients,
 		'profiles': profiles,
-		'application_data': application_data
+		'application_data': application_data,
+#		"themes": themes,
 	}
 
 	result = generate_pdf('patient/application_home_leave/application_home_leave_pdf.html', file_object=response, context=context)
@@ -167,11 +175,14 @@ def ticket_to_pdf(visitor, event):
 	site = '{scheme}://{host}'.format(scheme=config.SCHEME, host=current_site)
 	url = pyqrcode.create(current_site + visitor.get_absolute_url())
 	qr_code = url.png_as_base64_str(scale=5)
+	themes = request.session.get('theme')
+
 	context = {
 		'visitor': visitor,
 		'qr_code': qr_code,
 		'event': event,
-		'config': config
+		'config': config,
+		"themes": themes,
 	}
 	ticket = render('patient/application_home_leave/application_home_leave_pdf.html', context)
 

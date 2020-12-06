@@ -56,7 +56,7 @@ class Admission_ModelForm(forms.ModelForm):
 	invasive_line_insitu_others = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
 	medical_history = forms.MultipleChoiceField(required=False, label="", widget=forms.CheckboxSelectMultiple(attrs={'class': "form-control"}), choices=MEDICAL_HISTORY_CHOICES)
 	medical_history_others = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	surgical_history_none = forms.MultipleChoiceField(required=False, label="None", widget=forms.CheckboxSelectMultiple(attrs={'class': "form-control"}), choices=SURGICAL_CHOICES)
+	surgical_history_none = forms.MultipleChoiceField(required=False, label="", widget=forms.CheckboxSelectMultiple(attrs={'class': "form-control"}), choices=SURGICAL_CHOICES)
 	surgical_history = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 4, 'cols': 15}))
 
 	date_diagnosis = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
@@ -403,7 +403,8 @@ class Admission_ModelForm_Update(BSModalModelForm):
 
 class MedicationAdministrationRecordTemplate_Form(BSModalForm):
 	patient = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control", 'style': "display:none;"}))
-	medication_template = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+#	medication_template = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+	medication_template = forms.CharField(required=False, label="", widget=forms.HiddenInput(attrs={'class': "form-control"}))
 	own_medication = forms.ChoiceField(required=False, label="", initial='No', widget=forms.RadioSelect(attrs={'class': "form-control"}), choices=YES_NO_CHOICES)
 	medication_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
 	medication_time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))

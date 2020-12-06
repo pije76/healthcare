@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-12 18:25+0000\n"
+"POT-Creation-Date: 2020-11-13 15:52+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -88,7 +88,7 @@ msgstr ""
 #: templates/staff/staff_records/staff_records_data.html:40
 #: templates/staff/staff_records/staff_records_form.html:42
 msgid "IC Number"
-msgstr ""
+msgstr "Nomor IC"
 
 #: accounts/models.py:38 accounts/models.py:82 accounts/models.py:93
 #: patient/Views/admission.py:644 patient/models.py:46 patient/models.py:120
@@ -96,15 +96,16 @@ msgstr ""
 #: templates/patient/admission/admission_data.html:117
 #: templates/patient/admission/admission_form.html:218
 msgid "IC Upload"
-msgstr ""
+msgstr "Upload IC"
 
 #: accounts/models.py:55 patient/Views/medication_record.py:113
-#: templates/navmenu.html:34
+#: templates/account/signup.html:26 templates/account/signup.html:33
+#: templates/navmenu.html:33
 #: templates/patient/medication_record/medication_data.html:55
 #: templates/patient/medication_record/medication_data.html:68
 #: templates/patient/medication_record/medication_form.html:53
 msgid "Staff"
-msgstr ""
+msgstr "Staf"
 
 #: accounts/models.py:80 accounts/models.py:109 customers/models.py:33
 #: patient/models.py:118 patient/models.py:307 patient/models.py:403
@@ -120,20 +121,20 @@ msgstr ""
 #: templates/patient/application_home_leave/application_home_leave_data.html:48
 #: templates/patient/application_home_leave/application_home_leave_data.html:60
 msgid "Family Name"
-msgstr ""
+msgstr "Nama Keluarga"
 
 #: accounts/models.py:92
 #: templates/patient/application_home_leave/application_home_leave_data.html:49
 #: templates/patient/application_home_leave/application_home_leave_data.html:61
 msgid "NRIC Number"
-msgstr ""
+msgstr "Nomor NRIC"
 
 #: accounts/models.py:94 patient/Views/application_home_leave.py:199
 #: patient/models.py:133
 #: templates/patient/application_home_leave/application_home_leave_data.html:50
 #: templates/patient/application_home_leave/application_home_leave_data.html:62
 msgid "Family Relationship"
-msgstr ""
+msgstr "Hubungan Keluarga"
 
 #: accounts/models.py:95
 msgid "Family Contact No"
@@ -141,7 +142,7 @@ msgstr ""
 
 #: accounts/models.py:96
 msgid "Family Address"
-msgstr ""
+msgstr "Alamat Keluarga"
 
 #: accounts/models.py:111 patient/Views/admission.py:661
 #: templates/patient/admission/admission_data.html:69
@@ -153,22 +154,26 @@ msgstr ""
 msgid "Family Contact"
 msgstr ""
 
-#: accounts/views.py:29 accounts/views.py:101 patient/choices.py:28
-#: templates/navmenu.html:25
+#: accounts/views.py:31 accounts/views.py:110 patient/choices.py:28
+#: templates/navmenu.html:24
 msgid "Home"
 msgstr "Beranda"
 
-#: accounts/views.py:126 templates/account/email.html:7
-#: templates/navmenu.html:123
+#: accounts/views.py:122
+msgid "The language is not available!"
+msgstr ""
+
+#: accounts/views.py:165 templates/account/email.html:7
+#: templates/navmenu.html:126
 msgid "Account"
 msgstr "Akun"
 
-#: accounts/views.py:260 templates/account/change.html:25
+#: accounts/views.py:299 templates/account/change.html:25
 #: templates/account/change.html:56
 msgid "Change Profile"
 msgstr "Ganti Profil"
 
-#: accounts/views.py:286
+#: accounts/views.py:325
 msgid "Your profile has been change successfully."
 msgstr ""
 
@@ -330,7 +335,7 @@ msgstr ""
 #: templates/staff/staff_records/staff_records_data.html:36
 #: templates/staff/staff_records/staff_records_form.html:30
 msgid "Name"
-msgstr ""
+msgstr "Nama"
 
 #: data/views.py:227
 #: templates/data/wound_condition/wound_condition_data.html:45
@@ -338,15 +343,15 @@ msgstr ""
 msgid "Parent"
 msgstr ""
 
-#: main/settings.d/local_settings.py:60 templates/navmenu.html:105
+#: main/settings.d/local_settings.py:60 templates/navmenu.html:106
 msgid "English"
 msgstr ""
 
-#: main/settings.d/local_settings.py:62 templates/navmenu.html:108
+#: main/settings.d/local_settings.py:62 templates/navmenu.html:110
 msgid "Indonesia"
 msgstr ""
 
-#: main/urls_tenants.py:26
+#: main/urls_tenants.py:27
 msgid "account/"
 msgstr ""
 
@@ -440,24 +445,24 @@ msgstr ""
 #: templates/patient/discharge_checklist/partial_edit.html:49
 #: templates/patient/patient_list.html:43
 msgid "Patient Name"
-msgstr ""
+msgstr "Nama Pasien"
 
 #: patient/Views/admission.py:645
 #: templates/patient/admission/admission_data.html:57
 #: templates/patient/admission/admission_data.html:118
 #: templates/patient/admission/admission_form.html:111
 msgid "Age"
-msgstr ""
+msgstr "Usia"
 
 #: patient/Views/admission.py:646 templates/account.html:71
 msgid "Birth Date"
-msgstr ""
+msgstr "Tanggal Lahir"
 
 #: patient/Views/admission.py:647 templates/account.html:64
 #: templates/patient/admission/admission_data.html:59
 #: templates/patient/admission/admission_data.html:120
 msgid "Gender"
-msgstr ""
+msgstr "Jenis Kelamin"
 
 #: patient/Views/admission.py:648
 #: templates/patient/admission/admission_data.html:60
@@ -482,7 +487,7 @@ msgstr ""
 #: templates/patient/admission/admission_data.html:122
 #: templates/patient/admission/admission_form.html:149
 msgid "Religion"
-msgstr ""
+msgstr "Agama"
 
 #: patient/Views/admission.py:652
 #: templates/patient/admission/admission_data.html:62
@@ -509,7 +514,7 @@ msgstr ""
 #: templates/patient/admission/admission_form.html:199
 #: templates/patient/admission/admission_form.html:224
 msgid "Address"
-msgstr ""
+msgstr "Alamat"
 
 #: patient/Views/admission.py:659
 #: templates/patient/admission/admission_data.html:67
@@ -2369,7 +2374,7 @@ msgstr ""
 
 #: patient/views.py:86
 msgid "Patient List"
-msgstr ""
+msgstr "Daftar Pasien"
 
 #: patient/views.py:112
 msgid "Patient Detail"
@@ -2388,7 +2393,7 @@ msgstr ""
 #: staff/views.py:298 templates/staff/staff_detail.html:67
 #: templates/staff/staff_detail.html:87
 msgid "Staff Records"
-msgstr ""
+msgstr "Catatan Staff"
 
 #: staff/views.py:28 staff/views.py:49
 msgid "Overtime Claim Form"
@@ -2425,11 +2430,11 @@ msgstr ""
 
 #: staff/views.py:201
 msgid "Staff List"
-msgstr ""
+msgstr "Daftar Staf"
 
 #: staff/views.py:250
 msgid "Staff Detail"
-msgstr ""
+msgstr "Rincian Staf"
 
 #: staff/views.py:353 staff/views.py:381
 msgid "StaffRecords Form"
@@ -2493,7 +2498,7 @@ msgstr ""
 
 #: templates/account/change.html:36
 msgid "Full Name*"
-msgstr ""
+msgstr "Nama Lengkap"
 
 #: templates/account/email.html:18
 msgid "E-mail Addresses"
@@ -2550,7 +2555,7 @@ msgid "Do you really want to remove the selected e-mail address?"
 msgstr ""
 
 #: templates/account/login.html:12 templates/account/login.html:28
-#: templates/account/login.html:35 templates/navmenu.html:168
+#: templates/account/login.html:35 templates/navmenu.html:171
 msgid "Login"
 msgstr ""
 
@@ -2588,7 +2593,7 @@ msgid "Reset My Password"
 msgstr ""
 
 #: templates/account/password_reset.html:32
-msgid "Please contact us if you have any trouble resetting your password."
+msgid "Please contact us if you have any trouble resetting your password"
 msgstr ""
 
 #: templates/account/password_reset_form.html:21
@@ -2603,7 +2608,7 @@ msgstr ""
 
 #: templates/account/password_reset_form.html:28
 msgid "Email address:"
-msgstr ""
+msgstr "Alamat Email"
 
 #: templates/account/password_reset_form.html:31
 msgid "Reset my password"
@@ -2611,41 +2616,62 @@ msgstr ""
 
 #: templates/account/signup.html:11 templates/account/signup.html:20
 msgid "Register Options"
-msgstr ""
+msgstr "Pilihan Register"
+
+#: templates/account/signup.html:21
+msgid "Select below the type of account you want to create"
+msgstr "Pilih tipe akun yang ingin Anda buat"
+
+#: templates/account/signup.html:32 templates/navmenu.html:30
+#: templates/navmenu.html:42 templates/navmenu.html:51
+msgid "Patient"
+msgstr "Pasien"
 
 #: templates/account/signup_patient.html:11
 #: templates/account/signup_patient.html:19
 msgid "Register Patient"
-msgstr ""
+msgstr "Register Pasien"
 
 #: templates/account/signup_patient.html:26
 #: templates/account/signup_patient.html:29
 #: templates/account/signup_staff.html:28
-#: templates/account/signup_staff.html:31 templates/navmenu.html:142
+#: templates/account/signup_staff.html:31 templates/navmenu.html:145
 msgid "Register"
+msgstr "Register"
+
+#: templates/account/signup_patient.html:29
+#: templates/account/signup_staff.html:31
+#, fuzzy
+#| msgid "Back to Patient"
+msgid "Back to"
+msgstr "Kembali ke Pasien"
+
+#: templates/account/signup_patient.html:29
+#: templates/account/signup_staff.html:31
+msgid "options"
 msgstr ""
 
 #: templates/account/signup_staff.html:11
 #: templates/account/signup_staff.html:19
 msgid "Register Staff"
-msgstr ""
+msgstr "Register Staf"
 
-#: templates/data/data_list.html:12 templates/navmenu.html:37
-#: templates/navmenu.html:46
+#: templates/data/data_list.html:12 templates/navmenu.html:36
+#: templates/navmenu.html:45
 msgid "Data"
-msgstr ""
+msgstr "Data"
 
 #: templates/data/data_list.html:31
 msgid "Add Data"
-msgstr ""
+msgstr "Tambah Data"
 
 #: templates/data/data_list.html:53
 msgid "View Data"
-msgstr ""
+msgstr "Lihat Data"
 
 #: templates/data/data_list.html:76
 msgid "Back to Patient"
-msgstr ""
+msgstr "Kembali ke Pasien"
 
 #: templates/data/drug/drug_data.html:43
 #: templates/data/wound_condition/wound_condition_data.html:43
@@ -2829,46 +2855,45 @@ msgstr ""
 msgid "Login."
 msgstr ""
 
-#: templates/navmenu.html:31 templates/navmenu.html:43
-#: templates/navmenu.html:52
-msgid "Patient"
-msgstr ""
-
-#: templates/navmenu.html:59
+#: templates/navmenu.html:58
 msgid "Theme"
 msgstr ""
 
-#: templates/navmenu.html:73
+#: templates/navmenu.html:70
 msgid "Default"
 msgstr ""
 
-#: templates/navmenu.html:78
-msgid "Paper"
-msgstr ""
-
-#: templates/navmenu.html:83
+#: templates/navmenu.html:74
 msgid "Cosmo"
 msgstr ""
 
-#: templates/navmenu.html:88
-msgid "Darkly"
+#: templates/navmenu.html:77
+msgid "Flatly"
 msgstr ""
 
-#: templates/navmenu.html:95
+#: templates/navmenu.html:80
+msgid "Simplex"
+msgstr ""
+
+#: templates/navmenu.html:85
+msgid "Paper"
+msgstr ""
+
+#: templates/navmenu.html:93
 msgid "Translate"
-msgstr ""
-
-#: templates/navmenu.html:136 templates/navmenu.html:154
-msgid "My Account"
-msgstr ""
+msgstr "Terjemahan"
 
 #: templates/navmenu.html:139 templates/navmenu.html:157
-msgid "Change password"
-msgstr ""
+msgid "My Account"
+msgstr "Akun Saya"
 
-#: templates/navmenu.html:146 templates/navmenu.html:161
+#: templates/navmenu.html:142 templates/navmenu.html:160
+msgid "Change password"
+msgstr "Ganti katakunci"
+
+#: templates/navmenu.html:149 templates/navmenu.html:164
 msgid "Logout"
-msgstr ""
+msgstr "Keluar"
 
 #: templates/patient/admission/admission_data.html:51
 #: templates/patient/admission/admission_data.html:112
@@ -3535,7 +3560,7 @@ msgstr ""
 #: templates/patient/patient_detail.html:59
 #: templates/staff/staff_detail.html:56
 msgid "Add Form"
-msgstr ""
+msgstr "Tambah Isian"
 
 #: templates/patient/patient_detail.html:125
 #: templates/patient/patient_detail.html:213
@@ -3548,11 +3573,17 @@ msgstr ""
 #: templates/patient/patient_detail.html:295
 #: templates/staff/staff_detail.html:78
 msgid "View Form"
-msgstr ""
+msgstr "Lihat Isian"
+
+#: templates/patient/patient_list.html:21
+#, fuzzy
+#| msgid "Patient"
+msgid "Add Patient"
+msgstr "Tambah Pasien"
 
 #: templates/patient/patient_list.html:52 templates/staff/staff_list.html:52
 msgid "View Detail"
-msgstr ""
+msgstr "Lihat Rincian"
 
 #: templates/patient/physio_progress_note_sheet/partial_edit.html:20
 msgid "Edit Physio Progress Note Sheet"
@@ -3708,9 +3739,15 @@ msgstr ""
 msgid "Edit Overtime Claim"
 msgstr ""
 
+#: templates/staff/staff_list.html:26
+#, fuzzy
+#| msgid "Staff"
+msgid "Add Staff"
+msgstr "Tambah Staf"
+
 #: templates/staff/staff_list.html:43
 msgid "Staff Name"
-msgstr ""
+msgstr "Nama Staf"
 
 #: templates/staff/staff_records/staff_records_data.html:63
 msgid "Annual Leave (Days)"

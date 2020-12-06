@@ -22,6 +22,7 @@ def nursing_list(request, username):
     patientid = UserProfile.objects.get(username=username).id
     patients = Nursing.objects.filter(patient=patientid)
     profiles = UserProfile.objects.filter(pk=patientid)
+    themes = request.session.get('theme')
 
     context = {
         'logos': logos,
@@ -29,6 +30,7 @@ def nursing_list(request, username):
         'page_title': page_title,
         'patients': patients,
         'profiles': profiles,
+        "themes": themes,
     }
 
     return render(request, 'patient/nursing/nursing_data.html', context)
@@ -43,6 +45,7 @@ def nursing_create(request, username):
     patients = get_object_or_404(UserProfile, username=username)
     profiles = UserProfile.objects.filter(username=username)
     icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+    themes = request.session.get('theme')
 
     initial = {
         'patient': patients,
@@ -82,6 +85,7 @@ def nursing_create(request, username):
         'profiles': profiles,
         'icnumbers': icnumbers,
         'formset': formset,
+        "themes": themes,
     }
 
     return render(request, 'patient/nursing/nursing_form.html', context)

@@ -27,6 +27,7 @@ def investigation_report_list(request, username):
 	patientid = UserProfile.objects.get(username=username).id
 	patients = InvestigationReport.objects.filter(patient=patientid)
 	profiles = UserProfile.objects.filter(pk=patientid)
+	themes = request.session.get('theme')
 
 	context = {
 		'logos': logos,
@@ -34,6 +35,7 @@ def investigation_report_list(request, username):
 		'page_title': page_title,
 		'patients': patients,
 		'profiles': profiles,
+		"themes": themes,
 	}
 
 	return render(request, 'patient/investigation_report/investigation_report_data.html', context)
@@ -48,6 +50,7 @@ def investigation_report_create(request, username):
 	patients = get_object_or_404(UserProfile, username=username)
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	themes = request.session.get('theme')
 
 	initial = {
 		'patient': patients,
@@ -86,6 +89,7 @@ def investigation_report_create(request, username):
 		'profiles': profiles,
 		'icnumbers': icnumbers,
 		'form': form,
+		"themes": themes,
 	}
 
 	return render(request, 'patient/investigation_report/investigation_report_form.html', context)

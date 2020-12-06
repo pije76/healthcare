@@ -75,6 +75,9 @@ class PatientProfile_ModelForm(forms.ModelForm):
 	class Meta:
 		model = UserProfile
 		fields = '__all__'
+		widgets = {
+			'date_joined': forms.HiddenInput(),
+		}
 
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)

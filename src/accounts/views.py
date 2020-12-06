@@ -1,14 +1,16 @@
 from django import http
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.dispatch import receiver
-from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.shortcuts import render, redirect, render_to_response
 from django.utils import translation
 from django.utils.http import is_safe_url
-from django.utils.translation import ugettext as _
-
+from django.utils.translation import get_language, ugettext as _
+from django.dispatch import receiver
+from django.contrib.auth.signals import user_logged_in
 
 from customers.models import *
 from .models import *
@@ -19,6 +21,8 @@ from allauth.account.signals import user_signed_up
 from allauth.exceptions import ImmediateHttpResponse
 from allauth.account import signals
 
+import re
+
 
 # Create your views here.
 def index(request):
@@ -27,70 +31,39 @@ def index(request):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Home')
+	themes = request.session.get('theme')
+	request.session['theme'] = themes
 
 	context = {
 		'patients': patients,
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
+		'themes': themes,
 	}
 	return render(request, 'index.html', context)
 
 
-def set_theme(request):
-	next = request.POST.get('next', request.GET.get('next'))
+def set_theme(request, theme):
+	request.session['theme'] = theme
+#	previous = request.META.get('HTTP_REFERER', '')
+	previous = request.META['HTTP_REFERER']
+	themes = request.session.get('theme')
+#	print(themes)
 
-	if not is_safe_url(url=next, allowed_hosts=request.get_host()):
-		next = request.META.get('HTTP_REFERER')
+#	return redirect(previous)
+#	return HttpResponseRedirect(reverse(previous, kwargs={'theme': themes}))
+#	context['theme'] = themes
+	return redirect(previous, kwargs={'theme': themes})
+#	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-		if not is_safe_url(url=next, allowed_hosts=request.get_host()):
-			next = '/'
 
-	response = http.HttpResponseRedirect(next)
-
-	if request.method == 'POST':
-		theme = request.POST.get('theme', None)
-
-		if theme:
-			if hasattr(request, 'session'):
-				request.session['DJANGO_BOOTSTRAP_UI_THEME'] = theme
-			else:
-				response.set_cookie('DJANGO_BOOTSTRAP_UI_THEME', theme)
-
-	return response
-	if request.method == 'POST':
-#	request.session['theme'] = "bootstrap"
-#	theme = request.POST.get('theme', None)
-#	data = request.session['DJANGO_BOOTSTRAP_UI_THEME'] = theme
-#	theme = request.session['DJANGO_BOOTSTRAP_UI_THEME'] = "bootstrap"
-#	print("theme", theme)
-#	data = request.POST.get('theme')
-		data = request.POST.get('next')
-#		data = request.POST.get('theme', None)
-#	data = request.GET.get('next')
-#	data = request.POST.get('next')
-#	data = request.GET.get(next, '')
-#	data = request.POST.get(next, '')
-#	data = request.REQUEST.get('next', '')
-#	data = request.POST[theme]
-
-		print("data:", data)
-
-	# set session data
-#	request.session['theme'] = "bootstrap"
-#	referer = "/"
-#	if "HTTP_REFERER" in request.META:
-#		referer = request.META["HTTP_REFERER"]
-#		resp = HttpResponseRedirect(referer)
-#		resp.set_cookie(theme, 0)
-	else:
-		data = request.POST.get('next')
-		theme = request.session.get('next')
-#	theme = request.session['theme']
-		print("theme:", data)
-
-	# delete session data
-#	del request.session['user_id']
+def strip_lang(path):
+	pattern = '^(/%s)/' % get_language()
+	match = re.search(pattern, path)
+	if match is None:
+		return path
+	return path[match.end(1):]
 
 
 def set_language_from_url(request, user_language):
@@ -99,20 +72,54 @@ def set_language_from_url(request, user_language):
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Home')
+	themes = request.session.get('theme')
+
+#	redirect_page = request.GET.get('lang')
+#	next_path = request.POST.get('user_language')
+	next_path = strip_lang(request.path)
+	previous = request.META.get('HTTP_REFERER', '')
+#	print(next_path)
+
+#	valid = False
+#	for item in settings.LANGUAGES:
+#		if item[0] == user_language:
+#			valid = True
+#	if not valid:
+#		raise Http404(_('The language is not available!'))
+
+#	if not user_language in [lang[0] for lang in settings.LANGUAGES]:
+#		return HttpResponseRedirect('/')
+
+#	try:
+#		previous = request.META['HTTP_REFERER']
+#		previous = request.META.get('HTTP_REFERER', '')
+#		if user_language == translation.get_language():
+#			return redirect(previous)
+
+#	except KeyError:
+#		next_url = '/' + user_language + '/'
 
 	translation.activate(user_language)
-	request.session[translation.LANGUAGE_SESSION_KEY] = user_language
-	path = request.META.get('HTTP_REFERER', '')
+#	response = HttpResponseRedirect(next_url)
+#	return redirect(redirect_page)
+#	return redirect('patient:patientdata_detail', username=patients.username)
+#	return redirect(reverse(redirect_url_name))
+#	request.session[translation.LANGUAGE_SESSION_KEY] = user_language
+	request.session['user_language'] = user_language
+#	response.set_cookie(settings.LANGUAGE_COOKIE_NAME, user_language)
 
 	context = {
 		'patients': patients,
 		'logos': logos,
 		'titles': titles,
 		'page_title': page_title,
-		'path': path,
+		'next_path': next_path,
+		"themes": themes,
 	}
 
-	return render(request, 'index.html', context)
+#	return render(request, 'index.html', context)
+	return redirect(previous)
+#	return response
 
 
 @login_required
@@ -124,6 +131,7 @@ def account(request):
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	icnumbers = UserProfile.objects.filter(full_name=request.user)
 	page_title = _('Account')
+	themes = request.session.get('theme')
 
 	context = {
 		'patients': patients,
@@ -133,6 +141,7 @@ def account(request):
 		'icnumbers': icnumbers,
 		'navbar': 'account',
 		'form': LoginForm(),
+		"themes": themes,
 	}
 
 	return render(request, 'account.html', context)
@@ -262,6 +271,7 @@ def change_profile(request):
 	initial_icnumber = UserProfile.objects.filter(full_name=request.user).values_list('ic_number', flat=True).first()
 	aform = ChangeAdmission(prefix='admission', initial={'icnumbers': "icnumbers"})
 	form = ChangeUserProfile(prefix='profile')
+	themes = request.session.get('theme')
 
 	if request.method == 'POST':
 #        aform = ChangeAdmission(request.POST or None, initial={'ic_number': initial_icnumber})
@@ -302,6 +312,7 @@ def change_profile(request):
 		'navbar': 'account',
 		'icnumbers': icnumbers,
 		'form': form,
+		"themes": themes,
 #        'aform': aform,
 	}
 
@@ -309,13 +320,16 @@ def change_profile(request):
 
 
 def signup_view(request):
+	themes = request.session.get('theme')
 
 	context = {
+		'themes': themes,
 	}
 
 	return render(request, 'account/signup.html', context)
 
 
+@receiver(user_logged_in)
 class MyLoginView(LoginView):
 	template_name = 'account/login.html'
 	form_class = MyLoginForm

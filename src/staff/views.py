@@ -21,14 +21,91 @@ from bootstrap_modal_forms.generic import *
 
 # Create your views here.
 @login_required
+@admin_required
+def staffdata_list(request):
+	schema_name = connection.schema_name
+	staffs = UserProfile.objects.filter(username=request.user.username)
+	logos = Client.objects.filter(schema_name=schema_name)
+	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+	page_title = _('Staff List')
+	themes = request.session.get('theme')
+
+#	if request.user.is_superuser:
+#		datastaff = UserProfile.objects.all()
+	datastaff = UserProfile.objects.filter(is_staff=True).exclude(is_superuser=True).order_by("id")
+#		q = Q()
+#		for item in city_list:
+#			q = q | Q(address__city__icontains=city)
+#		fullname_data = datastaff.values_list('id', flat=True)
+#		datastaffs = Admission.objects.filter(staff__in=fullname_data).order_by('staff')
+#		datastaffs = UserProfile.objects.filter(username=request.user.username)
+#		datastaffs = Admission.objects.all()
+#		results = chain(datastaffs, datastaff)
+
+#		context = {
+#			'staffs': staffs,
+#			'logos': logos,
+#			'titles': titles,
+#			'page_title': page_title,
+#			"datastaff": datastaff,
+#		}
+
+#	else:
+#		pass
+#		datastaff = UserProfile.objects.filter(full_name=request.user, is_staff=True).order_by("id")
+#		datastaffs = Admission.objects.filter(staff__in=datastaff)
+
+	context = {
+		'staffs': staffs,
+		'logos': logos,
+		'titles': titles,
+		'page_title': page_title,
+		"datastaff": datastaff,
+		"themes": themes,
+	}
+
+	return render(request, 'staff/staff_list.html', context)
+
+
+@login_required
+def staffdata_detail(request, username):
+	schema_name = connection.schema_name
+	logos = Client.objects.filter(schema_name=schema_name)
+	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+	staffs = UserProfile.objects.filter(username=username)
+	staffid = UserProfile.objects.filter(username=username).values_list('id', flat=True).first()
+	overtimeclaim = OvertimeClaim.objects.filter(staff=staffid)
+	staffrecords = StaffRecords.objects.filter(staff=staffid)
+#	staffs = UserProfile.objects.filter(staff=id)
+#	staffs = UserProfile.objects.filter(pk=id).values_list('staff', flat=True).first()
+	page_title = _('Staff Detail')
+	themes = request.session.get('theme')
+#	icnumbers = Admission.objects.filter(staff=request.user)
+
+	context = {
+		'titles': titles,
+		'logos': logos,
+		'page_title': page_title,
+		"staffs": staffs,
+		'overtimeclaim': overtimeclaim,
+		'staffrecords': staffrecords,
+		"themes": themes,
+#		"icnumbers": icnumbers,
+	}
+
+	return render(request, 'staff/staff_detail.html', context)
+
+
+@login_required
 def overtime_claim_list(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Overtime Claim Form')
-	staffid = UserProfile.objects.filter(username=username).id
+	staffid = UserProfile.objects.filter(username=username).values_list('id', flat=True).first()
 	staffs = OvertimeClaim.objects.filter(staff=staffid)
 	profiles = UserProfile.objects.filter(pk=staffid)
+	themes = request.session.get('theme')
 
 	context = {
 		'logos': logos,
@@ -36,6 +113,7 @@ def overtime_claim_list(request, username):
 		'page_title': page_title,
 		'staffs': staffs,
 		'profiles': profiles,
+		"themes": themes,
 	}
 
 	return render(request, 'staff/overtime_claim/overtime_claim_data.html', context)
@@ -51,6 +129,7 @@ def overtime_claim_create(request, username):
 	staffchecked = get_object_or_404(UserProfile, full_name=request.user)
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	themes = request.session.get('theme')
 
 	initial = {
 		'staff': staffs,
@@ -104,6 +183,7 @@ def overtime_claim_create(request, username):
 		'profiles': profiles,
 		'icnumbers': icnumbers,
 		'form': form,
+		"themes": themes,
 	}
 
 	return render(request, 'staff/overtime_claim/overtime_claim_form.html', context)
@@ -113,8 +193,9 @@ def overtime_claim_pdf(response, username):
 	schema_name = connection.schema_name
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Application For Home Leave')
-	staffid = UserProfile.objects.filter(username=username).id
-	staffs = OvertimeClaim.objects.filter(staff=staffid)
+	staffid = UserProfile.objects.filter(username=username).values_list('id', flat=True).first()
+	staffs = get_object_or_404(UserProfile, username=username)
+	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 	profiles = UserProfile.objects.filter(pk=staffid)
 
 	pdfname = _('Overtime Claim')
@@ -141,8 +222,9 @@ def overtime_claim_pdf(response, username):
 		'page_title': page_title,
 		'pdfname': pdfname,
 		'staffs': staffs,
+		'icnumbers': icnumbers,
 		'profiles': profiles,
-		'application_data': application_data
+		'application_data': application_data,
 	}
 
 	result = generate_pdf('staff/overtime_claim/overtime_claim_pdf.html', file_object=response, context=context)
@@ -192,89 +274,18 @@ overtime_claim_delete = OvertimeClaimDeleteView.as_view()
 
 
 @login_required
-@admin_required
-def staffdata_list(request):
-	schema_name = connection.schema_name
-	staffs = UserProfile.objects.filter(username=request.user.username)
-	logos = Client.objects.filter(schema_name=schema_name)
-	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	page_title = _('Staff List')
-
-#	if request.user.is_superuser:
-#		datastaff = UserProfile.objects.all()
-	datastaff = UserProfile.objects.filter(is_staff=True).exclude(is_superuser=True).order_by("id")
-#		q = Q()
-#		for item in city_list:
-#			q = q | Q(address__city__icontains=city)
-#		fullname_data = datastaff.values_list('id', flat=True)
-#		datastaffs = Admission.objects.filter(staff__in=fullname_data).order_by('staff')
-#		datastaffs = UserProfile.objects.filter(username=request.user.username)
-#		datastaffs = Admission.objects.all()
-#		results = chain(datastaffs, datastaff)
-
-#		context = {
-#			'staffs': staffs,
-#			'logos': logos,
-#			'titles': titles,
-#			'page_title': page_title,
-#			"datastaff": datastaff,
-#		}
-
-#	else:
-#		pass
-#		datastaff = UserProfile.objects.filter(full_name=request.user, is_staff=True).order_by("id")
-#		datastaffs = Admission.objects.filter(staff__in=datastaff)
-
-	context = {
-		'staffs': staffs,
-		'logos': logos,
-		'titles': titles,
-		'page_title': page_title,
-		"datastaff": datastaff,
-	}
-
-	return render(request, 'staff/staff_list.html', context)
-
-
-@login_required
-def staffdata_detail(request, username):
-	schema_name = connection.schema_name
-	logos = Client.objects.filter(schema_name=schema_name)
-	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
-	staffs = UserProfile.objects.filter(username=username)
-#	staffid = UserProfile.objects.filter(username=username).id
-	overtimeclaim = OvertimeClaim.objects.filter(staff=staffs)
-	staffrecords = StaffRecords.objects.filter(staff=staffs)
-#	staffs = UserProfile.objects.filter(staff=id)
-#	staffs = UserProfile.objects.filter(pk=id).values_list('staff', flat=True).first()
-	page_title = _('Staff Detail')
-#	icnumbers = Admission.objects.filter(staff=request.user)
-
-	context = {
-		'titles': titles,
-		'logos': logos,
-		'page_title': page_title,
-		"staffs": staffs,
-		'overtimeclaim': overtimeclaim,
-		'staffrecords': staffrecords,
-#		"icnumbers": icnumbers,
-	}
-
-	return render(request, 'staff/staff_detail.html', context)
-
-
-@login_required
 def staff_records_list(request, username):
 	schema_name = connection.schema_name
 	logos = Client.objects.filter(schema_name=schema_name)
 	titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
 	page_title = _('Staff Records')
-	staffid = UserProfile.objects.filter(username=username).id
+	staffid = UserProfile.objects.filter(username=username).values_list('id', flat=True).first()
 	staffs = StaffRecords.objects.filter(staff=staffid)
 	profiles = UserProfile.objects.filter(pk=staffid)
 	total_annual = StaffRecords.objects.filter(staff=staffid).aggregate(Sum('annual_leave_days'))
 	total_public = StaffRecords.objects.filter(staff=staffid,).aggregate(Sum('public_holiday_days'))
 	total_replacement = StaffRecords.objects.filter(staff=staffid,).aggregate(Sum('replacement_public_holiday'))
+	themes = request.session.get('theme')
 
 	context = {
 		'logos': logos,
@@ -285,6 +296,7 @@ def staff_records_list(request, username):
 		'total_annual': total_annual,
 		'total_public': total_public,
 		'total_replacement': total_replacement,
+		"themes": themes,
 	}
 
 	return render(request, 'staff/staff_records/staff_records_data.html', context)
@@ -299,6 +311,7 @@ def staff_records_create(request, username):
 	staffs = get_object_or_404(UserProfile, username=username)
 	profiles = UserProfile.objects.filter(username=username)
 	icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+	themes = request.session.get('theme')
 
 	thisyear = datetime.datetime.now().year
 
@@ -341,6 +354,7 @@ def staff_records_create(request, username):
 		'profiles': profiles,
 		'icnumbers': icnumbers,
 		'form': form,
+		"themes": themes,
 	}
 
 	return render(request, 'staff/staff_records/staff_records_form.html', context)

@@ -8,34 +8,19 @@ import json
 register = template.Library()
 
 
-@register.filter(name='convert_list_to_string')
-def convert_list_to_string(value):
-#	data = json.loads(value)
-	return ''.join([str(e) for e in value])
+@register.simple_tag(takes_context=True)
+def get_value_from_session_or_cookie(context, key):
+    request = context['request']
 
-
-@register.filter(name='join_with_commas')
-def join_with_commas(value):
-	if not value:
-		return ""
-#	for item in value:
-#		k = len(item)
-	k = len(value)
-#	print("j: ", j)
-	if k == 1:
-		return u"%s" % value[0]
-	else:
-		return ", ".join(str(obj) for obj in value[:k - 1]) + " and " + str(value[k - 1])
-
-
-@register.filter(name='index_value')
-def index_value(value, index):
-	try:
-		return value[index]
-	except IndexError:
-		return None
-
-
-@register.filter(name='get_fields')
-def get_fields(value):
-	return [field for field in value]
+    try:
+        # First check for key in session
+        # If no session is available this throws an AttributeError, if the key is not available in an existing session
+        # this throws a KeyError
+        return request.session[key]
+    except (AttributeError, KeyError):
+        try:
+            # Second check for key in cookies
+            return request.COOKIES[key]
+        except KeyError:
+            # Third fallback to settings or return default value
+            return getattr(settings, key, '')

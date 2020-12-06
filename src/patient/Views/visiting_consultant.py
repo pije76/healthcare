@@ -22,6 +22,7 @@ def visiting_consultant_list(request, username):
     patientid = UserProfile.objects.get(username=username).id
     patients = VisitingConsultant.objects.filter(patient=patientid)
     profiles = UserProfile.objects.filter(pk=patientid)
+    themes = request.session.get('theme')
 
     context = {
         'logos': logos,
@@ -29,6 +30,7 @@ def visiting_consultant_list(request, username):
         'page_title': page_title,
         'patients': patients,
         'profiles': profiles,
+        "themes": themes,
     }
 
     return render(request, 'patient/visiting_consultant/visiting_consultant_data.html', context)
@@ -43,6 +45,7 @@ def visiting_consultant_create(request, username):
     patients = get_object_or_404(UserProfile, username=username)
     profiles = UserProfile.objects.filter(username=username)
     icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+    themes = request.session.get('theme')
 
     initial = [{
         'patient': item.full_name,
@@ -83,9 +86,11 @@ def visiting_consultant_create(request, username):
         'profiles': profiles,
         'icnumbers': icnumbers,
         'formset': formset,
+        "themes": themes,
     }
 
     return render(request, 'patient/visiting_consultant/visiting_consultant_form.html', context)
+
 
 class VisitingConsultantUpdateView(BSModalUpdateView):
     model = VisitingConsultant
@@ -122,4 +127,3 @@ class VisitingConsultantDeleteView(BSModalDeleteView):
 
 
 visiting_consultant_delete = VisitingConsultantDeleteView.as_view()
-
