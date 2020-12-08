@@ -17,7 +17,8 @@ from bootstrap_modal_forms.generic import *
 def vital_sign_flow_list(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+    titles = Client.objects.filter(
+        schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Vital Sign Chart')
     patientid = UserProfile.objects.get(username=username).id
     patients = VitalSignFlow.objects.filter(patient=patientid)
@@ -40,24 +41,26 @@ def vital_sign_flow_list(request, username):
 def vital_sign_flow_create(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+    titles = Client.objects.filter(
+        schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Vital Sign Chart')
     patients = get_object_or_404(UserProfile, username=username)
     profiles = UserProfile.objects.filter(username=username)
-    icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+    icnumbers = UserProfile.objects.filter(
+        username=username).values_list('ic_number', flat=True).first()
     themes = request.session.get('theme')
 
     initial = [{
         'patient': item.full_name,
         'done_by': request.user,
     }
-    for item in profiles]
+        for item in profiles]
 
     initial_formset_factory = [
-    {
-        'patient': patients,
-        'ic_number': icnumbers,
-    }]
+        {
+            'patient': patients,
+            'ic_number': icnumbers,
+        }]
 
     if request.method == 'POST':
         formset = VitalSignFlow_FormSet(request.POST or None)
@@ -111,8 +114,10 @@ class VitalSignFlowUpdateView(BSModalUpdateView):
         form.fields['time'].label = _("Time")
         form.fields['temp'].label = _("Temp")
         form.fields['pulse'].label = _("Pulse")
-        form.fields['blood_pressure_systolic'].label = _("Blood Pressure Systolic")
-        form.fields['blood_pressure_diastolic'].label = _("Blood Pressure Diastolic")
+        form.fields['blood_pressure_systolic'].label = _(
+            "Blood Pressure Systolic")
+        form.fields['blood_pressure_diastolic'].label = _(
+            "Blood Pressure Diastolic")
         form.fields['respiration'].label = _("Respiration")
         form.fields['spo2_percentage'].label = _("SPO2-Percentage")
         form.fields['spo2_o2'].label = _("SPO2-O2")
@@ -138,4 +143,3 @@ class VitalSignFlowDeleteView(BSModalDeleteView):
 
 
 vital_sign_flow_delete = VitalSignFlowDeleteView.as_view()
-

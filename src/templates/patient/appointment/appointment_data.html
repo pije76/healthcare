@@ -5,116 +5,116 @@
 {% load i18n %}
 
 {% block headtitle %}
-	{{ page_title }} | {{ titles.title }}
+    {{ page_title }} | {{ titles.title }}
 {% endblock %}
 
 {% block style %}
-	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
-	<link href="{% static 'css/patient/appointment.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/patient/appointment.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block javascript %}
     <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
-	<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
 {% endblock %}
 
 {% block content %}
 
 <div class="container-fluid">
 
-	{% if remind %}
+    {% if remind %}
 
-	<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<!-- Modal content-->
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" style="margin: 0 auto;">Today Appointment</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				</div>
-				<div class="modal-body">
-					<div id="tanggal"></div>
-				</div>
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" style="margin: 0 auto;">Today Appointment</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <div id="tanggal"></div>
+                </div>
 
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	{% endif %}
+    {% endif %}
 
-	<div class="row formtitle">
-		{{ page_title }}
-	</div>
+    <div class="row formtitle">
+        {{ page_title }}
+    </div>
 
-	<p style="font-size:12px">{% include 'messages.html' %}</p>
+    <p style="font-size:12px">{% include 'messages.html' %}</p>
 
-	{% include 'patient/patient_data.html' %}
+    {% include 'patient/patient_data.html' %}
 
-	<div class="row rounded form_table">
+    <div class="row rounded form_table">
 
-		<div class="col-12">
-			<div class="card">
+        <div class="col-12">
+            <div class="card">
 
-				<div class="card-body">
+                <div class="card-body">
 
-					<div class="table-responsive">
-						{% for item in patients %}
-						<form method="post" action="">
-						{% csrf_token %}
-						{% endfor %}
-							<table id="t_add_row" class="table table-striped table-bordered">
-								<thead class="thead_light">
-									{% if user.is_superuser %}
-									<tr>
-										<th class="text-center">{% trans "Date" %}</th>
-										<th class="text-center">{% trans "Time" %}</th>
-										<th class="text-center">{% trans "Hospital/Clinic" %}</th>
-										<th class="text-center">{% trans "Department" %}</th>
-										<th class="text-center">{% trans "Planning Investigation" %}</th>
-										<th class="text-center">{% trans "Treatment/Order" %}</th>
-										<th class="text-center">{% trans "Action" %}</th>
-									</tr>
-									{% elif user.is_staff or user.is_patient %}
-									<tr>
-										<th class="text-center">{% trans "Date" %}</th>
-										<th class="text-center">{% trans "Time" %}</th>
-										<th class="text-center">{% trans "Hospital/Clinic" %}</th>
-										<th class="text-center">{% trans "Department" %}</th>
-										<th class="text-center">{% trans "Planning Investigation" %}</th>
-										<th class="text-center">{% trans "Treatment/Order" %}</th>
-									</tr>
-									{% endif %}
-								</thead>
+                    <div class="table-responsive">
+                        {% for item in patients %}
+                        <form method="post" action="">
+                        {% csrf_token %}
+                        {% endfor %}
+                            <table id="t_add_row" class="table table-striped table-bordered">
+                                <thead class="thead_light">
+                                    {% if user.is_superuser %}
+                                    <tr>
+                                        <th class="text-center">{% trans "Date" %}</th>
+                                        <th class="text-center">{% trans "Time" %}</th>
+                                        <th class="text-center">{% trans "Hospital/Clinic" %}</th>
+                                        <th class="text-center">{% trans "Department" %}</th>
+                                        <th class="text-center">{% trans "Planning Investigation" %}</th>
+                                        <th class="text-center">{% trans "Treatment/Order" %}</th>
+                                        <th class="text-center">{% trans "Action" %}</th>
+                                    </tr>
+                                    {% elif user.is_staff or user.is_patient %}
+                                    <tr>
+                                        <th class="text-center">{% trans "Date" %}</th>
+                                        <th class="text-center">{% trans "Time" %}</th>
+                                        <th class="text-center">{% trans "Hospital/Clinic" %}</th>
+                                        <th class="text-center">{% trans "Department" %}</th>
+                                        <th class="text-center">{% trans "Planning Investigation" %}</th>
+                                        <th class="text-center">{% trans "Treatment/Order" %}</th>
+                                    </tr>
+                                    {% endif %}
+                                </thead>
 
-								<tbody>
-									{% include 'patient/appointment/partial_list.html' %}
-								</tbody>
-							</table>
-							<br />
-						</form>
-					</div>
+                                <tbody>
+                                    {% include 'patient/appointment/partial_list.html' %}
+                                </tbody>
+                            </table>
+                            <br />
+                        </form>
+                    </div>
 
-				</div>
+                </div>
 
-			</div>
-		</div>
+            </div>
+        </div>
 
-	</div>
+    </div>
 
 
-	<br />
+    <br />
 
-	<div class="row">
-		<div class="col-4">
-			{% for item in profiles %}
-				<a class="btn btn-outline-primary" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Back" %}</a>
-			{% endfor %}
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-4">
+            {% for item in profiles %}
+                <a class="btn btn-outline-primary" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Back" %}</a>
+            {% endfor %}
+        </div>
+    </div>
 
 </div>
 
@@ -124,92 +124,92 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
-	$("#tanggal").css('pointer-events', 'none');
+    $("#tanggal").css('pointer-events', 'none');
 
-	var t = $('#t_add_row').DataTable(
-	{
-		"order": [[ 0, "desc" ]]
-	});
+    var t = $('#t_add_row').DataTable(
+    {
+        "order": [[ 0, "desc" ]]
+    });
 
-	$(".trigger_modal").each(function()
-	{
-		$(this).modalForm(
-		{
-			formURL: $(this).data('form-url')
-		});
-	});
+    $(".trigger_modal").each(function()
+    {
+        $(this).modalForm(
+        {
+            formURL: $(this).data('form-url')
+        });
+    });
 
-	var returnedYear = "{{ datetimeyear.str_datetime|safe }}";
-	var returnedMonth = "{{ datetimemonth.str_datetime|safe }}";
-	var returnedDay = "{{ datetimeday.str_datetime|safe }}";
-	var returnedHour = "{{ datetimehour.str_datetime|safe }}";
-	var returnedMinute = "{{ datetimeminute.str_datetime|safe }}";
+    var returnedYear = "{{ datetimeyear.str_datetime|safe }}";
+    var returnedMonth = "{{ datetimemonth.str_datetime|safe }}";
+    var returnedDay = "{{ datetimeday.str_datetime|safe }}";
+    var returnedHour = "{{ datetimehour.str_datetime|safe }}";
+    var returnedMinute = "{{ datetimeminute.str_datetime|safe }}";
 
-	returnedYear = returnedYear.toString();
-	returnedMonth = returnedMonth.toString();
-	returnedDay = returnedDay.toString();
-	returnedHour = returnedHour.toString();
-	returnedMinute = returnedMinute.toString();
+    returnedYear = returnedYear.toString();
+    returnedMonth = returnedMonth.toString();
+    returnedDay = returnedDay.toString();
+    returnedHour = returnedHour.toString();
+    returnedMinute = returnedMinute.toString();
 
     var mydate = new Date(returnedYear, returnedMonth, returnedDay, returnedHour, returnedMinute);
 
-	$("#myModal").modal("show");
+    $("#myModal").modal("show");
 
-	$.extend(true, $.fn.datetimepicker.defaults, {
-		icons: {
-			time: 'far fa-clock',
-			date: 'far fa-calendar',
-			up: '',
-			down: '',
-			previous: '',
-			next: '',
-			today: 'fas fa-calendar-check',
-			clear: 'far fa-trash-alt',
-			close: 'far fa-times-circle'
-		}
-	});
+    $.extend(true, $.fn.datetimepicker.defaults, {
+        icons: {
+            time: 'far fa-clock',
+            date: 'far fa-calendar',
+            up: '',
+            down: '',
+            previous: '',
+            next: '',
+            today: 'fas fa-calendar-check',
+            clear: 'far fa-trash-alt',
+            close: 'far fa-times-circle'
+        }
+    });
 
-	$('#tanggal').datetimepicker({
-		format: 'DD-MM-YYYY HH:mm',
-		inline: true,
-		useCurrent:false,
-		defaultDate: mydate,
-		sideBySide: true,
-		showTodayButton: false,
-		showClear: false,
-		showClose: false,
-	});
+    $('#tanggal').datetimepicker({
+        format: 'DD-MM-YYYY HH:mm',
+        inline: true,
+        useCurrent:false,
+        defaultDate: mydate,
+        sideBySide: true,
+        showTodayButton: false,
+        showClear: false,
+        showClose: false,
+    });
 
 
-	$.fn.datetimepicker.defaults.icons = {
-		time: 'fas fa-clock-o',
-		date: 'fas fa-calendar',
-		up: 'fas fa-chevron-up',
-		down: 'fas fa-chevron-down',
-		previous: 'fas fa-chevron-left',
-		next: 'fas fa-chevron-right',
-		today: 'fas fa-calendar-alt',
-		clear: 'fas fa-trash',
-		close: 'fas fa-times'
-	};
+    $.fn.datetimepicker.defaults.icons = {
+        time: 'fas fa-clock-o',
+        date: 'fas fa-calendar',
+        up: 'fas fa-chevron-up',
+        down: 'fas fa-chevron-down',
+        previous: 'fas fa-chevron-left',
+        next: 'fas fa-chevron-right',
+        today: 'fas fa-calendar-alt',
+        clear: 'fas fa-trash',
+        close: 'fas fa-times'
+    };
 
-	$('[id^="id_date_time"]').wrapAll("<div class='row' style='border:none;'></div>");
-	$('[id^="id_date_time"]').wrap("<div class='col' style='border:none;'></div>");
-	$("#id_date_time_0").datetimepicker(
-	{
-//		format: 'L',
-		format:'DD-MM-YYYY',
-//		defaultDate: currentDate,
-		showTodayButton: true,
-		showClear: true,
-		showClose: true,
-	});
+    $('[id^="id_date_time"]').wrapAll("<div class='row' style='border:none;'></div>");
+    $('[id^="id_date_time"]').wrap("<div class='col' style='border:none;'></div>");
+    $("#id_date_time_0").datetimepicker(
+    {
+//      format: 'L',
+        format:'DD-MM-YYYY',
+//      defaultDate: currentDate,
+        showTodayButton: true,
+        showClear: true,
+        showClose: true,
+    });
 
-	$("#id_date_time_1").datetimepicker(
-	{
-//		format: 'LT',
-		format: 'HH:mm'
-	});
+    $("#id_date_time_1").datetimepicker(
+    {
+//      format: 'LT',
+        format: 'HH:mm'
+    });
 });
 </script>
 {% endblock %}

@@ -8,14 +8,14 @@
 <form method="post" action="" enctype="multipart/form-data">
 {% csrf_token %}
 
-	<div class="modal-header">
-		<h4 class="modal-title">{% trans "Edit Dressing" %}</h4>
-		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-	</div>
+    <div class="modal-header">
+        <h4 class="modal-title">{% trans "Edit Dressing" %}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
 
-	<div class="modal-body">
+    <div class="modal-body">
         <div class="form-group">
-        	{{ form.patient|as_crispy_field }}
+            {{ form.patient|as_crispy_field }}
             {{ form.date|as_crispy_field }}
             {{ form.time|as_crispy_field }}
             {{ form.frequency_dressing|as_crispy_field }}
@@ -23,15 +23,15 @@
             {{ form.wound_location|as_crispy_field }}
             {{ form.wound_condition|as_crispy_field }}
             {{ form.photos|as_crispy_field }}
-        	{{ form.note|as_crispy_field }}
+            {{ form.note|as_crispy_field }}
             {{ form.done_by|as_crispy_field }}
         </div>
 
-	</div>
+    </div>
 
-	<div class="modal-footer">
-		<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-		<button type="submit" class="btn btn-primary"><i class="icon wb-plus" aria-hidden="true"></i>Submit</button>
-	</div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary"><i class="icon wb-plus" aria-hidden="true"></i>Submit</button>
+    </div>
 
 </form>

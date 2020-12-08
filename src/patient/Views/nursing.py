@@ -17,7 +17,8 @@ from bootstrap_modal_forms.generic import *
 def nursing_list(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+    titles = Client.objects.filter(
+        schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Nursing Report')
     patientid = UserProfile.objects.get(username=username).id
     patients = Nursing.objects.filter(patient=patientid)
@@ -40,11 +41,13 @@ def nursing_list(request, username):
 def nursing_create(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+    titles = Client.objects.filter(
+        schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Nursing Report')
     patients = get_object_or_404(UserProfile, username=username)
     profiles = UserProfile.objects.filter(username=username)
-    icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+    icnumbers = UserProfile.objects.filter(
+        username=username).values_list('ic_number', flat=True).first()
     themes = request.session.get('theme')
 
     initial = {
@@ -57,7 +60,7 @@ def nursing_create(request, username):
         'nasogastric_tube_inserted_by': request.user,
         'nasogastric_remove_by': request.user,
     }
-    for item in profiles]
+        for item in profiles]
 
     if request.method == 'POST':
         formset = Nursing_FormSet(request.POST or None)

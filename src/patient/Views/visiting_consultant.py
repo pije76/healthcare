@@ -17,7 +17,8 @@ from bootstrap_modal_forms.generic import *
 def visiting_consultant_list(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+    titles = Client.objects.filter(
+        schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Visiting Consultant Records')
     patientid = UserProfile.objects.get(username=username).id
     patients = VisitingConsultant.objects.filter(patient=patientid)
@@ -40,24 +41,26 @@ def visiting_consultant_list(request, username):
 def visiting_consultant_create(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+    titles = Client.objects.filter(
+        schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Visiting Consultant Records')
     patients = get_object_or_404(UserProfile, username=username)
     profiles = UserProfile.objects.filter(username=username)
-    icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+    icnumbers = UserProfile.objects.filter(
+        username=username).values_list('ic_number', flat=True).first()
     themes = request.session.get('theme')
 
     initial = [{
         'patient': item.full_name,
         'done_by': request.user,
     }
-    for item in profiles]
+        for item in profiles]
 
     initial_formset_factory = [
-    {
-        'patient': patients,
-        'ic_number': icnumbers,
-    }]
+        {
+            'patient': patients,
+            'ic_number': icnumbers,
+        }]
 
     if request.method == 'POST':
         formset = VisitingConsultant_FormSet(request.POST or None)

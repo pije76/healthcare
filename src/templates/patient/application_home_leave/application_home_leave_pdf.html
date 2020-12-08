@@ -4,14 +4,14 @@
 {% load selectable_tags %}
 
 {% block style %}
-	<link href="{% static 'css/pdf/bootstrap-pdf.css' %}" rel="stylesheet" type="text/css" />
-	<link href="{% static 'css/pdf/pdf.css' %}" rel="stylesheet" type="text/css" />
-	<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
-	<link href="{% static 'css/navmenu.css' %}" rel="stylesheet" type="text/css" />
-	<link href="{% static 'css/sprite-flags-16x16.css' %}" rel="stylesheet" type="text/css" />
-	<link href="{% static 'css/rowGroup.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
-	<link href="{% static 'css/patient/application_home_leave.css' %}" rel="stylesheet" type="text/css">
-	<link href="{% static 'selectable/css/dj.selectable.css' %}" type="text/css" media="all" rel="stylesheet">
+    <link href="{% static 'css/pdf/bootstrap-pdf.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/pdf/pdf.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/navmenu.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/sprite-flags-16x16.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/rowGroup.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/patient/application_home_leave.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'selectable/css/dj.selectable.css' %}" type="text/css" media="all" rel="stylesheet">
 {% endblock %}
 
 {% block extrahead %}
@@ -21,153 +21,153 @@
 
 <div class="container">
 
-	<table class="table-borderless">
-		<thead>
-			{{ page_title }}
-		</thead>
+    <table class="table-borderless">
+        <thead>
+            {{ page_title }}
+        </thead>
 
-		<p style="font-size:12px">{% include 'messages.html' %}</p>
+        <p style="font-size:12px">{% include 'messages.html' %}</p>
 
-		<form method="post">
-		{% csrf_token %}
+        <form method="post">
+        {% csrf_token %}
 
-			{% for item in application_data %}
-			<tbody>
-				<tr>
-					<td class="col_25">
-						{% trans "Name" %}:
-					</td>
-					<td class="col_75">
-						{{ item.patient }}
-					</td>
-				</tr>
+            {% for item in application_data %}
+            <tbody>
+                <tr>
+                    <td class="col_25">
+                        {% trans "Name" %}:
+                    </td>
+                    <td class="col_75">
+                        {{ item.patient }}
+                    </td>
+                </tr>
 
-				<tr>
-					<td class="col_25">
-						{% trans "I/C No" %}:
-					</td>
-					<td class="col_75">
-						{{ item.ic_number }}
-					</td>
-				</tr>
+                <tr>
+                    <td class="col_25">
+                        {% trans "I/C No" %}:
+                    </td>
+                    <td class="col_75">
+                        {{ item.ic_number }}
+                    </td>
+                </tr>
 
-				<tr>
-					<td class="col_25">
-						{% trans "I" %},
-					</td>
-					<td class="col_25">
-						{{ item.family_name }}
-					</td>
-					<td class="col_25">
-						{% trans "NRIC No." %}:
-					</td>
-					<td class="col_75">
-						{{ item.family_ic_number }}
-					</td>
-				</tr>
+                <tr>
+                    <td class="col_25">
+                        {% trans "I" %},
+                    </td>
+                    <td class="col_25">
+                        {{ item.family_name }}
+                    </td>
+                    <td class="col_25">
+                        {% trans "NRIC No." %}:
+                    </td>
+                    <td class="col_75">
+                        {{ item.family_ic_number }}
+                    </td>
+                </tr>
 
-				<tr>
-					<td class="col_25">
-						{% trans "of" %}
-					</td>
-					<td class="col_25">
-						{{ item.family_relationship }}
-					</td>
-					<td class="col_25">
-						{% trans "Tel No." %}:
-					</td>
-					<td class="col_75">
-						{{ item.family_phone }}
-					</td>
+                <tr>
+                    <td class="col_25">
+                        {% trans "of" %}
+                    </td>
+                    <td class="col_25">
+                        {{ item.family_relationship }}
+                    </td>
+                    <td class="col_25">
+                        {% trans "Tel No." %}:
+                    </td>
+                    <td class="col_75">
+                        {{ item.family_phone }}
+                    </td>
 
-					<td class="col_100">
-						{% trans "hereby wish to apply from" %} {{ titles }} {% trans "for self/patient" %}
-					</td>
-					<td class="col_50">
-						{{ item.patient }}
-					</td>
-				</tr>
+                    <td class="col_100">
+                        {% trans "hereby wish to apply from" %} {{ titles }} {% trans "for self/patient" %}
+                    </td>
+                    <td class="col_50">
+                        {{ item.patient }}
+                    </td>
+                </tr>
 
-				<tr>
-					<td class="col_100">
-						{% trans "to leave the care center at own risk as per attachment." %}
-						<br />
-						<br />
-						{% trans "I am fully responsible towards myself/this patient whilst out of the center," %} {{ titles }} {% trans "and its staff of all liabilities in the event of my/the patient’s decline in health or any accidents which may occur whilst I am/said patient is out of the center." %}
-					</td>
-				</tr>
+                <tr>
+                    <td class="col_100">
+                        {% trans "to leave the care center at own risk as per attachment." %}
+                        <br />
+                        <br />
+                        {% trans "I am fully responsible towards myself/this patient whilst out of the center," %} {{ titles }} {% trans "and its staff of all liabilities in the event of my/the patient’s decline in health or any accidents which may occur whilst I am/said patient is out of the center." %}
+                    </td>
+                </tr>
 
-				<tr>
-					<td class="col_50">
-						{% trans "Signature or Thumbprint of" %}
-					</td>
+                <tr>
+                    <td class="col_50">
+                        {% trans "Signature or Thumbprint of" %}
+                    </td>
 
-					<td class="col_50">
-						{{ item.family_name }}
-						<b>({% trans "Patient/Family Responsible" %})</b>
-					</td>
-				</tr>
+                    <td class="col_50">
+                        {{ item.family_name }}
+                        <b>({% trans "Patient/Family Responsible" %})</b>
+                    </td>
+                </tr>
 
-				<tr>
-					<td class="col_50">
-						{{ item.family_relationship }}
-						<b>({% trans "Relationship" %})</b>
-					</td>
+                <tr>
+                    <td class="col_50">
+                        {{ item.family_relationship }}
+                        <b>({% trans "Relationship" %})</b>
+                    </td>
 
-					<td class="col_50">
-						{{ item.family_ic_number }}
-						<b>({% trans "IC No." %})</b>
-					</td>
-				</tr>
+                    <td class="col_50">
+                        {{ item.family_ic_number }}
+                        <b>({% trans "IC No." %})</b>
+                    </td>
+                </tr>
 
-				<tr>
-					<td class="col_25">
-						{% trans "Witnessed by" %}:
-					</td>
-				</tr>
-				<br />
-				<tr>
-					<td class="col_25">
-						{% trans "Name" %}:
-					</td>
-					<td class="col_25">
-						{{ item.family_name }}
-					</td>
-				</tr>
+                <tr>
+                    <td class="col_25">
+                        {% trans "Witnessed by" %}:
+                    </td>
+                </tr>
+                <br />
+                <tr>
+                    <td class="col_25">
+                        {% trans "Name" %}:
+                    </td>
+                    <td class="col_25">
+                        {{ item.family_name }}
+                    </td>
+                </tr>
 
-				<tr>
-					<td class="col_25">
-						{% trans "Designation" %}:
-					</td>
-					<td class="col_25">
-						{{ item.witnessed_designation }}
-					</td>
-				</tr>
+                <tr>
+                    <td class="col_25">
+                        {% trans "Designation" %}:
+                    </td>
+                    <td class="col_25">
+                        {{ item.witnessed_designation }}
+                    </td>
+                </tr>
 
-				<tr>
-					<td class="col_25">
-						{% trans "Signature" %}:
-					</td>
-					<td class="col_25">
-						{{ item.witnessed_signature }}
-					</td>
-				</tr>
-				<br />
-				<tr>
-					<td class="col_25">
-						{% trans "Date" %}:
-					</td>
-					<td class="col_25">
-						{{ item.witnessed_date }}
-					</td>
-				</tr>
+                <tr>
+                    <td class="col_25">
+                        {% trans "Signature" %}:
+                    </td>
+                    <td class="col_25">
+                        {{ item.witnessed_signature }}
+                    </td>
+                </tr>
+                <br />
+                <tr>
+                    <td class="col_25">
+                        {% trans "Date" %}:
+                    </td>
+                    <td class="col_25">
+                        {{ item.witnessed_date }}
+                    </td>
+                </tr>
 
-				<b>{% trans "Note" %}</b>:<br />	{% trans "This form must be signed by the patient, carrier or a member of the family responsible if patient is physically and mentally unfit." %}
-			</tbody>
-			{% endfor %}
+                <b>{% trans "Note" %}</b>:<br />    {% trans "This form must be signed by the patient, carrier or a member of the family responsible if patient is physically and mentally unfit." %}
+            </tbody>
+            {% endfor %}
 
-		</form>
-	</table>
+        </form>
+    </table>
 </div>
 
 {% endblock %}
@@ -180,37 +180,37 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
-//	function newParameters(query)
-//	{
-//		query.full_name = $('#id_patient').val();
-//		console.log("query: ", query.full_name);
-//	}
-//	$('#id_family_name').djselectable('option', 'prepareQuery', newParameters);
+//  function newParameters(query)
+//  {
+//      query.full_name = $('#id_patient').val();
+//      console.log("query: ", query.full_name);
+//  }
+//  $('#id_family_name').djselectable('option', 'prepareQuery', newParameters);
 
-//	$('#id_patient').djselectable('option', 'minLength', 3);
-//	$('#id_family_name').djselectable('option', 'minLength', 3);
+//  $('#id_patient').djselectable('option', 'minLength', 3);
+//  $('#id_family_name').djselectable('option', 'minLength', 3);
 //});
 
-	$("#id_patient").change(function()
-	{
-		var url = $("#dataForm").attr("data-url");
-		var fullnameId = $(this).val();
-		console.log("url: ", url);
-		console.log("fullnameId: ", fullnameId);
-		$.ajax(
-		{
-			url: url,
-			data:
-			{
-				'full_name': fullnameId,
-			},
+    $("#id_patient").change(function()
+    {
+        var url = $("#dataForm").attr("data-url");
+        var fullnameId = $(this).val();
+        console.log("url: ", url);
+        console.log("fullnameId: ", fullnameId);
+        $.ajax(
+        {
+            url: url,
+            data:
+            {
+                'full_name': fullnameId,
+            },
 
-			success: function(data)
-			{
-				$("#id_ic_number").val(data);
-			},
-		});
-	});
+            success: function(data)
+            {
+                $("#id_ic_number").val(data);
+            },
+        });
+    });
 
 });
 </script>

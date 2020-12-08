@@ -8,7 +8,7 @@ from .models import *
 
 
 #@register('full_name')
-#class FullNameLookup(LookupChannel):
+# class FullNameLookup(LookupChannel):
 #    model = UserProfile
 
 #    def get_query(self, q, request):

@@ -22,7 +22,8 @@ from bootstrap_modal_forms.generic import *
 def urinary_list(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+    titles = Client.objects.filter(
+        schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Urinary Catheter Chart')
     patientid = UserProfile.objects.get(username=username).id
     patients = Urinary.objects.filter(patient=patientid)
@@ -45,11 +46,13 @@ def urinary_list(request, username):
 def urinary_create(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+    titles = Client.objects.filter(
+        schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Urinary Catheter Chart')
     patients = get_object_or_404(UserProfile, username=username)
     profiles = UserProfile.objects.filter(username=username)
-    icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+    icnumbers = UserProfile.objects.filter(
+        username=username).values_list('ic_number', flat=True).first()
     themes = request.session.get('theme')
 
     initial_formset = [{
@@ -57,7 +60,7 @@ def urinary_create(request, username):
         'urinary_catheter_inserted_by': request.user,
         'urinary_catheter_remove_by': request.user,
     }
-    for item in profiles]
+        for item in profiles]
 
     if request.method == 'POST':
         formset = Urinary_FormSet(request.POST or None)
@@ -70,8 +73,10 @@ def urinary_create(request, username):
                 profile.urinary_catheter_size = item.cleaned_data['urinary_catheter_size']
                 profile.urinary_catheter_type = item.cleaned_data['urinary_catheter_type']
                 profile.urinary_catheter_due_date = item.cleaned_data['urinary_catheter_due_date']
-                profile.urinary_catheter_inserted_by = item.cleaned_data['urinary_catheter_inserted_by']
-                profile.urinary_catheter_remove_date = item.cleaned_data['urinary_catheter_remove_date']
+                profile.urinary_catheter_inserted_by = item.cleaned_data[
+                    'urinary_catheter_inserted_by']
+                profile.urinary_catheter_remove_date = item.cleaned_data[
+                    'urinary_catheter_remove_date']
                 profile.urinary_catheter_remove_by = item.cleaned_data['urinary_catheter_remove_by']
                 profile.save()
 

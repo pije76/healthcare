@@ -9,51 +9,51 @@
 {% endblock %}
 
 {% block style %}
-	<link href="{% static 'css/staff/staff_records.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/staff/staff_records.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block extrahead %}
-	{{ form.media }}
+    {{ form.media }}
 {% endblock %}
 
 {% block content %}
 
 <div class="container-fluid">
 
-	<div class="row formtitle">
-		{{ page_title }}
-	</div>
+    <div class="row formtitle">
+        {{ page_title }}
+    </div>
 
-	<form method="post">
-	{% csrf_token %}
+    <form method="post">
+    {% csrf_token %}
 
-		<div class="row rounded form_table">
+        <div class="row rounded form_table">
 
-			<table id="form_set" class="table table-bordered">
-				<thead class="thead_light">
-					<tr>
-						<th class="text-center">{% trans "Name" %}</th>
-						<th class="text-center">{% trans "Parent" %}</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>{{ form.name|as_crispy_field }}</td>
-						<td>{{ form.parent|as_crispy_field }}</td>
-					</tr>
-				</tbody>
-			</table>
+            <table id="form_set" class="table table-bordered">
+                <thead class="thead_light">
+                    <tr>
+                        <th class="text-center">{% trans "Name" %}</th>
+                        <th class="text-center">{% trans "Parent" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ form.name|as_crispy_field }}</td>
+                        <td>{{ form.parent|as_crispy_field }}</td>
+                    </tr>
+                </tbody>
+            </table>
 
-		</div>
+        </div>
 
-		<div class="row">
+        <div class="row">
 
-			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
-			<a class="btn btn-danger kirim" href="{% url 'data:data_list' %}">{% trans "Cancel" %}</a>
+            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+            <a class="btn btn-danger kirim" href="{% url 'data:data_list' %}">{% trans "Cancel" %}</a>
 
-		</div>
+        </div>
 
-	</form>
+    </form>
 
 </div>
 

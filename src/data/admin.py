@@ -13,23 +13,23 @@ from mptt.admin import MPTTModelAdmin, DraggableMPTTAdmin
 
 
 class AllergyAdmin(admin.ModelAdmin):
-	list_display = [
-		'id',
-		'patient',
-		'allergy_drug',
-		'allergy_food',
-		'allergy_others',
-	]
-	autocomplete_fields = ['patient', ]
-	ModelAdmin.ordering = ('id',)
+    list_display = [
+        'id',
+        'patient',
+        'allergy_drug',
+        'allergy_food',
+        'allergy_others',
+    ]
+    autocomplete_fields = ['patient', ]
+    ModelAdmin.ordering = ('id',)
 
 
 class MedicineAdmin(admin.ModelAdmin):
-	list_display = [
-		'id',
-		'drug_name',
-	]
-	ModelAdmin.ordering = ('id',)
+    list_display = [
+        'id',
+        'drug_name',
+    ]
+    ModelAdmin.ordering = ('id',)
 
 
 # Register your models here.

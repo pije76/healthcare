@@ -13,91 +13,91 @@ from .models import *
 
 
 class FullnameLookup(ModelLookup):
-	model = UserProfile
-	search_fields = (
-		'full_name__icontains',
-	)
-	filters = {'is_patient': True, }
+    model = UserProfile
+    search_fields = (
+        'full_name__icontains',
+    )
+    filters = {'is_patient': True, }
 
 
 class StaffnameLookup(ModelLookup):
-	model = UserProfile
-	search_fields = (
-		'full_name__icontains',
-	)
-	filters = {'is_staff': True, }
+    model = UserProfile
+    search_fields = (
+        'full_name__icontains',
+    )
+    filters = {'is_staff': True, }
 
 
 @results_decorator
 def patient_required(request):
-	user = getattr(request, 'user', None)
-	if user is None or not user.is_authenticated:
-		return HttpResponse(status=401)
+    user = getattr(request, 'user', None)
+    if user is None or not user.is_authenticated:
+        return HttpResponse(status=401)
 
 
 @patient_required
 class FamilyNameLookup(ModelLookup):
-	model = Family
-	search_fields = (
-#		'patient',
-#		'patient__icontains',
-		'ec_name__icontains',
-	)
+    model = Family
+    search_fields = (
+        #		'patient',
+        #		'patient__icontains',
+        'ec_name__icontains',
+    )
 
 
 class FamilyLookup(ModelLookup):
-	model = Admission
-	search_fields = (
-#	full_name__icontains',
-		'patient__icontains',
-#		'patient__full_name__icontains',
-#		'ic_number__icontains',
-		'ec_name__icontains',
-	)
+    model = Admission
+    search_fields = (
+        #	full_name__icontains',
+        'patient__icontains',
+        #		'patient__full_name__icontains',
+        #		'ic_number__icontains',
+        'ec_name__icontains',
+    )
 
-	def get_query(self, request, term):
-		results = super().get_query(request, term)
-		patient = request.GET.get('patient', '')
-		if patient:
-			results = results.filter(patient=patient)
-		return results
+    def get_query(self, request, term):
+        results = super().get_query(request, term)
+        patient = request.GET.get('patient', '')
+        if patient:
+            results = results.filter(patient=patient)
+        return results
 
-	def get_item_label(self, item):
-		#		return "%s, %s" % (item.full_name, item.ec_ic_number)
-		#		return "%s" % (item.full_name)
-		return "%s" % (item.patient)
+    def get_item_label(self, item):
+        #		return "%s, %s" % (item.full_name, item.ec_ic_number)
+        #		return "%s" % (item.full_name)
+        return "%s" % (item.patient)
 #		return item.ec_ic_number
 
-	def get_item_value(self, item):
-		#		return "%s" % (item.full_name)
-		return "%s" % (item.patient)
+    def get_item_value(self, item):
+        #		return "%s" % (item.full_name)
+        return "%s" % (item.patient)
 #		return item.ec_ic_number
 
 
 class ECNumberLookup(ModelLookup):
-	model = Admission
-	search_fields = (
-		'patient__full_name__icontains',
-		#		'full_name__icontains',
-		'ec_name__icontains',
-	)
+    model = Admission
+    search_fields = (
+        'patient__full_name__icontains',
+        #		'full_name__icontains',
+        'ec_name__icontains',
+    )
 
 #	def get_query(self, request, item):
 #	def get_query(self, item):
 #		data = ['Foo', 'Bar']
 #		return [x for x in data if x.startswith(item)]
 
-	def get_item_label(self, item):
-		#		return u"%s" % (item.get_ec_name)
-		return item.ec_name
+    def get_item_label(self, item):
+        #		return u"%s" % (item.get_ec_name)
+        return item.ec_name
 #		return item.patient.full_name
 #		return self.item.patient
 
 #	def get_item_id(self, item):
 #		return u"%s" % (item.get_ec_name)
 
-	def get_item_value(self, item):
-		return item.patient.full_name
+    def get_item_value(self, item):
+        return item.patient.full_name
 #		return item.ec_name
 #		return self.item.patient
 

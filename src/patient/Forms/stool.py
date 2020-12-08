@@ -14,92 +14,107 @@ from bootstrap_modal_forms.forms import *
 
 
 class Stool_ModelForm(BSModalModelForm):
-	class Meta:
-		model = Stool
-		fields = [
-			'patient',
-			'date',
-			'time',
-			'frequency',
-			'consistency',
-			'amount',
-			'remark',
-			'done_by',
-		]
-		widgets = {
-			'patient': forms.HiddenInput(),
-		}
+    class Meta:
+        model = Stool
+        fields = [
+            'patient',
+            'date',
+            'time',
+            'frequency',
+            'consistency',
+            'amount',
+            'remark',
+            'done_by',
+        ]
+        widgets = {
+            'patient': forms.HiddenInput(),
+        }
 
 #	patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
-	time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
-	frequency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=STOOL_FREQUENCY_CHOICES)
-	consistency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=CONSISTENCY_CHOICES)
-	amount = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=AMOUNT_CHOICES)
-	remark = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	done_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'readonly': 'readonly'}))
+    date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS,
+                           widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
+    time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS,
+                           widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
+    frequency = forms.ChoiceField(required=False, label="", widget=forms.Select(
+        attrs={'class': "form-control"}), choices=STOOL_FREQUENCY_CHOICES)
+    consistency = forms.ChoiceField(required=False, label="", widget=forms.Select(
+        attrs={'class': "form-control"}), choices=CONSISTENCY_CHOICES)
+    amount = forms.ChoiceField(required=False, label="", widget=forms.Select(
+        attrs={'class': "form-control"}), choices=AMOUNT_CHOICES)
+    remark = forms.CharField(required=False, label="", widget=forms.TextInput(
+        attrs={'class': "form-control"}))
+    done_by = forms.CharField(required=False, label="", widget=forms.TextInput(
+        attrs={'class': "form-control", 'readonly': 'readonly'}))
 
 
 class Stool_Form(BSModalForm):
-#	def __init__(self, *args, **kwargs):
-#	def __init__(self, *args, user, **kwargs):
-#	def __init__(self, done_by, *args, **kwargs):
-#	def __init__(self, data, **kwargs):
-#		initial = kwargs.get("initial", {})
-#		data = MultiValueDict({**{k: [v] for k, v in initial.items()}, **data})
-#		self.request = kwargs.pop('request', None)
-#		self.user = kwargs.pop('user', None)
-#		full_name = kwargs.pop('full_name')
-#		done_by = kwargs.pop('done_by', None)
-#		self.user = user
-#		super().__init__(*args, **kwargs)
-#		super().__init__(data, **kwargs)
-#		self.fields['done_by'].queryset = UserProfile.objects.filter(done_by=done_by)
-#		initial = kwargs.pop('initial', {})
-#		self.done_by = kwargs.pop('done_by')
-#		self.done_by = request.user
-#		self.fields['done_by'] = request.user
-#		for item in self.initial_fields:
-#			if hasattr(self.done_by, item):
-#				initial[item] = initial.get(item) or getattr(self.done_by, item)
-#		kwargs['initial'] = initial
-#		super().__init__(*args, **kwargs)
+    #	def __init__(self, *args, **kwargs):
+    #	def __init__(self, *args, user, **kwargs):
+    #	def __init__(self, done_by, *args, **kwargs):
+    #	def __init__(self, data, **kwargs):
+    #		initial = kwargs.get("initial", {})
+    #		data = MultiValueDict({**{k: [v] for k, v in initial.items()}, **data})
+    #		self.request = kwargs.pop('request', None)
+    #		self.user = kwargs.pop('user', None)
+    #		full_name = kwargs.pop('full_name')
+    #		done_by = kwargs.pop('done_by', None)
+    #		self.user = user
+    #		super().__init__(*args, **kwargs)
+    #		super().__init__(data, **kwargs)
+    #		self.fields['done_by'].queryset = UserProfile.objects.filter(done_by=done_by)
+    #		initial = kwargs.pop('initial', {})
+    #		self.done_by = kwargs.pop('done_by')
+    #		self.done_by = request.user
+    #		self.fields['done_by'] = request.user
+    #		for item in self.initial_fields:
+    #			if hasattr(self.done_by, item):
+    #				initial[item] = initial.get(item) or getattr(self.done_by, item)
+    #		kwargs['initial'] = initial
+    #		super().__init__(*args, **kwargs)
 
-	patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    patient = forms.CharField(required=False, label="", widget=forms.TextInput(
+        attrs={'class': "form-control"}))
 #	patient = forms.ModelChoiceField(queryset=None, widget=forms.Select, required=True)
-	date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
-	time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
-	frequency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=STOOL_FREQUENCY_CHOICES)
-	consistency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=CONSISTENCY_CHOICES)
-	amount = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=AMOUNT_CHOICES)
-	remark = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	done_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'readonly': 'readonly'}))
+    date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS,
+                           widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
+    time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS,
+                           widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
+    frequency = forms.ChoiceField(required=False, label="", widget=forms.Select(
+        attrs={'class': "form-control"}), choices=STOOL_FREQUENCY_CHOICES)
+    consistency = forms.ChoiceField(required=False, label="", widget=forms.Select(
+        attrs={'class': "form-control"}), choices=CONSISTENCY_CHOICES)
+    amount = forms.ChoiceField(required=False, label="", widget=forms.Select(
+        attrs={'class': "form-control"}), choices=AMOUNT_CHOICES)
+    remark = forms.CharField(required=False, label="", widget=forms.TextInput(
+        attrs={'class': "form-control"}))
+    done_by = forms.CharField(required=False, label="", widget=forms.TextInput(
+        attrs={'class': "form-control", 'readonly': 'readonly'}))
 
-	def clean_remark(self):
-		return self.cleaned_data['remark'].capitalize()
+    def clean_remark(self):
+        return self.cleaned_data['remark'].capitalize()
 
 
 Stool_ModelFormSet = modelformset_factory(
-	Stool,
-	form=Stool_ModelForm,
-	extra=0,
-#	max_num=1,
-#    can_delete=False
+    Stool,
+    form=Stool_ModelForm,
+    extra=0,
+    #	max_num=1,
+    #    can_delete=False
 )
 
 Stool_InlineFormSet = inlineformset_factory(
-	UserProfile,
-	Stool,
-	form=Stool_ModelForm,
-	extra=0,
-#	max_num=1,
-#    can_delete=False
+    UserProfile,
+    Stool,
+    form=Stool_ModelForm,
+    extra=0,
+    #	max_num=1,
+    #    can_delete=False
 )
 
 Stool_FormSet = formset_factory(
-	Stool_Form,
-#   formset = Stool_ModelForm,
-	extra=0,
-#	max_num=0,
-	#   can_delete=True,
+    Stool_Form,
+    #   formset = Stool_ModelForm,
+    extra=0,
+    #	max_num=0,
+    #   can_delete=True,
 )

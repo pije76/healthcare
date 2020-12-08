@@ -9,8 +9,8 @@
 {% endblock %}
 
 {% block style %}
-	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
-	<link href="{% static 'css/patient/nasogastric.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/patient/nasogastric.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block javascript %}
@@ -18,67 +18,67 @@
 {% endblock %}
 
 {% block extrahead %}
-	{{ formset.media }}
+    {{ formset.media }}
 {% endblock %}
 
 {% block content %}
 
 <div class="container-fluid">
 
-	<div class="row formtitle">
-		{{ page_title }}
-	</div>
+    <div class="row formtitle">
+        {{ page_title }}
+    </div>
 
-	<p style="font-size:12px">{% include 'messages.html' %}</p>
+    <p style="font-size:12px">{% include 'messages.html' %}</p>
 
-	{% include 'patient/patient_formset.html' %}
+    {% include 'patient/patient_formset.html' %}
 
-	<form method="post">
-	{% csrf_token %}
-	{{ formset.management_form }}
+    <form method="post">
+    {% csrf_token %}
+    {{ formset.management_form }}
 
-		<div class="row rounded form_table">
+        <div class="row rounded form_table">
 
-			<table id="form_set" class="table table-bordered">
-				<thead class="thead_light">
-					<tr>
-						<th class="text-center">{% trans "Date" %}</th>
-						<th class="text-center">{% trans "Size (G)" %}</th>
-						<th class="text-center" style="width:10%;">{% trans "Type" %}</th>
-						<th class="text-center">{% trans "Location" %}</th>
-						<th class="text-center">{% trans "Due date" %}</th>
-						<th class="text-center">{% trans "Inserted by" %}</th>
-						<th class="text-center">{% trans "Remove date" %}</th>
-						<th class="text-center remove_by">{% trans "Remove by" %}</th>
-						<th class="text-center">{% trans "Action" %}</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for item in formset.forms %}
-					<tr id="{{ item.prefix }}-row">
-						<td>{{ item.nasogastric_tube_date|as_crispy_field }}</td>
-						<td>{{ item.nasogastric_tube_size|as_crispy_field }}</td>
-						<td>{{ item.nasogastric_tube_type|as_crispy_field }}</td>
-						<td>{{ item.nasogastric_tube_location|as_crispy_field }}</td>
-						<td>{{ item.nasogastric_tube_due_date|as_crispy_field }}</td>
-						<td>{{ item.nasogastric_tube_inserted_by|as_crispy_field }}</td>
-						<td>{{ item.nasogastric_remove_date|as_crispy_field }}</td>
-						<td class="action">{{ item.nasogastric_remove_by|as_crispy_field }}</td>
-						<td></td>
-					</tr>
-					<tr class="tambah_row"></tr>
-					{% endfor %}
-				</tbody>
-			</table>
+            <table id="form_set" class="table table-bordered">
+                <thead class="thead_light">
+                    <tr>
+                        <th class="text-center">{% trans "Date" %}</th>
+                        <th class="text-center">{% trans "Size (G)" %}</th>
+                        <th class="text-center" style="width:10%;">{% trans "Type" %}</th>
+                        <th class="text-center">{% trans "Location" %}</th>
+                        <th class="text-center">{% trans "Due date" %}</th>
+                        <th class="text-center">{% trans "Inserted by" %}</th>
+                        <th class="text-center">{% trans "Remove date" %}</th>
+                        <th class="text-center remove_by">{% trans "Remove by" %}</th>
+                        <th class="text-center">{% trans "Action" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in formset.forms %}
+                    <tr id="{{ item.prefix }}-row">
+                        <td>{{ item.nasogastric_tube_date|as_crispy_field }}</td>
+                        <td>{{ item.nasogastric_tube_size|as_crispy_field }}</td>
+                        <td>{{ item.nasogastric_tube_type|as_crispy_field }}</td>
+                        <td>{{ item.nasogastric_tube_location|as_crispy_field }}</td>
+                        <td>{{ item.nasogastric_tube_due_date|as_crispy_field }}</td>
+                        <td>{{ item.nasogastric_tube_inserted_by|as_crispy_field }}</td>
+                        <td>{{ item.nasogastric_remove_date|as_crispy_field }}</td>
+                        <td class="action">{{ item.nasogastric_remove_by|as_crispy_field }}</td>
+                        <td></td>
+                    </tr>
+                    <tr class="tambah_row"></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
-			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
-			{% for item in profiles %}
-			<a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
-			{% endfor %}
+            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+            {% for item in profiles %}
+            <a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+            {% endfor %}
 
-		</div>
+        </div>
 
-	</form>
+    </form>
 
 </div>
 
@@ -88,55 +88,55 @@
 <script type='text/javascript'>
 $(document).ready(function()
 {
-	$("#id_form-0-nasogastric_remove_by").hide();
-	$(".remove_by").hide();
-	$(".action").hide();
+    $("#id_form-0-nasogastric_remove_by").hide();
+    $(".remove_by").hide();
+    $(".action").hide();
 
-	$("#id_form-1-nasogastric_remove_by").hide();
-	$(".remove_by").hide();
-	$(".action").hide();
+    $("#id_form-1-nasogastric_remove_by").hide();
+    $(".remove_by").hide();
+    $(".action").hide();
 
-	$('#id_form-0-nasogastric_remove_date').on('dp.change', function(e)
-	{
-		$("#id_form-0-nasogastric_remove_by").show();
-		$(".remove_by").show();
-		$(".action").show();
-	});
-	$('#id_form-1-nasogastric_remove_date').on('dp.change', function(e)
-	{
-		$("#id_form-1-nasogastric_remove_by").show();
-		$(".remove_by").show();
-		$(".action").show();
-	});
+    $('#id_form-0-nasogastric_remove_date').on('dp.change', function(e)
+    {
+        $("#id_form-0-nasogastric_remove_by").show();
+        $(".remove_by").show();
+        $(".action").show();
+    });
+    $('#id_form-1-nasogastric_remove_date').on('dp.change', function(e)
+    {
+        $("#id_form-1-nasogastric_remove_by").show();
+        $(".remove_by").show();
+        $(".action").show();
+    });
 
-	$(function()
-	{
-		$('#form_set tbody tr').formset(
-		{
-//			prefix: 'formset',
-//			prefix: '{{ formset.prefix }}',
-			addCssClass: 'btn btn-success',
-			addText: '<i class="fas fa-plus"></i>',
-			deleteCssClass: 'btn btn-danger',
-			deleteText: '<i class="fas fa-minus"></i>',
-			keepFieldValues: '#id_form-0-nasogastric_tube_date, #id_form-0-nasogastric_tube_size, #id_form-0-nasogastric_tube_type, #id_form-0-nasogastric_tube_due_date, #id_form-0-nasogastric_tube_inserted_by, #id_form-0-nasogastric_remove_date, #id_form-0-nasogastric_remove_by',
-//			addContainerClass: 'tambah_row',
-			added: function(row)
-			{
-				$(row).find('[id$="date"]').removeClass('datepickerinput').removeAttr('#id_form-0-date').removeData('DateTimePicker')
-			.unbind().datetimepicker(
-				options={
-					"format": "DD-MM-YYYY",
-				});
+    $(function()
+    {
+        $('#form_set tbody tr').formset(
+        {
+//          prefix: 'formset',
+//          prefix: '{{ formset.prefix }}',
+            addCssClass: 'btn btn-success',
+            addText: '<i class="fas fa-plus"></i>',
+            deleteCssClass: 'btn btn-danger',
+            deleteText: '<i class="fas fa-minus"></i>',
+            keepFieldValues: '#id_form-0-nasogastric_tube_date, #id_form-0-nasogastric_tube_size, #id_form-0-nasogastric_tube_type, #id_form-0-nasogastric_tube_due_date, #id_form-0-nasogastric_tube_inserted_by, #id_form-0-nasogastric_remove_date, #id_form-0-nasogastric_remove_by',
+//          addContainerClass: 'tambah_row',
+            added: function(row)
+            {
+                $(row).find('[id$="date"]').removeClass('datepickerinput').removeAttr('#id_form-0-date').removeData('DateTimePicker')
+            .unbind().datetimepicker(
+                options={
+                    "format": "DD-MM-YYYY",
+                });
 
-				$(row).find('[id$="time"]').removeClass('timepickerinput').removeAttr('#id_form-0-time').removeData('DateTimePicker')
-			.unbind().datetimepicker(
-				options={
-					"format": "HH:mm",
-				});
-			},
-		});
-	});
+                $(row).find('[id$="time"]').removeClass('timepickerinput').removeAttr('#id_form-0-time').removeData('DateTimePicker')
+            .unbind().datetimepicker(
+                options={
+                    "format": "HH:mm",
+                });
+            },
+        });
+    });
 });
 </script>
 {% endblock %}

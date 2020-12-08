@@ -5,615 +5,615 @@
 {% load crispy_forms_tags %}
 
 {% block headtitle %}
-	{{ page_title }} | {{ titles.title }}
+    {{ page_title }} | {{ titles.title }}
 {% endblock %}
 
 {% block extrahead %}
-	{{ patientprofile_form.media }}
-	{{ family_formset.media }}
-	{{ admision_form.media }}
-	{{ admision_formset.media }}
-	{{ allergy_form.media }}
-	{{ martformset_medication.media }}
+    {{ patientprofile_form.media }}
+    {{ family_formset.media }}
+    {{ admision_form.media }}
+    {{ admision_formset.media }}
+    {{ allergy_form.media }}
+    {{ martformset_medication.media }}
 {% endblock %}
 
 {% block style %}
-	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
-	<link href="{% static 'css/patient/admission.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/patient/admission.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block javascript %}
-	<script src="{% static 'js/jquery.formset.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/jquery.formset.js' %}" type="text/javascript"></script>
 {% endblock %}
 
 {% block content %}
 
 <div class="container-fluid">
 
-	<div class="row formtitle">
-		{{ page_title }}
-	</div>
+    <div class="row formtitle">
+        {{ page_title }}
+    </div>
 
-	<p style="font-size:12px">{% include 'messages.html' %}</p>
+    <p style="font-size:12px">{% include 'messages.html' %}</p>
 
-	{% include 'patient/patient_form.html' %}
+    {% include 'patient/patient_form.html' %}
 
-	<div class="row admissionform">
+    <div class="row admissionform">
 
-		<form method="post" action="" enctype="multipart/form-data">
-			{% csrf_token %}
-			{{ family_formset.management_form }}
-			{{ admision_formset.management_form }}
-			{{ martformset_medication.management_form }}
-			<div class="userroles" data-username="{{ user_name }}"></div>
+        <form method="post" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ family_formset.management_form }}
+            {{ admision_formset.management_form }}
+            {{ martformset_medication.management_form }}
+            <div class="userroles" data-username="{{ user_name }}"></div>
 
-			<div class="row">
-				<div class="col-2 col" style="border-radius: 0.25rem 0 0 0;">
-					{% trans "Admission" %}:
-				</div>
-				<div class="col-6 col">
-					{{ admision_form.patient|as_crispy_field }}
-					{{ admision_form.date_admission|as_crispy_field }}
-				</div>
-				<div class="col-4 col" style="border-radius: 0 0.25rem 0 0;">
-					{{ admision_form.time_admission|as_crispy_field }}
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col" style="border-radius: 0.25rem 0 0 0;">
+                    {% trans "Admission" %}:
+                </div>
+                <div class="col-6 col">
+                    {{ admision_form.patient|as_crispy_field }}
+                    {{ admision_form.date_admission|as_crispy_field }}
+                </div>
+                <div class="col-4 col" style="border-radius: 0 0.25rem 0 0;">
+                    {{ admision_form.time_admission|as_crispy_field }}
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Admitted through" %}:
-				</div>
-				<div class="col-4 col">
-					{{ admision_form.admitted_admission|as_crispy_field }}
-				</div>
-				<div class="col-3 col border-left-0">
-					{{ admision_form.admitted_others|as_crispy_field }}
-				</div>
-				<div class="col-3 col border-left-0">
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Admitted through" %}:
+                </div>
+                <div class="col-4 col">
+                    {{ admision_form.admitted_admission|as_crispy_field }}
+                </div>
+                <div class="col-3 col border-left-0">
+                    {{ admision_form.admitted_others|as_crispy_field }}
+                </div>
+                <div class="col-3 col border-left-0">
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Mode of admission" %}:
-				</div>
-				<div class="col-10 col">
-					{{ admision_form.mode_admission|as_crispy_field }}
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Mode of admission" %}:
+                </div>
+                <div class="col-10 col">
+                    {{ admision_form.mode_admission|as_crispy_field }}
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Full name  (as per IC)" %}:
-				</div>
-				<div class="col-4 col">
-					<b>
-						{{ patientprofile_form.full_name|as_crispy_field }}
-						{{ patientprofile_form.username|as_crispy_field }}
-						{{ patientprofile_form.email|as_crispy_field }}
-						{{ patientprofile_form.password|as_crispy_field }}
-						{{ patientprofile_form.date_joined|as_crispy_field }}
-						{{ patientprofile_form.is_patient|as_crispy_field }}
-						{{ patientprofile_form.is_active|as_crispy_field }}
-					</b>
-				</div>
-				<div class="col-3 col">
-					<b>{{ patientprofile_form.ic_number|as_crispy_field }}</b>
-				</div>
-				<div class="col-3 col">
-					<b>{{ patientprofile_form.ic_upload|as_crispy_field }}</b>
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Full name  (as per IC)" %}:
+                </div>
+                <div class="col-4 col">
+                    <b>
+                        {{ patientprofile_form.full_name|as_crispy_field }}
+                        {{ patientprofile_form.username|as_crispy_field }}
+                        {{ patientprofile_form.email|as_crispy_field }}
+                        {{ patientprofile_form.password|as_crispy_field }}
+                        {{ patientprofile_form.date_joined|as_crispy_field }}
+                        {{ patientprofile_form.is_patient|as_crispy_field }}
+                        {{ patientprofile_form.is_active|as_crispy_field }}
+                    </b>
+                </div>
+                <div class="col-3 col">
+                    <b>{{ patientprofile_form.ic_number|as_crispy_field }}</b>
+                </div>
+                <div class="col-3 col">
+                    <b>{{ patientprofile_form.ic_upload|as_crispy_field }}</b>
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Age" %}:
-				</div>
-				<div class="col-4 col">
-					{{ patientprofile_form.age|as_crispy_field }}
-				</div>
-				<div class="col-2 col">
-					{% trans "Date of birth" %}:
-				</div>
-				<div class="col-4 col">
-					{{ patientprofile_form.birth_date|as_crispy_field }}
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Age" %}:
+                </div>
+                <div class="col-4 col">
+                    {{ patientprofile_form.age|as_crispy_field }}
+                </div>
+                <div class="col-2 col">
+                    {% trans "Date of birth" %}:
+                </div>
+                <div class="col-4 col">
+                    {{ patientprofile_form.birth_date|as_crispy_field }}
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Sex/Gender" %}:
-				</div>
-				<div class="col-10 col">
-					{{ patientprofile_form.gender|as_crispy_field }}
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Sex/Gender" %}:
+                </div>
+                <div class="col-10 col">
+                    {{ patientprofile_form.gender|as_crispy_field }}
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Marital Status" %}:
-				</div>
-				<div class="col-4 col">
-					{{ patientprofile_form.marital_status|as_crispy_field }}
-				</div>
-				<div class="col-3 col border-left-0">
-					{{ patientprofile_form.marital_status_others|as_crispy_field }}
-				</div>
-				<div class="col-3 col border-left-0">
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Marital Status" %}:
+                </div>
+                <div class="col-4 col">
+                    {{ patientprofile_form.marital_status|as_crispy_field }}
+                </div>
+                <div class="col-3 col border-left-0">
+                    {{ patientprofile_form.marital_status_others|as_crispy_field }}
+                </div>
+                <div class="col-3 col border-left-0">
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Religion" %}:
-				</div>
-				<div class="col-6 col">
-					{{ patientprofile_form.religion|as_crispy_field }}
-				</div>
-				<div class="col-3 col border-left-0">
-					{{ patientprofile_form.religion_others|as_crispy_field }}
-				</div>
-				<div class="col-1 col border-left-0">
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Religion" %}:
+                </div>
+                <div class="col-6 col">
+                    {{ patientprofile_form.religion|as_crispy_field }}
+                </div>
+                <div class="col-3 col border-left-0">
+                    {{ patientprofile_form.religion_others|as_crispy_field }}
+                </div>
+                <div class="col-1 col border-left-0">
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Occupation" %}:
-				</div>
-				<div class="col-4 col">
-					{{ patientprofile_form.occupation|as_crispy_field }}
-				</div>
-				<div class="col-3 col border-left-0">
-					{{ patientprofile_form.occupation_others|as_crispy_field }}
-				</div>
-				<div class="col-3 col border-left-0">
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Occupation" %}:
+                </div>
+                <div class="col-4 col">
+                    {{ patientprofile_form.occupation|as_crispy_field }}
+                </div>
+                <div class="col-3 col border-left-0">
+                    {{ patientprofile_form.occupation_others|as_crispy_field }}
+                </div>
+                <div class="col-3 col border-left-0">
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Communication" %}:
-				</div>
-				<div class="col-10 col">
-					{{ patientprofile_form.communication_sight|as_crispy_field }}
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Communication" %}:
+                </div>
+                <div class="col-10 col">
+                    {{ patientprofile_form.communication_sight|as_crispy_field }}
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col border-top-0">
-				</div>
-				<div class="col-4 col">
-					{{ patientprofile_form.communication_hearing|as_crispy_field }}
-				</div>
-				<div class="col-3 col border-left-0">
-					{{ patientprofile_form.communication_hearing_others|as_crispy_field }}
-				</div>
-				<div class="col-3 col border-left-0">
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col border-top-0">
+                </div>
+                <div class="col-4 col">
+                    {{ patientprofile_form.communication_hearing|as_crispy_field }}
+                </div>
+                <div class="col-3 col border-left-0">
+                    {{ patientprofile_form.communication_hearing_others|as_crispy_field }}
+                </div>
+                <div class="col-3 col border-left-0">
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Address" %}:
-				</div>
-				<div class="col-10 col">
-					{{ patientprofile_form.address|as_crispy_field }}
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Address" %}:
+                </div>
+                <div class="col-10 col">
+                    {{ patientprofile_form.address|as_crispy_field }}
+                </div>
+            </div>
 
-			<div class="row formSet_Emerg border">
-				<div class="col-2 col">
-					{% trans "Emergency contact" %}:
-				</div>
+            <div class="row formSet_Emerg border">
+                <div class="col-2 col">
+                    {% trans "Emergency contact" %}:
+                </div>
 
-				{% for item in family_formset.forms %}
-				<div class="col-4 col border-bottom">
-					{{ item.patient|as_crispy_field }}
-					{% trans "Name" %}:
-					{{ item.ec_name|as_crispy_field }}
-					{% trans "IC No" %}:
-					{{ item.ec_ic_number|as_crispy_field }}
-					{% trans "IC Upload" %}:
-					{{ item.ec_ic_upload|as_crispy_field }}
-					{% trans "Relationship" %}:
-					{{ item.ec_relationship|as_crispy_field }}
-					{% trans "Contact No" %}:
-					{{ item.ec_phone|as_crispy_field }}
-					{% trans "Address" %}:
-					{{ item.ec_address|as_crispy_field }}
-				</div>
-				{% endfor %}
-				<div class="col-1 col border-bottom hapus_Emerg"></div>
+                {% for item in family_formset.forms %}
+                <div class="col-4 col border-bottom">
+                    {{ item.patient|as_crispy_field }}
+                    {% trans "Name" %}:
+                    {{ item.ec_name|as_crispy_field }}
+                    {% trans "IC No" %}:
+                    {{ item.ec_ic_number|as_crispy_field }}
+                    {% trans "IC Upload" %}:
+                    {{ item.ec_ic_upload|as_crispy_field }}
+                    {% trans "Relationship" %}:
+                    {{ item.ec_relationship|as_crispy_field }}
+                    {% trans "Contact No" %}:
+                    {{ item.ec_phone|as_crispy_field }}
+                    {% trans "Address" %}:
+                    {{ item.ec_address|as_crispy_field }}
+                </div>
+                {% endfor %}
+                <div class="col-1 col border-bottom hapus_Emerg"></div>
 
-			</div>
-			<div class="tambah_Emerg">
-				<div class="col-2"></div>
-				<div class="col-3"></div>
-				<div class="col-6"></div>
-				<div class="col-1"></div>
-			</div>
+            </div>
+            <div class="tambah_Emerg">
+                <div class="col-2"></div>
+                <div class="col-3"></div>
+                <div class="col-6"></div>
+                <div class="col-1"></div>
+            </div>
 
-			<div class="row">
-				<div class="col-4 col border-right-0">
-				</div>
-				<div class="col-4 col border-left-0">
-					<b>{% trans "General Observation on Admission" %}</b>
-				</div>
-				<div class="col-4 col border-left-0">
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-4 col border-right-0">
+                </div>
+                <div class="col-4 col border-left-0">
+                    <b>{% trans "General Observation on Admission" %}</b>
+                </div>
+                <div class="col-4 col border-left-0">
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "General condition" %}:
-				</div>
-				<div class="col-10 col">
-					{{ admision_form.general_condition|as_crispy_field }}
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "General condition" %}:
+                </div>
+                <div class="col-10 col">
+                    {{ admision_form.general_condition|as_crispy_field }}
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Vital sign" %}:
-				</div>
-				<div class="col-3 col">
-					{% trans "Temp (ºC)" %}:
-				</div>
-				<div class="col-4 col">
-					{{ admision_form.vital_sign_temperature|as_crispy_field }}
-				</div>
-				<div class="col-3 col border-left-0">
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Vital sign" %}:
+                </div>
+                <div class="col-3 col">
+                    {% trans "Temp (ºC)" %}:
+                </div>
+                <div class="col-4 col">
+                    {{ admision_form.vital_sign_temperature|as_crispy_field }}
+                </div>
+                <div class="col-3 col border-left-0">
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col border-top-0">
-				</div>
-				<div class="col-3 col">
-					{% trans "Pulse (bpm)" %}:
-				</div>
-				<div class="col-4 col">
-					{{ admision_form.vital_sign_pulse|as_crispy_field }}
-				</div>
-				<div class="col-3 col border-left-0">
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col border-top-0">
+                </div>
+                <div class="col-3 col">
+                    {% trans "Pulse (bpm)" %}:
+                </div>
+                <div class="col-4 col">
+                    {{ admision_form.vital_sign_pulse|as_crispy_field }}
+                </div>
+                <div class="col-3 col border-left-0">
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col border-top-0">
-				</div>
-				<div class="col-3 col">
-					{% trans "BP (mmHg)" %}:
-				</div>
-				<div class="col-3 col">
-					{% trans "Systolic" %}:
-					{{ admision_form.vital_sign_bp_upper|as_crispy_field }}
-				</div>
-				<div class="col-3 col">
-					{% trans "Diastolic" %}:
-					{{ admision_form.vital_sign_bp_lower|as_crispy_field }}
-				</div>
-				<div class="col-1 col border-left-0">
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col border-top-0">
+                </div>
+                <div class="col-3 col">
+                    {% trans "BP (mmHg)" %}:
+                </div>
+                <div class="col-3 col">
+                    {% trans "Systolic" %}:
+                    {{ admision_form.vital_sign_bp_upper|as_crispy_field }}
+                </div>
+                <div class="col-3 col">
+                    {% trans "Diastolic" %}:
+                    {{ admision_form.vital_sign_bp_lower|as_crispy_field }}
+                </div>
+                <div class="col-1 col border-left-0">
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col border-top-0">
-				</div>
-				<div class="col-3 col">
-					{% trans "Resp (min)" %}:
-				</div>
-				<div class="col-4 col">
-					{{ admision_form.vital_sign_resp|as_crispy_field }}
-				</div>
-				<div class="col-3 col border-left-0">
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col border-top-0">
+                </div>
+                <div class="col-3 col">
+                    {% trans "Resp (min)" %}:
+                </div>
+                <div class="col-4 col">
+                    {{ admision_form.vital_sign_resp|as_crispy_field }}
+                </div>
+                <div class="col-3 col border-left-0">
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-				</div>
-				<div class="col-3 col">
-					{% trans "SPO2 (%)" %}:
-				</div>
-				<div class="col-4 col">
-					{{ admision_form.vital_sign_spo2|as_crispy_field }}
-				</div>
-				<div class="col-3 col border-left-0">
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                </div>
+                <div class="col-3 col">
+                    {% trans "SPO2 (%)" %}:
+                </div>
+                <div class="col-4 col">
+                    {{ admision_form.vital_sign_spo2|as_crispy_field }}
+                </div>
+                <div class="col-3 col border-left-0">
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-				</div>
-				<div class="col-3 col">
-					{% trans "On Oxygen therapy" %}:
-				</div>
-				<div class="col-2 col">
-					{{ admision_form.vital_sign_on_oxygen_therapy|as_crispy_field }}
-				</div>
-				<div class="col-5 col" style="border-left:none; display:inline-flex;">
-					{% trans "Flow rate" %}:&nbsp;{{ admision_form.vital_sign_on_oxygen_therapy_flow_rate|as_crispy_field }}&nbsp;{% trans "L/min" %}
+            <div class="row">
+                <div class="col-2 col">
+                </div>
+                <div class="col-3 col">
+                    {% trans "On Oxygen therapy" %}:
+                </div>
+                <div class="col-2 col">
+                    {{ admision_form.vital_sign_on_oxygen_therapy|as_crispy_field }}
+                </div>
+                <div class="col-5 col" style="border-left:none; display:inline-flex;">
+                    {% trans "Flow rate" %}:&nbsp;{{ admision_form.vital_sign_on_oxygen_therapy_flow_rate|as_crispy_field }}&nbsp;{% trans "L/min" %}
 
-				</div>
-			</div>
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-				</div>
-				<div class="col-3 col">
-					{% trans "HGT (mmol/L)" %}:
-				</div>
-				<div class="col-4 col">
-					{{ admision_form.vital_sign_hgt|as_crispy_field }}
-				</div>
-				<div class="col-3 col border-left-0">
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                </div>
+                <div class="col-3 col">
+                    {% trans "HGT (mmol/L)" %}:
+                </div>
+                <div class="col-4 col">
+                    {{ admision_form.vital_sign_hgt|as_crispy_field }}
+                </div>
+                <div class="col-3 col border-left-0">
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Allergy" %}:
-					{{ allergy_form.patient|as_crispy_field }}
-					{{ allergy_form.medication_date|as_crispy_field }}
-				</div>
-				<div class="col-3 col">
-					{{ allergy_form.allergy_drug|as_crispy_field }}
-				</div>
-				<div class="col-3 col">
-					{{ allergy_form.allergy_food|as_crispy_field }}
-				</div>
-				<div class="col-4 col">
-					{{ allergy_form.allergy_others|as_crispy_field }}
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Allergy" %}:
+                    {{ allergy_form.patient|as_crispy_field }}
+                    {{ allergy_form.medication_date|as_crispy_field }}
+                </div>
+                <div class="col-3 col">
+                    {{ allergy_form.allergy_drug|as_crispy_field }}
+                </div>
+                <div class="col-3 col">
+                    {{ allergy_form.allergy_food|as_crispy_field }}
+                </div>
+                <div class="col-4 col">
+                    {{ allergy_form.allergy_others|as_crispy_field }}
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Biohazard/ infectious disease" %}:
-				</div>
-				<div class="col-2 col">
-					{{ admision_form.biohazard_infectious_disease|as_crispy_field }}
-				</div>
-				<div class="col-3 col" style="border-left:none; display:inline-flex;">
-					{{ admision_form.biohazard_infectious_disease_others|as_crispy_field }}
-				</div>
-				<div class="col-5 col border-left-0">
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Biohazard/ infectious disease" %}:
+                </div>
+                <div class="col-2 col">
+                    {{ admision_form.biohazard_infectious_disease|as_crispy_field }}
+                </div>
+                <div class="col-3 col" style="border-left:none; display:inline-flex;">
+                    {{ admision_form.biohazard_infectious_disease_others|as_crispy_field }}
+                </div>
+                <div class="col-5 col border-left-0">
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Invasive line insitu" %}:
-				</div>
-				<div class="col-7 col">
-					{{ admision_form.invasive_line_insitu|as_crispy_field }}
-				</div>
-				<div class="col-3 col" style="border-left:none; display:inline-flex;">
-					{{ admision_form.invasive_line_insitu_others|as_crispy_field }}
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Invasive line insitu" %}:
+                </div>
+                <div class="col-7 col">
+                    {{ admision_form.invasive_line_insitu|as_crispy_field }}
+                </div>
+                <div class="col-3 col" style="border-left:none; display:inline-flex;">
+                    {{ admision_form.invasive_line_insitu_others|as_crispy_field }}
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Medical history" %}:
-				</div>
-				<div class="col-7 col">
-					{{ admision_form.medical_history|as_crispy_field }}
-				</div>
-				<div class="col-3 col" style="border-left:none; display:inline-flex;">
-					{{ admision_form.medical_history_others|as_crispy_field }}
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Medical history" %}:
+                </div>
+                <div class="col-7 col">
+                    {{ admision_form.medical_history|as_crispy_field }}
+                </div>
+                <div class="col-3 col" style="border-left:none; display:inline-flex;">
+                    {{ admision_form.medical_history_others|as_crispy_field }}
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Surgical history" %}:
-				</div>
-				<div class="col-10 col">
-					{{ admision_form.surgical_history_none|as_crispy_field }}
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Surgical history" %}:
+                </div>
+                <div class="col-10 col">
+                    {{ admision_form.surgical_history_none|as_crispy_field }}
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col border-top-0">
-				</div>
-				<div class="col-10 col border-top-0">
-					{{ admision_form.surgical_history|as_crispy_field }}
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col border-top-0">
+                </div>
+                <div class="col-10 col border-top-0">
+                    {{ admision_form.surgical_history|as_crispy_field }}
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Diagnosis" %}:
-				</div>
-				<div class="col-3 col text-center">
-					{% trans "Date" %}:
-				</div>
-				<div class="col-7 col text-center">
-					{% trans "Diagnosis" %}:
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Diagnosis" %}:
+                </div>
+                <div class="col-3 col text-center">
+                    {% trans "Date" %}:
+                </div>
+                <div class="col-7 col text-center">
+                    {% trans "Diagnosis" %}:
+                </div>
+            </div>
 
-			{% for item in admision_formset.forms %}
-			<div class="row formSet_Diag">
-				<div class="col-2 col border-bottom">
-					{{ item.patient|as_crispy_field }}
-				</div>
-				<div class="col-3 col border-bottom">
-					{{ item.date_diagnosis|as_crispy_field }}
-				</div>
-				<div class="col-6 col border-bottom">
-					{{ item.diagnosis|as_crispy_field }}
-				</div>
-				<div class="col-1 col border-bottom hapus_Diag">
-				</div>
-			</div>
-			<div class="tambah_Diag">
-				<div class="col-2"></div>
-				<div class="col-3"></div>
-				<div class="col-6"></div>
-				<div class="col-1"></div>
-			</div>
+            {% for item in admision_formset.forms %}
+            <div class="row formSet_Diag">
+                <div class="col-2 col border-bottom">
+                    {{ item.patient|as_crispy_field }}
+                </div>
+                <div class="col-3 col border-bottom">
+                    {{ item.date_diagnosis|as_crispy_field }}
+                </div>
+                <div class="col-6 col border-bottom">
+                    {{ item.diagnosis|as_crispy_field }}
+                </div>
+                <div class="col-1 col border-bottom hapus_Diag">
+                </div>
+            </div>
+            <div class="tambah_Diag">
+                <div class="col-2"></div>
+                <div class="col-3"></div>
+                <div class="col-6"></div>
+                <div class="col-1"></div>
+            </div>
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Operation" %}:
-				</div>
-				<div class="col-3 col text-center">
-					{% trans "Date" %}:
-				</div>
-				<div class="col-7 col text-center">
-					{% trans "Operation" %}:
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Operation" %}:
+                </div>
+                <div class="col-3 col text-center">
+                    {% trans "Date" %}:
+                </div>
+                <div class="col-7 col text-center">
+                    {% trans "Operation" %}:
+                </div>
+            </div>
 
-			<div class="row formSet_Opr">
-				<div class="col-2 col border-bottom">
-					{{ item.patient|as_crispy_field }}
-				</div>
-				<div class="col-3 col border-bottom">
-					{{ item.date_operation|as_crispy_field }}
-				</div>
-				<div class="col-6 col border-bottom">
-					{{ item.operation|as_crispy_field }}
-				</div>
-				<div class="col-1 col border-bottom hapus_Opr">
-				</div>
-			</div>
-			<div class="tambah_Opr">
-				<div class="col-2"></div>
-				<div class="col-3"></div>
-				<div class="col-6"></div>
-				<div class="col-1"></div>
-			</div>
-			{% endfor %}
+            <div class="row formSet_Opr">
+                <div class="col-2 col border-bottom">
+                    {{ item.patient|as_crispy_field }}
+                </div>
+                <div class="col-3 col border-bottom">
+                    {{ item.date_operation|as_crispy_field }}
+                </div>
+                <div class="col-6 col border-bottom">
+                    {{ item.operation|as_crispy_field }}
+                </div>
+                <div class="col-1 col border-bottom hapus_Opr">
+                </div>
+            </div>
+            <div class="tambah_Opr">
+                <div class="col-2"></div>
+                <div class="col-3"></div>
+                <div class="col-6"></div>
+                <div class="col-1"></div>
+            </div>
+            {% endfor %}
 
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Own medication" %}:
-				</div>
-				<div class="col-10 col">
-					{{ martform_own_medication.medication_date|as_crispy_field }}
-					{{ martform_own_medication.own_medication|as_crispy_field }}
-				</div>
-			</div>
-
-
-			{% for item in martformset_medication.forms %}
-			<div class="row">
-				<div class="col-2 col border-top-0">
-				</div>
-				<div class="col-2 col text-center">
-					{% trans "Time" %}
-				</div>
-				<div class="col-3 col text-center">
-					{% trans "Drug Name" %}
-				</div>
-				<div class="col-2 col text-center">
-					{% trans "Dosage" %}/{% trans "Unit" %}
-				</div>
-				<div class="col-1 col text-center">
-					{% trans "Tab/Cap" %}
-				</div>
-				<div class="col-1 col text-center">
-					{% trans "Frequency" %}
-				</div>
-				<div class="col-1 col">
-				</div>
-			</div>
-
-			<div class="row formSet_Own">
-				<div class="col-2 col border-top-0">
-					{{ item.patient|as_crispy_field }}
-					{{ item.own_medication|as_crispy_field }}
-					{{ item.medication_date|as_crispy_field }}
-					{{ item.medication_template|as_crispy_field }}
-				</div>
-				<div class="col-2 col">
-					{{ item.medication_time|as_crispy_field }}
-				</div>
-				<div class="col-3 col">
-					{{ item.medication_drug_name|as_crispy_field }}
-				</div>
-				<div class="col-1 col">
-					{{ item.medication_dosage|as_crispy_field }}
-				</div>
-				<div class="col-1 col">
-					{{ item.medication_unit|as_crispy_field }}
-				</div>
-				<div class="col-1 col">
-					{{ item.medication_tablet_capsule|as_crispy_field }}
-				</div>
-				<div class="col-1 col">
-					{{ item.medication_frequency|as_crispy_field }}
-				</div>
-				<div class="col-1 col hapus_Own"></div>
-			</div>
-			<div class="tambah_Own">
-				<div class="col-2"></div>
-				<div class="col-3"></div>
-				<div class="col-6"></div>
-				<div class="col-1"></div>
-			</div>
-			{% endfor %}
-
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Adaptive aids with patient on admission" %}:
-				</div>
-				<div class="col-7 col">
-					{{ admision_form.adaptive_aids_with_patient|as_crispy_field }}
-				</div>
-				<div class="col-3 col" style="border-left:none; display:inline-flex;">
-					{{ admision_form.adaptive_aids_with_patient_others|as_crispy_field }}
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Orientation" %}:
-				</div>
-				<div class="col-10 col">
-					{{ admision_form.orientation|as_crispy_field }}
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-2 col">
-					{% trans "Special information" %}:
-				</div>
-				<div class="col-10 col">
-					{{ admision_form.special_information|as_crispy_field }}
-				</div>
-			</div>
-
-			<div class="row border-bottom">
-				<div class="col-2 col" style="border-radius: 0 0 0 0.25rem;">
-					{% trans "Admission done by" %}:
-				</div>
-				<div class="col-4 col">
-					{{ admision_form.admission_by|as_crispy_field }}
-				</div>
-				<div class="col-6 col" style="border-radius: 0 0 0.25rem 0;">
-				</div>
-			</div>
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Own medication" %}:
+                </div>
+                <div class="col-10 col">
+                    {{ martform_own_medication.medication_date|as_crispy_field }}
+                    {{ martform_own_medication.own_medication|as_crispy_field }}
+                </div>
+            </div>
 
 
-			<br />
+            {% for item in martformset_medication.forms %}
+            <div class="row">
+                <div class="col-2 col border-top-0">
+                </div>
+                <div class="col-2 col text-center">
+                    {% trans "Time" %}
+                </div>
+                <div class="col-3 col text-center">
+                    {% trans "Drug Name" %}
+                </div>
+                <div class="col-2 col text-center">
+                    {% trans "Dosage" %}/{% trans "Unit" %}
+                </div>
+                <div class="col-1 col text-center">
+                    {% trans "Tab/Cap" %}
+                </div>
+                <div class="col-1 col text-center">
+                    {% trans "Frequency" %}
+                </div>
+                <div class="col-1 col">
+                </div>
+            </div>
 
-			<div class="row">
-				<button type="submit" class="btn btn-primary admission_send">{% trans "Submit" %}</button>
-				{% for item in profiles %}
-				<a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
-				{% endfor %}
-			</div>
-		</form>
+            <div class="row formSet_Own">
+                <div class="col-2 col border-top-0">
+                    {{ item.patient|as_crispy_field }}
+                    {{ item.own_medication|as_crispy_field }}
+                    {{ item.medication_date|as_crispy_field }}
+                    {{ item.medication_template|as_crispy_field }}
+                </div>
+                <div class="col-2 col">
+                    {{ item.medication_time|as_crispy_field }}
+                </div>
+                <div class="col-3 col">
+                    {{ item.medication_drug_name|as_crispy_field }}
+                </div>
+                <div class="col-1 col">
+                    {{ item.medication_dosage|as_crispy_field }}
+                </div>
+                <div class="col-1 col">
+                    {{ item.medication_unit|as_crispy_field }}
+                </div>
+                <div class="col-1 col">
+                    {{ item.medication_tablet_capsule|as_crispy_field }}
+                </div>
+                <div class="col-1 col">
+                    {{ item.medication_frequency|as_crispy_field }}
+                </div>
+                <div class="col-1 col hapus_Own"></div>
+            </div>
+            <div class="tambah_Own">
+                <div class="col-2"></div>
+                <div class="col-3"></div>
+                <div class="col-6"></div>
+                <div class="col-1"></div>
+            </div>
+            {% endfor %}
+
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Adaptive aids with patient on admission" %}:
+                </div>
+                <div class="col-7 col">
+                    {{ admision_form.adaptive_aids_with_patient|as_crispy_field }}
+                </div>
+                <div class="col-3 col" style="border-left:none; display:inline-flex;">
+                    {{ admision_form.adaptive_aids_with_patient_others|as_crispy_field }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Orientation" %}:
+                </div>
+                <div class="col-10 col">
+                    {{ admision_form.orientation|as_crispy_field }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-2 col">
+                    {% trans "Special information" %}:
+                </div>
+                <div class="col-10 col">
+                    {{ admision_form.special_information|as_crispy_field }}
+                </div>
+            </div>
+
+            <div class="row border-bottom">
+                <div class="col-2 col" style="border-radius: 0 0 0 0.25rem;">
+                    {% trans "Admission done by" %}:
+                </div>
+                <div class="col-4 col">
+                    {{ admision_form.admission_by|as_crispy_field }}
+                </div>
+                <div class="col-6 col" style="border-radius: 0 0 0.25rem 0;">
+                </div>
+            </div>
 
 
-	</div>
+            <br />
+
+            <div class="row">
+                <button type="submit" class="btn btn-primary admission_send">{% trans "Submit" %}</button>
+                {% for item in profiles %}
+                <a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+                {% endfor %}
+            </div>
+        </form>
+
+
+    </div>
 
 </div>
 
@@ -623,1321 +623,1321 @@
 <script type='text/javascript'>
 $(document).ready(function()
 {
-	$(function()
-	{
-		$('.formSet_Emerg').formset({
-			prefix: 'family_formset',
-			addCssClass: 'btn btn-success',
-			addText: '<i class="fas fa-plus"></i>',
-			deleteCssClass: 'btn btn-danger',
-			deleteText: '<i class="fas fa-minus"></i>',
-			keepFieldValues : '#id_family_formset-0-patient, #id_family_formset-0-date, #id_family_formset-0-time, #id_family_formset-0-done_by',
-			deleteContainerClass: 'hapus_Emerg',
-			addContainerClass: 'tambah_Emerg',
-		})
-	});
+    $(function()
+    {
+        $('.formSet_Emerg').formset({
+            prefix: 'family_formset',
+            addCssClass: 'btn btn-success',
+            addText: '<i class="fas fa-plus"></i>',
+            deleteCssClass: 'btn btn-danger',
+            deleteText: '<i class="fas fa-minus"></i>',
+            keepFieldValues : '#id_family_formset-0-patient, #id_family_formset-0-date, #id_family_formset-0-time, #id_family_formset-0-done_by',
+            deleteContainerClass: 'hapus_Emerg',
+            addContainerClass: 'tambah_Emerg',
+        })
+    });
 
-	$(function()
-	{
-		$('.formSet_Diag').formset({
-			prefix: 'admision_formset',
-			addCssClass: 'btn btn-success',
-			addText: '<i class="fas fa-plus"></i>',
-			deleteCssClass: 'btn btn-danger',
-			deleteText: '<i class="fas fa-minus"></i>',
-			keepFieldValues: '#id_admision_formset-0-patient, #id_admision_formset-0-date_diagnosis',
-			deleteContainerClass: 'hapus_Diag',
-			addContainerClass: 'tambah_Diag',
-			added: function(row)
-			{
-				$(row).find('[id$="date_diagnosis"]').removeClass('datepickerinput').removeAttr('#id_admision_formset-0-date_diagnosis').removeData('DateTimePicker').unbind().datetimepicker(
-					options=
-					{
-						"format": "DD-MM-YYYY",
-					});
-			},
-		})
-	});
+    $(function()
+    {
+        $('.formSet_Diag').formset({
+            prefix: 'admision_formset',
+            addCssClass: 'btn btn-success',
+            addText: '<i class="fas fa-plus"></i>',
+            deleteCssClass: 'btn btn-danger',
+            deleteText: '<i class="fas fa-minus"></i>',
+            keepFieldValues: '#id_admision_formset-0-patient, #id_admision_formset-0-date_diagnosis',
+            deleteContainerClass: 'hapus_Diag',
+            addContainerClass: 'tambah_Diag',
+            added: function(row)
+            {
+                $(row).find('[id$="date_diagnosis"]').removeClass('datepickerinput').removeAttr('#id_admision_formset-0-date_diagnosis').removeData('DateTimePicker').unbind().datetimepicker(
+                    options=
+                    {
+                        "format": "DD-MM-YYYY",
+                    });
+            },
+        })
+    });
 
-	$(function()
-	{
-		$('.formSet_Opr').formset({
-			prefix: 'admision_formset',
-			addCssClass: 'btn btn-success',
-			addText: '<i class="fas fa-plus"></i>',
-			deleteCssClass: 'btn btn-danger',
-			deleteText: '<i class="fas fa-minus"></i>',
-			keepFieldValues: '#id_admision_formset-0-patient, #id_admision_formset-0-date_operation',
-			deleteContainerClass: 'hapus_Opr',
-			addContainerClass: 'tambah_Opr',
-			added: function(row)
-			{
-				$(row).find('[id$="date_operation"]').removeClass('datepickerinput').removeAttr('#id_admision_formset-0-date_operation').removeData('DateTimePicker').unbind().datetimepicker(
-					options=
-					{
-						"format": "DD-MM-YYYY",
-					});
-			},
-		})
-	});
+    $(function()
+    {
+        $('.formSet_Opr').formset({
+            prefix: 'admision_formset',
+            addCssClass: 'btn btn-success',
+            addText: '<i class="fas fa-plus"></i>',
+            deleteCssClass: 'btn btn-danger',
+            deleteText: '<i class="fas fa-minus"></i>',
+            keepFieldValues: '#id_admision_formset-0-patient, #id_admision_formset-0-date_operation',
+            deleteContainerClass: 'hapus_Opr',
+            addContainerClass: 'tambah_Opr',
+            added: function(row)
+            {
+                $(row).find('[id$="date_operation"]').removeClass('datepickerinput').removeAttr('#id_admision_formset-0-date_operation').removeData('DateTimePicker').unbind().datetimepicker(
+                    options=
+                    {
+                        "format": "DD-MM-YYYY",
+                    });
+            },
+        })
+    });
 
-	$(function()
-	{
-		$('.formSet_Own').formset({
-			prefix: 'martformset_medication',
-			addCssClass: 'btn btn-success',
-			addText: '<i class="fas fa-plus"></i>',
-			deleteCssClass: 'btn btn-danger',
-			deleteText: '<i class="fas fa-minus"></i>',
-			keepFieldValues: '#id_martformset_medication-0-patient, #id_martformset_medication-0-own_medication_2, #id_martformset_medication-0-medication_date, #id_martformset_medication-0-medication_time, #id_martformset_medication-0-medication_dosage, #id_martformset_medication-0-medication_unit, #id_martformset_medication-0-medication_tablet_capsule, #id_martformset_medication-0-medication_frequency',
-			deleteContainerClass: 'hapus_Own',
-			addContainerClass: 'tambah_Own',
-			added: function(row)
-			{
-				$(row).find("[id$='medication_time']").removeClass("disabled_input");
-				$(row).find("[id$='drug_name']").removeClass("disabled_input");
-				$(row).find("[id$='dosage']").removeClass("disabled_input");
-				$(row).find("[id$='unit']").removeClass("disabled_input");
-				$(row).find("[id$='tablet_capsule']").removeClass("disabled_input");
-				$(row).find("[id$='frequency']").removeClass("disabled_input");
-				$(row).find('.hapus_Own').removeClass("disabled");
-				$(row).find('.tambah_Own').removeClass("disabled");
+    $(function()
+    {
+        $('.formSet_Own').formset({
+            prefix: 'martformset_medication',
+            addCssClass: 'btn btn-success',
+            addText: '<i class="fas fa-plus"></i>',
+            deleteCssClass: 'btn btn-danger',
+            deleteText: '<i class="fas fa-minus"></i>',
+            keepFieldValues: '#id_martformset_medication-0-patient, #id_martformset_medication-0-own_medication_2, #id_martformset_medication-0-medication_date, #id_martformset_medication-0-medication_time, #id_martformset_medication-0-medication_dosage, #id_martformset_medication-0-medication_unit, #id_martformset_medication-0-medication_tablet_capsule, #id_martformset_medication-0-medication_frequency',
+            deleteContainerClass: 'hapus_Own',
+            addContainerClass: 'tambah_Own',
+            added: function(row)
+            {
+                $(row).find("[id$='medication_time']").removeClass("disabled_input");
+                $(row).find("[id$='drug_name']").removeClass("disabled_input");
+                $(row).find("[id$='dosage']").removeClass("disabled_input");
+                $(row).find("[id$='unit']").removeClass("disabled_input");
+                $(row).find("[id$='tablet_capsule']").removeClass("disabled_input");
+                $(row).find("[id$='frequency']").removeClass("disabled_input");
+                $(row).find('.hapus_Own').removeClass("disabled");
+                $(row).find('.tambah_Own').removeClass("disabled");
 
-				$(row).find('[id$="medication_date"]').removeClass('datepickerinput').removeAttr('#div_id_martformset_medication-0-medication_date').removeData('DateTimePicker').unbind().datetimepicker(
-					options=
-					{
-						"format": "DD-MM-YYYY",
-					});
+                $(row).find('[id$="medication_date"]').removeClass('datepickerinput').removeAttr('#div_id_martformset_medication-0-medication_date').removeData('DateTimePicker').unbind().datetimepicker(
+                    options=
+                    {
+                        "format": "DD-MM-YYYY",
+                    });
 
-				$(row).find('[id$="medication_time"]').removeClass('timepickerinput').removeAttr('#div_id_martformset_medication-0-medication_time').removeData('DateTimePicker').unbind().datetimepicker(
-					options=
-					{
-						"format": "HH:mm",
-					});
-			},
-		})
-	});
+                $(row).find('[id$="medication_time"]').removeClass('timepickerinput').removeAttr('#div_id_martformset_medication-0-medication_time').removeData('DateTimePicker').unbind().datetimepicker(
+                    options=
+                    {
+                        "format": "HH:mm",
+                    });
+            },
+        })
+    });
 
-	$("#id_admision_form-admitted_others").prop("disabled", true);
-	$("#id_patientprofile_form-marital_status_others").prop("disabled", true);
-	$("#id_patientprofile_form-religion_others").prop("disabled", true);
-	$("#id_patientprofile_form-occupation_others").prop("disabled", true);
-	$("#id_patientprofile_form-communication_hearing_others").prop("disabled", true);
-	$("#id_admision_form-vital_sign_on_oxygen_therapy_1").filter('[value="False"]').attr('checked', true)
-	$("#id_admision_form-vital_sign_on_oxygen_therapy_flow_rate").prop("disabled", true);
-	$("#id_admision_form-biohazard_infectious_disease_1").filter('[value="No"]').attr('checked', true)
-	$("#id_admision_form-biohazard_infectious_disease_others").prop("disabled", true);
-	$("#id_admision_form-invasive_line_insitu_others").prop("disabled", true);
-	$("#id_admision_form-medical_history_others").prop("disabled", true);
+    $("#id_admision_form-admitted_others").prop("disabled", true);
+    $("#id_patientprofile_form-marital_status_others").prop("disabled", true);
+    $("#id_patientprofile_form-religion_others").prop("disabled", true);
+    $("#id_patientprofile_form-occupation_others").prop("disabled", true);
+    $("#id_patientprofile_form-communication_hearing_others").prop("disabled", true);
+    $("#id_admision_form-vital_sign_on_oxygen_therapy_1").filter('[value="False"]').attr('checked', true)
+    $("#id_admision_form-vital_sign_on_oxygen_therapy_flow_rate").prop("disabled", true);
+    $("#id_admision_form-biohazard_infectious_disease_1").filter('[value="No"]').attr('checked', true)
+    $("#id_admision_form-biohazard_infectious_disease_others").prop("disabled", true);
+    $("#id_admision_form-invasive_line_insitu_others").prop("disabled", true);
+    $("#id_admision_form-medical_history_others").prop("disabled", true);
 
-	$("#id_admision_form-adaptive_aids_with_patient_others").prop("disabled", true);
-	$("#id_patientprofile_form-age").prop("disabled", true);
-	$("#id_admision_form-surgical_history").prop("disabled", true);
-	$("#id_admision_form-surgical_history_none_1").attr("checked", true);
+    $("#id_admision_form-adaptive_aids_with_patient_others").prop("disabled", true);
+    $("#id_patientprofile_form-age").prop("disabled", true);
+    $("#id_admision_form-surgical_history").prop("disabled", true);
+    $("#id_admision_form-surgical_history_none_1").attr("checked", true);
 
-	$("#id_martform_own_medication-own_medication_1").filter('[value="No"]').attr('checked', true)
-	$('.hapus_Own').addClass("disabled");
-	$('.tambah_Own').addClass("disabled");
-	$("[id$='time']").addClass("disabled_input");
-	$("[id$='drug_name']").addClass("disabled_input");
-	$("[id$='dosage']").addClass("disabled_input");
-	$("[id$='unit']").addClass("disabled_input");
-	$("[id$='tablet_capsule']").addClass("disabled_input");
-	$("[id$='frequency']").addClass("disabled_input");
+    $("#id_martform_own_medication-own_medication_1").filter('[value="No"]').attr('checked', true)
+    $('.hapus_Own').addClass("disabled");
+    $('.tambah_Own').addClass("disabled");
+    $("[id$='time']").addClass("disabled_input");
+    $("[id$='drug_name']").addClass("disabled_input");
+    $("[id$='dosage']").addClass("disabled_input");
+    $("[id$='unit']").addClass("disabled_input");
+    $("[id$='tablet_capsule']").addClass("disabled_input");
+    $("[id$='frequency']").addClass("disabled_input");
 
 //    $('input.admitted').checkbox({cls:'jquery-safari-checkbox'});
 //    $(':radio[id^="id_admision_form-admitted_admission_"]').checkbox({cls:'jquery-safari-checkbox'});
 
-	$(':radio[id^="id_admision_form-admitted_admission_"]').click(function()
-	{
-		var $this = $(this);
-		if ($this.is("#id_admision_form-admitted_admission_1"))
-		{
-			if ($("#id_admision_form-admitted_admission_1:checked").length > 0)
-			{
-				$("#id_admision_form-admitted_admission_2").prop({ checked: false });
-				$("#id_admision_form-admitted_admission_3").prop({ checked: false });
-				$("#id_admision_form-admitted_others").prop("disabled", true);
-			}
-			else
-			{
-				$("#id_admision_form-admitted_admission_2").prop("disabled", false);
-				$("#id_admision_form-admitted_admission_3").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_admision_form-admitted_admission_2"))
-		{
-			if ($("#id_admision_form-admitted_admission_2:checked").length > 0)
-			{
-				$("#id_admision_form-admitted_admission_1").prop({ checked: false });
-				$("#id_admision_form-admitted_admission_3").prop({ checked: false });
-				$("#id_admision_form-admitted_others").prop("disabled", true);
-			}
-			else
-			{
-				$("#id_admision_form-admitted_admission_1").prop("disabled", false);
-				$("#id_admision_form-admitted_admission_3").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_admision_form-admitted_admission_3"))
-		{
-			if ($("#id_admision_form-admitted_admission_3:checked").length > 0)
-			{
-				$("#id_admision_form-admitted_admission_1").prop({ checked: false });
-				$("#id_admision_form-admitted_admission_2").prop({ checked: false });
-				$("#id_admision_form-admitted_others").prop("disabled", false);
-			}
-			else
-			{
-				$("#id_admision_form-admitted_admission_1").prop("disabled", false);
-				$("#id_admision_form-admitted_admission_2").prop("disabled", false);
-				$("#id_admision_form-admitted_others").prop("disabled", true);
-			}
-		}
-	});
+    $(':radio[id^="id_admision_form-admitted_admission_"]').click(function()
+    {
+        var $this = $(this);
+        if ($this.is("#id_admision_form-admitted_admission_1"))
+        {
+            if ($("#id_admision_form-admitted_admission_1:checked").length > 0)
+            {
+                $("#id_admision_form-admitted_admission_2").prop({ checked: false });
+                $("#id_admision_form-admitted_admission_3").prop({ checked: false });
+                $("#id_admision_form-admitted_others").prop("disabled", true);
+            }
+            else
+            {
+                $("#id_admision_form-admitted_admission_2").prop("disabled", false);
+                $("#id_admision_form-admitted_admission_3").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_admision_form-admitted_admission_2"))
+        {
+            if ($("#id_admision_form-admitted_admission_2:checked").length > 0)
+            {
+                $("#id_admision_form-admitted_admission_1").prop({ checked: false });
+                $("#id_admision_form-admitted_admission_3").prop({ checked: false });
+                $("#id_admision_form-admitted_others").prop("disabled", true);
+            }
+            else
+            {
+                $("#id_admision_form-admitted_admission_1").prop("disabled", false);
+                $("#id_admision_form-admitted_admission_3").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_admision_form-admitted_admission_3"))
+        {
+            if ($("#id_admision_form-admitted_admission_3:checked").length > 0)
+            {
+                $("#id_admision_form-admitted_admission_1").prop({ checked: false });
+                $("#id_admision_form-admitted_admission_2").prop({ checked: false });
+                $("#id_admision_form-admitted_others").prop("disabled", false);
+            }
+            else
+            {
+                $("#id_admision_form-admitted_admission_1").prop("disabled", false);
+                $("#id_admision_form-admitted_admission_2").prop("disabled", false);
+                $("#id_admision_form-admitted_others").prop("disabled", true);
+            }
+        }
+    });
 
-	$(':radio[id^="id_patientprofile_form-gender_"]').click(function()
-	{
-		var $this = $(this);
-		if ($this.is("#id_patientprofile_form-gender_1"))
-		{
-			if ($("#id_patientprofile_form-gender_1:checked").length > 0)
-			{
-				$("#id_patientprofile_form-gender_2").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_patientprofile_form-gender_2").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_patientprofile_form-gender_2"))
-		{
-			if ($("#id_patientprofile_form-gender_2:checked").length > 0)
-			{
-				$("#id_patientprofile_form-gender_1").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_patientprofile_form-gender_1").prop("disabled", false);
-			}
-		}
-	});
+    $(':radio[id^="id_patientprofile_form-gender_"]').click(function()
+    {
+        var $this = $(this);
+        if ($this.is("#id_patientprofile_form-gender_1"))
+        {
+            if ($("#id_patientprofile_form-gender_1:checked").length > 0)
+            {
+                $("#id_patientprofile_form-gender_2").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_patientprofile_form-gender_2").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_patientprofile_form-gender_2"))
+        {
+            if ($("#id_patientprofile_form-gender_2:checked").length > 0)
+            {
+                $("#id_patientprofile_form-gender_1").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_patientprofile_form-gender_1").prop("disabled", false);
+            }
+        }
+    });
 
-	$(':radio[id^="id_patientprofile_form-marital_status_"]').click(function()
-	{
-		var $this = $(this);
-		if ($this.is("#id_patientprofile_form-marital_status_1"))
-		{
-			if ($("#id_patientprofile_form-marital_status_1:checked").length > 0)
-			{
-				$("#id_patientprofile_form-marital_status_2").prop({ checked: false });
-				$("#id_patientprofile_form-marital_status_3").prop({ checked: false });
-				$("#id_patientprofile_form-marital_status_others").prop("disabled", true);
-			}
-			else
-			{
-				$("#id_patientprofile_form-marital_status_2").prop("disabled", false);
-				$("#id_patientprofile_form-marital_status_3").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_patientprofile_form-marital_status_2"))
-		{
-			if ($("#id_patientprofile_form-marital_status_2:checked").length > 0)
-			{
-				$("#id_patientprofile_form-marital_status_1").prop({ checked: false });
-				$("#id_patientprofile_form-marital_status_3").prop({ checked: false });
-				$("#id_patientprofile_form-marital_status_others").prop("disabled", true);
-			}
-			else
-			{
-				$("#id_patientprofile_form-marital_status_1").prop("disabled", false);
-				$("#id_patientprofile_form-marital_status_3").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_patientprofile_form-marital_status_3"))
-		{
-			if ($("#id_patientprofile_form-marital_status_3:checked").length > 0)
-			{
-				$("#id_patientprofile_form-marital_status_1").prop({ checked: false });
-				$("#id_patientprofile_form-marital_status_2").prop({ checked: false });
-				$("#id_patientprofile_form-marital_status_others").prop("disabled", false);
-			}
-			else
-			{
-				$("#id_patientprofile_form-marital_status_1").prop("disabled", false);
-				$("#id_patientprofile_form-marital_status_2").prop("disabled", false);
-				$("#id_patientprofile_form-marital_status_others").prop("disabled", true);
-			}
-		}
-	});
+    $(':radio[id^="id_patientprofile_form-marital_status_"]').click(function()
+    {
+        var $this = $(this);
+        if ($this.is("#id_patientprofile_form-marital_status_1"))
+        {
+            if ($("#id_patientprofile_form-marital_status_1:checked").length > 0)
+            {
+                $("#id_patientprofile_form-marital_status_2").prop({ checked: false });
+                $("#id_patientprofile_form-marital_status_3").prop({ checked: false });
+                $("#id_patientprofile_form-marital_status_others").prop("disabled", true);
+            }
+            else
+            {
+                $("#id_patientprofile_form-marital_status_2").prop("disabled", false);
+                $("#id_patientprofile_form-marital_status_3").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_patientprofile_form-marital_status_2"))
+        {
+            if ($("#id_patientprofile_form-marital_status_2:checked").length > 0)
+            {
+                $("#id_patientprofile_form-marital_status_1").prop({ checked: false });
+                $("#id_patientprofile_form-marital_status_3").prop({ checked: false });
+                $("#id_patientprofile_form-marital_status_others").prop("disabled", true);
+            }
+            else
+            {
+                $("#id_patientprofile_form-marital_status_1").prop("disabled", false);
+                $("#id_patientprofile_form-marital_status_3").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_patientprofile_form-marital_status_3"))
+        {
+            if ($("#id_patientprofile_form-marital_status_3:checked").length > 0)
+            {
+                $("#id_patientprofile_form-marital_status_1").prop({ checked: false });
+                $("#id_patientprofile_form-marital_status_2").prop({ checked: false });
+                $("#id_patientprofile_form-marital_status_others").prop("disabled", false);
+            }
+            else
+            {
+                $("#id_patientprofile_form-marital_status_1").prop("disabled", false);
+                $("#id_patientprofile_form-marital_status_2").prop("disabled", false);
+                $("#id_patientprofile_form-marital_status_others").prop("disabled", true);
+            }
+        }
+    });
 
-	$(':radio[id^="id_patientprofile_form-religion_"]').click(function()
-	{
-		var $this = $(this);
-		if ($this.is("#id_patientprofile_form-religion_1"))
-		{
-			if ($("#id_patientprofile_form-religion_1:checked").length > 0)
-			{
-				$("#id_patientprofile_form-religion_2").prop({ checked: false });
-				$("#id_patientprofile_form-religion_3").prop({ checked: false });
-				$("#id_patientprofile_form-religion_4").prop({ checked: false });
-				$("#id_patientprofile_form-religion_5").prop({ checked: false });
-				$("#id_patientprofile_form-religion_others").prop("disabled", true);
-			}
-			else
-			{
-				$("#id_patientprofile_form-religion_2").prop("disabled", false);
-				$("#id_patientprofile_form-religion_3").prop("disabled", false);
-				$("#id_patientprofile_form-religion_4").prop("disabled", false);
-				$("#id_patientprofile_form-religion_5").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_patientprofile_form-religion_2"))
-		{
-			if ($("#id_patientprofile_form-religion_2:checked").length > 0)
-			{
-				$("#id_patientprofile_form-religion_1").prop({ checked: false });
-				$("#id_patientprofile_form-religion_3").prop({ checked: false });
-				$("#id_patientprofile_form-religion_4").prop({ checked: false });
-				$("#id_patientprofile_form-religion_5").prop({ checked: false });
-				$("#id_patientprofile_form-religion_others").prop("disabled", true);
-			}
-			else
-			{
-				$("#id_patientprofile_form-religion_1").prop("disabled", false);
-				$("#id_patientprofile_form-religion_3").prop("disabled", false);
-				$("#id_patientprofile_form-religion_4").prop("disabled", false);
-				$("#id_patientprofile_form-religion_5").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_patientprofile_form-religion_3"))
-		{
-			if ($("#id_patientprofile_form-religion_3:checked").length > 0)
-			{
-				$("#id_patientprofile_form-religion_1").prop({ checked: false });
-				$("#id_patientprofile_form-religion_2").prop({ checked: false });
-				$("#id_patientprofile_form-religion_4").prop({ checked: false });
-				$("#id_patientprofile_form-religion_5").prop({ checked: false });
-				$("#id_patientprofile_form-religion_others").prop("disabled", true);
-			}
-			else
-			{
-				$("#id_patientprofile_form-religion_1").prop("disabled", false);
-				$("#id_patientprofile_form-religion_2").prop("disabled", false);
-				$("#id_patientprofile_form-religion_4").prop("disabled", false);
-				$("#id_patientprofile_form-religion_5").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_patientprofile_form-religion_4"))
-		{
-			if ($("#id_patientprofile_form-religion_4:checked").length > 0)
-			{
-				$("#id_patientprofile_form-religion_1").prop({ checked: false });
-				$("#id_patientprofile_form-religion_2").prop({ checked: false });
-				$("#id_patientprofile_form-religion_3").prop({ checked: false });
-				$("#id_patientprofile_form-religion_5").prop({ checked: false });
-				$("#id_patientprofile_form-religion_others").prop("disabled", true);
-			}
-			else
-			{
-				$("#id_patientprofile_form-religion_1").prop("disabled", false);
-				$("#id_patientprofile_form-religion_2").prop("disabled", false);
-				$("#id_patientprofile_form-religion_3").prop("disabled", false);
-				$("#id_patientprofile_form-religion_5").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_patientprofile_form-religion_5"))
-		{
-			if ($("#id_patientprofile_form-religion_5:checked").length > 0)
-			{
-				$("#id_patientprofile_form-religion_1").prop({ checked: false });
-				$("#id_patientprofile_form-religion_2").prop({ checked: false });
-				$("#id_patientprofile_form-religion_3").prop({ checked: false });
-				$("#id_patientprofile_form-religion_4").prop({ checked: false });
-				$("#id_patientprofile_form-religion_others").prop("disabled", false);
-			}
-			else
-			{
-				$("#id_patientprofile_form-religion_1").prop("disabled", false);
-				$("#id_patientprofile_form-religion_2").prop("disabled", false);
-				$("#id_patientprofile_form-religion_3").prop("disabled", false);
-				$("#id_patientprofile_form-religion_4").prop("disabled", false);
-				$("#id_patientprofile_form-religion_others").prop("disabled", true);
-			}
-		}
-	});
+    $(':radio[id^="id_patientprofile_form-religion_"]').click(function()
+    {
+        var $this = $(this);
+        if ($this.is("#id_patientprofile_form-religion_1"))
+        {
+            if ($("#id_patientprofile_form-religion_1:checked").length > 0)
+            {
+                $("#id_patientprofile_form-religion_2").prop({ checked: false });
+                $("#id_patientprofile_form-religion_3").prop({ checked: false });
+                $("#id_patientprofile_form-religion_4").prop({ checked: false });
+                $("#id_patientprofile_form-religion_5").prop({ checked: false });
+                $("#id_patientprofile_form-religion_others").prop("disabled", true);
+            }
+            else
+            {
+                $("#id_patientprofile_form-religion_2").prop("disabled", false);
+                $("#id_patientprofile_form-religion_3").prop("disabled", false);
+                $("#id_patientprofile_form-religion_4").prop("disabled", false);
+                $("#id_patientprofile_form-religion_5").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_patientprofile_form-religion_2"))
+        {
+            if ($("#id_patientprofile_form-religion_2:checked").length > 0)
+            {
+                $("#id_patientprofile_form-religion_1").prop({ checked: false });
+                $("#id_patientprofile_form-religion_3").prop({ checked: false });
+                $("#id_patientprofile_form-religion_4").prop({ checked: false });
+                $("#id_patientprofile_form-religion_5").prop({ checked: false });
+                $("#id_patientprofile_form-religion_others").prop("disabled", true);
+            }
+            else
+            {
+                $("#id_patientprofile_form-religion_1").prop("disabled", false);
+                $("#id_patientprofile_form-religion_3").prop("disabled", false);
+                $("#id_patientprofile_form-religion_4").prop("disabled", false);
+                $("#id_patientprofile_form-religion_5").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_patientprofile_form-religion_3"))
+        {
+            if ($("#id_patientprofile_form-religion_3:checked").length > 0)
+            {
+                $("#id_patientprofile_form-religion_1").prop({ checked: false });
+                $("#id_patientprofile_form-religion_2").prop({ checked: false });
+                $("#id_patientprofile_form-religion_4").prop({ checked: false });
+                $("#id_patientprofile_form-religion_5").prop({ checked: false });
+                $("#id_patientprofile_form-religion_others").prop("disabled", true);
+            }
+            else
+            {
+                $("#id_patientprofile_form-religion_1").prop("disabled", false);
+                $("#id_patientprofile_form-religion_2").prop("disabled", false);
+                $("#id_patientprofile_form-religion_4").prop("disabled", false);
+                $("#id_patientprofile_form-religion_5").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_patientprofile_form-religion_4"))
+        {
+            if ($("#id_patientprofile_form-religion_4:checked").length > 0)
+            {
+                $("#id_patientprofile_form-religion_1").prop({ checked: false });
+                $("#id_patientprofile_form-religion_2").prop({ checked: false });
+                $("#id_patientprofile_form-religion_3").prop({ checked: false });
+                $("#id_patientprofile_form-religion_5").prop({ checked: false });
+                $("#id_patientprofile_form-religion_others").prop("disabled", true);
+            }
+            else
+            {
+                $("#id_patientprofile_form-religion_1").prop("disabled", false);
+                $("#id_patientprofile_form-religion_2").prop("disabled", false);
+                $("#id_patientprofile_form-religion_3").prop("disabled", false);
+                $("#id_patientprofile_form-religion_5").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_patientprofile_form-religion_5"))
+        {
+            if ($("#id_patientprofile_form-religion_5:checked").length > 0)
+            {
+                $("#id_patientprofile_form-religion_1").prop({ checked: false });
+                $("#id_patientprofile_form-religion_2").prop({ checked: false });
+                $("#id_patientprofile_form-religion_3").prop({ checked: false });
+                $("#id_patientprofile_form-religion_4").prop({ checked: false });
+                $("#id_patientprofile_form-religion_others").prop("disabled", false);
+            }
+            else
+            {
+                $("#id_patientprofile_form-religion_1").prop("disabled", false);
+                $("#id_patientprofile_form-religion_2").prop("disabled", false);
+                $("#id_patientprofile_form-religion_3").prop("disabled", false);
+                $("#id_patientprofile_form-religion_4").prop("disabled", false);
+                $("#id_patientprofile_form-religion_others").prop("disabled", true);
+            }
+        }
+    });
 
-	$(':radio[id^="id_patientprofile_form-occupation_"]').click(function()
-	{
-		var $this = $(this);
-		if ($this.is("#id_patientprofile_form-occupation_1"))
-		{
-			if ($("#id_patientprofile_form-occupation_1:checked").length > 0)
-			{
-				$("#id_patientprofile_form-occupation_2").prop({ checked: false });
-				$("#id_patientprofile_form-occupation_3").prop({ checked: false });
-				$("#id_patientprofile_form-occupation_others").prop("disabled", true);
-			}
-			else
-			{
-				$("#id_patientprofile_form-occupation_2").prop("disabled", false);
-				$("#id_patientprofile_form-occupation_3").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_patientprofile_form-occupation_2"))
-		{
-			if ($("#id_patientprofile_form-occupation_2:checked").length > 0)
-			{
-				$("#id_patientprofile_form-occupation_1").prop({ checked: false });
-				$("#id_patientprofile_form-occupation_3").prop({ checked: false });
-				$("#id_patientprofile_form-occupation_others").prop("disabled", true);
-			}
-			else
-			{
-				$("#id_patientprofile_form-occupation_1").prop("disabled", false);
-				$("#id_patientprofile_form-occupation_3").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_patientprofile_form-occupation_3"))
-		{
-			if ($("#id_patientprofile_form-occupation_3:checked").length > 0)
-			{
-				$("#id_patientprofile_form-occupation_1").prop({ checked: false });
-				$("#id_patientprofile_form-occupation_2").prop({ checked: false });
-				$("#id_patientprofile_form-occupation_others").prop("disabled", false);
-			}
-			else
-			{
-				$("#id_patientprofile_form-occupation_1").prop("disabled", false);
-				$("#id_patientprofile_form-occupation_2").prop("disabled", false);
-				$("#id_patientprofile_form-occupation_others").prop("disabled", true);
-			}
-		}
-	});
+    $(':radio[id^="id_patientprofile_form-occupation_"]').click(function()
+    {
+        var $this = $(this);
+        if ($this.is("#id_patientprofile_form-occupation_1"))
+        {
+            if ($("#id_patientprofile_form-occupation_1:checked").length > 0)
+            {
+                $("#id_patientprofile_form-occupation_2").prop({ checked: false });
+                $("#id_patientprofile_form-occupation_3").prop({ checked: false });
+                $("#id_patientprofile_form-occupation_others").prop("disabled", true);
+            }
+            else
+            {
+                $("#id_patientprofile_form-occupation_2").prop("disabled", false);
+                $("#id_patientprofile_form-occupation_3").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_patientprofile_form-occupation_2"))
+        {
+            if ($("#id_patientprofile_form-occupation_2:checked").length > 0)
+            {
+                $("#id_patientprofile_form-occupation_1").prop({ checked: false });
+                $("#id_patientprofile_form-occupation_3").prop({ checked: false });
+                $("#id_patientprofile_form-occupation_others").prop("disabled", true);
+            }
+            else
+            {
+                $("#id_patientprofile_form-occupation_1").prop("disabled", false);
+                $("#id_patientprofile_form-occupation_3").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_patientprofile_form-occupation_3"))
+        {
+            if ($("#id_patientprofile_form-occupation_3:checked").length > 0)
+            {
+                $("#id_patientprofile_form-occupation_1").prop({ checked: false });
+                $("#id_patientprofile_form-occupation_2").prop({ checked: false });
+                $("#id_patientprofile_form-occupation_others").prop("disabled", false);
+            }
+            else
+            {
+                $("#id_patientprofile_form-occupation_1").prop("disabled", false);
+                $("#id_patientprofile_form-occupation_2").prop("disabled", false);
+                $("#id_patientprofile_form-occupation_others").prop("disabled", true);
+            }
+        }
+    });
 
-	$(':radio[id^="id_form-0-communication_sight_"]').click(function()
-	{
-		var $this = $(this);
-		if ($this.is("#id_form-0-communication_sight_1"))
-		{
-			if ($("#id_form-0-communication_sight_1:checked").length > 0)
-			{
-				$("#id_form-0-communication_sight_2").prop({ checked: false });
-				$("#id_form-0-communication_sight_3").prop({ checked: false });
-				$("#id_form-0-communication_sight_4").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-communication_sight_2").prop("disabled", false);
-				$("#id_form-0-communication_sight_3").prop("disabled", false);
-				$("#id_form-0-communication_sight_4").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-communication_sight_2"))
-		{
-			if ($("#id_form-0-communication_sight_2:checked").length > 0)
-			{
-				$("#id_form-0-communication_sight_1").prop({ checked: false });
-				$("#id_form-0-communication_sight_3").prop({ checked: false });
-				$("#id_form-0-communication_sight_4").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-communication_sight_1").prop("disabled", false);
-				$("#id_form-0-communication_sight_3").prop("disabled", false);
-				$("#id_form-0-communication_sight_4").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-communication_sight_3"))
-		{
-			if ($("#id_form-0-communication_sight_3:checked").length > 0)
-			{
-				$("#id_form-0-communication_sight_1").prop({ checked: false });
-				$("#id_form-0-communication_sight_2").prop({ checked: false });
-				$("#id_form-0-communication_sight_4").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-communication_sight_1").prop("disabled", false);
-				$("#id_form-0-communication_sight_2").prop("disabled", false);
-				$("#id_form-0-communication_sight_4").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-communication_sight_4"))
-		{
-			if ($("#id_form-0-communication_sight_4:checked").length > 0)
-			{
-				$("#id_form-0-communication_sight_1").prop({ checked: false });
-				$("#id_form-0-communication_sight_2").prop({ checked: false });
-				$("#id_form-0-communication_sight_3").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-communication_sight_1").prop("disabled", false);
-				$("#id_form-0-communication_sight_2").prop("disabled", false);
-				$("#id_form-0-communication_sight_3").prop("disabled", false);
-			}
-		}
-	});
+    $(':radio[id^="id_form-0-communication_sight_"]').click(function()
+    {
+        var $this = $(this);
+        if ($this.is("#id_form-0-communication_sight_1"))
+        {
+            if ($("#id_form-0-communication_sight_1:checked").length > 0)
+            {
+                $("#id_form-0-communication_sight_2").prop({ checked: false });
+                $("#id_form-0-communication_sight_3").prop({ checked: false });
+                $("#id_form-0-communication_sight_4").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-communication_sight_2").prop("disabled", false);
+                $("#id_form-0-communication_sight_3").prop("disabled", false);
+                $("#id_form-0-communication_sight_4").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-communication_sight_2"))
+        {
+            if ($("#id_form-0-communication_sight_2:checked").length > 0)
+            {
+                $("#id_form-0-communication_sight_1").prop({ checked: false });
+                $("#id_form-0-communication_sight_3").prop({ checked: false });
+                $("#id_form-0-communication_sight_4").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-communication_sight_1").prop("disabled", false);
+                $("#id_form-0-communication_sight_3").prop("disabled", false);
+                $("#id_form-0-communication_sight_4").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-communication_sight_3"))
+        {
+            if ($("#id_form-0-communication_sight_3:checked").length > 0)
+            {
+                $("#id_form-0-communication_sight_1").prop({ checked: false });
+                $("#id_form-0-communication_sight_2").prop({ checked: false });
+                $("#id_form-0-communication_sight_4").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-communication_sight_1").prop("disabled", false);
+                $("#id_form-0-communication_sight_2").prop("disabled", false);
+                $("#id_form-0-communication_sight_4").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-communication_sight_4"))
+        {
+            if ($("#id_form-0-communication_sight_4:checked").length > 0)
+            {
+                $("#id_form-0-communication_sight_1").prop({ checked: false });
+                $("#id_form-0-communication_sight_2").prop({ checked: false });
+                $("#id_form-0-communication_sight_3").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-communication_sight_1").prop("disabled", false);
+                $("#id_form-0-communication_sight_2").prop("disabled", false);
+                $("#id_form-0-communication_sight_3").prop("disabled", false);
+            }
+        }
+    });
 
-	$(':radio[id^="id_patientprofile_form-communication_hearing_"]').click(function()
-	{
-		var $this = $(this);
-		if ($this.is("#id_patientprofile_form-communication_hearing_1"))
-		{
-			if ($("#id_patientprofile_form-communication_hearing_1:checked").length > 0)
-			{
-				$("#id_patientprofile_form-communication_hearing_2").prop({ checked: false });
-				$("#id_patientprofile_form-communication_hearing_3").prop({ checked: false });
-				$("#id_patientprofile_form-communication_hearing_4").prop({ checked: false });
-				$("#id_patientprofile_form-communication_hearing_others").prop("disabled", true);
-			}
-			else
-			{
-				$("#id_patientprofile_form-communication_hearing_2").prop("disabled", false);
-				$("#id_patientprofile_form-communication_hearing_3").prop("disabled", false);
-				$("#id_patientprofile_form-communication_hearing_4").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_patientprofile_form-communication_hearing_2"))
-		{
-			if ($("#id_patientprofile_form-communication_hearing_2:checked").length > 0)
-			{
-				$("#id_patientprofile_form-communication_hearing_1").prop({ checked: false });
-				$("#id_patientprofile_form-communication_hearing_3").prop({ checked: false });
-				$("#id_patientprofile_form-communication_hearing_4").prop({ checked: false });
-				$("#id_patientprofile_form-communication_hearing_others").prop("disabled", true);
-			}
-			else
-			{
-				$("#id_patientprofile_form-communication_hearing_1").prop("disabled", false);
-				$("#id_patientprofile_form-communication_hearing_3").prop("disabled", false);
-				$("#id_patientprofile_form-communication_hearing_4").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_patientprofile_form-communication_hearing_3"))
-		{
-			if ($("#id_patientprofile_form-communication_hearing_3:checked").length > 0)
-			{
-				$("#id_patientprofile_form-communication_hearing_1").prop({ checked: false });
-				$("#id_patientprofile_form-communication_hearing_2").prop({ checked: false });
-				$("#id_patientprofile_form-communication_hearing_4").prop({ checked: false });
-				$("#id_patientprofile_form-communication_hearing_others").prop("disabled", true);
-			}
-			else
-			{
-				$("#id_patientprofile_form-communication_hearing_1").prop("disabled", false);
-				$("#id_patientprofile_form-communication_hearing_2").prop("disabled", false);
-				$("#id_patientprofile_form-communication_hearing_4").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_patientprofile_form-communication_hearing_4"))
-		{
-			if ($("#id_patientprofile_form-communication_hearing_4:checked").length > 0)
-			{
-				$("#id_patientprofile_form-communication_hearing_1").prop({ checked: false });
-				$("#id_patientprofile_form-communication_hearing_2").prop({ checked: false });
-				$("#id_patientprofile_form-communication_hearing_3").prop({ checked: false });
-				$("#id_patientprofile_form-communication_hearing_others").prop("disabled", false);
-			}
-			else
-			{
-				$("#id_patientprofile_form-communication_hearing_1").prop("disabled", false);
-				$("#id_patientprofile_form-communication_hearing_2").prop("disabled", false);
-				$("#id_patientprofile_form-communication_hearing_3").prop("disabled", false);
-				$("#id_patientprofile_form-communication_hearing_others").prop("disabled", true);
-			}
-		}
-	});
+    $(':radio[id^="id_patientprofile_form-communication_hearing_"]').click(function()
+    {
+        var $this = $(this);
+        if ($this.is("#id_patientprofile_form-communication_hearing_1"))
+        {
+            if ($("#id_patientprofile_form-communication_hearing_1:checked").length > 0)
+            {
+                $("#id_patientprofile_form-communication_hearing_2").prop({ checked: false });
+                $("#id_patientprofile_form-communication_hearing_3").prop({ checked: false });
+                $("#id_patientprofile_form-communication_hearing_4").prop({ checked: false });
+                $("#id_patientprofile_form-communication_hearing_others").prop("disabled", true);
+            }
+            else
+            {
+                $("#id_patientprofile_form-communication_hearing_2").prop("disabled", false);
+                $("#id_patientprofile_form-communication_hearing_3").prop("disabled", false);
+                $("#id_patientprofile_form-communication_hearing_4").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_patientprofile_form-communication_hearing_2"))
+        {
+            if ($("#id_patientprofile_form-communication_hearing_2:checked").length > 0)
+            {
+                $("#id_patientprofile_form-communication_hearing_1").prop({ checked: false });
+                $("#id_patientprofile_form-communication_hearing_3").prop({ checked: false });
+                $("#id_patientprofile_form-communication_hearing_4").prop({ checked: false });
+                $("#id_patientprofile_form-communication_hearing_others").prop("disabled", true);
+            }
+            else
+            {
+                $("#id_patientprofile_form-communication_hearing_1").prop("disabled", false);
+                $("#id_patientprofile_form-communication_hearing_3").prop("disabled", false);
+                $("#id_patientprofile_form-communication_hearing_4").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_patientprofile_form-communication_hearing_3"))
+        {
+            if ($("#id_patientprofile_form-communication_hearing_3:checked").length > 0)
+            {
+                $("#id_patientprofile_form-communication_hearing_1").prop({ checked: false });
+                $("#id_patientprofile_form-communication_hearing_2").prop({ checked: false });
+                $("#id_patientprofile_form-communication_hearing_4").prop({ checked: false });
+                $("#id_patientprofile_form-communication_hearing_others").prop("disabled", true);
+            }
+            else
+            {
+                $("#id_patientprofile_form-communication_hearing_1").prop("disabled", false);
+                $("#id_patientprofile_form-communication_hearing_2").prop("disabled", false);
+                $("#id_patientprofile_form-communication_hearing_4").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_patientprofile_form-communication_hearing_4"))
+        {
+            if ($("#id_patientprofile_form-communication_hearing_4:checked").length > 0)
+            {
+                $("#id_patientprofile_form-communication_hearing_1").prop({ checked: false });
+                $("#id_patientprofile_form-communication_hearing_2").prop({ checked: false });
+                $("#id_patientprofile_form-communication_hearing_3").prop({ checked: false });
+                $("#id_patientprofile_form-communication_hearing_others").prop("disabled", false);
+            }
+            else
+            {
+                $("#id_patientprofile_form-communication_hearing_1").prop("disabled", false);
+                $("#id_patientprofile_form-communication_hearing_2").prop("disabled", false);
+                $("#id_patientprofile_form-communication_hearing_3").prop("disabled", false);
+                $("#id_patientprofile_form-communication_hearing_others").prop("disabled", true);
+            }
+        }
+    });
 
-	$(':radio[id^="id_form-0-general_condition_"]').click(function()
-	{
-		var $this = $(this);
-		if ($this.is("#id_form-0-general_condition_1"))
-		{
-			if ($("#id_form-0-general_condition_1:checked").length > 0)
-			{
-				$("#id_form-0-general_condition_2").prop({ checked: false });
-				$("#id_form-0-general_condition_3").prop({ checked: false });
-				$("#id_form-0-general_condition_4").prop({ checked: false });
-				$("#id_form-0-general_condition_5").prop({ checked: false });
-				$("#id_form-0-general_condition_6").prop({ checked: false });
-				$("#id_form-0-general_condition_7").prop({ checked: false });
-				$("#id_form-0-general_condition_8").prop({ checked: false });
-				$("#id_form-0-general_condition_9").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-general_condition_2").prop("disabled", false);
-				$("#id_form-0-general_condition_3").prop("disabled", false);
-				$("#id_form-0-general_condition_4").prop("disabled", false);
-				$("#id_form-0-general_condition_5").prop("disabled", false);
-				$("#id_form-0-general_condition_6").prop("disabled", false);
-				$("#id_form-0-general_condition_7").prop("disabled", false);
-				$("#id_form-0-general_condition_8").prop("disabled", false);
-				$("#id_form-0-general_condition_9").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-general_condition_2"))
-		{
-			if ($("#id_form-0-general_condition_2:checked").length > 0)
-			{
-				$("#id_form-0-general_condition_1").prop({ checked: false });
-				$("#id_form-0-general_condition_3").prop({ checked: false });
-				$("#id_form-0-general_condition_4").prop({ checked: false });
-				$("#id_form-0-general_condition_5").prop({ checked: false });
-				$("#id_form-0-general_condition_6").prop({ checked: false });
-				$("#id_form-0-general_condition_7").prop({ checked: false });
-				$("#id_form-0-general_condition_8").prop({ checked: false });
-				$("#id_form-0-general_condition_9").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-general_condition_1").prop("disabled", false);
-				$("#id_form-0-general_condition_3").prop("disabled", false);
-				$("#id_form-0-general_condition_4").prop("disabled", false);
-				$("#id_form-0-general_condition_5").prop("disabled", false);
-				$("#id_form-0-general_condition_6").prop("disabled", false);
-				$("#id_form-0-general_condition_7").prop("disabled", false);
-				$("#id_form-0-general_condition_8").prop("disabled", false);
-				$("#id_form-0-general_condition_9").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-general_condition_3"))
-		{
-			if ($("#id_form-0-general_condition_3:checked").length > 0)
-			{
-				$("#id_form-0-general_condition_1").prop({ checked: false });
-				$("#id_form-0-general_condition_2").prop({ checked: false });
-				$("#id_form-0-general_condition_4").prop({ checked: false });
-				$("#id_form-0-general_condition_5").prop({ checked: false });
-				$("#id_form-0-general_condition_6").prop({ checked: false });
-				$("#id_form-0-general_condition_7").prop({ checked: false });
-				$("#id_form-0-general_condition_8").prop({ checked: false });
-				$("#id_form-0-general_condition_9").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-general_condition_1").prop("disabled", false);
-				$("#id_form-0-general_condition_2").prop("disabled", false);
-				$("#id_form-0-general_condition_4").prop("disabled", false);
-				$("#id_form-0-general_condition_5").prop("disabled", false);
-				$("#id_form-0-general_condition_6").prop("disabled", false);
-				$("#id_form-0-general_condition_7").prop("disabled", false);
-				$("#id_form-0-general_condition_8").prop("disabled", false);
-				$("#id_form-0-general_condition_9").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-general_condition_4"))
-		{
-			if ($("#id_form-0-general_condition_4:checked").length > 0)
-			{
-				$("#id_form-0-general_condition_1").prop({ checked: false });
-				$("#id_form-0-general_condition_2").prop({ checked: false });
-				$("#id_form-0-general_condition_3").prop({ checked: false });
-				$("#id_form-0-general_condition_5").prop({ checked: false });
-				$("#id_form-0-general_condition_6").prop({ checked: false });
-				$("#id_form-0-general_condition_7").prop({ checked: false });
-				$("#id_form-0-general_condition_8").prop({ checked: false });
-				$("#id_form-0-general_condition_9").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-general_condition_1").prop("disabled", false);
-				$("#id_form-0-general_condition_2").prop("disabled", false);
-				$("#id_form-0-general_condition_3").prop("disabled", false);
-				$("#id_form-0-general_condition_5").prop("disabled", false);
-				$("#id_form-0-general_condition_6").prop("disabled", false);
-				$("#id_form-0-general_condition_7").prop("disabled", false);
-				$("#id_form-0-general_condition_8").prop("disabled", false);
-				$("#id_form-0-general_condition_9").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-general_condition_5"))
-		{
-			if ($("#id_form-0-general_condition_5:checked").length > 0)
-			{
-				$("#id_form-0-general_condition_1").prop({ checked: false });
-				$("#id_form-0-general_condition_2").prop({ checked: false });
-				$("#id_form-0-general_condition_3").prop({ checked: false });
-				$("#id_form-0-general_condition_4").prop({ checked: false });
-				$("#id_form-0-general_condition_6").prop({ checked: false });
-				$("#id_form-0-general_condition_7").prop({ checked: false });
-				$("#id_form-0-general_condition_8").prop({ checked: false });
-				$("#id_form-0-general_condition_9").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-general_condition_1").prop("disabled", false);
-				$("#id_form-0-general_condition_2").prop("disabled", false);
-				$("#id_form-0-general_condition_3").prop("disabled", false);
-				$("#id_form-0-general_condition_4").prop("disabled", false);
-				$("#id_form-0-general_condition_6").prop("disabled", false);
-				$("#id_form-0-general_condition_7").prop("disabled", false);
-				$("#id_form-0-general_condition_8").prop("disabled", false);
-				$("#id_form-0-general_condition_9").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-general_condition_6"))
-		{
-			if ($("#id_form-0-general_condition_6:checked").length > 0)
-			{
-				$("#id_form-0-general_condition_1").prop({ checked: false });
-				$("#id_form-0-general_condition_2").prop({ checked: false });
-				$("#id_form-0-general_condition_3").prop({ checked: false });
-				$("#id_form-0-general_condition_4").prop({ checked: false });
-				$("#id_form-0-general_condition_5").prop({ checked: false });
-				$("#id_form-0-general_condition_7").prop({ checked: false });
-				$("#id_form-0-general_condition_8").prop({ checked: false });
-				$("#id_form-0-general_condition_9").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-general_condition_1").prop("disabled", false);
-				$("#id_form-0-general_condition_2").prop("disabled", false);
-				$("#id_form-0-general_condition_3").prop("disabled", false);
-				$("#id_form-0-general_condition_4").prop("disabled", false);
-				$("#id_form-0-general_condition_5").prop("disabled", false);
-				$("#id_form-0-general_condition_7").prop("disabled", false);
-				$("#id_form-0-general_condition_8").prop("disabled", false);
-				$("#id_form-0-general_condition_9").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-general_condition_7"))
-		{
-			if ($("#id_form-0-general_condition_7:checked").length > 0)
-			{
-				$("#id_form-0-general_condition_1").prop({ checked: false });
-				$("#id_form-0-general_condition_2").prop({ checked: false });
-				$("#id_form-0-general_condition_3").prop({ checked: false });
-				$("#id_form-0-general_condition_4").prop({ checked: false });
-				$("#id_form-0-general_condition_5").prop({ checked: false });
-				$("#id_form-0-general_condition_6").prop({ checked: false });
-				$("#id_form-0-general_condition_8").prop({ checked: false });
-				$("#id_form-0-general_condition_9").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-general_condition_1").prop("disabled", false);
-				$("#id_form-0-general_condition_2").prop("disabled", false);
-				$("#id_form-0-general_condition_3").prop("disabled", false);
-				$("#id_form-0-general_condition_4").prop("disabled", false);
-				$("#id_form-0-general_condition_5").prop("disabled", false);
-				$("#id_form-0-general_condition_6").prop("disabled", false);
-				$("#id_form-0-general_condition_8").prop("disabled", false);
-				$("#id_form-0-general_condition_9").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-general_condition_8"))
-		{
-			if ($("#id_form-0-general_condition_8:checked").length > 0)
-			{
-				$("#id_form-0-general_condition_1").prop({ checked: false });
-				$("#id_form-0-general_condition_2").prop({ checked: false });
-				$("#id_form-0-general_condition_3").prop({ checked: false });
-				$("#id_form-0-general_condition_4").prop({ checked: false });
-				$("#id_form-0-general_condition_5").prop({ checked: false });
-				$("#id_form-0-general_condition_6").prop({ checked: false });
-				$("#id_form-0-general_condition_7").prop({ checked: false });
-				$("#id_form-0-general_condition_9").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-general_condition_1").prop("disabled", false);
-				$("#id_form-0-general_condition_2").prop("disabled", false);
-				$("#id_form-0-general_condition_3").prop("disabled", false);
-				$("#id_form-0-general_condition_4").prop("disabled", false);
-				$("#id_form-0-general_condition_5").prop("disabled", false);
-				$("#id_form-0-general_condition_6").prop("disabled", false);
-				$("#id_form-0-general_condition_7").prop("disabled", false);
-				$("#id_form-0-general_condition_9").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-general_condition_9"))
-		{
-			if ($("#id_form-0-general_condition_9:checked").length > 0)
-			{
-				$("#id_form-0-general_condition_1").prop({ checked: false });
-				$("#id_form-0-general_condition_2").prop({ checked: false });
-				$("#id_form-0-general_condition_3").prop({ checked: false });
-				$("#id_form-0-general_condition_4").prop({ checked: false });
-				$("#id_form-0-general_condition_5").prop({ checked: false });
-				$("#id_form-0-general_condition_6").prop({ checked: false });
-				$("#id_form-0-general_condition_7").prop({ checked: false });
-				$("#id_form-0-general_condition_8").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-general_condition_1").prop("disabled", false);
-				$("#id_form-0-general_condition_2").prop("disabled", false);
-				$("#id_form-0-general_condition_3").prop("disabled", false);
-				$("#id_form-0-general_condition_4").prop("disabled", false);
-				$("#id_form-0-general_condition_5").prop("disabled", false);
-				$("#id_form-0-general_condition_6").prop("disabled", false);
-				$("#id_form-0-general_condition_7").prop("disabled", false);
-				$("#id_form-0-general_condition_8").prop("disabled", false);
-			}
-		}
-	});
+    $(':radio[id^="id_form-0-general_condition_"]').click(function()
+    {
+        var $this = $(this);
+        if ($this.is("#id_form-0-general_condition_1"))
+        {
+            if ($("#id_form-0-general_condition_1:checked").length > 0)
+            {
+                $("#id_form-0-general_condition_2").prop({ checked: false });
+                $("#id_form-0-general_condition_3").prop({ checked: false });
+                $("#id_form-0-general_condition_4").prop({ checked: false });
+                $("#id_form-0-general_condition_5").prop({ checked: false });
+                $("#id_form-0-general_condition_6").prop({ checked: false });
+                $("#id_form-0-general_condition_7").prop({ checked: false });
+                $("#id_form-0-general_condition_8").prop({ checked: false });
+                $("#id_form-0-general_condition_9").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-general_condition_2").prop("disabled", false);
+                $("#id_form-0-general_condition_3").prop("disabled", false);
+                $("#id_form-0-general_condition_4").prop("disabled", false);
+                $("#id_form-0-general_condition_5").prop("disabled", false);
+                $("#id_form-0-general_condition_6").prop("disabled", false);
+                $("#id_form-0-general_condition_7").prop("disabled", false);
+                $("#id_form-0-general_condition_8").prop("disabled", false);
+                $("#id_form-0-general_condition_9").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-general_condition_2"))
+        {
+            if ($("#id_form-0-general_condition_2:checked").length > 0)
+            {
+                $("#id_form-0-general_condition_1").prop({ checked: false });
+                $("#id_form-0-general_condition_3").prop({ checked: false });
+                $("#id_form-0-general_condition_4").prop({ checked: false });
+                $("#id_form-0-general_condition_5").prop({ checked: false });
+                $("#id_form-0-general_condition_6").prop({ checked: false });
+                $("#id_form-0-general_condition_7").prop({ checked: false });
+                $("#id_form-0-general_condition_8").prop({ checked: false });
+                $("#id_form-0-general_condition_9").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-general_condition_1").prop("disabled", false);
+                $("#id_form-0-general_condition_3").prop("disabled", false);
+                $("#id_form-0-general_condition_4").prop("disabled", false);
+                $("#id_form-0-general_condition_5").prop("disabled", false);
+                $("#id_form-0-general_condition_6").prop("disabled", false);
+                $("#id_form-0-general_condition_7").prop("disabled", false);
+                $("#id_form-0-general_condition_8").prop("disabled", false);
+                $("#id_form-0-general_condition_9").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-general_condition_3"))
+        {
+            if ($("#id_form-0-general_condition_3:checked").length > 0)
+            {
+                $("#id_form-0-general_condition_1").prop({ checked: false });
+                $("#id_form-0-general_condition_2").prop({ checked: false });
+                $("#id_form-0-general_condition_4").prop({ checked: false });
+                $("#id_form-0-general_condition_5").prop({ checked: false });
+                $("#id_form-0-general_condition_6").prop({ checked: false });
+                $("#id_form-0-general_condition_7").prop({ checked: false });
+                $("#id_form-0-general_condition_8").prop({ checked: false });
+                $("#id_form-0-general_condition_9").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-general_condition_1").prop("disabled", false);
+                $("#id_form-0-general_condition_2").prop("disabled", false);
+                $("#id_form-0-general_condition_4").prop("disabled", false);
+                $("#id_form-0-general_condition_5").prop("disabled", false);
+                $("#id_form-0-general_condition_6").prop("disabled", false);
+                $("#id_form-0-general_condition_7").prop("disabled", false);
+                $("#id_form-0-general_condition_8").prop("disabled", false);
+                $("#id_form-0-general_condition_9").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-general_condition_4"))
+        {
+            if ($("#id_form-0-general_condition_4:checked").length > 0)
+            {
+                $("#id_form-0-general_condition_1").prop({ checked: false });
+                $("#id_form-0-general_condition_2").prop({ checked: false });
+                $("#id_form-0-general_condition_3").prop({ checked: false });
+                $("#id_form-0-general_condition_5").prop({ checked: false });
+                $("#id_form-0-general_condition_6").prop({ checked: false });
+                $("#id_form-0-general_condition_7").prop({ checked: false });
+                $("#id_form-0-general_condition_8").prop({ checked: false });
+                $("#id_form-0-general_condition_9").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-general_condition_1").prop("disabled", false);
+                $("#id_form-0-general_condition_2").prop("disabled", false);
+                $("#id_form-0-general_condition_3").prop("disabled", false);
+                $("#id_form-0-general_condition_5").prop("disabled", false);
+                $("#id_form-0-general_condition_6").prop("disabled", false);
+                $("#id_form-0-general_condition_7").prop("disabled", false);
+                $("#id_form-0-general_condition_8").prop("disabled", false);
+                $("#id_form-0-general_condition_9").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-general_condition_5"))
+        {
+            if ($("#id_form-0-general_condition_5:checked").length > 0)
+            {
+                $("#id_form-0-general_condition_1").prop({ checked: false });
+                $("#id_form-0-general_condition_2").prop({ checked: false });
+                $("#id_form-0-general_condition_3").prop({ checked: false });
+                $("#id_form-0-general_condition_4").prop({ checked: false });
+                $("#id_form-0-general_condition_6").prop({ checked: false });
+                $("#id_form-0-general_condition_7").prop({ checked: false });
+                $("#id_form-0-general_condition_8").prop({ checked: false });
+                $("#id_form-0-general_condition_9").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-general_condition_1").prop("disabled", false);
+                $("#id_form-0-general_condition_2").prop("disabled", false);
+                $("#id_form-0-general_condition_3").prop("disabled", false);
+                $("#id_form-0-general_condition_4").prop("disabled", false);
+                $("#id_form-0-general_condition_6").prop("disabled", false);
+                $("#id_form-0-general_condition_7").prop("disabled", false);
+                $("#id_form-0-general_condition_8").prop("disabled", false);
+                $("#id_form-0-general_condition_9").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-general_condition_6"))
+        {
+            if ($("#id_form-0-general_condition_6:checked").length > 0)
+            {
+                $("#id_form-0-general_condition_1").prop({ checked: false });
+                $("#id_form-0-general_condition_2").prop({ checked: false });
+                $("#id_form-0-general_condition_3").prop({ checked: false });
+                $("#id_form-0-general_condition_4").prop({ checked: false });
+                $("#id_form-0-general_condition_5").prop({ checked: false });
+                $("#id_form-0-general_condition_7").prop({ checked: false });
+                $("#id_form-0-general_condition_8").prop({ checked: false });
+                $("#id_form-0-general_condition_9").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-general_condition_1").prop("disabled", false);
+                $("#id_form-0-general_condition_2").prop("disabled", false);
+                $("#id_form-0-general_condition_3").prop("disabled", false);
+                $("#id_form-0-general_condition_4").prop("disabled", false);
+                $("#id_form-0-general_condition_5").prop("disabled", false);
+                $("#id_form-0-general_condition_7").prop("disabled", false);
+                $("#id_form-0-general_condition_8").prop("disabled", false);
+                $("#id_form-0-general_condition_9").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-general_condition_7"))
+        {
+            if ($("#id_form-0-general_condition_7:checked").length > 0)
+            {
+                $("#id_form-0-general_condition_1").prop({ checked: false });
+                $("#id_form-0-general_condition_2").prop({ checked: false });
+                $("#id_form-0-general_condition_3").prop({ checked: false });
+                $("#id_form-0-general_condition_4").prop({ checked: false });
+                $("#id_form-0-general_condition_5").prop({ checked: false });
+                $("#id_form-0-general_condition_6").prop({ checked: false });
+                $("#id_form-0-general_condition_8").prop({ checked: false });
+                $("#id_form-0-general_condition_9").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-general_condition_1").prop("disabled", false);
+                $("#id_form-0-general_condition_2").prop("disabled", false);
+                $("#id_form-0-general_condition_3").prop("disabled", false);
+                $("#id_form-0-general_condition_4").prop("disabled", false);
+                $("#id_form-0-general_condition_5").prop("disabled", false);
+                $("#id_form-0-general_condition_6").prop("disabled", false);
+                $("#id_form-0-general_condition_8").prop("disabled", false);
+                $("#id_form-0-general_condition_9").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-general_condition_8"))
+        {
+            if ($("#id_form-0-general_condition_8:checked").length > 0)
+            {
+                $("#id_form-0-general_condition_1").prop({ checked: false });
+                $("#id_form-0-general_condition_2").prop({ checked: false });
+                $("#id_form-0-general_condition_3").prop({ checked: false });
+                $("#id_form-0-general_condition_4").prop({ checked: false });
+                $("#id_form-0-general_condition_5").prop({ checked: false });
+                $("#id_form-0-general_condition_6").prop({ checked: false });
+                $("#id_form-0-general_condition_7").prop({ checked: false });
+                $("#id_form-0-general_condition_9").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-general_condition_1").prop("disabled", false);
+                $("#id_form-0-general_condition_2").prop("disabled", false);
+                $("#id_form-0-general_condition_3").prop("disabled", false);
+                $("#id_form-0-general_condition_4").prop("disabled", false);
+                $("#id_form-0-general_condition_5").prop("disabled", false);
+                $("#id_form-0-general_condition_6").prop("disabled", false);
+                $("#id_form-0-general_condition_7").prop("disabled", false);
+                $("#id_form-0-general_condition_9").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-general_condition_9"))
+        {
+            if ($("#id_form-0-general_condition_9:checked").length > 0)
+            {
+                $("#id_form-0-general_condition_1").prop({ checked: false });
+                $("#id_form-0-general_condition_2").prop({ checked: false });
+                $("#id_form-0-general_condition_3").prop({ checked: false });
+                $("#id_form-0-general_condition_4").prop({ checked: false });
+                $("#id_form-0-general_condition_5").prop({ checked: false });
+                $("#id_form-0-general_condition_6").prop({ checked: false });
+                $("#id_form-0-general_condition_7").prop({ checked: false });
+                $("#id_form-0-general_condition_8").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-general_condition_1").prop("disabled", false);
+                $("#id_form-0-general_condition_2").prop("disabled", false);
+                $("#id_form-0-general_condition_3").prop("disabled", false);
+                $("#id_form-0-general_condition_4").prop("disabled", false);
+                $("#id_form-0-general_condition_5").prop("disabled", false);
+                $("#id_form-0-general_condition_6").prop("disabled", false);
+                $("#id_form-0-general_condition_7").prop("disabled", false);
+                $("#id_form-0-general_condition_8").prop("disabled", false);
+            }
+        }
+    });
 
-	$(':radio[id^="id_form-0-biohazard_infectious_disease_"]').click(function()
-	{
-		var $this = $(this);
-		if ($this.is("#id_form-0-biohazard_infectious_disease_1"))
-		{
-			if ($("#id_form-0-biohazard_infectious_disease_1:checked").length > 0)
-			{
-				$("#id_form-0-biohazard_infectious_disease_2").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-biohazard_infectious_disease_2").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-biohazard_infectious_disease_2"))
-		{
-			if ($("#id_form-0-biohazard_infectious_disease_2:checked").length > 0)
-			{
-				$("#id_form-0-biohazard_infectious_disease_1").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-biohazard_infectious_disease_1").prop("disabled", false);
-			}
-		}
-	});
+    $(':radio[id^="id_form-0-biohazard_infectious_disease_"]').click(function()
+    {
+        var $this = $(this);
+        if ($this.is("#id_form-0-biohazard_infectious_disease_1"))
+        {
+            if ($("#id_form-0-biohazard_infectious_disease_1:checked").length > 0)
+            {
+                $("#id_form-0-biohazard_infectious_disease_2").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-biohazard_infectious_disease_2").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-biohazard_infectious_disease_2"))
+        {
+            if ($("#id_form-0-biohazard_infectious_disease_2:checked").length > 0)
+            {
+                $("#id_form-0-biohazard_infectious_disease_1").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-biohazard_infectious_disease_1").prop("disabled", false);
+            }
+        }
+    });
 
-	$(':radio[id^="id_admision_form-vital_sign_on_oxygen_therapy_"]').click(function()
-	{
-		var $this = $(this);
-		if ($this.is("#id_admision_form-vital_sign_on_oxygen_therapy_1"))
-		{
-			if ($("#id_admision_form-vital_sign_on_oxygen_therapy_1:checked").length > 0)
-			{
-				$("#id_admision_form-vital_sign_on_oxygen_therapy_2").prop({ checked: false });
-				$("#id_admision_form-vital_sign_on_oxygen_therapy_flow_rate").prop("disabled", true);
-			}
-			else
-			{
-				$("#id_admision_form-vital_sign_on_oxygen_therapy_2").prop("disabled", false);
-				$("#id_admision_form-vital_sign_on_oxygen_therapy_flow_rate").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_admision_form-vital_sign_on_oxygen_therapy_2"))
-		{
-			if ($("#id_admision_form-vital_sign_on_oxygen_therapy_2:checked").length > 0)
-			{
-				$("#id_admision_form-vital_sign_on_oxygen_therapy_1").prop({ checked: false });
-				$("#id_admision_form-vital_sign_on_oxygen_therapy_flow_rate").prop("disabled", false);
-			}
-			else
-			{
-				$("#id_admision_form-vital_sign_on_oxygen_therapy_1").prop("disabled", false);
-				$("#id_admision_form-vital_sign_on_oxygen_therapy_flow_rate").prop("disabled", true);
-			}
-		}
-	});
-
-
-	$(':radio[id^="id_admision_form-biohazard_infectious_disease_"]').click(function()
-	{
-		var $this = $(this);
-		if ($this.is("#id_admision_form-biohazard_infectious_disease_1"))
-		{
-			if ($("#id_admision_form-biohazard_infectious_disease_1:checked").length > 0)
-			{
-				$("#id_admision_form-biohazard_infectious_disease_2").prop({ checked: false });
-				$("#id_admision_form-biohazard_infectious_disease_others").prop("disabled", true);
-			}
-			else
-			{
-				$("#id_admision_form-biohazard_infectious_disease_2").prop("disabled", false);
-				$("#id_admision_form-biohazard_infectious_disease_others").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_admision_form-biohazard_infectious_disease_2"))
-		{
-			if ($("#id_admision_form-biohazard_infectious_disease_2:checked").length > 0)
-			{
-				$("#id_admision_form-biohazard_infectious_disease_1").prop({ checked: false });
-				$("#id_admision_form-biohazard_infectious_disease_others").prop("disabled", false);
-			}
-			else
-			{
-				$("#id_admision_form-biohazard_infectious_disease_1").prop("disabled", false);
-				$("#id_admision_form-biohazard_infectious_disease_others").prop("disabled", true);
-			}
-		}
-	});
-
-	$(':input[id^="id_admision_form-invasive_line_insitu_"]').click(function()
-	{
-		var $this = $(this);
-		if ($this.is("#id_admision_form-invasive_line_insitu_5"))
-		{
-//			if ($("#id_admision_form-invasive_line_insitu_5:checked").is(':checked') == true)
-			if ($("#id_admision_form-invasive_line_insitu_5:checked").length > 0)
-			{
-				$("#id_admision_form-invasive_line_insitu_others").prop("disabled", false);
-			}
-			else
-			{
-				$("#id_admision_form-invasive_line_insitu_others").prop("disabled", true);
-			}
-		}
-	});
-
-	$(':input[id^="id_admision_form-medical_history_"]').click(function()
-	{
-		var $this = $(this);
-		if ($this.is("#id_admision_form-medical_history_8"))
-		{
-//			if ($("#id_admision_form-medical_history_8").is(':checked') == true)
-			if ($("#id_admision_form-medical_history_8:checked").length > 0)
-			{
-				$("#id_admision_form-medical_history_others").prop("disabled", false);
-			}
-			else
-			{
-				$("#id_admision_form-medical_history_others").prop("disabled", true);
-			}
-		}
-	});
-
-	$(':radio[id^="id_martform_own_medication-own_medication_"]').click(function()
-	{
-
-		var $this = $(this);
-		if ($this.is("#id_martform_own_medication-own_medication_1"))
-		{
-			if ($("#id_martform_own_medication-own_medication_1").filter('[value="Yes"]').attr('checked', true))
-//			if ($("#id_martform_own_medication-own_medication_1:checked").filter('[value="Yes"]').length > 0)
-			{
-				$('.hapus_Own').addClass("disabled");
-				$('.tambah_Own').addClass("disabled");
-				$("[id$='time']").addClass("disabled_input");
-				$("[id$='drug_name']").addClass("disabled_input");
-				$("[id$='dosage']").addClass("disabled_input");
-				$("[id$='unit']").addClass("disabled_input");
-				$("[id$='tablet_capsule']").addClass("disabled_input");
-				$("[id$='frequency']").addClass("disabled_input");
-			}
-			else
-			{
-				$('.hapus_Own').removeClass("disabled");
-				$('.tambah_Own').removeClass("disabled");
-				$("[id$='time']").removeClass("disabled_input");
-				$("[id$='drug_name']").removeClass("disabled_input");
-				$("[id$='dosage']").removeClass("disabled_input");
-				$("[id$='unit']").removeClass("disabled_input");
-				$("[id$='tablet_capsule']").removeClass("disabled_input");
-				$("[id$='frequency']").removeClass("disabled_input");
-			}
-		}
-		else if ($this.is("#id_martform_own_medication-own_medication_2"))
-		{
-			if ($("#id_martform_own_medication-own_medication_2").filter('[value="Yes"]').attr('checked', true))
-//			if ($("#id_martform_own_medication-own_medication_2:checked").filter('[value="Yes"]').length > 0)
-			{
-				$('.hapus_Own').removeClass("disabled");
-				$('.tambah_Own').removeClass("disabled");
-				$("[id$='time']").removeClass("disabled_input");
-				$("[id$='drug_name']").removeClass("disabled_input");
-				$("[id$='dosage']").removeClass("disabled_input");
-				$("[id$='unit']").removeClass("disabled_input");
-				$("[id$='tablet_capsule']").removeClass("disabled_input");
-				$("[id$='frequency']").removeClass("disabled_input");
-			}
-			else
-			{
-				$('.hapus_Own').addClass("disabled");
-				$('.tambah_Own').addClass("disabled");
-				$("[id$='time']").addClass("disabled_input");
-				$("[id$='drug_name']").addClass("disabled_input");
-				$("[id$='dosage']").addClass("disabled_input");
-				$("[id$='unit']").addClass("disabled_input");
-				$("[id$='tablet_capsule']").addClass("disabled_input");
-				$("[id$='frequency']").addClass("disabled_input");
-			}
-		}
-	});
+    $(':radio[id^="id_admision_form-vital_sign_on_oxygen_therapy_"]').click(function()
+    {
+        var $this = $(this);
+        if ($this.is("#id_admision_form-vital_sign_on_oxygen_therapy_1"))
+        {
+            if ($("#id_admision_form-vital_sign_on_oxygen_therapy_1:checked").length > 0)
+            {
+                $("#id_admision_form-vital_sign_on_oxygen_therapy_2").prop({ checked: false });
+                $("#id_admision_form-vital_sign_on_oxygen_therapy_flow_rate").prop("disabled", true);
+            }
+            else
+            {
+                $("#id_admision_form-vital_sign_on_oxygen_therapy_2").prop("disabled", false);
+                $("#id_admision_form-vital_sign_on_oxygen_therapy_flow_rate").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_admision_form-vital_sign_on_oxygen_therapy_2"))
+        {
+            if ($("#id_admision_form-vital_sign_on_oxygen_therapy_2:checked").length > 0)
+            {
+                $("#id_admision_form-vital_sign_on_oxygen_therapy_1").prop({ checked: false });
+                $("#id_admision_form-vital_sign_on_oxygen_therapy_flow_rate").prop("disabled", false);
+            }
+            else
+            {
+                $("#id_admision_form-vital_sign_on_oxygen_therapy_1").prop("disabled", false);
+                $("#id_admision_form-vital_sign_on_oxygen_therapy_flow_rate").prop("disabled", true);
+            }
+        }
+    });
 
 
-	$(':input[id^="id_admision_form-adaptive_aids_with_patient_"]').click(function()
-	{
-		var $this = $(this);
-		if ($this.is("#id_admision_form-adaptive_aids_with_patient_6"))
-		{
-//			if ($("#id_admision_form-adaptive_aids_with_patient_6").is(':checked') == true)
-			if ($("#id_admision_form-adaptive_aids_with_patient_6:checked").length > 0)
-			{
-				$("#id_admision_form-adaptive_aids_with_patient_others").prop("disabled", false);
-			}
-			else
-			{
-				$("#id_admision_form-adaptive_aids_with_patient_others").prop("disabled", true);
-			}
-		}
-	});
+    $(':radio[id^="id_admision_form-biohazard_infectious_disease_"]').click(function()
+    {
+        var $this = $(this);
+        if ($this.is("#id_admision_form-biohazard_infectious_disease_1"))
+        {
+            if ($("#id_admision_form-biohazard_infectious_disease_1:checked").length > 0)
+            {
+                $("#id_admision_form-biohazard_infectious_disease_2").prop({ checked: false });
+                $("#id_admision_form-biohazard_infectious_disease_others").prop("disabled", true);
+            }
+            else
+            {
+                $("#id_admision_form-biohazard_infectious_disease_2").prop("disabled", false);
+                $("#id_admision_form-biohazard_infectious_disease_others").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_admision_form-biohazard_infectious_disease_2"))
+        {
+            if ($("#id_admision_form-biohazard_infectious_disease_2:checked").length > 0)
+            {
+                $("#id_admision_form-biohazard_infectious_disease_1").prop({ checked: false });
+                $("#id_admision_form-biohazard_infectious_disease_others").prop("disabled", false);
+            }
+            else
+            {
+                $("#id_admision_form-biohazard_infectious_disease_1").prop("disabled", false);
+                $("#id_admision_form-biohazard_infectious_disease_others").prop("disabled", true);
+            }
+        }
+    });
+
+    $(':input[id^="id_admision_form-invasive_line_insitu_"]').click(function()
+    {
+        var $this = $(this);
+        if ($this.is("#id_admision_form-invasive_line_insitu_5"))
+        {
+//          if ($("#id_admision_form-invasive_line_insitu_5:checked").is(':checked') == true)
+            if ($("#id_admision_form-invasive_line_insitu_5:checked").length > 0)
+            {
+                $("#id_admision_form-invasive_line_insitu_others").prop("disabled", false);
+            }
+            else
+            {
+                $("#id_admision_form-invasive_line_insitu_others").prop("disabled", true);
+            }
+        }
+    });
+
+    $(':input[id^="id_admision_form-medical_history_"]').click(function()
+    {
+        var $this = $(this);
+        if ($this.is("#id_admision_form-medical_history_8"))
+        {
+//          if ($("#id_admision_form-medical_history_8").is(':checked') == true)
+            if ($("#id_admision_form-medical_history_8:checked").length > 0)
+            {
+                $("#id_admision_form-medical_history_others").prop("disabled", false);
+            }
+            else
+            {
+                $("#id_admision_form-medical_history_others").prop("disabled", true);
+            }
+        }
+    });
+
+    $(':radio[id^="id_martform_own_medication-own_medication_"]').click(function()
+    {
+
+        var $this = $(this);
+        if ($this.is("#id_martform_own_medication-own_medication_1"))
+        {
+            if ($("#id_martform_own_medication-own_medication_1").filter('[value="Yes"]').attr('checked', true))
+//          if ($("#id_martform_own_medication-own_medication_1:checked").filter('[value="Yes"]').length > 0)
+            {
+                $('.hapus_Own').addClass("disabled");
+                $('.tambah_Own').addClass("disabled");
+                $("[id$='time']").addClass("disabled_input");
+                $("[id$='drug_name']").addClass("disabled_input");
+                $("[id$='dosage']").addClass("disabled_input");
+                $("[id$='unit']").addClass("disabled_input");
+                $("[id$='tablet_capsule']").addClass("disabled_input");
+                $("[id$='frequency']").addClass("disabled_input");
+            }
+            else
+            {
+                $('.hapus_Own').removeClass("disabled");
+                $('.tambah_Own').removeClass("disabled");
+                $("[id$='time']").removeClass("disabled_input");
+                $("[id$='drug_name']").removeClass("disabled_input");
+                $("[id$='dosage']").removeClass("disabled_input");
+                $("[id$='unit']").removeClass("disabled_input");
+                $("[id$='tablet_capsule']").removeClass("disabled_input");
+                $("[id$='frequency']").removeClass("disabled_input");
+            }
+        }
+        else if ($this.is("#id_martform_own_medication-own_medication_2"))
+        {
+            if ($("#id_martform_own_medication-own_medication_2").filter('[value="Yes"]').attr('checked', true))
+//          if ($("#id_martform_own_medication-own_medication_2:checked").filter('[value="Yes"]').length > 0)
+            {
+                $('.hapus_Own').removeClass("disabled");
+                $('.tambah_Own').removeClass("disabled");
+                $("[id$='time']").removeClass("disabled_input");
+                $("[id$='drug_name']").removeClass("disabled_input");
+                $("[id$='dosage']").removeClass("disabled_input");
+                $("[id$='unit']").removeClass("disabled_input");
+                $("[id$='tablet_capsule']").removeClass("disabled_input");
+                $("[id$='frequency']").removeClass("disabled_input");
+            }
+            else
+            {
+                $('.hapus_Own').addClass("disabled");
+                $('.tambah_Own').addClass("disabled");
+                $("[id$='time']").addClass("disabled_input");
+                $("[id$='drug_name']").addClass("disabled_input");
+                $("[id$='dosage']").addClass("disabled_input");
+                $("[id$='unit']").addClass("disabled_input");
+                $("[id$='tablet_capsule']").addClass("disabled_input");
+                $("[id$='frequency']").addClass("disabled_input");
+            }
+        }
+    });
 
 
-	$(':radio[id^="id_form-0-orientation_"]').click(function()
-	{
-		var $this = $(this);
-		if ($this.is("#id_form-0-orientation_1"))
-		{
-			if ($("#id_form-0-orientation_1:checked").length > 0)
-			{
-				$("#id_form-0-orientation_2").prop({ checked: false });
-				$("#id_form-0-orientation_3").prop({ checked: false });
-				$("#id_form-0-orientation_4").prop({ checked: false });
-				$("#id_form-0-orientation_5").prop({ checked: false });
-				$("#id_form-0-orientation_6").prop({ checked: false });
-				$("#id_form-0-orientation_7").prop({ checked: false });
-				$("#id_form-0-orientation_8").prop({ checked: false });
-				$("#id_form-0-orientation_9").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-orientation_2").prop("disabled", false);
-				$("#id_form-0-orientation_3").prop("disabled", false);
-				$("#id_form-0-orientation_4").prop("disabled", false);
-				$("#id_form-0-orientation_5").prop("disabled", false);
-				$("#id_form-0-orientation_6").prop("disabled", false);
-				$("#id_form-0-orientation_7").prop("disabled", false);
-				$("#id_form-0-orientation_8").prop("disabled", false);
-				$("#id_form-0-orientation_9").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-orientation_2"))
-		{
-			if ($("#id_form-0-orientation_2:checked").length > 0)
-			{
-				$("#id_form-0-orientation_1").prop({ checked: false });
-				$("#id_form-0-orientation_3").prop({ checked: false });
-				$("#id_form-0-orientation_4").prop({ checked: false });
-				$("#id_form-0-orientation_5").prop({ checked: false });
-				$("#id_form-0-orientation_6").prop({ checked: false });
-				$("#id_form-0-orientation_7").prop({ checked: false });
-				$("#id_form-0-orientation_8").prop({ checked: false });
-				$("#id_form-0-orientation_9").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-orientation_1").prop("disabled", false);
-				$("#id_form-0-orientation_3").prop("disabled", false);
-				$("#id_form-0-orientation_4").prop("disabled", false);
-				$("#id_form-0-orientation_5").prop("disabled", false);
-				$("#id_form-0-orientation_6").prop("disabled", false);
-				$("#id_form-0-orientation_7").prop("disabled", false);
-				$("#id_form-0-orientation_8").prop("disabled", false);
-				$("#id_form-0-orientation_9").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-orientation_3"))
-		{
-			if ($("#id_form-0-orientation_3:checked").length > 0)
-			{
-				$("#id_form-0-orientation_1").prop({ checked: false });
-				$("#id_form-0-orientation_2").prop({ checked: false });
-				$("#id_form-0-orientation_4").prop({ checked: false });
-				$("#id_form-0-orientation_5").prop({ checked: false });
-				$("#id_form-0-orientation_6").prop({ checked: false });
-				$("#id_form-0-orientation_7").prop({ checked: false });
-				$("#id_form-0-orientation_8").prop({ checked: false });
-				$("#id_form-0-orientation_9").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-orientation_1").prop("disabled", false);
-				$("#id_form-0-orientation_2").prop("disabled", false);
-				$("#id_form-0-orientation_4").prop("disabled", false);
-				$("#id_form-0-orientation_5").prop("disabled", false);
-				$("#id_form-0-orientation_6").prop("disabled", false);
-				$("#id_form-0-orientation_7").prop("disabled", false);
-				$("#id_form-0-orientation_8").prop("disabled", false);
-				$("#id_form-0-orientation_9").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-orientation_4"))
-		{
-			if ($("#id_form-0-orientation_4:checked").length > 0)
-			{
-				$("#id_form-0-orientation_1").prop({ checked: false });
-				$("#id_form-0-orientation_2").prop({ checked: false });
-				$("#id_form-0-orientation_3").prop({ checked: false });
-				$("#id_form-0-orientation_5").prop({ checked: false });
-				$("#id_form-0-orientation_6").prop({ checked: false });
-				$("#id_form-0-orientation_7").prop({ checked: false });
-				$("#id_form-0-orientation_8").prop({ checked: false });
-				$("#id_form-0-orientation_9").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-orientation_1").prop("disabled", false);
-				$("#id_form-0-orientation_2").prop("disabled", false);
-				$("#id_form-0-orientation_3").prop("disabled", false);
-				$("#id_form-0-orientation_5").prop("disabled", false);
-				$("#id_form-0-orientation_6").prop("disabled", false);
-				$("#id_form-0-orientation_7").prop("disabled", false);
-				$("#id_form-0-orientation_8").prop("disabled", false);
-				$("#id_form-0-orientation_9").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-orientation_5"))
-		{
-			if ($("#id_form-0-orientation_5:checked").length > 0)
-			{
-				$("#id_form-0-orientation_1").prop({ checked: false });
-				$("#id_form-0-orientation_2").prop({ checked: false });
-				$("#id_form-0-orientation_3").prop({ checked: false });
-				$("#id_form-0-orientation_4").prop({ checked: false });
-				$("#id_form-0-orientation_6").prop({ checked: false });
-				$("#id_form-0-orientation_7").prop({ checked: false });
-				$("#id_form-0-orientation_8").prop({ checked: false });
-				$("#id_form-0-orientation_9").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-orientation_1").prop("disabled", false);
-				$("#id_form-0-orientation_2").prop("disabled", false);
-				$("#id_form-0-orientation_3").prop("disabled", false);
-				$("#id_form-0-orientation_4").prop("disabled", false);
-				$("#id_form-0-orientation_6").prop("disabled", false);
-				$("#id_form-0-orientation_7").prop("disabled", false);
-				$("#id_form-0-orientation_8").prop("disabled", false);
-				$("#id_form-0-orientation_9").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-orientation_6"))
-		{
-			if ($("#id_form-0-orientation_6:checked").length > 0)
-			{
-				$("#id_form-0-orientation_1").prop({ checked: false });
-				$("#id_form-0-orientation_2").prop({ checked: false });
-				$("#id_form-0-orientation_3").prop({ checked: false });
-				$("#id_form-0-orientation_4").prop({ checked: false });
-				$("#id_form-0-orientation_5").prop({ checked: false });
-				$("#id_form-0-orientation_7").prop({ checked: false });
-				$("#id_form-0-orientation_8").prop({ checked: false });
-				$("#id_form-0-orientation_9").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-orientation_1").prop("disabled", false);
-				$("#id_form-0-orientation_2").prop("disabled", false);
-				$("#id_form-0-orientation_3").prop("disabled", false);
-				$("#id_form-0-orientation_4").prop("disabled", false);
-				$("#id_form-0-orientation_5").prop("disabled", false);
-				$("#id_form-0-orientation_7").prop("disabled", false);
-				$("#id_form-0-orientation_8").prop("disabled", false);
-				$("#id_form-0-orientation_9").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-orientation_7"))
-		{
-			if ($("#id_form-0-orientation_7:checked").length > 0)
-			{
-				$("#id_form-0-orientation_1").prop({ checked: false });
-				$("#id_form-0-orientation_2").prop({ checked: false });
-				$("#id_form-0-orientation_3").prop({ checked: false });
-				$("#id_form-0-orientation_4").prop({ checked: false });
-				$("#id_form-0-orientation_5").prop({ checked: false });
-				$("#id_form-0-orientation_6").prop({ checked: false });
-				$("#id_form-0-orientation_8").prop({ checked: false });
-				$("#id_form-0-orientation_9").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-orientation_1").prop("disabled", false);
-				$("#id_form-0-orientation_2").prop("disabled", false);
-				$("#id_form-0-orientation_3").prop("disabled", false);
-				$("#id_form-0-orientation_4").prop("disabled", false);
-				$("#id_form-0-orientation_5").prop("disabled", false);
-				$("#id_form-0-orientation_6").prop("disabled", false);
-				$("#id_form-0-orientation_8").prop("disabled", false);
-				$("#id_form-0-orientation_9").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-orientation_8"))
-		{
-			if ($("#id_form-0-orientation_8:checked").length > 0)
-			{
-				$("#id_form-0-orientation_1").prop({ checked: false });
-				$("#id_form-0-orientation_2").prop({ checked: false });
-				$("#id_form-0-orientation_3").prop({ checked: false });
-				$("#id_form-0-orientation_4").prop({ checked: false });
-				$("#id_form-0-orientation_5").prop({ checked: false });
-				$("#id_form-0-orientation_6").prop({ checked: false });
-				$("#id_form-0-orientation_7").prop({ checked: false });
-				$("#id_form-0-orientation_9").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-orientation_1").prop("disabled", false);
-				$("#id_form-0-orientation_2").prop("disabled", false);
-				$("#id_form-0-orientation_3").prop("disabled", false);
-				$("#id_form-0-orientation_4").prop("disabled", false);
-				$("#id_form-0-orientation_5").prop("disabled", false);
-				$("#id_form-0-orientation_6").prop("disabled", false);
-				$("#id_form-0-orientation_7").prop("disabled", false);
-				$("#id_form-0-orientation_9").prop("disabled", false);
-			}
-		}
-		else if ($this.is("#id_form-0-orientation_9"))
-		{
-			if ($("#id_form-0-orientation_9:checked").length > 0)
-			{
-				$("#id_form-0-orientation_1").prop({ checked: false });
-				$("#id_form-0-orientation_2").prop({ checked: false });
-				$("#id_form-0-orientation_3").prop({ checked: false });
-				$("#id_form-0-orientation_4").prop({ checked: false });
-				$("#id_form-0-orientation_5").prop({ checked: false });
-				$("#id_form-0-orientation_6").prop({ checked: false });
-				$("#id_form-0-orientation_7").prop({ checked: false });
-				$("#id_form-0-orientation_8").prop({ checked: false });
-			}
-			else
-			{
-				$("#id_form-0-orientation_1").prop("disabled", false);
-				$("#id_form-0-orientation_2").prop("disabled", false);
-				$("#id_form-0-orientation_3").prop("disabled", false);
-				$("#id_form-0-orientation_4").prop("disabled", false);
-				$("#id_form-0-orientation_5").prop("disabled", false);
-				$("#id_form-0-orientation_6").prop("disabled", false);
-				$("#id_form-0-orientation_7").prop("disabled", false);
-				$("#id_form-0-orientation_8").prop("disabled", false);
-			}
-		}
-	});
-
-	$(':checkbox[id^="id_admision_form-surgical_history_none_"]').click(function()
-	{
-		var $this = $(this);
-		if ($this.is("#id_admision_form-surgical_history_none_1"))
-		{
-			if ($("#id_admision_form-surgical_history_none_1:checked").length > 0)
-			{
-				$("#id_admision_form-surgical_history").prop("disabled", true);
-			}
-			else
-			{
-				$("#id_admision_form-surgical_history").prop("disabled", false);
-			}
-		}
-	});
-
-	function getCookie(name)
-	{
-		var cookieValue = null;
-		if (document.cookie && document.cookie !== '')
-		{
-			var cookies = document.cookie.split(';');
-			for (var i = 0; i < cookies.length; i++)
-			{
-				var cookie = jQuery.trim(cookies[i]);
-				if (cookie.substring(0, name.length + 1) === (name + '='))
-				{
-					cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-					break;
-				}
-			}
-		}
-		return cookieValue;
-	}
-
-	var csrftoken = getCookie('csrftoken');
-
-//	$('admission_send').on('submit', function(event)
-//	$('form.admission_send').submit(function(event)
-	$(".admission_send").bind("click", function()
-	{
-//		console.log("Submit is clicked!");
-//		event.preventDefault();
-		var get_invasive_line_insitu_others = $('#id_admision_form-invasive_line_insitu_others').val();
-		var isChecked1 = $('#id_admision_form-invasive_line_insitu_5:checkbox:checked').length > 0;
-		var isChecked2 = $('input[id="id_admision_form-invasive_line_insitu_5"]:checked').length > 0;
-
-		var username_data = "{{ user_name }}";
-		var urls = "/patient/admission/" + username_data + "/";
-//		console.log("username_data", username_data);
-//		console.log("urls", urls);
+    $(':input[id^="id_admision_form-adaptive_aids_with_patient_"]').click(function()
+    {
+        var $this = $(this);
+        if ($this.is("#id_admision_form-adaptive_aids_with_patient_6"))
+        {
+//          if ($("#id_admision_form-adaptive_aids_with_patient_6").is(':checked') == true)
+            if ($("#id_admision_form-adaptive_aids_with_patient_6:checked").length > 0)
+            {
+                $("#id_admision_form-adaptive_aids_with_patient_others").prop("disabled", false);
+            }
+            else
+            {
+                $("#id_admision_form-adaptive_aids_with_patient_others").prop("disabled", true);
+            }
+        }
+    });
 
 
-//		if ($("#id_admision_form-invasive_line_insitu_5 :checkbox:checked").length == 0)
-		if(isChecked1 == true && get_invasive_line_insitu_others == '')
-	    {
-//	    	console.log("Checkbox is ", isChecked1);
-//			console.log("Input is empty!");
-	    }
-	    else
-	    {
-//			console.log("Checkbox is ", isChecked1);
-//	    	console.log("Input is ", get_invasive_line_insitu_others);
-	    };
+    $(':radio[id^="id_form-0-orientation_"]').click(function()
+    {
+        var $this = $(this);
+        if ($this.is("#id_form-0-orientation_1"))
+        {
+            if ($("#id_form-0-orientation_1:checked").length > 0)
+            {
+                $("#id_form-0-orientation_2").prop({ checked: false });
+                $("#id_form-0-orientation_3").prop({ checked: false });
+                $("#id_form-0-orientation_4").prop({ checked: false });
+                $("#id_form-0-orientation_5").prop({ checked: false });
+                $("#id_form-0-orientation_6").prop({ checked: false });
+                $("#id_form-0-orientation_7").prop({ checked: false });
+                $("#id_form-0-orientation_8").prop({ checked: false });
+                $("#id_form-0-orientation_9").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-orientation_2").prop("disabled", false);
+                $("#id_form-0-orientation_3").prop("disabled", false);
+                $("#id_form-0-orientation_4").prop("disabled", false);
+                $("#id_form-0-orientation_5").prop("disabled", false);
+                $("#id_form-0-orientation_6").prop("disabled", false);
+                $("#id_form-0-orientation_7").prop("disabled", false);
+                $("#id_form-0-orientation_8").prop("disabled", false);
+                $("#id_form-0-orientation_9").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-orientation_2"))
+        {
+            if ($("#id_form-0-orientation_2:checked").length > 0)
+            {
+                $("#id_form-0-orientation_1").prop({ checked: false });
+                $("#id_form-0-orientation_3").prop({ checked: false });
+                $("#id_form-0-orientation_4").prop({ checked: false });
+                $("#id_form-0-orientation_5").prop({ checked: false });
+                $("#id_form-0-orientation_6").prop({ checked: false });
+                $("#id_form-0-orientation_7").prop({ checked: false });
+                $("#id_form-0-orientation_8").prop({ checked: false });
+                $("#id_form-0-orientation_9").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-orientation_1").prop("disabled", false);
+                $("#id_form-0-orientation_3").prop("disabled", false);
+                $("#id_form-0-orientation_4").prop("disabled", false);
+                $("#id_form-0-orientation_5").prop("disabled", false);
+                $("#id_form-0-orientation_6").prop("disabled", false);
+                $("#id_form-0-orientation_7").prop("disabled", false);
+                $("#id_form-0-orientation_8").prop("disabled", false);
+                $("#id_form-0-orientation_9").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-orientation_3"))
+        {
+            if ($("#id_form-0-orientation_3:checked").length > 0)
+            {
+                $("#id_form-0-orientation_1").prop({ checked: false });
+                $("#id_form-0-orientation_2").prop({ checked: false });
+                $("#id_form-0-orientation_4").prop({ checked: false });
+                $("#id_form-0-orientation_5").prop({ checked: false });
+                $("#id_form-0-orientation_6").prop({ checked: false });
+                $("#id_form-0-orientation_7").prop({ checked: false });
+                $("#id_form-0-orientation_8").prop({ checked: false });
+                $("#id_form-0-orientation_9").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-orientation_1").prop("disabled", false);
+                $("#id_form-0-orientation_2").prop("disabled", false);
+                $("#id_form-0-orientation_4").prop("disabled", false);
+                $("#id_form-0-orientation_5").prop("disabled", false);
+                $("#id_form-0-orientation_6").prop("disabled", false);
+                $("#id_form-0-orientation_7").prop("disabled", false);
+                $("#id_form-0-orientation_8").prop("disabled", false);
+                $("#id_form-0-orientation_9").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-orientation_4"))
+        {
+            if ($("#id_form-0-orientation_4:checked").length > 0)
+            {
+                $("#id_form-0-orientation_1").prop({ checked: false });
+                $("#id_form-0-orientation_2").prop({ checked: false });
+                $("#id_form-0-orientation_3").prop({ checked: false });
+                $("#id_form-0-orientation_5").prop({ checked: false });
+                $("#id_form-0-orientation_6").prop({ checked: false });
+                $("#id_form-0-orientation_7").prop({ checked: false });
+                $("#id_form-0-orientation_8").prop({ checked: false });
+                $("#id_form-0-orientation_9").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-orientation_1").prop("disabled", false);
+                $("#id_form-0-orientation_2").prop("disabled", false);
+                $("#id_form-0-orientation_3").prop("disabled", false);
+                $("#id_form-0-orientation_5").prop("disabled", false);
+                $("#id_form-0-orientation_6").prop("disabled", false);
+                $("#id_form-0-orientation_7").prop("disabled", false);
+                $("#id_form-0-orientation_8").prop("disabled", false);
+                $("#id_form-0-orientation_9").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-orientation_5"))
+        {
+            if ($("#id_form-0-orientation_5:checked").length > 0)
+            {
+                $("#id_form-0-orientation_1").prop({ checked: false });
+                $("#id_form-0-orientation_2").prop({ checked: false });
+                $("#id_form-0-orientation_3").prop({ checked: false });
+                $("#id_form-0-orientation_4").prop({ checked: false });
+                $("#id_form-0-orientation_6").prop({ checked: false });
+                $("#id_form-0-orientation_7").prop({ checked: false });
+                $("#id_form-0-orientation_8").prop({ checked: false });
+                $("#id_form-0-orientation_9").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-orientation_1").prop("disabled", false);
+                $("#id_form-0-orientation_2").prop("disabled", false);
+                $("#id_form-0-orientation_3").prop("disabled", false);
+                $("#id_form-0-orientation_4").prop("disabled", false);
+                $("#id_form-0-orientation_6").prop("disabled", false);
+                $("#id_form-0-orientation_7").prop("disabled", false);
+                $("#id_form-0-orientation_8").prop("disabled", false);
+                $("#id_form-0-orientation_9").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-orientation_6"))
+        {
+            if ($("#id_form-0-orientation_6:checked").length > 0)
+            {
+                $("#id_form-0-orientation_1").prop({ checked: false });
+                $("#id_form-0-orientation_2").prop({ checked: false });
+                $("#id_form-0-orientation_3").prop({ checked: false });
+                $("#id_form-0-orientation_4").prop({ checked: false });
+                $("#id_form-0-orientation_5").prop({ checked: false });
+                $("#id_form-0-orientation_7").prop({ checked: false });
+                $("#id_form-0-orientation_8").prop({ checked: false });
+                $("#id_form-0-orientation_9").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-orientation_1").prop("disabled", false);
+                $("#id_form-0-orientation_2").prop("disabled", false);
+                $("#id_form-0-orientation_3").prop("disabled", false);
+                $("#id_form-0-orientation_4").prop("disabled", false);
+                $("#id_form-0-orientation_5").prop("disabled", false);
+                $("#id_form-0-orientation_7").prop("disabled", false);
+                $("#id_form-0-orientation_8").prop("disabled", false);
+                $("#id_form-0-orientation_9").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-orientation_7"))
+        {
+            if ($("#id_form-0-orientation_7:checked").length > 0)
+            {
+                $("#id_form-0-orientation_1").prop({ checked: false });
+                $("#id_form-0-orientation_2").prop({ checked: false });
+                $("#id_form-0-orientation_3").prop({ checked: false });
+                $("#id_form-0-orientation_4").prop({ checked: false });
+                $("#id_form-0-orientation_5").prop({ checked: false });
+                $("#id_form-0-orientation_6").prop({ checked: false });
+                $("#id_form-0-orientation_8").prop({ checked: false });
+                $("#id_form-0-orientation_9").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-orientation_1").prop("disabled", false);
+                $("#id_form-0-orientation_2").prop("disabled", false);
+                $("#id_form-0-orientation_3").prop("disabled", false);
+                $("#id_form-0-orientation_4").prop("disabled", false);
+                $("#id_form-0-orientation_5").prop("disabled", false);
+                $("#id_form-0-orientation_6").prop("disabled", false);
+                $("#id_form-0-orientation_8").prop("disabled", false);
+                $("#id_form-0-orientation_9").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-orientation_8"))
+        {
+            if ($("#id_form-0-orientation_8:checked").length > 0)
+            {
+                $("#id_form-0-orientation_1").prop({ checked: false });
+                $("#id_form-0-orientation_2").prop({ checked: false });
+                $("#id_form-0-orientation_3").prop({ checked: false });
+                $("#id_form-0-orientation_4").prop({ checked: false });
+                $("#id_form-0-orientation_5").prop({ checked: false });
+                $("#id_form-0-orientation_6").prop({ checked: false });
+                $("#id_form-0-orientation_7").prop({ checked: false });
+                $("#id_form-0-orientation_9").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-orientation_1").prop("disabled", false);
+                $("#id_form-0-orientation_2").prop("disabled", false);
+                $("#id_form-0-orientation_3").prop("disabled", false);
+                $("#id_form-0-orientation_4").prop("disabled", false);
+                $("#id_form-0-orientation_5").prop("disabled", false);
+                $("#id_form-0-orientation_6").prop("disabled", false);
+                $("#id_form-0-orientation_7").prop("disabled", false);
+                $("#id_form-0-orientation_9").prop("disabled", false);
+            }
+        }
+        else if ($this.is("#id_form-0-orientation_9"))
+        {
+            if ($("#id_form-0-orientation_9:checked").length > 0)
+            {
+                $("#id_form-0-orientation_1").prop({ checked: false });
+                $("#id_form-0-orientation_2").prop({ checked: false });
+                $("#id_form-0-orientation_3").prop({ checked: false });
+                $("#id_form-0-orientation_4").prop({ checked: false });
+                $("#id_form-0-orientation_5").prop({ checked: false });
+                $("#id_form-0-orientation_6").prop({ checked: false });
+                $("#id_form-0-orientation_7").prop({ checked: false });
+                $("#id_form-0-orientation_8").prop({ checked: false });
+            }
+            else
+            {
+                $("#id_form-0-orientation_1").prop("disabled", false);
+                $("#id_form-0-orientation_2").prop("disabled", false);
+                $("#id_form-0-orientation_3").prop("disabled", false);
+                $("#id_form-0-orientation_4").prop("disabled", false);
+                $("#id_form-0-orientation_5").prop("disabled", false);
+                $("#id_form-0-orientation_6").prop("disabled", false);
+                $("#id_form-0-orientation_7").prop("disabled", false);
+                $("#id_form-0-orientation_8").prop("disabled", false);
+            }
+        }
+    });
 
-	    $.ajax(
-		{
-//			type: 'POST',
-//			url: urls,
-//			data: {
-//				'send_invasive_line_insitu_others':get_invasive_line_insitu_others,
-//				'csrfmiddlewaretoken': csrftoken,
-//			},
-//			success: function(data)
-//			{
-//				if(!data["valid"])
-//				{
-//					console.log(datenew);
+    $(':checkbox[id^="id_admision_form-surgical_history_none_"]').click(function()
+    {
+        var $this = $(this);
+        if ($this.is("#id_admision_form-surgical_history_none_1"))
+        {
+            if ($("#id_admision_form-surgical_history_none_1:checked").length > 0)
+            {
+                $("#id_admision_form-surgical_history").prop("disabled", true);
+            }
+            else
+            {
+                $("#id_admision_form-surgical_history").prop("disabled", false);
+            }
+        }
+    });
+
+    function getCookie(name)
+    {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '')
+        {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++)
+            {
+                var cookie = jQuery.trim(cookies[i]);
+                if (cookie.substring(0, name.length + 1) === (name + '='))
+                {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    var csrftoken = getCookie('csrftoken');
+
+//  $('admission_send').on('submit', function(event)
+//  $('form.admission_send').submit(function(event)
+    $(".admission_send").bind("click", function()
+    {
+//      console.log("Submit is clicked!");
+//      event.preventDefault();
+        var get_invasive_line_insitu_others = $('#id_admision_form-invasive_line_insitu_others').val();
+        var isChecked1 = $('#id_admision_form-invasive_line_insitu_5:checkbox:checked').length > 0;
+        var isChecked2 = $('input[id="id_admision_form-invasive_line_insitu_5"]:checked').length > 0;
+
+        var username_data = "{{ user_name }}";
+        var urls = "/patient/admission/" + username_data + "/";
+//      console.log("username_data", username_data);
+//      console.log("urls", urls);
+
+
+//      if ($("#id_admision_form-invasive_line_insitu_5 :checkbox:checked").length == 0)
+        if(isChecked1 == true && get_invasive_line_insitu_others == '')
+        {
+//          console.log("Checkbox is ", isChecked1);
+//          console.log("Input is empty!");
+        }
+        else
+        {
+//          console.log("Checkbox is ", isChecked1);
+//          console.log("Input is ", get_invasive_line_insitu_others);
+        };
+
+        $.ajax(
+        {
+//          type: 'POST',
+//          url: urls,
+//          data: {
+//              'send_invasive_line_insitu_others':get_invasive_line_insitu_others,
+//              'csrfmiddlewaretoken': csrftoken,
+//          },
+//          success: function(data)
+//          {
+//              if(!data["valid"])
+//              {
+//                  console.log(datenew);
 //                }
 //            },
         });
 
-	});
+    });
 
-	$('#id_admision_form-invasive_line_insitu_others').blur(function()
-	{
-//	    if(!$(this).val())
-//	    {
-//	    	alert('Please fill this input!');
-//	    }
-//	    else
-//	    {
-//			var get_invasive_line_insitu_others = $('#id_admision_form-invasive_line_insitu_others').val();
-//			console.log(get_invasive_line_insitu_others);
-//	    }
-	});
+    $('#id_admision_form-invasive_line_insitu_others').blur(function()
+    {
+//      if(!$(this).val())
+//      {
+//          alert('Please fill this input!');
+//      }
+//      else
+//      {
+//          var get_invasive_line_insitu_others = $('#id_admision_form-invasive_line_insitu_others').val();
+//          console.log(get_invasive_line_insitu_others);
+//      }
+    });
 
-	$('#id_admision_form-invasive_line_insitu_5').click(function()
-	{
-//		alert("Click!");
-//		var $this = $(this);
-		var get_invasive_line_insitu_others = $('#id_admision_form-invasive_line_insitu_others').val();
+    $('#id_admision_form-invasive_line_insitu_5').click(function()
+    {
+//      alert("Click!");
+//      var $this = $(this);
+        var get_invasive_line_insitu_others = $('#id_admision_form-invasive_line_insitu_others').val();
 
-		$('#id_admision_form-invasive_line_insitu_others').blur(function()
-		{
-			var $blur = $(this);
-//			if ($this.is("#id_admision_form-invasive_line_insitu_5") && get_invasive_line_insitu_others .length > 0)
-//			if ($this.is("#id_admision_form-invasive_line_insitu_5") && $('#id_admision_form-invasive_line_insitu_others').val() > 0)
-//			if(!$(blur).val())
-//			{
-//				alert("Empty");
-//				alert("Filled");
-//				if ($("#id_admision_form-invasive_line_insitu_5:checked").is(':checked') == true)
-//				if ($("#id_admision_form-invasive_line_insitu_5:checked").length > 0)
-//				{
-//					alert("Checked!");
-//				}
-//			}
-//			else
-//			if ($this.is("#id_admision_form-invasive_line_insitu_5") && get_invasive_line_insitu_others == '')
-//			if ($blur.is("#id_admision_form-invasive_line_insitu_5") && $('#id_admision_form-invasive_line_insitu_others').val() == '')
-//			{
-//				var get_invasive_line_insitu_others = $('#id_admision_form-invasive_line_insitu_others').val();
-//				console.log(get_invasive_line_insitu_others);
-//			}
-		});
-	});
+        $('#id_admision_form-invasive_line_insitu_others').blur(function()
+        {
+            var $blur = $(this);
+//          if ($this.is("#id_admision_form-invasive_line_insitu_5") && get_invasive_line_insitu_others .length > 0)
+//          if ($this.is("#id_admision_form-invasive_line_insitu_5") && $('#id_admision_form-invasive_line_insitu_others').val() > 0)
+//          if(!$(blur).val())
+//          {
+//              alert("Empty");
+//              alert("Filled");
+//              if ($("#id_admision_form-invasive_line_insitu_5:checked").is(':checked') == true)
+//              if ($("#id_admision_form-invasive_line_insitu_5:checked").length > 0)
+//              {
+//                  alert("Checked!");
+//              }
+//          }
+//          else
+//          if ($this.is("#id_admision_form-invasive_line_insitu_5") && get_invasive_line_insitu_others == '')
+//          if ($blur.is("#id_admision_form-invasive_line_insitu_5") && $('#id_admision_form-invasive_line_insitu_others').val() == '')
+//          {
+//              var get_invasive_line_insitu_others = $('#id_admision_form-invasive_line_insitu_others').val();
+//              console.log(get_invasive_line_insitu_others);
+//          }
+        });
+    });
 
 });
 </script>

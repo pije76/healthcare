@@ -9,93 +9,93 @@
 {% endblock %}
 
 {% block style %}
-	<link href="{% static 'css/staff/staff_records.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/staff/staff_records.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block extrahead %}
-	{{ form.media }}
+    {{ form.media }}
 {% endblock %}
 
 {% block content %}
 
 <div class="container-fluid">
 
-	<div class="row formtitle">
-		{{ page_title }}
-	</div>
+    <div class="row formtitle">
+        {{ page_title }}
+    </div>
 
-	<div class="row border rounded detail_form">
+    <div class="row border rounded detail_form">
 
-		<div class="col-4">
-			<span id="name_title">{% trans "Name" %}:</span>
-		</div>
-		<div class="col-4">
-			<span id="name_field">
-				{{ staffs }}
-				{{ form.staff|as_crispy_field }}
-			</span>
-		</div>
+        <div class="col-4">
+            <span id="name_title">{% trans "Name" %}:</span>
+        </div>
+        <div class="col-4">
+            <span id="name_field">
+                {{ staffs }}
+                {{ form.staff|as_crispy_field }}
+            </span>
+        </div>
 
-		<div class="w-100"></div>
+        <div class="w-100"></div>
 
-		<div class="col-4">
-			<span id="name_title">{% trans "IC Number" %}:</span>
-		</div>
-		<div class="col-4">
-			<span id="name_field">{{ icnumbers }}</span>
-		</div>
+        <div class="col-4">
+            <span id="name_title">{% trans "IC Number" %}:</span>
+        </div>
+        <div class="col-4">
+            <span id="name_field">{{ icnumbers }}</span>
+        </div>
 
-	</div>
+    </div>
 
 
-	<form method="post">
-	{% csrf_token %}
+    <form method="post">
+    {% csrf_token %}
 
-		<div class="row rounded form_table">
+        <div class="row rounded form_table">
 
-			<table id="form_set" class="table table-bordered">
-				<thead class="thead_light">
-					<tr>
-						<th class="text-center">{% trans "Year" %}</th>
-						<th class="text-center">{% trans "Annual Leave ___ Days" %}</th>
-						<th class="text-center">{% trans "Public Holiday ___ Days" %}</th>
-						<th class="text-center">{% trans "Replacement Public Holiday" %}</th>
-						<th class="text-center">{% trans "Medical Certificate" %}</th>
-						<th class="text-center">{% trans "Siri No & Diagnosis" %}</th>
-						<th class="text-center">{% trans "Emergency Leaves" %}</th>
-						<th class="text-center">{% trans "Reasons" %}</th>
-						<th class="text-center">{% trans "Unpaid Leaves" %}</th>
-						<th class="text-center">{% trans "Reasons" %}</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>{{ form.date|as_crispy_field }}</td>
-						<td>{{ form.annual_leave_days|as_crispy_field }}</td>
-						<td>{{ form.public_holiday_days|as_crispy_field }}</td>
-						<td>{{ form.replacement_public_holiday|as_crispy_field }}</td>
-						<td>{{ form.medical_certificate|as_crispy_field }}</td>
-						<td>{{ form.siri_no_diagnosis|as_crispy_field }}</td>
-						<td>{{ form.emergency_leaves|as_crispy_field }}</td>
-						<td>{{ form.emergency_leaves_reasons|as_crispy_field }}</td>
-						<td>{{ form.unpaid_leaves|as_crispy_field }}</td>
-						<td>{{ form.unpaid_leaves_reasons|as_crispy_field }}</td>
-					</tr>
-				</tbody>
-			</table>
+            <table id="form_set" class="table table-bordered">
+                <thead class="thead_light">
+                    <tr>
+                        <th class="text-center">{% trans "Year" %}</th>
+                        <th class="text-center">{% trans "Annual Leave ___ Days" %}</th>
+                        <th class="text-center">{% trans "Public Holiday ___ Days" %}</th>
+                        <th class="text-center">{% trans "Replacement Public Holiday" %}</th>
+                        <th class="text-center">{% trans "Medical Certificate" %}</th>
+                        <th class="text-center">{% trans "Siri No & Diagnosis" %}</th>
+                        <th class="text-center">{% trans "Emergency Leaves" %}</th>
+                        <th class="text-center">{% trans "Reasons" %}</th>
+                        <th class="text-center">{% trans "Unpaid Leaves" %}</th>
+                        <th class="text-center">{% trans "Reasons" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ form.date|as_crispy_field }}</td>
+                        <td>{{ form.annual_leave_days|as_crispy_field }}</td>
+                        <td>{{ form.public_holiday_days|as_crispy_field }}</td>
+                        <td>{{ form.replacement_public_holiday|as_crispy_field }}</td>
+                        <td>{{ form.medical_certificate|as_crispy_field }}</td>
+                        <td>{{ form.siri_no_diagnosis|as_crispy_field }}</td>
+                        <td>{{ form.emergency_leaves|as_crispy_field }}</td>
+                        <td>{{ form.emergency_leaves_reasons|as_crispy_field }}</td>
+                        <td>{{ form.unpaid_leaves|as_crispy_field }}</td>
+                        <td>{{ form.unpaid_leaves_reasons|as_crispy_field }}</td>
+                    </tr>
+                </tbody>
+            </table>
 
-		</div>
+        </div>
 
-		<div class="row">
+        <div class="row">
 
-			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
-			{% for item in profiles %}
-			<a class="btn btn-danger kirim" href="{% url 'staff:staffdata_detail' item.username %}">{% trans "Cancel" %}</a>
-			{% endfor %}
+            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+            {% for item in profiles %}
+            <a class="btn btn-danger kirim" href="{% url 'staff:staffdata_detail' item.username %}">{% trans "Cancel" %}</a>
+            {% endfor %}
 
-		</div>
+        </div>
 
-	</form>
+    </form>
 
 </div>
 

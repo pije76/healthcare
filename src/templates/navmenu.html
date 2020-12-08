@@ -5,191 +5,191 @@
 {% get_available_languages as languages %}
 
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 border-bottom box-shadow bg-light">
-	<h5 class="my-0 mr-md-auto font-weight-normal text-center">
-		{% if logos %}
-			{% for object in logos %}
-			<img class="logotenant" src="{{ object.logo_url }}">
-			<a href="/" class="text-title">
-				<span class="text-center">{{ titles.title }}</span>
-			</a>
-			{% endfor %}
-		{% endif %}
-	</h5>
+    <h5 class="my-0 mr-md-auto font-weight-normal text-center">
+        {% if logos %}
+            {% for object in logos %}
+            <img class="logotenant" src="{{ object.logo_url }}">
+            <a href="/" class="text-title">
+                <span class="text-center">{{ titles.title }}</span>
+            </a>
+            {% endfor %}
+        {% endif %}
+    </h5>
 
-	<nav class="navbar navbar-expand-sm navbar-light">
-		<div class="container">
-			<div class="collapse navbar-collapse" id="navbarNavDropdown">
-				<ul class="navbar-nav">
-					 <li class="nav-item">
-						<a class="nav-link" href="/"><i class="fas fa-home"></i>&nbsp;{% trans "Home" %} <span class="sr-only">(current)</span></a>
-					</li>
+    <nav class="navbar navbar-expand-sm navbar-light">
+        <div class="container">
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                     <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home"></i>&nbsp;{% trans "Home" %} <span class="sr-only">(current)</span></a>
+                    </li>
 
-					{% if user.is_authenticated and user.is_superuser %}
+                    {% if user.is_authenticated and user.is_superuser %}
 
-					<li class="nav-item">
-						<a class="nav-link" href="{% url 'patient:patientdata_list' %}"><i class="fas fa-hospital-user"></i>&nbsp;{% trans "Patient" %}</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{% url 'staff:staffdata_list' %}"><i class="fas fa-user-nurse"></i>&nbsp;{% trans "Staff" %}</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{% url 'data:data_list' %}"><i class="fas fa-table"></i>&nbsp;{% trans "Data" %}</a>
-					</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'patient:patientdata_list' %}"><i class="fas fa-hospital-user"></i>&nbsp;{% trans "Patient" %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'staff:staffdata_list' %}"><i class="fas fa-user-nurse"></i>&nbsp;{% trans "Staff" %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'data:data_list' %}"><i class="fas fa-table"></i>&nbsp;{% trans "Data" %}</a>
+                    </li>
 
-					{% elif user.is_authenticated and user.is_staff %}
+                    {% elif user.is_authenticated and user.is_staff %}
 
-					<li class="nav-item">
-						<a class="nav-link" href="{% url 'patient:patientdata_list' %}"><i class="fas fa-hospital-user"></i>&nbsp;{% trans "Patient" %}</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{% url 'data:data_list' %}"><i class="fas fa-table"></i>&nbsp;{% trans "Data" %}</a>
-					</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'patient:patientdata_list' %}"><i class="fas fa-hospital-user"></i>&nbsp;{% trans "Patient" %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'data:data_list' %}"><i class="fas fa-table"></i>&nbsp;{% trans "Data" %}</a>
+                    </li>
 
-					{% elif user.is_authenticated and user.is_patient %}
+                    {% elif user.is_authenticated and user.is_patient %}
 
-					<li class="nav-item">
-						<a class="nav-link" href="{% url 'patient:patientdata_list' %}"><i class="fas fa-hospital-user"></i>&nbsp;{% trans "Patient" %}</a>
-					</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'patient:patientdata_list' %}"><i class="fas fa-hospital-user"></i>&nbsp;{% trans "Patient" %}</a>
+                    </li>
 
-					{% endif %}
+                    {% endif %}
 
-					<li class="nav-item">
-						<a class="nav-link" href="#">
-							<i class="fas fa-palette"></i>&nbsp;{% trans "Theme" %}
-						</a>
-					</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-palette"></i>&nbsp;{% trans "Theme" %}
+                        </a>
+                    </li>
 
-					<form id="myform" method="POST" action="">
-					{% csrf_token %}
-					<li id="theme-button" class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="themeMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<span class='caret'></span>
-						</a>
-						<ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="themeMenu">
-							<li>
-								<a type="submit" class="dropdown-item {% if themes == 'default' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='default' %}">
-									<input type="hidden" name="theme" value="default">{% trans "Default" %}
-								</a>
-							</li>
-							<li>
-								<a type="submit" class="dropdown-item {% if themes == 'cosmo' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='cosmo' %}">
-									<input type="hidden" name="theme" value="cosmo">{% trans "Cosmo" %}
-								</a>
-							</li>
-							<li>
-								<a type="submit" class="dropdown-item {% if themes == 'flatly' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='flatly' %}">
-									<input type="hidden" name="theme" value="flatly">{% trans "Flatly" %}
-								</a>
-							</li>
-							<li>
-								<a type="submit" class="dropdown-item {% if themes == 'minty' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='minty' %}">
-									<input type="hidden" name="theme" value="minty">{% trans "Minty" %}
-								</a>
-							</li>
-							<li>
-								<a type="submit" class="dropdown-item {% if themes == 'simplex' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='simplex' %}">
-									<input type="hidden" name="theme" value="simplex">{% trans "Simplex" %}
-								</a>
-							</li>
-							<li>
-								<a type="submit" class="dropdown-item {% if themes == 'yeti' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='yeti' %}">
-									<input type="hidden" name="theme" value="yeti">{% trans "Yeti" %}
-								</a>
-							</li>
-						</ul>
-					</li>
-					</form>
+                    <form id="myform" method="POST" action="">
+                    {% csrf_token %}
+                    <li id="theme-button" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="themeMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class='caret'></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="themeMenu">
+                            <li>
+                                <a type="submit" class="dropdown-item {% if themes == 'default' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='default' %}">
+                                    <input type="hidden" name="theme" value="default">{% trans "Default" %}
+                                </a>
+                            </li>
+                            <li>
+                                <a type="submit" class="dropdown-item {% if themes == 'cosmo' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='cosmo' %}">
+                                    <input type="hidden" name="theme" value="cosmo">{% trans "Cosmo" %}
+                                </a>
+                            </li>
+                            <li>
+                                <a type="submit" class="dropdown-item {% if themes == 'flatly' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='flatly' %}">
+                                    <input type="hidden" name="theme" value="flatly">{% trans "Flatly" %}
+                                </a>
+                            </li>
+                            <li>
+                                <a type="submit" class="dropdown-item {% if themes == 'minty' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='minty' %}">
+                                    <input type="hidden" name="theme" value="minty">{% trans "Minty" %}
+                                </a>
+                            </li>
+                            <li>
+                                <a type="submit" class="dropdown-item {% if themes == 'simplex' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='simplex' %}">
+                                    <input type="hidden" name="theme" value="simplex">{% trans "Simplex" %}
+                                </a>
+                            </li>
+                            <li>
+                                <a type="submit" class="dropdown-item {% if themes == 'yeti' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='yeti' %}">
+                                    <input type="hidden" name="theme" value="yeti">{% trans "Yeti" %}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    </form>
 
-					<li class="nav-item">
-						<a class="nav-link" href="#">
-							<i class="fa fa-language"></i>&nbsp;{% trans "Translate" %}
-						</a>
-					</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fa fa-language"></i>&nbsp;{% trans "Translate" %}
+                        </a>
+                    </li>
 
-					<form method="POST" action="">
-					{% csrf_token %}
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="langMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<span class='caret'></span>
-						</a>
-						<div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="langMenu">
-						<a type="submit" class="dropdown-item" href="{% url 'set_language_from_url' user_language='en' %}">
-							<input type="hidden" name="next" value="{{ previous }}"/>
-							<i class="flag flag-16 flag-us"></i>{% trans "English" %}
-						</a>
-						<a type="submit" class="dropdown-item" href="{% url 'set_language_from_url' user_language='id' %}">
-							<input type="hidden" name="next" value="{{ previous }}"/>
-							<i class="flag flag-16 flag-id"></i>{% trans "Indonesia" %}
-						</a>
-					</li>
-					</form>
+                    <form method="POST" action="">
+                    {% csrf_token %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="langMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class='caret'></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="langMenu">
+                        <a type="submit" class="dropdown-item" href="{% url 'set_language_from_url' user_language='en' %}">
+                            <input type="hidden" name="next" value="{{ previous }}"/>
+                            <i class="flag flag-16 flag-us"></i>{% trans "English" %}
+                        </a>
+                        <a type="submit" class="dropdown-item" href="{% url 'set_language_from_url' user_language='id' %}">
+                            <input type="hidden" name="next" value="{{ previous }}"/>
+                            <i class="flag flag-16 flag-id"></i>{% trans "Indonesia" %}
+                        </a>
+                    </li>
+                    </form>
 
-					{% if user.is_authenticated %}
-					<li class="nav-item">
-						<a class="nav-link" href="#">
-							<i class="fas fa-user"></i>&nbsp;{{ user.full_name }}
-						</a>
-					</li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-user"></i>&nbsp;{{ user.full_name }}
+                        </a>
+                    </li>
 
-					{% else %}
+                    {% else %}
 
-					<li class="nav-item">
-						<a class="nav-link" href="#">
-							<i class="fas fa-user"></i>&nbsp;{% trans "Account" %}
-						</a>
-					</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-user"></i>&nbsp;{% trans "Account" %}
+                        </a>
+                    </li>
 
-					{% endif %}
+                    {% endif %}
 
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="accountMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="accountMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
 
-						{% if user.is_authenticated and user.is_superuser or user.is_staff%}
+                        {% if user.is_authenticated and user.is_superuser or user.is_staff%}
 
-						<div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="accountMenu">
-							<a class="dropdown-item" href="{% url 'accounts:account' %}">
-								<i class="fas fa-user-cog"></i>&nbsp;{% trans "My Account" %}
-							</a>
-							<a class="dropdown-item" href="{% url 'account_change_password' %}">
-								<i class="fas fa-unlock-alt"></i>&nbsp;&nbsp;{% trans "Change password" %}
-							</a>
-							<a class="dropdown-item" href="{% url 'accounts:signup_view' %}">
-								<i class="fas fa-user-plus"></i>&nbsp;{% trans "Register" %}
-							</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="/accounts/logout/">
-								<i class="fas fa-sign-out-alt"></i>&nbsp;{% trans "Logout" %}
-							</a>
-						</div>
+                        <div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="accountMenu">
+                            <a class="dropdown-item" href="{% url 'accounts:account' %}">
+                                <i class="fas fa-user-cog"></i>&nbsp;{% trans "My Account" %}
+                            </a>
+                            <a class="dropdown-item" href="{% url 'account_change_password' %}">
+                                <i class="fas fa-unlock-alt"></i>&nbsp;&nbsp;{% trans "Change password" %}
+                            </a>
+                            <a class="dropdown-item" href="{% url 'accounts:signup_view' %}">
+                                <i class="fas fa-user-plus"></i>&nbsp;{% trans "Register" %}
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/accounts/logout/">
+                                <i class="fas fa-sign-out-alt"></i>&nbsp;{% trans "Logout" %}
+                            </a>
+                        </div>
 
-						{% elif user.is_authenticated and user.is_patient %}
+                        {% elif user.is_authenticated and user.is_patient %}
 
-						<div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="userMenu">
-							<a class="dropdown-item" href="{% url 'accounts:account' %}">
-								<i class="fas fa-user-cog"></i>&nbsp;{% trans "My Account" %}
-							</a>
-							<a class="dropdown-item" href="{% url 'account_change_password' %}">
-								<i class="fas fa-unlock-alt"></i>&nbsp;{% trans "Change password" %}
-							</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="/accounts/logout/">
-								<i class="fas fa-sign-out-alt"></i>&nbsp;{% trans "Logout" %}
-							</a>
-						</div>
+                        <div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="userMenu">
+                            <a class="dropdown-item" href="{% url 'accounts:account' %}">
+                                <i class="fas fa-user-cog"></i>&nbsp;{% trans "My Account" %}
+                            </a>
+                            <a class="dropdown-item" href="{% url 'account_change_password' %}">
+                                <i class="fas fa-unlock-alt"></i>&nbsp;{% trans "Change password" %}
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/accounts/logout/">
+                                <i class="fas fa-sign-out-alt"></i>&nbsp;{% trans "Logout" %}
+                            </a>
+                        </div>
 
-						{% else %}
+                        {% else %}
 
-						<div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="userMenu">
-							<a class="dropdown-item" href="{% url 'accounts:login_view' %}"><i class="fas fa-sign-in-alt"></i>&nbsp;{% trans "Login" %}</a>
-						</div>
+                        <div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="userMenu">
+                            <a class="dropdown-item" href="{% url 'accounts:login_view' %}"><i class="fas fa-sign-in-alt"></i>&nbsp;{% trans "Login" %}</a>
+                        </div>
 
-						{% endif %}
+                        {% endif %}
 
-					</li>
-				</ul>
-			</div>
-		</div>
-	</nav>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
 </div>
 
@@ -197,13 +197,13 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
-	$('#theme-button ul a').click(function()
-	{
-		if ($(this).attr('name') != 'current')
-		{
-			$('#theme-button ul a[name="current"]').text($(this).text());
-		}
-	});
+    $('#theme-button ul a').click(function()
+    {
+        if ($(this).attr('name') != 'current')
+        {
+            $('#theme-button ul a[name="current"]').text($(this).text());
+        }
+    });
 });
 </script>
 {% endblock %}

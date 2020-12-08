@@ -10,26 +10,28 @@ from django.utils.translation import ugettext_lazy as _
 from .models import *
 
 # Register your models here.
+
+
 class ClientAdmin(admin.ModelAdmin):
-	ModelAdmin.ordering = ('id',)
+    ModelAdmin.ordering = ('id',)
 
-	list_display = [
-		'id',
-		'name',
-		'title',
-		'logo',
-		'created_on',
-	]
+    list_display = [
+        'id',
+        'name',
+        'title',
+        'logo',
+        'created_on',
+    ]
 
-	readonly_fields = (
-#        'occupation',
-#        'occupation_others',
-#        'communication_sight',
-#        'communication_hearing',
-#        'communication_hearing_others',
-	)
+    readonly_fields = (
+        #        'occupation',
+        #        'occupation_others',
+        #        'communication_sight',
+        #        'communication_hearing',
+        #        'communication_hearing_others',
+    )
 
-	list_filter = ()
+    list_filter = ()
 
 
 admin.site.register(Client, ClientAdmin)

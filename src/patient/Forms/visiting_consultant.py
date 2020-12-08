@@ -24,19 +24,28 @@ class VisitingConsultant_ModelForm(BSModalModelForm):
             'patient': forms.HiddenInput(),
         }
 
-    date_time = forms.DateTimeField(required=False, label="", initial=timezone.now, input_formats=settings.DATETIME_INPUT_FORMATS, widget=DateTimePickerInput(format="%d-%m-%Y %H:%M", attrs={'class': "form-control"}))
-    complaints = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control"}))
-    treatment_orders = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control"}))
-    consultant = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    date_time = forms.DateTimeField(required=False, label="", initial=timezone.now, input_formats=settings.DATETIME_INPUT_FORMATS,
+                                    widget=DateTimePickerInput(format="%d-%m-%Y %H:%M", attrs={'class': "form-control"}))
+    complaints = forms.CharField(required=False, label="", widget=forms.Textarea(
+        attrs={'class': "form-control"}))
+    treatment_orders = forms.CharField(
+        required=False, label="", widget=forms.Textarea(attrs={'class': "form-control"}))
+    consultant = forms.CharField(required=False, label="", widget=forms.TextInput(
+        attrs={'class': "form-control"}))
 
 
 class VisitingConsultant_Form(BSModalForm):
 
-    patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-    date_time = forms.DateTimeField(required=False, label="", initial=timezone.now, input_formats=settings.DATETIME_INPUT_FORMATS, widget=DateTimePickerInput(format="%d-%m-%Y %H:%M", attrs={'class': "form-control"}))
-    complaints = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control"}))
-    treatment_orders = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control"}))
-    consultant = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    patient = forms.CharField(required=False, label="", widget=forms.TextInput(
+        attrs={'class': "form-control"}))
+    date_time = forms.DateTimeField(required=False, label="", initial=timezone.now, input_formats=settings.DATETIME_INPUT_FORMATS,
+                                    widget=DateTimePickerInput(format="%d-%m-%Y %H:%M", attrs={'class': "form-control"}))
+    complaints = forms.CharField(required=False, label="", widget=forms.Textarea(
+        attrs={'class': "form-control"}))
+    treatment_orders = forms.CharField(
+        required=False, label="", widget=forms.Textarea(attrs={'class': "form-control"}))
+    consultant = forms.CharField(required=False, label="", widget=forms.TextInput(
+        attrs={'class': "form-control"}))
 
     def clean_complaints(self):
         return self.cleaned_data['complaints'].capitalize()
@@ -47,10 +56,11 @@ class VisitingConsultant_Form(BSModalForm):
     def clean_consultant(self):
         return self.cleaned_data['consultant'].capitalize()
 
+
 VisitingConsultant_FormSet = formset_factory(
     VisitingConsultant_Form,
     #   formset = MedicationAdministrationRecord_BaseFormSetFactory,
     extra=0,
-#    max_num=0,
+    #    max_num=0,
     #   can_delete=True,
 )

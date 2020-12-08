@@ -32,21 +32,32 @@ class Maintenance_ModelForm(BSModalModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
-    items = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-    location_room = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-    reported_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'readonly': 'readonly'}))
-    status = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=STATUS_CHOICES)
+    date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS,
+                           widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
+    items = forms.CharField(required=False, label="", widget=forms.TextInput(
+        attrs={'class': "form-control"}))
+    location_room = forms.CharField(
+        required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    reported_by = forms.CharField(required=False, label="", widget=forms.TextInput(
+        attrs={'class': "form-control", 'readonly': 'readonly'}))
+    status = forms.ChoiceField(required=False, label="", widget=forms.Select(
+        attrs={'class': "form-control"}), choices=STATUS_CHOICES)
 
 
 class Maintenance_Form(BSModalForm):
 
-    patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-    date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
-    items = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-    location_room = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-    reported_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'readonly': 'readonly'}))
-    status = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=STATUS_CHOICES)
+    patient = forms.CharField(required=False, label="", widget=forms.TextInput(
+        attrs={'class': "form-control"}))
+    date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS,
+                           widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
+    items = forms.CharField(required=False, label="", widget=forms.TextInput(
+        attrs={'class': "form-control"}))
+    location_room = forms.CharField(
+        required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    reported_by = forms.CharField(required=False, label="", widget=forms.TextInput(
+        attrs={'class': "form-control", 'readonly': 'readonly'}))
+    status = forms.ChoiceField(required=False, label="", widget=forms.Select(
+        attrs={'class': "form-control"}), choices=STATUS_CHOICES)
 
     def clean_items(self):
         return self.cleaned_data['items'].capitalize()
@@ -59,6 +70,6 @@ Maintenance_FormSet = formset_factory(
     Maintenance_Form,
     #   formset = MedicationAdministrationRecord_BaseFormSetFactory,
     extra=0,
-#    max_num=0,
+    #    max_num=0,
     #   can_delete=True,
 )

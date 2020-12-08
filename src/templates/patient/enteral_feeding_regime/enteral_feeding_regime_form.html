@@ -5,130 +5,130 @@
 {% load i18n %}
 
 {% block headtitle %}
-	{{ page_title }} | {{ titles.title }}
+    {{ page_title }} | {{ titles.title }}
 {% endblock %}
 
 {% block style %}
-	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
-	<link href="{% static 'css/patient/enteral_feeding_regine.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/patient/enteral_feeding_regine.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block javascript %}
-	<script src="{% static 'js/patient/enteral_feeding_regime.js' %}"></script>
+    <script src="{% static 'js/patient/enteral_feeding_regime.js' %}"></script>
     <script src="{% static 'js/jquery.formset.js' %}"></script>
 {% endblock %}
 
 {% block extrahead %}
-	{{ form.media }}
-	{{ formset.media }}
+    {{ form.media }}
+    {{ formset.media }}
 {% endblock %}
 
 {% block content %}
 
 <div class="container-fluid">
 
-	<div class="row formtitle">
-		{{ page_title }}
-	</div>
+    <div class="row formtitle">
+        {{ page_title }}
+    </div>
 
-	<p style="font-size:12px">{% include 'messages.html' %}</p>
+    <p style="font-size:12px">{% include 'messages.html' %}</p>
 
-	{% include 'patient/patient_formset.html' %}
+    {% include 'patient/patient_formset.html' %}
 
-	<form method="post">
-	{% csrf_token %}
-	{{ formset.management_form }}
+    <form method="post">
+    {% csrf_token %}
+    {{ formset.management_form }}
 
-		<div class="row" style="width:540px;">
+        <div class="row" style="width:540px;">
 
-			<div class="col-12 border text-center header_form">
-				<span id="name_title">{% trans "Date" %}:</span>
-			</div>
+            <div class="col-12 border text-center header_form">
+                <span id="name_title">{% trans "Date" %}:</span>
+            </div>
 
-			<div class="w-100"></div>
+            <div class="w-100"></div>
 
-			<div class="col-12 border header_form_detail">
-				<span id="name_title">
-					{{ form.date|as_crispy_field }}
-				</span>
-			</div>
+            <div class="col-12 border header_form_detail">
+                <span id="name_title">
+                    {{ form.date|as_crispy_field }}
+                </span>
+            </div>
 
-		</div>
+        </div>
 
-		<div class="row rounded form_table">
+        <div class="row rounded form_table">
 
-			<table id="form_set" class="table table-bordered">
-				<thead class="thead_light">
-					<tr>
-						<th style="display:none;"></th>
-						<th class="text-center row_enteral_feeding_regine_date">{% trans "Date" %}</th>
-						<th class="text-center">{% trans "Time" %}</th>
-						<th class="text-center">{% trans "Type Of Milk" %}</th>
-						<th class="text-center">{% trans "Amount (ml)" %}</th>
-						<th class="text-center">{% trans "Action" %}</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for item in formset.forms %}
-					<tr id="{{ item.prefix }}-row">
-						<td style="display:none;">{{ item.date|as_crispy_field }}</td>
-						<td class="time_field">{{ item.time|as_crispy_field }}</td>
-						<td>{{ item.type_of_milk|as_crispy_field }}</td>
-						<td>{{ item.amount|as_crispy_field }}</td>
-						<td></td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+            <table id="form_set" class="table table-bordered">
+                <thead class="thead_light">
+                    <tr>
+                        <th style="display:none;"></th>
+                        <th class="text-center row_enteral_feeding_regine_date">{% trans "Date" %}</th>
+                        <th class="text-center">{% trans "Time" %}</th>
+                        <th class="text-center">{% trans "Type Of Milk" %}</th>
+                        <th class="text-center">{% trans "Amount (ml)" %}</th>
+                        <th class="text-center">{% trans "Action" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in formset.forms %}
+                    <tr id="{{ item.prefix }}-row">
+                        <td style="display:none;">{{ item.date|as_crispy_field }}</td>
+                        <td class="time_field">{{ item.time|as_crispy_field }}</td>
+                        <td>{{ item.type_of_milk|as_crispy_field }}</td>
+                        <td>{{ item.amount|as_crispy_field }}</td>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
-			<div class="row border rounded foot_table">
+            <div class="row border rounded foot_table">
 
-				<div class="col-3">
-					* {% trans "Flush with warm water" %}
-				</div>
-				<div class="col-2">
-				{{ form.warm_water_before|as_crispy_field }}
-				</div>
-				<div class="col-2">
-					{% trans "mls before and" %}
-				</div>
-				<div class="col-2">
-					{{ form.warm_water_after|as_crispy_field }}
-				</div>
-				<div class="col-2">
-					{% trans "mls after feedings." %}
-				</div>
+                <div class="col-3">
+                    * {% trans "Flush with warm water" %}
+                </div>
+                <div class="col-2">
+                {{ form.warm_water_before|as_crispy_field }}
+                </div>
+                <div class="col-2">
+                    {% trans "mls before and" %}
+                </div>
+                <div class="col-2">
+                    {{ form.warm_water_after|as_crispy_field }}
+                </div>
+                <div class="col-2">
+                    {% trans "mls after feedings." %}
+                </div>
 
-				<div class="w-100"></div>
+                <div class="w-100"></div>
 
-				<div class="col-3">
-					*{% trans "TOTAL FLUIDS" %} =
-				</div>
-				<div class="col-2">
+                <div class="col-3">
+                    *{% trans "TOTAL FLUIDS" %} =
+                </div>
+                <div class="col-2">
 <!--
-					<input type="number" class="form-control" id="total">
+                    <input type="number" class="form-control" id="total">
 -->
-					<span id="total"></span>
-				</div>
-				<div class="col-4">
-					{% trans "mls/day" %}
-				</div>
+                    <span id="total"></span>
+                </div>
+                <div class="col-4">
+                    {% trans "mls/day" %}
+                </div>
 
-			</div>
+            </div>
 
 
-		</div>
+        </div>
 
-		<div class="row">
+        <div class="row">
 
-			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
-			{% for item in profiles %}
-			<a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
-			{% endfor %}
+            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+            {% for item in profiles %}
+            <a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+            {% endfor %}
 
-		</div>
+        </div>
 
-	</form>
+    </form>
 
 </div>
 
@@ -138,54 +138,54 @@
 <script type='text/javascript'>
 $(document).ready(function()
 {
-	$('.calc').change(function()
-	{
-		var total = 0;
-		$('.calc').each(function()
-		{
-			if($(this).val() != '')
-			{
-				total += parseInt($(this).val());
-			}
-		});
-		$('#total').html(total);
-	});
+    $('.calc').change(function()
+    {
+        var total = 0;
+        $('.calc').each(function()
+        {
+            if($(this).val() != '')
+            {
+                total += parseInt($(this).val());
+            }
+        });
+        $('#total').html(total);
+    });
 
-	$(function()
-	{
-		$('#form_set tbody tr').formset(
-		{
-			addCssClass: 'btn btn-success',
-			addText: '<i class="fas fa-plus"></i>',
-			deleteCssClass: 'btn btn-danger',
-			deleteText: '<i class="fas fa-minus"></i>',
-			keepFieldValues: '#id_form-0-date, #id_form-0-time, #id_form-0-amount, #id_form-0-patient',
-			added: function(row)
-			{
-				$(row).find('[id$="date"]').removeClass('datepickerinput').removeAttr('#id_form-0-date').removeData('DateTimePicker')
-			.unbind().datetimepicker(
-				options={
-					"format": "DD-MM-YYYY",
-				});
+    $(function()
+    {
+        $('#form_set tbody tr').formset(
+        {
+            addCssClass: 'btn btn-success',
+            addText: '<i class="fas fa-plus"></i>',
+            deleteCssClass: 'btn btn-danger',
+            deleteText: '<i class="fas fa-minus"></i>',
+            keepFieldValues: '#id_form-0-date, #id_form-0-time, #id_form-0-amount, #id_form-0-patient',
+            added: function(row)
+            {
+                $(row).find('[id$="date"]').removeClass('datepickerinput').removeAttr('#id_form-0-date').removeData('DateTimePicker')
+            .unbind().datetimepicker(
+                options={
+                    "format": "DD-MM-YYYY",
+                });
 
-				$(row).find('[id$="time"]').removeClass('timepickerinput').removeAttr('#id_form-0-time').removeData('DateTimePicker')
-			.unbind().datetimepicker(
-				options={
-					"format": "HH:mm",
-				});
-			},
-		});
-	});
+                $(row).find('[id$="time"]').removeClass('timepickerinput').removeAttr('#id_form-0-time').removeData('DateTimePicker')
+            .unbind().datetimepicker(
+                options={
+                    "format": "HH:mm",
+                });
+            },
+        });
+    });
 
-	$('#id_date').on('dp.change', function(e)
-	{
-		var datenew = $(this).val();
-		if(datenew != '')
-		{
-			$('[id$="date"]').val(datenew);
-			t.search( this.value ).draw();
-		}
-	});
+    $('#id_date').on('dp.change', function(e)
+    {
+        var datenew = $(this).val();
+        if(datenew != '')
+        {
+            $('[id$="date"]').val(datenew);
+            t.search( this.value ).draw();
+        }
+    });
 
 });
 </script>

@@ -13,37 +13,38 @@ from .forms import *
 
 # Register your models here.
 class OvertimeClaimAdmin(admin.ModelAdmin):
-	list_display = [
-		'id',
-		'staff',
-		'date',
-		'duration_time_from',
-		'duration_time_to',
-		'hours',
-		'total_hours',
-		'checked_sign_by',
-		'verify_by',
-	]
-	ModelAdmin.ordering = ('id',)
+    list_display = [
+        'id',
+        'staff',
+        'date',
+        'duration_time_from',
+        'duration_time_to',
+        'hours',
+        'total_hours',
+        'checked_sign_by',
+        'verify_by',
+    ]
+    ModelAdmin.ordering = ('id',)
 
 
 class StaffRecordsAdmin(admin.ModelAdmin):
-	list_display = [
-		'id',
-		'staff',
-		'date',
-		'annual_leave_days',
-		'public_holiday_days',
-		'replacement_public_holiday',
-		'medical_certificate',
-		'siri_no_diagnosis',
-		'emergency_leaves',
-		'emergency_leaves_reasons',
-		'unpaid_leaves',
-		'unpaid_leaves_reasons',
-	]
+    list_display = [
+        'id',
+        'staff',
+        'date',
+        'annual_leave_days',
+        'public_holiday_days',
+        'replacement_public_holiday',
+        'medical_certificate',
+        'siri_no_diagnosis',
+        'emergency_leaves',
+        'emergency_leaves_reasons',
+        'unpaid_leaves',
+        'unpaid_leaves_reasons',
+    ]
 #	autocomplete_fields = ['patient', ]
-	ModelAdmin.ordering = ('id',)
+    ModelAdmin.ordering = ('id',)
+
 
 admin.site.register(OvertimeClaim, OvertimeClaimAdmin)
 admin.site.register(StaffRecords, StaffRecordsAdmin)

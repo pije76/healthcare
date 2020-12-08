@@ -13,13 +13,12 @@ from customers.models import *
 from bootstrap_modal_forms.generic import *
 
 
-
-
 @login_required
 def miscellaneous_charges_slip_list(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+    titles = Client.objects.filter(
+        schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Miscellaneous Charges Slip')
     patientid = UserProfile.objects.get(username=username).id
     patients = MiscellaneousChargesSlip.objects.filter(patient=patientid)
@@ -42,24 +41,26 @@ def miscellaneous_charges_slip_list(request, username):
 def miscellaneous_charges_slip_create(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+    titles = Client.objects.filter(
+        schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Miscellaneous Charges Slip')
     patients = get_object_or_404(UserProfile, username=username)
     profiles = UserProfile.objects.filter(username=username)
-    icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+    icnumbers = UserProfile.objects.filter(
+        username=username).values_list('ic_number', flat=True).first()
     themes = request.session.get('theme')
 
     initial = [{
         'patient': item.full_name,
         'given_by': request.user,
     }
-    for item in profiles]
+        for item in profiles]
 
     initial_formset_factory = [
-    {
-        'patient': patients,
-        'ic_number': icnumbers,
-    }]
+        {
+            'patient': patients,
+            'ic_number': icnumbers,
+        }]
 
     if request.method == 'POST':
         formset = MiscellaneousChargesSlip_FormSet(request.POST or None)
@@ -131,4 +132,3 @@ class MiscellaneousChargesSlipDeleteView(BSModalDeleteView):
 
 
 miscellaneous_charges_slip_delete = MiscellaneousChargesSlipDeleteView.as_view()
-

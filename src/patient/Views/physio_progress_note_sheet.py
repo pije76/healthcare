@@ -17,7 +17,8 @@ from bootstrap_modal_forms.generic import *
 def physio_progress_note_sheet_list(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+    titles = Client.objects.filter(
+        schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Physiotherapy Progress Note Sheet')
     patientid = UserProfile.objects.get(username=username).id
     patients = PhysioProgressNoteSheet.objects.filter(patient=patientid)
@@ -40,11 +41,13 @@ def physio_progress_note_sheet_list(request, username):
 def physio_progress_note_sheet_create(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+    titles = Client.objects.filter(
+        schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Physiotherapy Progress Note Sheet')
     patients = get_object_or_404(UserProfile, username=username)
     profiles = UserProfile.objects.filter(username=username)
-    icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+    icnumbers = UserProfile.objects.filter(
+        username=username).values_list('ic_number', flat=True).first()
     themes = request.session.get('theme')
 
     initial = {

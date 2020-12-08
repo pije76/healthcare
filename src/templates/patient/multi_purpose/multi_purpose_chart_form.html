@@ -9,8 +9,8 @@
 {% endblock %}
 
 {% block style %}
-	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
-	<link href="{% static 'css/patient/multi_purpose.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/patient/multi_purpose.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block javascript %}
@@ -18,60 +18,60 @@
 {% endblock %}
 
 {% block extrahead %}
-	{{ formset.media }}
+    {{ formset.media }}
 {% endblock %}
 
 {% block content %}
 
 <div class="container-fluid">
 
-	<div class="row formtitle">
-		{{ page_title }}
-	</div>
+    <div class="row formtitle">
+        {{ page_title }}
+    </div>
 
-	<p style="font-size:12px">{% include 'messages.html' %}</p>
+    <p style="font-size:12px">{% include 'messages.html' %}</p>
 
-	{% include 'patient/patient_formset.html' %}
+    {% include 'patient/patient_formset.html' %}
 
-	<form method="post">
-	{% csrf_token %}
+    <form method="post">
+    {% csrf_token %}
 
-		<div class="row rounded form_table">
+        <div class="row rounded form_table">
 
-			{{ formset.management_form }}
-			<table id="form_set" class="table table-bordered">
-				<thead class="thead_light">
-					<tr>
-						<th class="text-center">{% trans "Date/Time" %}</th>
-						<th class="text-center">{% trans "Symptom" %}</th>
-						<th class="text-center">{% trans "Remark" %}</th>
-						<th class="text-center">{% trans "Action" %}</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for item in formset.forms %}
-					<tr id="{{ item.prefix }}-row">
-						<td>{{ item.date_time|as_crispy_field }}</td>
-						<td>{{ item.symptom|as_crispy_field }}</td>
-						<td>{{ item.remark|as_crispy_field }}</td>
-						<td></td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+            {{ formset.management_form }}
+            <table id="form_set" class="table table-bordered">
+                <thead class="thead_light">
+                    <tr>
+                        <th class="text-center">{% trans "Date/Time" %}</th>
+                        <th class="text-center">{% trans "Symptom" %}</th>
+                        <th class="text-center">{% trans "Remark" %}</th>
+                        <th class="text-center">{% trans "Action" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in formset.forms %}
+                    <tr id="{{ item.prefix }}-row">
+                        <td>{{ item.date_time|as_crispy_field }}</td>
+                        <td>{{ item.symptom|as_crispy_field }}</td>
+                        <td>{{ item.remark|as_crispy_field }}</td>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
-		</div>
+        </div>
 
-		<div class="row">
+        <div class="row">
 
-			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
-			{% for item in profiles %}
-			<a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
-			{% endfor %}
+            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+            {% for item in profiles %}
+            <a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+            {% endfor %}
 
-		</div>
+        </div>
 
-	</form>
+    </form>
 
 </div>
 
@@ -79,28 +79,28 @@
 
 {% block jscript %}
 <script type='text/javascript'>
-	$(function()
-	{
-		$('#form_set tbody tr').formset(
-		{
-//			prefix: 'formset',
-//			prefix: '{{ formset.prefix }}',
-			addCssClass: 'btn btn-success',
-			addText: '<i class="fas fa-plus"></i>',
-			deleteCssClass: 'btn btn-danger',
-			deleteText: '<i class="fas fa-minus"></i>',
-			keepFieldValues: '#id_form-0-date_time, #id_form-0-blood_glucose_reading, #id_form-0-done_by',
-//			addContainerClass: 'tambah_row',
-			added: function(row)
-			{
-				$(row).find('[id$="date_time"]').removeClass('datetimepickerinput').removeAttr('#id_form-0-date_time').removeData('DateTimePicker')
-			.unbind().datetimepicker(
-				options={
-					"format": "DD-MM-YYYY HH:mm",
-				});
-			},
-		});
-	});
+    $(function()
+    {
+        $('#form_set tbody tr').formset(
+        {
+//          prefix: 'formset',
+//          prefix: '{{ formset.prefix }}',
+            addCssClass: 'btn btn-success',
+            addText: '<i class="fas fa-plus"></i>',
+            deleteCssClass: 'btn btn-danger',
+            deleteText: '<i class="fas fa-minus"></i>',
+            keepFieldValues: '#id_form-0-date_time, #id_form-0-blood_glucose_reading, #id_form-0-done_by',
+//          addContainerClass: 'tambah_row',
+            added: function(row)
+            {
+                $(row).find('[id$="date_time"]').removeClass('datetimepickerinput').removeAttr('#id_form-0-date_time').removeData('DateTimePicker')
+            .unbind().datetimepicker(
+                options={
+                    "format": "DD-MM-YYYY HH:mm",
+                });
+            },
+        });
+    });
 
 </script>
 {% endblock %}

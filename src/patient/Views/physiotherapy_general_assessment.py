@@ -17,7 +17,8 @@ from bootstrap_modal_forms.generic import *
 def physiotherapy_general_assessment_list(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+    titles = Client.objects.filter(
+        schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Physiotherapy General Assessment Form')
     patientid = UserProfile.objects.get(username=username).id
     patients = PhysiotherapyGeneralAssessment.objects.filter(patient=patientid)
@@ -40,11 +41,13 @@ def physiotherapy_general_assessment_list(request, username):
 def physiotherapy_general_assessment_create(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
+    titles = Client.objects.filter(
+        schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Physiotherapy General Assessment Form')
     patients = get_object_or_404(UserProfile, username=username)
     profiles = UserProfile.objects.filter(username=username)
-    icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
+    icnumbers = UserProfile.objects.filter(
+        username=username).values_list('ic_number', flat=True).first()
     themes = request.session.get('theme')
 
     initial = {
@@ -53,7 +56,8 @@ def physiotherapy_general_assessment_create(request, username):
     }
 
     if request.method == 'POST':
-        form = PhysiotherapyGeneralAssessment_Form(request.POST or None, request.FILES or None)
+        form = PhysiotherapyGeneralAssessment_Form(
+            request.POST or None, request.FILES or None)
         if form.is_valid():
             profile = PhysiotherapyGeneralAssessment()
             profile.patient = patients
@@ -76,7 +80,8 @@ def physiotherapy_general_assessment_create(request, username):
             profile.pacemaker_hearing_aid = form.cleaned_data['pacemaker_hearing_aid']
             profile.splinting = form.cleaned_data['splinting']
 
-            profile.physical_examination_movement = form.cleaned_data['physical_examination_movement']
+            profile.physical_examination_movement = form.cleaned_data[
+                'physical_examination_movement']
             profile.neurological_reflexes = form.cleaned_data['neurological_reflexes']
             profile.neurological_motor = form.cleaned_data['neurological_motor']
             profile.neurological_sensation = form.cleaned_data['neurological_sensation']
@@ -142,20 +147,25 @@ class PhysiotherapyGeneralAssessmentUpdateView(BSModalUpdateView):
         form.fields['palpation'].label = _("Palpation")
         form.fields['pacemaker_hearing_aid'].label = _("Pacemaker Hearing Aid")
         form.fields['splinting'].label = _("Splinting")
-        form.fields['physical_examination_movement'].label = _("Physical Examination Movement")
+        form.fields['physical_examination_movement'].label = _(
+            "Physical Examination Movement")
         form.fields['neurological_reflexes'].label = _("Neurological Reflexes")
         form.fields['neurological_motor'].label = _("Neurological Motor")
-        form.fields['neurological_sensation'].label = _("Neurological Sensation")
+        form.fields['neurological_sensation'].label = _(
+            "Neurological Sensation")
         form.fields['muscle_power'].label = _("Muscle Power")
-        form.fields['clearing_test_other_joint'].label = _("Clearing Test Other Joint")
-        form.fields['physiotherapists_impression'].label = _("Physiotherapists Impression")
+        form.fields['clearing_test_other_joint'].label = _(
+            "Clearing Test Other Joint")
+        form.fields['physiotherapists_impression'].label = _(
+            "Physiotherapists Impression")
         form.fields['functional_activities'].label = _("Functional Activities")
         form.fields['short_term_goals'].label = _("Short Term Goals")
         form.fields['long_term_goals'].label = _("Long Term Goals")
         form.fields['special_test'].label = _("Special Test")
         form.fields['plan_treatment'].label = _("Plan Treatment")
         form.fields['date_time'].label = _("Date & Time")
-        form.fields['attending_physiotherapist'].label = _("Attending Physiotherapist")
+        form.fields['attending_physiotherapist'].label = _(
+            "Attending Physiotherapist")
         return form
 
     def get_success_url(self):
@@ -178,4 +188,3 @@ class PhysiotherapyGeneralAssessmentDeleteView(BSModalDeleteView):
 
 
 physiotherapy_general_assessment_delete = PhysiotherapyGeneralAssessmentDeleteView.as_view()
-

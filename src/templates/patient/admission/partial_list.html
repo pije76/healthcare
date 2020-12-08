@@ -3,99 +3,99 @@
 
 <tr>
 {% for item1 in admissionform %}
-	{% if forloop.first %}
-		<td>{{ item1.date_admission|date:"d-m-Y" }}</td>
-		<td>{{ item1.time_admission|date:"H:i" }}</td>
-		<td>{{ item1.admitted_admission }}</td>
-		<td>{{ item1.mode_admission }}</td>
-	{% endif %}
+    {% if forloop.first %}
+        <td>{{ item1.date_admission|date:"d-m-Y" }}</td>
+        <td>{{ item1.time_admission|date:"H:i" }}</td>
+        <td>{{ item1.admitted_admission }}</td>
+        <td>{{ item1.mode_admission }}</td>
+    {% endif %}
 {% endfor %}
 
 {% for item2 in admissionform %}
-	{% if forloop.first %}
-		<td>{{ item2.patient }}</td>
-		<td>{{ item2.ic_number }}</td>
-		<td>
-			<a href="{{ item2.ic_upload_url }}">
-				<img class="image_ic_upload" src="{{ item2.ic_upload_url }}">
-			</a>
-		</td>
-		<td>{{ item2.age }}</td>
-		<td>{{ item2.birth_date|date:"d-m-Y" }}</td>
-		<td>{{ item2.gender }}</td>
-		<td>{{ item2.marital_status }}</td>
-		<td>{{ item2.religion }}</td>
-		<td>{{ item2.occupation }}</td>
-		<td>{{ item2.communication_sight }}</td>
-		<td>{{ item2.communication_hearing }}</td>
-		<td>{{ item2.address }}</td>
-	{% endif %}
+    {% if forloop.first %}
+        <td>{{ item2.patient }}</td>
+        <td>{{ item2.ic_number }}</td>
+        <td>
+            <a href="{{ item2.ic_upload_url }}">
+                <img class="image_ic_upload" src="{{ item2.ic_upload_url }}">
+            </a>
+        </td>
+        <td>{{ item2.age }}</td>
+        <td>{{ item2.birth_date|date:"d-m-Y" }}</td>
+        <td>{{ item2.gender }}</td>
+        <td>{{ item2.marital_status }}</td>
+        <td>{{ item2.religion }}</td>
+        <td>{{ item2.occupation }}</td>
+        <td>{{ item2.communication_sight }}</td>
+        <td>{{ item2.communication_hearing }}</td>
+        <td>{{ item2.address }}</td>
+    {% endif %}
 {% endfor %}
 
 {% for item3 in ecform %}
-	{% if forloop.first %}
-		<td>{{ item3.ec_name }}</td>
-		<td>{{ item3.ec_ic_number }}</td>
-		<td>
-			<a href="{{ item3.ec_ic_upload_url }}">
-				<img class="image_ec_ic_upload" src="{{ item3.ec_ic_upload_url }}">
-			</a>
-		</td>
-		<td>{{ item3.ec_relationship }}</td>
-		<td>{{ item3.ec_phone }}</td>
-		<td>{{ item3.ec_address }}</td>
-	{% endif %}
+    {% if forloop.first %}
+        <td>{{ item3.ec_name }}</td>
+        <td>{{ item3.ec_ic_number }}</td>
+        <td>
+            <a href="{{ item3.ec_ic_upload_url }}">
+                <img class="image_ec_ic_upload" src="{{ item3.ec_ic_upload_url }}">
+            </a>
+        </td>
+        <td>{{ item3.ec_relationship }}</td>
+        <td>{{ item3.ec_phone }}</td>
+        <td>{{ item3.ec_address }}</td>
+    {% endif %}
 {% endfor %}
 
 {% for item4 in admissionform %}
-	{% if forloop.first %}
-		<td>{{ item4.general_condition }}</td>
-		<td>{{ item4.vital_sign_temperature }} ºC</td>
-		<td>{{ item4.vital_sign_pulse }} bpm</td>
-		<td>{{ item4.vital_sign_bp_upper }} mmHg</td>
-		<td>{{ item4.vital_sign_bp_lower }} mmHg</td>
-		<td>{{ item4.vital_sign_resp }} min</td>
-		<td>{{ item4.vital_sign_spo2 }} %</td>
-		<td>{{ item4.vital_sign_on_oxygen_therapy }}</td>
-		<td>{{ item4.vital_sign_on_oxygen_therapy_flow_rate }}</td>
-		<td>{{ item4.vital_sign_hgt }}</td>
-	{% endif %}
+    {% if forloop.first %}
+        <td>{{ item4.general_condition }}</td>
+        <td>{{ item4.vital_sign_temperature }} ºC</td>
+        <td>{{ item4.vital_sign_pulse }} bpm</td>
+        <td>{{ item4.vital_sign_bp_upper }} mmHg</td>
+        <td>{{ item4.vital_sign_bp_lower }} mmHg</td>
+        <td>{{ item4.vital_sign_resp }} min</td>
+        <td>{{ item4.vital_sign_spo2 }} %</td>
+        <td>{{ item4.vital_sign_on_oxygen_therapy }}</td>
+        <td>{{ item4.vital_sign_on_oxygen_therapy_flow_rate }}</td>
+        <td>{{ item4.vital_sign_hgt }}</td>
+    {% endif %}
 {% endfor %}
 
 {% for item5 in allergyform %}
-	{% if forloop.first %}
-		<td>{{ item5.allergy_drug }}</td>
-		<td>{{ item5.allergy_food }}</td>
-		<td>{{ item5.allergy_others }}</td>
-	{% endif %}
+    {% if forloop.first %}
+        <td>{{ item5.allergy_drug }}</td>
+        <td>{{ item5.allergy_food }}</td>
+        <td>{{ item5.allergy_others }}</td>
+    {% endif %}
 {% endfor %}
 
 {% for item6 in admissionform %}
-	{% if forloop.first %}
-		<td>{{ item6.biohazard_infectious_disease }}</td>
-		<td>{{ item6.invasive_line_insitu }}</td>
-		<td>{{ item6.medical_history }}</td>
-		<td>{{ item6.surgical_history }}</td>
+    {% if forloop.first %}
+        <td>{{ item6.biohazard_infectious_disease }}</td>
+        <td>{{ item6.invasive_line_insitu }}</td>
+        <td>{{ item6.medical_history }}</td>
+        <td>{{ item6.surgical_history }}</td>
 
-		<td>{{ item6.date_diagnosis|date:"d-m-Y" }}</td>
-		<td>{{ item6.diagnosis }}</td>
-		<td>{{ item6.date_operation|date:"d-m-Y" }}</td>
-		<td>{{ item6.operation }}</td>
+        <td>{{ item6.date_diagnosis|date:"d-m-Y" }}</td>
+        <td>{{ item6.diagnosis }}</td>
+        <td>{{ item6.date_operation|date:"d-m-Y" }}</td>
+        <td>{{ item6.operation }}</td>
 
-		<td>{{ item6.own_medication }}</td>
+        <td>{{ item6.own_medication }}</td>
 
-		<td>{{ item6.adaptive_aids_with_patient }}</td>
-		<td>{{ item6.orientation }}</td>
-		<td>{{ item6.special_information }}</td>
-		<td>{{ item6.admission_by }}</td>
-		<td>
-			<button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:admission_edit' item6.patient.username item6.id %}" title="Edit" style="background-color:transparent;">
-				<i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
-			</button>
-			<button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:admission_delete' item6.patient.username item6.id %}" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
-			</button>
-		</td>
-	{% endif %}
+        <td>{{ item6.adaptive_aids_with_patient }}</td>
+        <td>{{ item6.orientation }}</td>
+        <td>{{ item6.special_information }}</td>
+        <td>{{ item6.admission_by }}</td>
+        <td>
+            <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:admission_edit' item6.patient.username item6.id %}" title="Edit" style="background-color:transparent;">
+                <i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:admission_delete' item6.patient.username item6.id %}" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
+            </button>
+        </td>
+    {% endif %}
 {% endfor %}
 </tr>
 
@@ -103,92 +103,92 @@
 
 <tr>
 {% for item1 in admissionform %}
-	{% if forloop.first %}
-		<td>{{ item1.date_admission|date:"d-m-Y" }}</td>
-		<td>{{ item1.time_admission|date:"H:i" }}</td>
-		<td>{{ item1.admitted_admission }}</td>
-		<td>{{ item1.mode_admission }}</td>
-	{% endif %}
+    {% if forloop.first %}
+        <td>{{ item1.date_admission|date:"d-m-Y" }}</td>
+        <td>{{ item1.time_admission|date:"H:i" }}</td>
+        <td>{{ item1.admitted_admission }}</td>
+        <td>{{ item1.mode_admission }}</td>
+    {% endif %}
 {% endfor %}
 
 {% for item2 in patientform %}
-	{% if forloop.first %}
-		<td>{{ item2.full_name }}</td>
-		<td>{{ item2.ic_number }}</td>
-		<td>
-			<a href="{{ item2.ic_upload_url }}">
-				<img class="image_ic_upload" src="{{ item2.ic_upload_url }}">
-			</a>
-		</td>
-		<td>{{ item2.age }}</td>
-		<td>{{ item2.birth_date|date:"d-m-Y" }}</td>
-		<td>{{ item2.gender }}</td>
-		<td>{{ item2.marital_status }}</td>
-		<td>{{ item2.religion }}</td>
-		<td>{{ item2.occupation }}</td>
-		<td>{{ item2.communication_sight }}</td>
-		<td>{{ item2.communication_hearing }}</td>
-		<td>{{ item2.address }}</td>
-	{% endif %}
+    {% if forloop.first %}
+        <td>{{ item2.full_name }}</td>
+        <td>{{ item2.ic_number }}</td>
+        <td>
+            <a href="{{ item2.ic_upload_url }}">
+                <img class="image_ic_upload" src="{{ item2.ic_upload_url }}">
+            </a>
+        </td>
+        <td>{{ item2.age }}</td>
+        <td>{{ item2.birth_date|date:"d-m-Y" }}</td>
+        <td>{{ item2.gender }}</td>
+        <td>{{ item2.marital_status }}</td>
+        <td>{{ item2.religion }}</td>
+        <td>{{ item2.occupation }}</td>
+        <td>{{ item2.communication_sight }}</td>
+        <td>{{ item2.communication_hearing }}</td>
+        <td>{{ item2.address }}</td>
+    {% endif %}
 {% endfor %}
 
 {% for item3 in ecform %}
-	{% if forloop.first %}
-		<td>{{ item3.ec_name }}</td>
-		<td>{{ item3.ec_ic_number }}</td>
-		<td>
-			<a href="{{ item3.ec_ic_upload_url }}">
-				<img class="image_ec_ic_upload" src="{{ item3.ec_ic_upload_url }}">
-			</a>
-		</td>
-		<td>{{ item3.ec_relationship }}</td>
-		<td>{{ item3.ec_phone }}</td>
-		<td>{{ item3.ec_address }}</td>
-	{% endif %}
+    {% if forloop.first %}
+        <td>{{ item3.ec_name }}</td>
+        <td>{{ item3.ec_ic_number }}</td>
+        <td>
+            <a href="{{ item3.ec_ic_upload_url }}">
+                <img class="image_ec_ic_upload" src="{{ item3.ec_ic_upload_url }}">
+            </a>
+        </td>
+        <td>{{ item3.ec_relationship }}</td>
+        <td>{{ item3.ec_phone }}</td>
+        <td>{{ item3.ec_address }}</td>
+    {% endif %}
 {% endfor %}
 
 {% for item4 in admissionform %}
-	{% if forloop.first %}
-		<td>{{ item4.general_condition }}</td>
-		<td>{{ item4.vital_sign_temperature }} ºC</td>
-		<td>{{ item4.vital_sign_pulse }} bpm</td>
-		<td>{{ item4.vital_sign_bp_upper }} mmHg</td>
-		<td>{{ item4.vital_sign_bp_lower }} mmHg</td>
-		<td>{{ item4.vital_sign_resp }} min</td>
-		<td>{{ item4.vital_sign_spo2 }} %</td>
-		<td>{{ item4.vital_sign_on_oxygen_therapy }}</td>
-		<td>{{ item4.vital_sign_on_oxygen_therapy_flow_rate }}</td>
-		<td>{{ item4.vital_sign_hgt }}</td>
-	{% endif %}
+    {% if forloop.first %}
+        <td>{{ item4.general_condition }}</td>
+        <td>{{ item4.vital_sign_temperature }} ºC</td>
+        <td>{{ item4.vital_sign_pulse }} bpm</td>
+        <td>{{ item4.vital_sign_bp_upper }} mmHg</td>
+        <td>{{ item4.vital_sign_bp_lower }} mmHg</td>
+        <td>{{ item4.vital_sign_resp }} min</td>
+        <td>{{ item4.vital_sign_spo2 }} %</td>
+        <td>{{ item4.vital_sign_on_oxygen_therapy }}</td>
+        <td>{{ item4.vital_sign_on_oxygen_therapy_flow_rate }}</td>
+        <td>{{ item4.vital_sign_hgt }}</td>
+    {% endif %}
 {% endfor %}
 
 {% for item5 in allergyform %}
-	{% if forloop.first %}
-		<td>{{ item5.allergy_drug }}</td>
-		<td>{{ item5.allergy_food }}</td>
-		<td>{{ item5.allergy_others }}</td>
-	{% endif %}
+    {% if forloop.first %}
+        <td>{{ item5.allergy_drug }}</td>
+        <td>{{ item5.allergy_food }}</td>
+        <td>{{ item5.allergy_others }}</td>
+    {% endif %}
 {% endfor %}
 
 {% for item6 in admissionform %}
-	{% if forloop.first %}
-		<td>{{ item6.biohazard_infectious_disease }}</td>
-		<td>{{ item6.invasive_line_insitu }}</td>
-		<td>{{ item6.medical_history }}</td>
-		<td>{{ item6.surgical_history }}</td>
+    {% if forloop.first %}
+        <td>{{ item6.biohazard_infectious_disease }}</td>
+        <td>{{ item6.invasive_line_insitu }}</td>
+        <td>{{ item6.medical_history }}</td>
+        <td>{{ item6.surgical_history }}</td>
 
-		<td>{{ item6.date_diagnosis|date:"d-m-Y" }}</td>
-		<td>{{ item6.diagnosis }}</td>
-		<td>{{ item6.date_operation|date:"d-m-Y" }}</td>
-		<td>{{ item6.operation }}</td>
+        <td>{{ item6.date_diagnosis|date:"d-m-Y" }}</td>
+        <td>{{ item6.diagnosis }}</td>
+        <td>{{ item6.date_operation|date:"d-m-Y" }}</td>
+        <td>{{ item6.operation }}</td>
 
-		<td>{{ item6.own_medication }}</td>
+        <td>{{ item6.own_medication }}</td>
 
-		<td>{{ item6.adaptive_aids_with_patient }}</td>
-		<td>{{ item6.orientation }}</td>
-		<td>{{ item6.special_information }}</td>
-		<td>{{ item6.admission_by }}</td>
-	{% endif %}
+        <td>{{ item6.adaptive_aids_with_patient }}</td>
+        <td>{{ item6.orientation }}</td>
+        <td>{{ item6.special_information }}</td>
+        <td>{{ item6.admission_by }}</td>
+    {% endif %}
 {% endfor %}
 </tr>
 

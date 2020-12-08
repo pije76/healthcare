@@ -5,16 +5,16 @@
 {% load i18n %}
 
 {% block headtitle %}
-	{{ page_title }} | {{ titles.title }}
+    {{ page_title }} | {{ titles.title }}
 {% endblock %}
 
 {% block style %}
-	<link href="{% static 'css/patient/nursing.css' %}" rel="stylesheet" type="text/css">
-	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/patient/nursing.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block javascript %}
-	<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
     <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
 {% endblock %}
 
@@ -22,55 +22,55 @@
 
 <div class="container-fluid">
 
-	<div class="row formtitle">
-		{{ page_title }}
-	</div>
+    <div class="row formtitle">
+        {{ page_title }}
+    </div>
 
-	<p style="font-size:12px">{% include 'messages.html' %}</p>
+    <p style="font-size:12px">{% include 'messages.html' %}</p>
 
-	{% include 'patient/patient_data.html' %}
+    {% include 'patient/patient_data.html' %}
 
-	<div class="row rounded form_table">
+    <div class="row rounded form_table">
 
-		<div class="col-12">
-			<div class="card">
+        <div class="col-12">
+            <div class="card">
 
-				<div class="card-body">
+                <div class="card-body">
 
-					<div class="table-responsive">
-						<form method="post" action="">
-						{% csrf_token %}
-							<table id="t_add_row" class="table table-striped table-bordered">
-								<thead class="thead_light">
-									<tr>
-										<th class="text-center">{% trans "Date" %}</th>
-										<th class="text-center">{% trans "Report" %}</th>
-										<th class="text-center">{% trans "Action" %}</th>
-									</tr>
-								</thead>
-								<tbody>
-									{% include 'patient/nursing/partial_list.html' %}
-								</tfoot>
-							</table>
-						</form>
-					</div>
+                    <div class="table-responsive">
+                        <form method="post" action="">
+                        {% csrf_token %}
+                            <table id="t_add_row" class="table table-striped table-bordered">
+                                <thead class="thead_light">
+                                    <tr>
+                                        <th class="text-center">{% trans "Date" %}</th>
+                                        <th class="text-center">{% trans "Report" %}</th>
+                                        <th class="text-center">{% trans "Action" %}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% include 'patient/nursing/partial_list.html' %}
+                                </tfoot>
+                            </table>
+                        </form>
+                    </div>
 
-				</div>
+                </div>
 
             </div>
         </div>
 
     </div>
 
-	<br />
+    <br />
 
-	<div class="row">
-		<div class="col-4">
-			{% for item in profiles %}
-				<a class="btn btn-outline-primary" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Back" %}</a>
-			{% endfor %}
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-4">
+            {% for item in profiles %}
+                <a class="btn btn-outline-primary" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Back" %}</a>
+            {% endfor %}
+        </div>
+    </div>
 
 </div>
 
@@ -80,18 +80,18 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
-	var t = $('#t_add_row').DataTable(
-	{
-		"order": [[ 0, "desc" ]]
-	});
+    var t = $('#t_add_row').DataTable(
+    {
+        "order": [[ 0, "desc" ]]
+    });
 
-	$(".trigger_modal").each(function()
-	{
-		$(this).modalForm(
-		{
-			formURL: $(this).data('form-url')
-		});
-	});
+    $(".trigger_modal").each(function()
+    {
+        $(this).modalForm(
+        {
+            formURL: $(this).data('form-url')
+        });
+    });
 });
 </script>
 {% endblock %}

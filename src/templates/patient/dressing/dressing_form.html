@@ -9,8 +9,8 @@
 {% endblock %}
 
 {% block style %}
-	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
-	<link href="{% static 'css/patient/dressing.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/patient/dressing.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block javascript %}
@@ -18,72 +18,72 @@
 {% endblock %}
 
 {% block extrahead %}
-	{{ formset.media }}
+    {{ formset.media }}
 {% endblock %}
 
 {% block content %}
 
 <div class="container-fluid">
 
-	<div class="row formtitle">
-		{{ page_title }}
-	</div>
+    <div class="row formtitle">
+        {{ page_title }}
+    </div>
 
-	<p style="font-size:12px">{% include 'messages.html' %}</p>
+    <p style="font-size:12px">{% include 'messages.html' %}</p>
 
-	{% include 'patient/patient_formset.html' %}
+    {% include 'patient/patient_formset.html' %}
 
-	<form method="post" action="" enctype="multipart/form-data">
-	{% csrf_token %}
+    <form method="post" action="" enctype="multipart/form-data">
+    {% csrf_token %}
 
-		<div class="row rounded form_table">
+        <div class="row rounded form_table">
 
-			{{ formset.management_form }}
-			<table id="form_set" class="table table-bordered">
-				<thead class="thead_light">
-					<tr>
-						<th class="text-center">{% trans "Date" %}</th>
-						<th class="text-center">{% trans "Time" %}</th>
-						<th class="text-center">{% trans "Frequency" %}</th>
-						<th class="text-center">{% trans "Type" %}</th>
-						<th class="text-center">{% trans "Wound's Location" %}</th>
-						<th class="text-center">{% trans "Wound's Condition" %}</th>
-						<th class="text-center">{% trans "Images" %}</th>
-						<th class="text-center" style="width:15%;">{% trans "Note" %}</th>
-						<th class="text-center">{% trans "Done By:" %}</th>
-						<th class="text-center">{% trans "Action" %}</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for item in formset.forms %}
-					<tr id="{{ item.prefix }}-row">
-						<td>{{ item.date|as_crispy_field }}</td>
-						<td>{{ item.time|as_crispy_field }}</td>
-						<td>{{ item.frequency_dressing|as_crispy_field }}</td>
-						<td>{{ item.type_dressing|as_crispy_field }}</td>
-						<td>{{ item.wound_location|as_crispy_field }}</td>
-						<td>{{ item.wound_condition|as_crispy_field }}</td>
-						<td>{{ item.photos|as_crispy_field }}</td>
-						<td>{{ item.note|as_crispy_field }}</td>
-						<td>{{ item.done_by|as_crispy_field }}</td>
-						<td></td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+            {{ formset.management_form }}
+            <table id="form_set" class="table table-bordered">
+                <thead class="thead_light">
+                    <tr>
+                        <th class="text-center">{% trans "Date" %}</th>
+                        <th class="text-center">{% trans "Time" %}</th>
+                        <th class="text-center">{% trans "Frequency" %}</th>
+                        <th class="text-center">{% trans "Type" %}</th>
+                        <th class="text-center">{% trans "Wound's Location" %}</th>
+                        <th class="text-center">{% trans "Wound's Condition" %}</th>
+                        <th class="text-center">{% trans "Images" %}</th>
+                        <th class="text-center" style="width:15%;">{% trans "Note" %}</th>
+                        <th class="text-center">{% trans "Done By:" %}</th>
+                        <th class="text-center">{% trans "Action" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in formset.forms %}
+                    <tr id="{{ item.prefix }}-row">
+                        <td>{{ item.date|as_crispy_field }}</td>
+                        <td>{{ item.time|as_crispy_field }}</td>
+                        <td>{{ item.frequency_dressing|as_crispy_field }}</td>
+                        <td>{{ item.type_dressing|as_crispy_field }}</td>
+                        <td>{{ item.wound_location|as_crispy_field }}</td>
+                        <td>{{ item.wound_condition|as_crispy_field }}</td>
+                        <td>{{ item.photos|as_crispy_field }}</td>
+                        <td>{{ item.note|as_crispy_field }}</td>
+                        <td>{{ item.done_by|as_crispy_field }}</td>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
-		</div>
+        </div>
 
-		<div class="row">
+        <div class="row">
 
-			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
-			{% for item in profiles %}
-			<a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
-			{% endfor %}
+            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+            {% for item in profiles %}
+            <a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+            {% endfor %}
 
-		</div>
+        </div>
 
-	</form>
+    </form>
 
 </div>
 
@@ -94,28 +94,28 @@
 $(document).ready(function()
 {
 
-	$('#form_set tbody tr').formset(
-	{
-		addCssClass: 'btn btn-success',
-		addText: '<i class="fas fa-plus"></i>',
-		deleteCssClass: 'btn btn-danger',
-		deleteText: '<i class="fas fa-minus"></i>',
-		keepFieldValues: '#id_form-0-date, #id_form-0-time, #id_form-0-frequency_dressing, #id_form-0-wound_condition, #id_form-0-done_by',
-		added: function(row)
-		{
-			$(row).find('[id$="date"]').removeClass('datepickerinput').removeAttr('#id_form-0-date').removeData('DateTimePicker')
-		.unbind().datetimepicker(
-			options={
-				"format": "DD-MM-YYYY",
-			});
+    $('#form_set tbody tr').formset(
+    {
+        addCssClass: 'btn btn-success',
+        addText: '<i class="fas fa-plus"></i>',
+        deleteCssClass: 'btn btn-danger',
+        deleteText: '<i class="fas fa-minus"></i>',
+        keepFieldValues: '#id_form-0-date, #id_form-0-time, #id_form-0-frequency_dressing, #id_form-0-wound_condition, #id_form-0-done_by',
+        added: function(row)
+        {
+            $(row).find('[id$="date"]').removeClass('datepickerinput').removeAttr('#id_form-0-date').removeData('DateTimePicker')
+        .unbind().datetimepicker(
+            options={
+                "format": "DD-MM-YYYY",
+            });
 
-			$(row).find('[id$="time"]').removeClass('timepickerinput').removeAttr('#id_form-0-time').removeData('DateTimePicker')
-		.unbind().datetimepicker(
-			options={
-				"format": "HH:mm",
-			});
-		},
-	});
+            $(row).find('[id$="time"]').removeClass('timepickerinput').removeAttr('#id_form-0-time').removeData('DateTimePicker')
+        .unbind().datetimepicker(
+            options={
+                "format": "HH:mm",
+            });
+        },
+    });
 });
 
 </script>

@@ -10,186 +10,186 @@
 {% endblock %}
 
 {% block style %}
-	<link href="{% static 'css/patient/application_home_leave.css' %}" rel="stylesheet" type="text/css">
-	<link href="{% static 'selectable/css/dj.selectable.css' %}" type="text/css" media="all" rel="stylesheet">
+    <link href="{% static 'css/patient/application_home_leave.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'selectable/css/dj.selectable.css' %}" type="text/css" media="all" rel="stylesheet">
 {% endblock %}
 
 {% block extrahead %}
-	{{ form.media }}
+    {{ form.media }}
 {% endblock %}
 
 {% block content %}
 
 <div class="container-fluid">
 
-	<div class="row formtitle">
-		{{ page_title }}
-	</div>
+    <div class="row formtitle">
+        {{ page_title }}
+    </div>
 
-	<p style="font-size:12px">{% include 'messages.html' %}</p>
+    <p style="font-size:12px">{% include 'messages.html' %}</p>
 
-	<div class="col-12 border" style="padding-top: 10px;padding-bottom: 10px; margin: 10px;">
+    <div class="col-12 border" style="padding-top: 10px;padding-bottom: 10px; margin: 10px;">
 
-		<form method="post" id="dataForm" novalidate>
-			{% csrf_token %}
-			<div class="application_home_leave_body">
+        <form method="post" id="dataForm" novalidate>
+            {% csrf_token %}
+            <div class="application_home_leave_body">
 
-				<div class="row">
-					<div class="col-1">
-						{% trans "Name" %}:
-					</div>
-					<div class="col-4">
-						{{ form.patient|as_crispy_field }}
-					</div>
-				</div>
+                <div class="row">
+                    <div class="col-1">
+                        {% trans "Name" %}:
+                    </div>
+                    <div class="col-4">
+                        {{ form.patient|as_crispy_field }}
+                    </div>
+                </div>
 
-				<br />
+                <br />
 
-				<div class="row">
-					<div class="col-1">
-						{% trans "I/C No" %}:
-					</div>
-					<div class="col-4">
-						{{ form.ic_number|as_crispy_field }}
-					</div>
-				</div>
+                <div class="row">
+                    <div class="col-1">
+                        {% trans "I/C No" %}:
+                    </div>
+                    <div class="col-4">
+                        {{ form.ic_number|as_crispy_field }}
+                    </div>
+                </div>
 
-				<br />
+                <br />
 
-				<div class="row">
-					<div class="col-1">
-						{% trans "I" %},
-					</div>
-					<div class="col-5">
-						{{ form.family_name|as_crispy_field }}
-					</div>
-					<div class="col-2">
-						{% trans "NRIC No." %}:
-					</div>
-					<div class="col-4">
-						{{ form.family_ic_number|as_crispy_field }}
-					</div>
-				</div>
+                <div class="row">
+                    <div class="col-1">
+                        {% trans "I" %},
+                    </div>
+                    <div class="col-5">
+                        {{ form.family_name|as_crispy_field }}
+                    </div>
+                    <div class="col-2">
+                        {% trans "NRIC No." %}:
+                    </div>
+                    <div class="col-4">
+                        {{ form.family_ic_number|as_crispy_field }}
+                    </div>
+                </div>
 
-				<br />
+                <br />
 
-				<div class="row">
-					<div class="col-1">
-						{% trans "of" %}
-					</div>
-					<div class="col-5">
-						{{ form.family_relationship|as_crispy_field }}
-					</div>
-					<div class="col-2">
-						{% trans "Tel No." %}:
-					</div>
-					<div class="col-4">
-						{{ form.family_phone|as_crispy_field }}
-					</div>
-				</div>
+                <div class="row">
+                    <div class="col-1">
+                        {% trans "of" %}
+                    </div>
+                    <div class="col-5">
+                        {{ form.family_relationship|as_crispy_field }}
+                    </div>
+                    <div class="col-2">
+                        {% trans "Tel No." %}:
+                    </div>
+                    <div class="col-4">
+                        {{ form.family_phone|as_crispy_field }}
+                    </div>
+                </div>
 
-				<br />
+                <br />
 
-				<div class="row">
-					<div class="col-6">
-						{% trans "hereby wish to apply from" %} {{ titles }} {% trans "for self/patient" %}
-					</div>
-					<div class="col-6">
-						<input type="text" name="patient" class="form-control" value="{{ patients }}">
-					</div>
-				</div>
+                <div class="row">
+                    <div class="col-6">
+                        {% trans "hereby wish to apply from" %} {{ titles }} {% trans "for self/patient" %}
+                    </div>
+                    <div class="col-6">
+                        <input type="text" name="patient" class="form-control" value="{{ patients }}">
+                    </div>
+                </div>
 
-				<div class="row">
-					<div class="col-12">
-						{% trans "to leave the care center at own risk as per attachment." %}
-						<br />
-						<br />
-						{% trans "I am fully responsible towards myself/this patient whilst out of the center," %} {{ titles }} {% trans "and its staff of all liabilities in the event of my/the patient’s decline in health or any accidents which may occur whilst I am/said patient is out of the center." %}
-					</div>
-				</div>
+                <div class="row">
+                    <div class="col-12">
+                        {% trans "to leave the care center at own risk as per attachment." %}
+                        <br />
+                        <br />
+                        {% trans "I am fully responsible towards myself/this patient whilst out of the center," %} {{ titles }} {% trans "and its staff of all liabilities in the event of my/the patient’s decline in health or any accidents which may occur whilst I am/said patient is out of the center." %}
+                    </div>
+                </div>
 
-				<br />
-				<br />
+                <br />
+                <br />
 
-				<div class="row">
-					<div class="col-6">
-						{% trans "Signature or Thumbprint of" %}
-					</div>
+                <div class="row">
+                    <div class="col-6">
+                        {% trans "Signature or Thumbprint of" %}
+                    </div>
 
-					<div class="col-6">
-						{{ form.signature_name|as_crispy_field }}
-						<b>({% trans "Patient/Family Responsible" %})</b>
-					</div>
-				</div>
+                    <div class="col-6">
+                        {{ form.signature_name|as_crispy_field }}
+                        <b>({% trans "Patient/Family Responsible" %})</b>
+                    </div>
+                </div>
 
-				<br />
+                <br />
 
-				<div class="row">
-					<div class="col-6">
-						{{ form.signature_relationship|as_crispy_field }}
-						<b>({% trans "Relationship" %})</b>
-					</div>
+                <div class="row">
+                    <div class="col-6">
+                        {{ form.signature_relationship|as_crispy_field }}
+                        <b>({% trans "Relationship" %})</b>
+                    </div>
 
-					<div class="col-6">
-						{{ form.signature_ic_number|as_crispy_field }}
-						<b>({% trans "IC No." %})</b>
-					</div>
-				</div>
+                    <div class="col-6">
+                        {{ form.signature_ic_number|as_crispy_field }}
+                        <b>({% trans "IC No." %})</b>
+                    </div>
+                </div>
 
-				<br /><br /><br />
+                <br /><br /><br />
 
-				<div class="row form-inline">
-					<div class="col-2">
-						{% trans "Witnessed by" %}:
-					</div>
-				</div>
-				<br />
-				<div class="row form-inline">
-					<div class="col-2">
-						{% trans "Name" %}:
-					</div>
-					<div class="col-2">
-						{{ form.witnessed_name|as_crispy_field }}
-					</div>
-				</div>
-				<br />
-				<div class="row form-inline">
-					<div class="col-2">
-						{% trans "Designation" %}:
-					</div>
-					<div class="col-2">
-						{{ form.witnessed_designation|as_crispy_field }}
-					</div>
-				</div>
-				<br />
-				<div class="row form-inline">
-					<div class="col-2">
-						{% trans "Signature" %}:
-					</div>
-					<div class="col-2">
-						{{ form.witnessed_signature|as_crispy_field }}
-					</div>
-				</div>
-				<br />
-				<div class="row form-inline">
-					<div class="col-2">
-						{% trans "Date" %}:
-					</div>
-					<div class="col-2">
-						{{ form.witnessed_date|as_crispy_field }}
-					</div>
-				</div>
-				<br />
-				<b>{% trans "Note" %}</b>:<br />	{% trans "This form must be signed by the patient, carrier or a member of the family responsible if patient is physically and mentally unfit." %}
-			</div>
-			<br />
-			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
-			{% for item in profiles %}
-			<a class="btn btn-outline-primary kirim" href="{% url 'patient:application_home_leave_pdf' item.username %}"><i style="font-size:20px;" class="fa fa fa-print fa-2x"></i> Print</a>
-			<a class="btn btn-danger" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
-			{% endfor %}
-		</form>
-	</div>
+                <div class="row form-inline">
+                    <div class="col-2">
+                        {% trans "Witnessed by" %}:
+                    </div>
+                </div>
+                <br />
+                <div class="row form-inline">
+                    <div class="col-2">
+                        {% trans "Name" %}:
+                    </div>
+                    <div class="col-2">
+                        {{ form.witnessed_name|as_crispy_field }}
+                    </div>
+                </div>
+                <br />
+                <div class="row form-inline">
+                    <div class="col-2">
+                        {% trans "Designation" %}:
+                    </div>
+                    <div class="col-2">
+                        {{ form.witnessed_designation|as_crispy_field }}
+                    </div>
+                </div>
+                <br />
+                <div class="row form-inline">
+                    <div class="col-2">
+                        {% trans "Signature" %}:
+                    </div>
+                    <div class="col-2">
+                        {{ form.witnessed_signature|as_crispy_field }}
+                    </div>
+                </div>
+                <br />
+                <div class="row form-inline">
+                    <div class="col-2">
+                        {% trans "Date" %}:
+                    </div>
+                    <div class="col-2">
+                        {{ form.witnessed_date|as_crispy_field }}
+                    </div>
+                </div>
+                <br />
+                <b>{% trans "Note" %}</b>:<br />    {% trans "This form must be signed by the patient, carrier or a member of the family responsible if patient is physically and mentally unfit." %}
+            </div>
+            <br />
+            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+            {% for item in profiles %}
+            <a class="btn btn-outline-primary kirim" href="{% url 'patient:application_home_leave_pdf' item.username %}"><i style="font-size:20px;" class="fa fa fa-print fa-2x"></i> Print</a>
+            <a class="btn btn-danger" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+            {% endfor %}
+        </form>
+    </div>
 
 </div>
 
@@ -203,128 +203,128 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
-	$('.kirim').click(function()
-	{
-		name = $('#id_family_relationship').val();
-		console.log(name);
-//	function newParameters(query)
-//	{
-//		query.full_name = $('#id_patient').val();
-//		console.log("query: ", query.full_name);
-//	}
-//	$('#id_family_name').djselectable('option', 'prepareQuery', newParameters);
+    $('.kirim').click(function()
+    {
+        name = $('#id_family_relationship').val();
+        console.log(name);
+//  function newParameters(query)
+//  {
+//      query.full_name = $('#id_patient').val();
+//      console.log("query: ", query.full_name);
+//  }
+//  $('#id_family_name').djselectable('option', 'prepareQuery', newParameters);
 
-//	$('#id_patient').djselectable('option', 'minLength', 3);
-//	$('#id_family_name').djselectable('option', 'minLength', 3);
-	});
+//  $('#id_patient').djselectable('option', 'minLength', 3);
+//  $('#id_family_name').djselectable('option', 'minLength', 3);
+    });
 
-	$("#id_patient").change(function()
-	{
-	//	var url = $("#dataForm").attr("data-url");
+    $("#id_patient").change(function()
+    {
+    //  var url = $("#dataForm").attr("data-url");
 
-		var fullnameId = $(this).val();
-	//	console.log("url: ", url);
-	//	console.log("fullnameId: ", fullnameId);
-		$.ajax(
-		{
-			url:'{% url "patient:load_ic_number" %}',
-			data:
-			{
-				'full_name': fullnameId,
-			},
+        var fullnameId = $(this).val();
+    //  console.log("url: ", url);
+    //  console.log("fullnameId: ", fullnameId);
+        $.ajax(
+        {
+            url:'{% url "patient:load_ic_number" %}',
+            data:
+            {
+                'full_name': fullnameId,
+            },
 
-			success: function(data)
-			{
-				$("#id_ic_number").val(data);
-			},
-		});
-	});
+            success: function(data)
+            {
+                $("#id_ic_number").val(data);
+            },
+        });
+    });
 
-	$("#id_family_name").change(function()
-	{
-		var familynameId = $(this).val();
-	//	console.log("url: ", url);
-	//	console.log("familynameId: ", familynameId);
-		$.ajax(
-		{
-			url:'{% url "patient:load_ic_number" %}',
-			data:
-			{
-				'ec_name': familynameId,
-	//			'ec_relationship': familynameId.ec_relationship,
-			},
+    $("#id_family_name").change(function()
+    {
+        var familynameId = $(this).val();
+    //  console.log("url: ", url);
+    //  console.log("familynameId: ", familynameId);
+        $.ajax(
+        {
+            url:'{% url "patient:load_ic_number" %}',
+            data:
+            {
+                'ec_name': familynameId,
+    //          'ec_relationship': familynameId.ec_relationship,
+            },
 
-			success: function(data)
-			{
-				$("#id_family_ic_number").val(data);
-				$("#id_signature_ic_number").val(data);
-			},
-		});
-	});
-
-
-	$("#id_family_name").change(function()
-	{
-		var familynameId = $(this).val();
-		$.ajax(
-		{
-			url:'{% url "patient:load_relationship" %}',
-			data:
-			{
-				'ec_name': familynameId,
-	//			'ec_relationship': familynameId,
-			},
-
-			success: function(data)
-			{
-				$("#id_family_relationship").val(data);
-				$("#id_signature_relationship").val(data);
-	//			$("#id_patient").val(data);
-			},
-		});
-	});
-
-	$("#id_family_name").change(function()
-	{
-		var familynameId = $(this).val();
-		$.ajax(
-		{
-			url:'{% url "patient:load_signature" %}',
-			data:
-			{
-				'ec_name': familynameId,
-	//			'ec_relationship': familynameId,
-			},
-
-			success: function(data)
-			{
-				$("#id_signature_name").val(data);
-				$("#id_witnessed_name").val(data);
-	//			$("#id_patient").val(data);
-			},
-		});
-	});
+            success: function(data)
+            {
+                $("#id_family_ic_number").val(data);
+                $("#id_signature_ic_number").val(data);
+            },
+        });
+    });
 
 
-	$("#id_family_name").change(function()
-	{
-		var familynameId = $(this).val();
-		$.ajax(
-		{
-			url:'{% url "patient:load_phone" %}',
-			data:
-			{
-				'ec_name': familynameId,
-	//			'ec_relationship': familynameId,
-			},
+    $("#id_family_name").change(function()
+    {
+        var familynameId = $(this).val();
+        $.ajax(
+        {
+            url:'{% url "patient:load_relationship" %}',
+            data:
+            {
+                'ec_name': familynameId,
+    //          'ec_relationship': familynameId,
+            },
 
-			success: function(data)
-			{
-				$("#id_family_phone").val(data);
-	//			$("#id_patient").val(data);
-			},
-		});
-	});
+            success: function(data)
+            {
+                $("#id_family_relationship").val(data);
+                $("#id_signature_relationship").val(data);
+    //          $("#id_patient").val(data);
+            },
+        });
+    });
+
+    $("#id_family_name").change(function()
+    {
+        var familynameId = $(this).val();
+        $.ajax(
+        {
+            url:'{% url "patient:load_signature" %}',
+            data:
+            {
+                'ec_name': familynameId,
+    //          'ec_relationship': familynameId,
+            },
+
+            success: function(data)
+            {
+                $("#id_signature_name").val(data);
+                $("#id_witnessed_name").val(data);
+    //          $("#id_patient").val(data);
+            },
+        });
+    });
+
+
+    $("#id_family_name").change(function()
+    {
+        var familynameId = $(this).val();
+        $.ajax(
+        {
+            url:'{% url "patient:load_phone" %}',
+            data:
+            {
+                'ec_name': familynameId,
+    //          'ec_relationship': familynameId,
+            },
+
+            success: function(data)
+            {
+                $("#id_family_phone").val(data);
+    //          $("#id_patient").val(data);
+            },
+        });
+    });
 
 });
 </script>

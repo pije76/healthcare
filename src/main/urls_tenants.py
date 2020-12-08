@@ -13,37 +13,38 @@ from patient.views import *
 from accounts.views import *
 
 urlpatterns = [
-	path('', index, name='index'),
-	re_path(r'^i18n/', include('django.conf.urls.i18n')),
-#	re_path(r'^set_theme/$', set_theme, name='set_theme'),
-	re_path(r'set_theme/(?P<theme>\w+)/$', set_theme, name="set_theme"),
-#	path('set_theme/', set_theme, name='set_theme'),
-#	path('', RedirectView.as_view(url='accounts/login/', permanent=False), name='index'),
-	path('patient/', include('patient.urls')),
-#	path('template/', include('patienttemplate.urls')),
-	path('staff/', include('staff.urls')),
-	path('data/', include('data.urls')),
-	path('admin/', include('massadmin.urls')),
-	path('admin/', admin.site.urls),
-	path('accounts/', include('allauth.urls')),
-	path(_('account/'), include('accounts.urls')),
-	re_path(r'^selectable/', include('selectable.urls')),
-	path('summernote/', include('django_summernote.urls')),
-#	path('load_ic_number', load_ic_number, name='load_ic_number'),
-#	path('load_relationship', load_relationship, name='load_relationship'),
-#	re_path(r'^lang/(?P<user_language>\w+)/$', set_language_from_url, name='set_language_from_url'),
-	re_path(r'(?P<user_language>\w+)/$', set_language_from_url, name="set_language_from_url")
+    path('', index, name='index'),
+    re_path(r'^i18n/', include('django.conf.urls.i18n')),
+    #   re_path(r'^set_theme/$', set_theme, name='set_theme'),
+    re_path(r'set_theme/(?P<theme>\w+)/$', set_theme, name="set_theme"),
+    #   path('set_theme/', set_theme, name='set_theme'),
+    #   path('', RedirectView.as_view(url='accounts/login/', permanent=False), name='index'),
+    path('patient/', include('patient.urls')),
+    #   path('template/', include('patienttemplate.urls')),
+    path('staff/', include('staff.urls')),
+    path('data/', include('data.urls')),
+    path('admin/', include('massadmin.urls')),
+    path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
+    path(_('account/'), include('accounts.urls')),
+    re_path(r'^selectable/', include('selectable.urls')),
+    path('summernote/', include('django_summernote.urls')),
+    #   path('load_ic_number', load_ic_number, name='load_ic_number'),
+    #   path('load_relationship', load_relationship, name='load_relationship'),
+    #   re_path(r'^lang/(?P<user_language>\w+)/$', set_language_from_url, name='set_language_from_url'),
+    re_path(r'(?P<user_language>\w+)/$', set_language_from_url,
+            name="set_language_from_url")
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
-	import debug_toolbar
-	urlpatterns = [
-		path('__debug__/', include(debug_toolbar.urls)),
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
 
-		# For django versions before 2.0:
-		# url(r'^__debug__/', include(debug_toolbar.urls)),
+        # For django versions before 2.0:
+        # url(r'^__debug__/', include(debug_toolbar.urls)),
 
-	] + urlpatterns
+    ] + urlpatterns

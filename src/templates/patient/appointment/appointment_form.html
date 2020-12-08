@@ -5,20 +5,20 @@
 {% load crispy_forms_tags %}
 
 {% block headtitle %}
-	{{ page_title }} | {{ titles.title }}
+    {{ page_title }} | {{ titles.title }}
 {% endblock %}
 
 {% block style %}
-	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
-	<link href="{% static 'css/patient/appointment.css' %}" rel="stylesheet" type="text/css">
-	<link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet" type="text/css">
-	<style>
-		.datetimepicker{z-index:1151 !important;}
-	</style>
+    <link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/patient/appointment.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet" type="text/css">
+    <style>
+        .datetimepicker{z-index:1151 !important;}
+    </style>
 {% endblock %}
 
 {% block javascript %}
-	<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}" type="text/javascript"></script>
 {% endblock %}
 
 {% block extrahead %}
@@ -28,51 +28,51 @@
 
 <div class="container-fluid">
 
-	<div class="row formtitle">
-		{{ page_title }}
-	</div>
+    <div class="row formtitle">
+        {{ page_title }}
+    </div>
 
-	<p style="font-size:12px">{% include 'messages.html' %}</p>
+    <p style="font-size:12px">{% include 'messages.html' %}</p>
 
-	{% include 'patient/patient_form.html' %}
+    {% include 'patient/patient_form.html' %}
 
-	<div class="row rounded form_table">
+    <div class="row rounded form_table">
 
-		<form method="post">
-		{% csrf_token %}
+        <form method="post">
+        {% csrf_token %}
 
-			<table class="table table-bordered">
+            <table class="table table-bordered">
 
-				<thead class="thead_light">
-					<tr>
-						<th class="text-center">{% trans "Date & Time" %}</th>
-						<th class="text-center">{% trans "Hospital/Clinic/Center" %}</th>
-						<th class="text-center">{% trans "Department" %}</th>
-						<th class="text-center">{% trans "Planning & Investigation" %}</th>
-						<th class="text-center">{% trans "Treatment/Order after follow up" %}</th>
-					</tr>
-				</thead>
-				<tbody>
+                <thead class="thead_light">
+                    <tr>
+                        <th class="text-center">{% trans "Date & Time" %}</th>
+                        <th class="text-center">{% trans "Hospital/Clinic/Center" %}</th>
+                        <th class="text-center">{% trans "Department" %}</th>
+                        <th class="text-center">{% trans "Planning & Investigation" %}</th>
+                        <th class="text-center">{% trans "Treatment/Order after follow up" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-				<tr>
-					<td>{{ form.date_time|as_crispy_field }}</td>
-					<td>{{ form.hospital_clinic_center|as_crispy_field }}</td>
-					<td>{{ form.department|as_crispy_field }}</td>
-					<td>{{ form.planning_investigation|as_crispy_field }}</td>
-					<td>{{ form.treatment_order|as_crispy_field }}</td>
-				</tr>
-				</tbody>
+                <tr>
+                    <td>{{ form.date_time|as_crispy_field }}</td>
+                    <td>{{ form.hospital_clinic_center|as_crispy_field }}</td>
+                    <td>{{ form.department|as_crispy_field }}</td>
+                    <td>{{ form.planning_investigation|as_crispy_field }}</td>
+                    <td>{{ form.treatment_order|as_crispy_field }}</td>
+                </tr>
+                </tbody>
 
-			</table>
+            </table>
 
-			<button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
-			{% for item in profiles %}
-			<a class="btn btn-danger" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
-			{% endfor %}
+            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+            {% for item in profiles %}
+            <a class="btn btn-danger" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
+            {% endfor %}
 
-		</form>
+        </form>
 
-	</div>
+    </div>
 
 </div>
 
@@ -82,37 +82,37 @@
 <script type='text/javascript'>
 $(document).ready(function()
 {
-	$.extend(true, $.fn.datetimepicker.defaults, {
-		icons: {
-			time: 'far fa-clock',
-			date: 'far fa-calendar',
-			up: 'fas fa-arrow-up',
-			down: 'fas fa-arrow-down',
-			previous: 'fas fa-chevron-left',
-			next: 'fas fa-chevron-right',
-			today: 'fas fa-calendar-check',
-			clear: 'far fa-trash-alt',
-			close: 'far fa-times-circle'
-		}
-	});
+    $.extend(true, $.fn.datetimepicker.defaults, {
+        icons: {
+            time: 'far fa-clock',
+            date: 'far fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-chevron-left',
+            next: 'fas fa-chevron-right',
+            today: 'fas fa-calendar-check',
+            clear: 'far fa-trash-alt',
+            close: 'far fa-times-circle'
+        }
+    });
 
-	$('[id^="id_date_time"]').wrapAll("<div class='row' style='border:none;'></div>");
-	$('[id^="id_date_time"]').wrap("<div class='col' style='border:none;'></div>");
-	$("#id_date_time_0").datetimepicker(
-	{
-//			format: 'L',
-			format:'DD-MM-YYYY',
-//			defaultDate: currentDate,
-			showTodayButton: true,
-			showClear: true,
-			showClose: true,
-		}
-	);
-	$("#id_date_time_1").datetimepicker(
-	{
-//		format: 'LT',
-		format: 'HH:mm'
-	});
+    $('[id^="id_date_time"]').wrapAll("<div class='row' style='border:none;'></div>");
+    $('[id^="id_date_time"]').wrap("<div class='col' style='border:none;'></div>");
+    $("#id_date_time_0").datetimepicker(
+    {
+//          format: 'L',
+            format:'DD-MM-YYYY',
+//          defaultDate: currentDate,
+            showTodayButton: true,
+            showClear: true,
+            showClose: true,
+        }
+    );
+    $("#id_date_time_1").datetimepicker(
+    {
+//      format: 'LT',
+        format: 'HH:mm'
+    });
 });
 </script>
 {% endblock %}

@@ -29,7 +29,6 @@ from bootstrap_modal_forms.forms import *
 #from dal import autocomplete
 
 
-
 from .models import *
 from .lookups import *
 #from .custom_layout import *
@@ -44,30 +43,32 @@ import datetime
 
 
 def get_datetime():
-	return timezone.now()
+    return timezone.now()
 #	return datetime.date.strftime(datetime.today().date(), format="%d-%m-%Y %H:%M")
 #	return datetime.now().strftime("%d-%m-%Y %H:%M")
 #	return datetime.date.today().strftime('%d-%m-%Y %H:%M"')
 
 
 def get_today():
-	#	return date.strftime(datetime.now().date(), format="%d-%m-%Y")
-	return datetime.date.today().strftime('%d-%m-%Y')
+    #	return date.strftime(datetime.now().date(), format="%d-%m-%Y")
+    return datetime.date.today().strftime('%d-%m-%Y')
 #	return datetime.now().strftime('%d-%m-%Y')
 #	return date.today
 #	return datetime.now().date()
 
 
 def get_time():
-	#	return datetime.now().time()
-	return datetime.datetime.now().strftime("%H:%M")
+    #	return datetime.now().time()
+    return datetime.datetime.now().strftime("%H:%M")
 
 
 messageserror = _("*IC Number format needs to be yymmdd-xx-zzzz.")
 #ic_number_validator = RegexValidator("\d{6}\-\d{2}\-\d{4}", "IC Number format needs to be yymmdd-xx-zzzz.")
-ic_number_validator = RegexValidator(regex='\d{6}\-\d{2}\-\d{4}', message=messageserror, code="invalid")
+ic_number_validator = RegexValidator(
+    regex='\d{6}\-\d{2}\-\d{4}', message=messageserror, code="invalid")
 #ic_number_validator = RegexValidator(regex='^.{6}$-^.{2}$-^.{4}$', message=messageserror, code="invalid")
-alphanumeric = RegexValidator(r'^[a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
+alphanumeric = RegexValidator(
+    r'^[a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
 
 #now = date.today
 
@@ -76,23 +77,22 @@ alphanumeric = RegexValidator(r'^[a-zA-Z]*$', 'Only alphanumeric characters are 
 
 
 class SlimRadioSelect(RadioSelect):
-	input_type = 'radio'
-	template_name = 'django/forms/widgets/checkbox_select.html'
-	option_template_name = 'django/forms/widgets/checkbox_option.html'
+    input_type = 'radio'
+    template_name = 'django/forms/widgets/checkbox_select.html'
+    option_template_name = 'django/forms/widgets/checkbox_option.html'
 
 
 class PlaceholderInput(forms.widgets.Input):
-	template_name = 'patient/placeholder.html'
-	input_type = 'text'
+    template_name = 'patient/placeholder.html'
+    input_type = 'text'
 
-	def get_context(self, name, value, attrs):
-		context = super(PlaceholderInput, self).get_context(name, value, attrs)
-		context['widget']['attrs']['maxlength'] = 50
-		context['widget']['attrs']['placeholder'] = name.title()
-		return context
+    def get_context(self, name, value, attrs):
+        context = super(PlaceholderInput, self).get_context(name, value, attrs)
+        context['widget']['attrs']['maxlength'] = 50
+        context['widget']['attrs']['placeholder'] = name.title()
+        return context
 
 
 class HorizontalRadioSelect(RadioSelect):
-	template_name = 'patient/horizontal_radios.html'
-	option_template_name = 'patient/horizontal_option.html'
-
+    template_name = 'patient/horizontal_radios.html'
+    option_template_name = 'patient/horizontal_option.html'

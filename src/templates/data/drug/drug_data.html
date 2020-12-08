@@ -5,17 +5,17 @@
 {% load i18n %}
 
 {% block headtitle %}
-	{{ page_title }} | {{ titles.title }}
+    {{ page_title }} | {{ titles.title }}
 {% endblock %}
 
 {% block style %}
-	<link href="{% static 'css/staff/staff_records.css' %}" rel="stylesheet" type="text/css">
-	<link href="{% static 'css/staff/staff.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/staff/staff_records.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/staff/staff.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block javascript %}
-	<script src="{% static 'js/staff/staff_records.js' %}"></script>
-	<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+    <script src="{% static 'js/staff/staff_records.js' %}"></script>
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
     <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
 {% endblock %}
 
@@ -23,40 +23,40 @@
 
 <div class="container-fluid">
 
-		<div class="row formtitle">
-			{{ page_title }}
-		</div>
+        <div class="row formtitle">
+            {{ page_title }}
+        </div>
 
-		<div class="row">
+        <div class="row">
 
-			<div class="col-12">
-				<div class="card">
+            <div class="col-12">
+                <div class="card">
 
-					<div class="card-body">
+                    <div class="card-body">
 
-						<div class="table-responsive">
-							<form method="post" action="">
-							{% csrf_token %}
-								<table id="t_add_row" class="table table-striped table-bordered">
-									<thead class="thead_light">
-										<tr>
-											<th class="text-center">{% trans "ID" %}</th>
-											<th class="text-center">{% trans "Drug Name" %}</th>
-											<th class="text-center">{% trans "Action" %}</th>
-										</tr>
-									</thead>
+                        <div class="table-responsive">
+                            <form method="post" action="">
+                            {% csrf_token %}
+                                <table id="t_add_row" class="table table-striped table-bordered">
+                                    <thead class="thead_light">
+                                        <tr>
+                                            <th class="text-center">{% trans "ID" %}</th>
+                                            <th class="text-center">{% trans "Drug Name" %}</th>
+                                            <th class="text-center">{% trans "Action" %}</th>
+                                        </tr>
+                                    </thead>
 
-									<tbody>
-										{% include 'data/drug/partial_list.html' %}
-									</tbody>
-								</table>
-							</form>
-						</div>
+                                    <tbody>
+                                        {% include 'data/drug/partial_list.html' %}
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
 
-					<br />
-					<a class="btn btn-outline-primary" href="{% url 'data:data_list' %}">{% trans "Back" %}</a>
+                    <br />
+                    <a class="btn btn-outline-primary" href="{% url 'data:data_list' %}">{% trans "Back" %}</a>
 
-					</div>
+                    </div>
 
                 </div>
             </div>
@@ -71,13 +71,13 @@
 <script type="text/javascript">
 $(function()
 {
-	$(".trigger_modal").each(function()
-	{
-		$(this).modalForm(
-		{
-			formURL: $(this).data('form-url')
-		});
-	});
+    $(".trigger_modal").each(function()
+    {
+        $(this).modalForm(
+        {
+            formURL: $(this).data('form-url')
+        });
+    });
 });
 </script>
 {% endblock %}

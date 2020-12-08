@@ -6,17 +6,17 @@
 {% load custom_tags %}
 
 {% block headtitle %}
-	{{ page_title }} | {{ titles.title }}
+    {{ page_title }} | {{ titles.title }}
 {% endblock %}
 
 {% block style %}
-	<link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
-	<link href="{% static 'css/patient/admission.css' %}" rel="stylesheet" type="text/css">
-	<link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/patient/admission.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block javascript %}
-	<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
     <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
 {% endblock %}
 
@@ -24,172 +24,172 @@
 
 <div class="container-fluid">
 
-	<div class="row formtitle">
-		{{ page_title }}
-	</div>
+    <div class="row formtitle">
+        {{ page_title }}
+    </div>
 
-	<p style="font-size:12px">{% include 'messages.html' %}</p>
+    <p style="font-size:12px">{% include 'messages.html' %}</p>
 
-	{% include 'patient/patient_data.html' %}
+    {% include 'patient/patient_data.html' %}
 
-	<div class="row rounded form_table">
+    <div class="row rounded form_table">
 
-		<div class="col-12">
-			<div class="card">
+        <div class="col-12">
+            <div class="card">
 
-				<div class="card-body">
+                <div class="card-body">
 
-					<div class="table-responsive">
-						<form method="post" action="">
-						{% csrf_token %}
-							<table id="t_add_row" class="table table-striped table-bordered">
-								<thead class="thead_light">
-									{% if user.is_superuser %}
-									<tr>
-										<th class="text-center">{% trans "Date" %}</th>
-										<th class="text-center">{% trans "Time" %}</th>
-										<th class="text-center">{% trans "Admitted" %}</th>
-										<th class="text-center">{% trans "Mode" %}</th>
+                    <div class="table-responsive">
+                        <form method="post" action="">
+                        {% csrf_token %}
+                            <table id="t_add_row" class="table table-striped table-bordered">
+                                <thead class="thead_light">
+                                    {% if user.is_superuser %}
+                                    <tr>
+                                        <th class="text-center">{% trans "Date" %}</th>
+                                        <th class="text-center">{% trans "Time" %}</th>
+                                        <th class="text-center">{% trans "Admitted" %}</th>
+                                        <th class="text-center">{% trans "Mode" %}</th>
 
-										<th class="text-center">{% trans "Patient Name" %}</th>
-										<th class="text-center">{% trans "IC Number" %}</th>
-										<th class="text-center">{% trans "IC Upload" %}</th>
-										<th class="text-center">{% trans "Age" %}</th>
-										<th class="text-center">{% trans "Date of Birth" %}</th>
-										<th class="text-center">{% trans "Gender" %}</th>
-										<th class="text-center">{% trans "Marital Status" %}</th>
-										<th class="text-center">{% trans "Religion" %}</th>
-										<th class="text-center">{% trans "Occupation" %}</th>
-										<th class="text-center">{% trans "Communication Sight" %}</th>
-										<th class="text-center">{% trans "Communication Hearing" %}</th>
-										<th class="text-center">{% trans "Address" %}</th>
+                                        <th class="text-center">{% trans "Patient Name" %}</th>
+                                        <th class="text-center">{% trans "IC Number" %}</th>
+                                        <th class="text-center">{% trans "IC Upload" %}</th>
+                                        <th class="text-center">{% trans "Age" %}</th>
+                                        <th class="text-center">{% trans "Date of Birth" %}</th>
+                                        <th class="text-center">{% trans "Gender" %}</th>
+                                        <th class="text-center">{% trans "Marital Status" %}</th>
+                                        <th class="text-center">{% trans "Religion" %}</th>
+                                        <th class="text-center">{% trans "Occupation" %}</th>
+                                        <th class="text-center">{% trans "Communication Sight" %}</th>
+                                        <th class="text-center">{% trans "Communication Hearing" %}</th>
+                                        <th class="text-center">{% trans "Address" %}</th>
 
-										<th class="text-center">{% trans "EC Name" %}</th>
-										<th class="text-center">{% trans "EC IC Number" %}</th>
-										<th class="text-center">{% trans "EC IC Upload" %}</th>
-										<th class="text-center">{% trans "EC Relationship" %}</th>
-										<th class="text-center">{% trans "EC Phone" %}</th>
-										<th class="text-center">{% trans "EC Address" %}</th>
+                                        <th class="text-center">{% trans "EC Name" %}</th>
+                                        <th class="text-center">{% trans "EC IC Number" %}</th>
+                                        <th class="text-center">{% trans "EC IC Upload" %}</th>
+                                        <th class="text-center">{% trans "EC Relationship" %}</th>
+                                        <th class="text-center">{% trans "EC Phone" %}</th>
+                                        <th class="text-center">{% trans "EC Address" %}</th>
 
-										<th class="text-center">{% trans "General Condition" %}</th>
-										<th class="text-center">{% trans "Vital Sign-Temperature" %}</th>
-										<th class="text-center">{% trans "Vital Sign-Pulse" %}</th>
-										<th class="text-center">{% trans "Vital Sign-BP Upper" %}</th>
-										<th class="text-center">{% trans "Vital Sign-BP Lower" %}</th>
-										<th class="text-center">{% trans "Vital Sign-Resp" %}</th>
-										<th class="text-center">{% trans "Vital Sign-SPO2" %}</th>
-										<th class="text-center">{% trans "Vital Sign-Oxygen" %}</th>
-										<th class="text-center">{% trans "Vital Sign-Oxygen Flow Rate" %}</th>
-										<th class="text-center">{% trans "Vital Sign-HGT" %}</th>
+                                        <th class="text-center">{% trans "General Condition" %}</th>
+                                        <th class="text-center">{% trans "Vital Sign-Temperature" %}</th>
+                                        <th class="text-center">{% trans "Vital Sign-Pulse" %}</th>
+                                        <th class="text-center">{% trans "Vital Sign-BP Upper" %}</th>
+                                        <th class="text-center">{% trans "Vital Sign-BP Lower" %}</th>
+                                        <th class="text-center">{% trans "Vital Sign-Resp" %}</th>
+                                        <th class="text-center">{% trans "Vital Sign-SPO2" %}</th>
+                                        <th class="text-center">{% trans "Vital Sign-Oxygen" %}</th>
+                                        <th class="text-center">{% trans "Vital Sign-Oxygen Flow Rate" %}</th>
+                                        <th class="text-center">{% trans "Vital Sign-HGT" %}</th>
 
-										<th class="text-center">{% trans "Allergy-Drug" %}</th>
-										<th class="text-center">{% trans "Allergy-Food" %}</th>
-										<th class="text-center">{% trans "Allergy-Others" %}</th>
+                                        <th class="text-center">{% trans "Allergy-Drug" %}</th>
+                                        <th class="text-center">{% trans "Allergy-Food" %}</th>
+                                        <th class="text-center">{% trans "Allergy-Others" %}</th>
 
-										<th class="text-center">{% trans "Biohazard/Infectious Disease" %}</th>
-										<th class="text-center">{% trans "Invasive line insitu" %}</th>
-										<th class="text-center">{% trans "Medical History" %}</th>
-										<th class="text-center">{% trans "Surgical History" %}</th>
+                                        <th class="text-center">{% trans "Biohazard/Infectious Disease" %}</th>
+                                        <th class="text-center">{% trans "Invasive line insitu" %}</th>
+                                        <th class="text-center">{% trans "Medical History" %}</th>
+                                        <th class="text-center">{% trans "Surgical History" %}</th>
 
-										<th class="text-center">{% trans "Date Diagnosis" %}</th>
-										<th class="text-center">{% trans "Diagnosis" %}</th>
-										<th class="text-center">{% trans "Date Operation" %}</th>
-										<th class="text-center">{% trans "Operation" %}</th>
+                                        <th class="text-center">{% trans "Date Diagnosis" %}</th>
+                                        <th class="text-center">{% trans "Diagnosis" %}</th>
+                                        <th class="text-center">{% trans "Date Operation" %}</th>
+                                        <th class="text-center">{% trans "Operation" %}</th>
 
-										<th class="text-center">{% trans "Own Medication" %}</th>
+                                        <th class="text-center">{% trans "Own Medication" %}</th>
 
-										<th class="text-center">{% trans "Adaptive aids with patient" %}</th>
-										<th class="text-center">{% trans "Orientation" %}</th>
-										<th class="text-center">{% trans "Special information" %}</th>
-										<th class="text-center">{% trans "Admission By" %}</th>
-										<th class="text-center">{% trans "Action" %}</th>
-									</tr>
+                                        <th class="text-center">{% trans "Adaptive aids with patient" %}</th>
+                                        <th class="text-center">{% trans "Orientation" %}</th>
+                                        <th class="text-center">{% trans "Special information" %}</th>
+                                        <th class="text-center">{% trans "Admission By" %}</th>
+                                        <th class="text-center">{% trans "Action" %}</th>
+                                    </tr>
 
-									{% elif user.is_staff or user.is_patient %}
-									<tr>
-										<th class="text-center">{% trans "Date" %}</th>
-										<th class="text-center">{% trans "Time" %}</th>
-										<th class="text-center">{% trans "Admitted" %}</th>
-										<th class="text-center">{% trans "Mode" %}</th>
+                                    {% elif user.is_staff or user.is_patient %}
+                                    <tr>
+                                        <th class="text-center">{% trans "Date" %}</th>
+                                        <th class="text-center">{% trans "Time" %}</th>
+                                        <th class="text-center">{% trans "Admitted" %}</th>
+                                        <th class="text-center">{% trans "Mode" %}</th>
 
-										<th class="text-center">{% trans "Patient Name" %}</th>
-										<th class="text-center">{% trans "IC Number" %}</th>
-										<th class="text-center">{% trans "IC Upload" %}</th>
-										<th class="text-center">{% trans "Age" %}</th>
-										<th class="text-center">{% trans "Date of Birth" %}</th>
-										<th class="text-center">{% trans "Gender" %}</th>
-										<th class="text-center">{% trans "Marital Status" %}</th>
-										<th class="text-center">{% trans "Religion" %}</th>
-										<th class="text-center">{% trans "Occupation" %}</th>
-										<th class="text-center">{% trans "Communication Sight" %}</th>
-										<th class="text-center">{% trans "Communication Hearing" %}</th>
-										<th class="text-center">{% trans "Address" %}</th>
+                                        <th class="text-center">{% trans "Patient Name" %}</th>
+                                        <th class="text-center">{% trans "IC Number" %}</th>
+                                        <th class="text-center">{% trans "IC Upload" %}</th>
+                                        <th class="text-center">{% trans "Age" %}</th>
+                                        <th class="text-center">{% trans "Date of Birth" %}</th>
+                                        <th class="text-center">{% trans "Gender" %}</th>
+                                        <th class="text-center">{% trans "Marital Status" %}</th>
+                                        <th class="text-center">{% trans "Religion" %}</th>
+                                        <th class="text-center">{% trans "Occupation" %}</th>
+                                        <th class="text-center">{% trans "Communication Sight" %}</th>
+                                        <th class="text-center">{% trans "Communication Hearing" %}</th>
+                                        <th class="text-center">{% trans "Address" %}</th>
 
-										<th class="text-center">{% trans "EC Name" %}</th>
-										<th class="text-center">{% trans "EC IC Number" %}</th>
-										<th class="text-center">{% trans "EC IC Upload" %}</th>
-										<th class="text-center">{% trans "EC Relationship" %}</th>
-										<th class="text-center">{% trans "EC Phone" %}</th>
-										<th class="text-center">{% trans "EC Address" %}</th>
+                                        <th class="text-center">{% trans "EC Name" %}</th>
+                                        <th class="text-center">{% trans "EC IC Number" %}</th>
+                                        <th class="text-center">{% trans "EC IC Upload" %}</th>
+                                        <th class="text-center">{% trans "EC Relationship" %}</th>
+                                        <th class="text-center">{% trans "EC Phone" %}</th>
+                                        <th class="text-center">{% trans "EC Address" %}</th>
 
-										<th class="text-center">{% trans "General Condition" %}</th>
-										<th class="text-center">{% trans "Vital Sign-Temperature" %}</th>
-										<th class="text-center">{% trans "Vital Sign-Pulse" %}</th>
-										<th class="text-center">{% trans "Vital Sign-BP Upper" %}</th>
-										<th class="text-center">{% trans "Vital Sign-BP Lower" %}</th>
-										<th class="text-center">{% trans "Vital Sign-Resp" %}</th>
-										<th class="text-center">{% trans "Vital Sign-SPO2" %}</th>
-										<th class="text-center">{% trans "Vital Sign-Oxygen" %}</th>
-										<th class="text-center">{% trans "Vital Sign-Oxygen Flow Rate" %}</th>
-										<th class="text-center">{% trans "Vital Sign-HGT" %}</th>
+                                        <th class="text-center">{% trans "General Condition" %}</th>
+                                        <th class="text-center">{% trans "Vital Sign-Temperature" %}</th>
+                                        <th class="text-center">{% trans "Vital Sign-Pulse" %}</th>
+                                        <th class="text-center">{% trans "Vital Sign-BP Upper" %}</th>
+                                        <th class="text-center">{% trans "Vital Sign-BP Lower" %}</th>
+                                        <th class="text-center">{% trans "Vital Sign-Resp" %}</th>
+                                        <th class="text-center">{% trans "Vital Sign-SPO2" %}</th>
+                                        <th class="text-center">{% trans "Vital Sign-Oxygen" %}</th>
+                                        <th class="text-center">{% trans "Vital Sign-Oxygen Flow Rate" %}</th>
+                                        <th class="text-center">{% trans "Vital Sign-HGT" %}</th>
 
-										<th class="text-center">{% trans "Allergy-Drug" %}</th>
-										<th class="text-center">{% trans "Allergy-Food" %}</th>
-										<th class="text-center">{% trans "Allergy-Others" %}</th>
+                                        <th class="text-center">{% trans "Allergy-Drug" %}</th>
+                                        <th class="text-center">{% trans "Allergy-Food" %}</th>
+                                        <th class="text-center">{% trans "Allergy-Others" %}</th>
 
-										<th class="text-center">{% trans "Biohazard/Infectious Disease" %}</th>
-										<th class="text-center">{% trans "Invasive line insitu" %}</th>
-										<th class="text-center">{% trans "Medical History" %}</th>
-										<th class="text-center">{% trans "Surgical History" %}</th>
+                                        <th class="text-center">{% trans "Biohazard/Infectious Disease" %}</th>
+                                        <th class="text-center">{% trans "Invasive line insitu" %}</th>
+                                        <th class="text-center">{% trans "Medical History" %}</th>
+                                        <th class="text-center">{% trans "Surgical History" %}</th>
 
-										<th class="text-center">{% trans "Date Diagnosis" %}</th>
-										<th class="text-center">{% trans "Diagnosis" %}</th>
-										<th class="text-center">{% trans "Date Operation" %}</th>
-										<th class="text-center">{% trans "Operation" %}</th>
+                                        <th class="text-center">{% trans "Date Diagnosis" %}</th>
+                                        <th class="text-center">{% trans "Diagnosis" %}</th>
+                                        <th class="text-center">{% trans "Date Operation" %}</th>
+                                        <th class="text-center">{% trans "Operation" %}</th>
 
-										<th class="text-center">{% trans "Own Medication" %}</th>
+                                        <th class="text-center">{% trans "Own Medication" %}</th>
 
-										<th class="text-center">{% trans "Adaptive aids with patient" %}</th>
-										<th class="text-center">{% trans "Orientation" %}</th>
-										<th class="text-center">{% trans "Special information" %}</th>
-										<th class="text-center">{% trans "Admission By" %}</th>
-									</tr>
-									{% endif %}
-								</thead>
+                                        <th class="text-center">{% trans "Adaptive aids with patient" %}</th>
+                                        <th class="text-center">{% trans "Orientation" %}</th>
+                                        <th class="text-center">{% trans "Special information" %}</th>
+                                        <th class="text-center">{% trans "Admission By" %}</th>
+                                    </tr>
+                                    {% endif %}
+                                </thead>
 
-								<tbody>
-									{% include 'patient/admission/partial_list.html' %}
-								</tbody>
-							</table>
-						</form>
-					</div>
+                                <tbody>
+                                    {% include 'patient/admission/partial_list.html' %}
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
 
-				</div>
+                </div>
 
-			</div>
-		</div>
+            </div>
+        </div>
 
-	</div>
+    </div>
 
-	<br />
+    <br />
 
-	<div class="row">
-		<div class="col-4">
-			{% for item in profiles %}
-				<a class="btn btn-outline-primary" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Back" %}</a>
-			{% endfor %}
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-4">
+            {% for item in profiles %}
+                <a class="btn btn-outline-primary" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Back" %}</a>
+            {% endfor %}
+        </div>
+    </div>
 
 </div>
 
@@ -199,18 +199,18 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
-	var t = $('#t_add_row').DataTable(
-	{
-		"order": [[ 0, "desc" ]]
-	});
+    var t = $('#t_add_row').DataTable(
+    {
+        "order": [[ 0, "desc" ]]
+    });
 
-	$(".trigger_modal").each(function()
-	{
-		$(this).modalForm(
-		{
-			formURL: $(this).data('form-url')
-		});
-	});
+    $(".trigger_modal").each(function()
+    {
+        $(this).modalForm(
+        {
+            formURL: $(this).data('form-url')
+        });
+    });
 });
 </script>
 {% endblock %}

@@ -5,86 +5,86 @@
 {% load i18n %}
 
 {% block style %}
-	<link href="{% static 'css/account.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/account.css' %}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block headtitle %}
-	{{ page_title }} | {{ titles.title }}
+    {{ page_title }} | {{ titles.title }}
 {% endblock %}
 
 {% block content %}
 
-	<div class="row isi dataaccount">
+    <div class="row isi dataaccount">
 
-		<div class="col-12">
-			<form action="{% url 'accounts:change_profile' %}">
+        <div class="col-12">
+            <form action="{% url 'accounts:change_profile' %}">
 
-				<div class="row">
-					<div class="col-12">
-						<h4>{% trans "My Profile" %}</h4>
-						<hr>
-					</div>
-				</div>
+                <div class="row">
+                    <div class="col-12">
+                        <h4>{% trans "My Profile" %}</h4>
+                        <hr>
+                    </div>
+                </div>
 
-				<div class="row">
-				{% if patients %}
-				{% for item in patients %}
-					<div class="col-12">
+                <div class="row">
+                {% if patients %}
+                {% for item in patients %}
+                    <div class="col-12">
 
-							<div class="form-group row">
-								<label for="lastname" class="col-4 col-form-label">{% trans "Username" %}</label>
-								<div class="col-6">
-									{{ item.username }}
-								</div>
-							</div>
+                            <div class="form-group row">
+                                <label for="lastname" class="col-4 col-form-label">{% trans "Username" %}</label>
+                                <div class="col-6">
+                                    {{ item.username }}
+                                </div>
+                            </div>
 
-							<div class="form-group row">
-								<label for="lastname" class="col-4 col-form-label">{% trans "Full Name" %}</label>
-								<div class="col-6">
-									{{ item.full_name }}
-								</div>
-							</div>
+                            <div class="form-group row">
+                                <label for="lastname" class="col-4 col-form-label">{% trans "Full Name" %}</label>
+                                <div class="col-6">
+                                    {{ item.full_name }}
+                                </div>
+                            </div>
 
-							<div class="form-group row">
-								<label for="email" class="col-4 col-form-label">{% trans "Email*" %}</label>
-								<div class="col-6">
-									{{ item.email }}
+                            <div class="form-group row">
+                                <label for="email" class="col-4 col-form-label">{% trans "Email*" %}</label>
+                                <div class="col-6">
+                                    {{ item.email }}
 
-								</div>
-							</div>
+                                </div>
+                            </div>
 
-							<div class="form-group row">
-								<label for="icnumber" class="col-4 col-form-label">{% trans "IC Number" %}</label>
-								<div class="col-6">
-									{{ item.ic_number }}
-								</div>
-							</div>
+                            <div class="form-group row">
+                                <label for="icnumber" class="col-4 col-form-label">{% trans "IC Number" %}</label>
+                                <div class="col-6">
+                                    {{ item.ic_number }}
+                                </div>
+                            </div>
 
-							<div class="form-group row">
-								<label for="icnumber" class="col-4 col-form-label">{% trans "Gender" %}</label>
-								<div class="col-6">
-									{{ item.gender }}
-								</div>
-							</div>
+                            <div class="form-group row">
+                                <label for="icnumber" class="col-4 col-form-label">{% trans "Gender" %}</label>
+                                <div class="col-6">
+                                    {{ item.gender }}
+                                </div>
+                            </div>
 
-							<div class="form-group row">
-								<label for="icnumber" class="col-4 col-form-label">{% trans "Birth Date" %}</label>
-								<div class="col-6">
-									{{ item.birth_date|date:"d-m-Y" }}
-								</div>
-							</div>
-					</div>
-				{% endfor %}
-				{% endif %}
-				</div>
+                            <div class="form-group row">
+                                <label for="icnumber" class="col-4 col-form-label">{% trans "Birth Date" %}</label>
+                                <div class="col-6">
+                                    {{ item.birth_date|date:"d-m-Y" }}
+                                </div>
+                            </div>
+                    </div>
+                {% endfor %}
+                {% endif %}
+                </div>
 
-				<div class="row">
-					<div class="col-12">
-						<button type="submit" class="btn btn-primary">{% trans "Change My Profile" %}</button>
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">{% trans "Change My Profile" %}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
 {% endblock %}

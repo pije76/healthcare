@@ -12,80 +12,100 @@ from bootstrap_modal_forms.forms import *
 
 import datetime
 
-midnight = datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+midnight = datetime.datetime.now().replace(
+    hour=0, minute=0, second=0, microsecond=0)
 
 
 class TestBaseFormSet(BaseFormSet):
-	def get_form_kwargs(self, index):
-		kwargs = super().get_form_kwargs(index)
-		kwargs['custom_kwarg'] = index
+    def get_form_kwargs(self, index):
+        kwargs = super().get_form_kwargs(index)
+        kwargs['custom_kwarg'] = index
 #		kwargs.update({'get_username': self.username})
 #		kwargs['username'] = kwargs.pop('username')
 #		kwargs['instance'] = index
-		return kwargs
+        return kwargs
 
 
 class EnteralFeedingRegime_Water_ModelForm(forms.ModelForm):
-	class Meta:
-		model = EnteralFeedingRegime
-		fields = [
-			'patient',
-			'date',
-			'time',
-			'type_of_milk',
-			'amount',
-			'warm_water_before',
-			'warm_water_after',
-		]
-		widgets = {
-			'patient': forms.Select(),
-		}
+    class Meta:
+        model = EnteralFeedingRegime
+        fields = [
+            'patient',
+            'date',
+            'time',
+            'type_of_milk',
+            'amount',
+            'warm_water_before',
+            'warm_water_after',
+        ]
+        widgets = {
+            'patient': forms.Select(),
+        }
 
 #	patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
-	time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
-	type_of_milk = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	amount = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
-	warm_water_before = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
-	warm_water_after = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
+    date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS,
+                           widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
+    time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS,
+                           widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
+    type_of_milk = forms.CharField(
+        required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    amount = forms.IntegerField(required=False, label="", initial="0",
+                                min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
+    warm_water_before = forms.IntegerField(required=False, label="", initial="0",
+                                           min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
+    warm_water_after = forms.IntegerField(required=False, label="", initial="0",
+                                          min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
 
 
 class EnteralFeedingRegime_Water_Form(forms.Form):
 
-	patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
-	time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
-	type_of_milk = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	amount = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
-	warm_water_before = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
-	warm_water_after = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
+    patient = forms.CharField(required=False, label="", widget=forms.TextInput(
+        attrs={'class': "form-control"}))
+    date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS,
+                           widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
+    time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS,
+                           widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
+    type_of_milk = forms.CharField(
+        required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    amount = forms.IntegerField(required=False, label="", initial="0",
+                                min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
+    warm_water_before = forms.IntegerField(required=False, label="", initial="0",
+                                           min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
+    warm_water_after = forms.IntegerField(required=False, label="", initial="0",
+                                          min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
 
 
 class EnteralFeedingRegime_ModelForm(BSModalModelForm):
-	class Meta:
-		model = EnteralFeedingRegime
-		fields = [
-			'patient',
-			'date',
-			'time',
-			'type_of_milk',
-			'amount',
-			'warm_water_before',
-			'warm_water_after',
-		]
-		widgets = {
-			'patient': forms.Select(),
-		}
+    class Meta:
+        model = EnteralFeedingRegime
+        fields = [
+            'patient',
+            'date',
+            'time',
+            'type_of_milk',
+            'amount',
+            'warm_water_before',
+            'warm_water_after',
+        ]
+        widgets = {
+            'patient': forms.Select(),
+        }
 
 #	patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
-	time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
-	type_of_milk = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	amount = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
-	warm_water_before = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
-	warm_water_after = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
+    date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS,
+                           widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
+    time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS,
+                           widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
+    type_of_milk = forms.CharField(
+        required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    amount = forms.IntegerField(required=False, label="", initial="0",
+                                min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
+    warm_water_before = forms.IntegerField(required=False, label="", initial="0",
+                                           min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
+    warm_water_after = forms.IntegerField(required=False, label="", initial="0",
+                                          min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
 
-##	def __init__(self, *args, **kwargs):
+# def __init__(self, *args, **kwargs):
 #	def __init__(self, username, *args, **kwargs):
 #		user_details = kwargs.pop('user_details', None)
 #		get_username = kwargs.pop('get_username')
@@ -111,18 +131,26 @@ class EnteralFeedingRegime_ModelForm(BSModalModelForm):
 ##		self.fields['time'].initial = midnight + datetime.timedelta(hours=custom_kwarg)
 
 
-EnteralFeedingRegime_ModelFormSet = formset_factory(EnteralFeedingRegime_ModelForm, extra=24, formset=TestBaseFormSet)
+EnteralFeedingRegime_ModelFormSet = formset_factory(
+    EnteralFeedingRegime_ModelForm, extra=24, formset=TestBaseFormSet)
 
 
 class EnteralFeedingRegime_Form(BSModalForm):
 
-	patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
-	time = forms.TimeField(required=False, label="", input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
-	type_of_milk = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	amount = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
-	warm_water_before = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
-	warm_water_after = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
+    patient = forms.CharField(required=False, label="", widget=forms.TextInput(
+        attrs={'class': "form-control"}))
+    date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS,
+                           widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
+    time = forms.TimeField(required=False, label="", input_formats=settings.TIME_INPUT_FORMATS,
+                           widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
+    type_of_milk = forms.CharField(
+        required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    amount = forms.IntegerField(required=False, label="", initial="0",
+                                min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
+    warm_water_before = forms.IntegerField(required=False, label="", initial="0",
+                                           min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
+    warm_water_after = forms.IntegerField(required=False, label="", initial="0",
+                                          min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
 
 #	def __init__(self, *args, **kwargs):
 #		custom_kwarg = kwargs.pop('custom_kwarg')
@@ -134,13 +162,20 @@ class EnteralFeedingRegime_Form(BSModalForm):
 #EnteralFeedingRegime_FormSet = formset_factory(EnteralFeedingRegime_Form, extra=24, formset=TestBaseFormSet)
 
 class EnteralFeedingRegime_Form_Set(BSModalForm):
-	patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
-	time = forms.TimeField(required=False, label="", input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
-	type_of_milk = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	amount = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
-	warm_water_before = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
-	warm_water_after = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
+    patient = forms.CharField(required=False, label="", widget=forms.TextInput(
+        attrs={'class': "form-control"}))
+    date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS,
+                           widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
+    time = forms.TimeField(required=False, label="", input_formats=settings.TIME_INPUT_FORMATS,
+                           widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
+    type_of_milk = forms.CharField(
+        required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    amount = forms.IntegerField(required=False, label="", initial="0",
+                                min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
+    warm_water_before = forms.IntegerField(required=False, label="", initial="0",
+                                           min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
+    warm_water_after = forms.IntegerField(required=False, label="", initial="0",
+                                          min_value=0, widget=forms.NumberInput(attrs={'class': "form-control calc"}))
 
 #	def __init__(self, *args, **kwargs):
 #		custom_kwarg = kwargs.pop('custom_kwarg')
@@ -149,17 +184,20 @@ class EnteralFeedingRegime_Form_Set(BSModalForm):
 
 
 EnteralFeedingRegime_FormSet = formset_factory(
-	EnteralFeedingRegime_Form_Set,
-#	formset=TestBaseFormSet,
-	extra=0,
-	max_num=24,
-#   can_delete=True,
+    EnteralFeedingRegime_Form_Set,
+    #	formset=TestBaseFormSet,
+    extra=0,
+    max_num=24,
+    #   can_delete=True,
 )
 
 
 class Water_Form(forms.Form):
-	warm_water_before1 = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	warm_water_after1 = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	warm_water_before2 = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-	warm_water_after2 = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
-
+    warm_water_before1 = forms.CharField(
+        required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    warm_water_after1 = forms.CharField(
+        required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    warm_water_before2 = forms.CharField(
+        required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
+    warm_water_after2 = forms.CharField(
+        required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
