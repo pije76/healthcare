@@ -68,7 +68,6 @@
         </div>
 
         <div class="row rounded form_table">
-            {{formset.prefix}} cek
 
             <table id="form_set" class="table table-bordered">
                 <thead class="thead_light">
@@ -88,10 +87,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% comment %}
-                      {% endcomment %}
-                    {% for item in formset %}
-                    {{ item.patient }}
+
+                    {{ formset.prefix }}
+
+                    {% for item in formset.forms %}
+                    {{ item.id|as_crispy_field }}{{ item.patient|as_crispy_field }}
                     <tr id="{{ formset.prefix }}-row">
                         <td style="display:none;">{{ item.medication_date }}</td>
                         <td>{{ item.medication_time }}</td>
@@ -114,9 +114,10 @@
 
             <div class="row border rounded foot_table">
 
-                <div class="col-12 border header_form_detail">
+                <div class="col-12 header_form_detail">
                     <span id="name_title">
-                        STAT Medication {{stat_formset.prefix}}
+                        STAT Medication
+                        {{ stat_formset.prefix }}
                     </span>
                 </div>
 
@@ -135,8 +136,8 @@
                         {% for itemstat in stat_formset %}
                         {{ itemstat.patient }}
                         <tr id="{{ stat_formset.prefix }}-row">
-                            <td>{{ itemstat.medication_date }}</td>
-                            <td>{{ itemstat.medication_time }}</td>
+                            <td>{{ itemstat.medication_stat_date }}</td>
+                            <td>{{ itemstat.medication_stat_time }}</td>
                             <td>{{ itemstat.medication_medicine }}</td>
                             <td>{{ itemstat.given_by }}</td>
                             <td></td>
@@ -179,8 +180,8 @@ $(document).ready(function()
     {
         $('#form_set tbody tr').formset(
         {
-            prefix: 'formset',
-            formCssClass: 'dynamic-formset',
+//            prefix: 'formset',
+//            formCssClass: 'dynamic-formset',
             addCssClass: 'btn btn-success',
             addText: '<i class="fas fa-plus"></i>',
             deleteCssClass: 'btn btn-danger',
@@ -188,13 +189,13 @@ $(document).ready(function()
             keepFieldValues: '#id_formset-0-medication_date, #id_formset-0-medication_time, #id_formset-0-medication, #id_formset-0-medication_status',
             added: function(row)
             {
-                $(row).find('[id$="medication_date"]').removeClass('datepickerinput').removeAttr('#id_formset-0-medication_date').removeData('DateTimePicker')
+                $(row).find('[id$="-medication_date"]').removeClass('datepickerinput').removeAttr('#id_formset-0-medication_date').removeData('DateTimePicker')
             .unbind().datetimepicker(
                 options={
                     "format": "DD-MM-YYYY",
                 });
 
-                $(row).find('[id$="medication_time"]').removeClass('timepickerinput').removeAttr('#id_formset-0-medication_time').removeData('DateTimePicker')
+                $(row).find('[id$="-medication_time"]').removeClass('timepickerinput').removeAttr('#id_formset-0-medication_time').removeData('DateTimePicker')
             .unbind().datetimepicker(
                 options={
                     "format": "HH:mm",
@@ -208,22 +209,22 @@ $(document).ready(function()
         $('#form_set_stat tbody tr').formset(
         {
             prefix: 'stat_formset',
-            formCssClass: 'dynamic-stat_formset',
+//            formCssClass: 'dynamic-stat_formset',
             addCssClass: 'btn btn-success',
             addText: '<i class="fas fa-plus"></i>',
             deleteCssClass: 'btn btn-danger',
             deleteText: '<i class="fas fa-minus"></i>',
-            keepFieldValues: '#id_stat_formset-0-medication_date, #id_stat_formset-0-medication_time, #id_stat_formset-0-medication, #id_stat_formset-0-medication_status, #id_stat_formset-0-given_by',
+            keepFieldValues: '#id_stat_formset-0-medication_stat_date, #id_stat_formset-0-medication_stat_time, #id_stat_formset-0-medication, #id_stat_formset-0-medication_status, #id_stat_formset-0-given_by',
             added: function(row)
             {
-                console.log($(row).find('[id$="medication_date"]'))
-                $(row).find('[id$="medication_date"]').removeClass('datepickerinput').removeAttr('#id_stat_formset-0-medication_date').removeData('DateTimePicker')
+                console.log($(row).find('[id$="medication_stat_date"]'))
+                $(row).find('[id$="-medication_stat_date"]').removeClass('datepickerinput').removeAttr('#id_stat_formset-0-medication_stat_date').removeData('DateTimePicker')
             .unbind().datetimepicker(
                 options={
                     "format": "DD-MM-YYYY",
                 });
 
-                $(row).find('[id$="medication_time"]').removeClass('timepickerinput').removeAttr('#id_stat_formset-0-medication_time').removeData('DateTimePicker')
+                $(row).find('[id$="-medication_stat_time"]').removeClass('timepickerinput').removeAttr('#id_stat_formset-0-medication_stat_time').removeData('DateTimePicker')
             .unbind().datetimepicker(
                 options={
                     "format": "HH:mm",
@@ -232,7 +233,7 @@ $(document).ready(function()
         });
     });
 
-    $('#id_medication_date').on('dp.change', function(e)
+    $('#id_medication_stat_date').on('dp.change', function(e)
     {
         var datenew = $(this).val();
         if(datenew != '')

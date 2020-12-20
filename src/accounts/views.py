@@ -1,15 +1,11 @@
-from django import http
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.dispatch import receiver
-from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.shortcuts import render, redirect, render_to_response
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
 from django.utils import translation
-from django.utils.http import is_safe_url
 from django.utils.translation import get_language, ugettext as _
-from django.dispatch import receiver
 from django.contrib.auth.signals import user_logged_in
 
 from customers.models import *
@@ -29,8 +25,7 @@ def index(request):
     schema_name = connection.schema_name
     patients = UserProfile.objects.filter(username=request.user.username)
     logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(
-        schema_name=schema_name).values_list('title', flat=True).first()
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Home')
     themes = request.session.get('theme')
     request.session['theme'] = themes
@@ -47,15 +42,10 @@ def index(request):
 
 def set_theme(request, theme):
     request.session['theme'] = theme
-#   previous = request.META.get('HTTP_REFERER', '')
     previous = request.META['HTTP_REFERER']
     themes = request.session.get('theme')
 
-#   return redirect(previous)
-#   return HttpResponseRedirect(reverse(previous, kwargs={'theme': themes}))
-#   context['theme'] = themes
     return redirect(previous, kwargs={'theme': themes})
-#   return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def strip_lang(path):
@@ -67,69 +57,20 @@ def strip_lang(path):
 
 
 def set_language_from_url(request, user_language):
-    schema_name = connection.schema_name
-    patients = UserProfile.objects.filter(username=request.user.username)
-    logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(
-        schema_name=schema_name).values_list('title', flat=True).first()
-    page_title = _('Home')
-    themes = request.session.get('theme')
-
-#   redirect_page = request.GET.get('lang')
-#   next_path = request.POST.get('user_language')
-    next_path = strip_lang(request.path)
     previous = request.META.get('HTTP_REFERER', '')
 
-#   valid = False
-#   for item in settings.LANGUAGES:
-#       if item[0] == user_language:
-#           valid = True
-#   if not valid:
-#       raise Http404(_('The language is not available!'))
-
-#   if not user_language in [lang[0] for lang in settings.LANGUAGES]:
-#       return HttpResponseRedirect('/')
-
-#   try:
-#       previous = request.META['HTTP_REFERER']
-#       previous = request.META.get('HTTP_REFERER', '')
-#       if user_language == translation.get_language():
-#           return redirect(previous)
-
-#   except KeyError:
-#       next_url = '/' + user_language + '/'
-
     translation.activate(user_language)
-#   response = HttpResponseRedirect(next_url)
-#   return redirect(redirect_page)
-#   return redirect('patient:patientdata_detail', username=patients.username)
-#   return redirect(reverse(redirect_url_name))
-#   request.session[translation.LANGUAGE_SESSION_KEY] = user_language
     request.session['user_language'] = user_language
-#   response.set_cookie(settings.LANGUAGE_COOKIE_NAME, user_language)
 
-    context = {
-        'patients': patients,
-        'logos': logos,
-        'titles': titles,
-        'page_title': page_title,
-        'next_path': next_path,
-        "themes": themes,
-    }
-
-#   return render(request, 'index.html', context)
     return redirect(previous)
-#   return response
 
 
 @login_required
-#@patient_required
 def account(request):
     schema_name = connection.schema_name
     patients = UserProfile.objects.filter(username=request.user.username)
     logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(
-        schema_name=schema_name).values_list('title', flat=True).first()
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     icnumbers = UserProfile.objects.filter(full_name=request.user)
     page_title = _('Account')
     themes = request.session.get('theme')
@@ -155,71 +96,41 @@ class StaffSignUpView(SignupView):
     def form_valid(self, form):
         self.user = form.save(self.request)
         try:
-            signals.user_signed_up.send(
-                sender=self.user.__class__, request=self.request, user=self.user, **{})
+            signals.user_signed_up.send(sender=self.user.__class__, request=self.request, user=self.user, **{})
             return redirect('staff:staffdata_list')
         except ImmediateHttpResponse as e:
             return e.response
 
     @receiver(user_signed_up)
     def user_signed_up_handler(request, user, **kwargs):
-        ct_admission = Permission.objects.filter(
-            codename__contains='admission').values_list('id', flat=True)
-        ct_allergy = Permission.objects.filter(
-            codename__contains='allergy').values_list('id', flat=True)
-        ct_appointment = Permission.objects.filter(
-            codename__contains='appointment').values_list('id', flat=True)
-        ct_cannula = Permission.objects.filter(
-            codename__contains='cannula').values_list('id', flat=True)
-        ct_dischargechecklist = Permission.objects.filter(
-            codename__contains='dischargechecklist').values_list('id', flat=True)
-        ct_dressing = Permission.objects.filter(
-            codename__contains='dressing').values_list('id', flat=True)
-        ct_enteral_feeding_regime = Permission.objects.filter(
-            codename__contains='enteralfeedingregime').values_list('id', flat=True)
-        ct_family = Permission.objects.filter(
-            codename__contains='family').values_list('id', flat=True)
-        ct_hgt = Permission.objects.filter(
-            codename__contains='hgt').values_list('id', flat=True)
-        ct_homeleave = Permission.objects.filter(
-            codename__contains='applicationforhomeleave').values_list('id', flat=True)
-        ct_intake_output = Permission.objects.filter(
-            codename__contains='intakeoutput').values_list('id', flat=True)
-        ct_investigation_report = Permission.objects.filter(
-            codename__contains='investigationreport').values_list('id', flat=True)
-        ct_maintenance = Permission.objects.filter(
-            codename__contains='maintenance').values_list('id', flat=True)
-        ct_medication_administration = Permission.objects.filter(
-            codename__contains='medicationadministrationrecord').values_list('id', flat=True)
-        ct_medication_administration_template = Permission.objects.filter(
-            codename__contains='medicationadministrationrecordtemplate').values_list('id', flat=True)
-        ct_medicationrecord = Permission.objects.filter(
-            codename__contains='medicationrecord').values_list('id', flat=True)
-        ct_medicine = Permission.objects.filter(
-            codename__contains='medicine').values_list('id', flat=True)
-        ct_miscellaneous_charges_slip = Permission.objects.filter(
-            codename__contains='miscellaneouschargesslip').values_list('id', flat=True)
-        ct_multi_purpose = Permission.objects.filter(
-            codename__contains='multipurpose').values_list('id', flat=True)
-        ct_nasogastric = Permission.objects.filter(
-            codename__contains='nasogastric').values_list('id', flat=True)
-        ct_nursing = Permission.objects.filter(
-            codename__contains='nursing').values_list('id', flat=True)
-#       ct_overtime_claim = Permission.objects.filter(codename__contains='overtimeclaim').values_list('id', flat=True)
-        ct_physio_progress_note_sheet = Permission.objects.filter(
-            codename__contains='physioprogressnotesheet').values_list('id', flat=True)
-        ct_physiotherapy_general_assessment = Permission.objects.filter(
-            codename__contains='physiotherapygeneralassessment').values_list('id', flat=True)
-        ct_stool = Permission.objects.filter(
-            codename__contains='stool').values_list('id', flat=True)
-        ct_urinary = Permission.objects.filter(
-            codename__contains='urinary').values_list('id', flat=True)
-        ct_visiting_consultant = Permission.objects.filter(
-            codename__contains='visitingconsultant').values_list('id', flat=True)
-        ct_vital_sign_flow = Permission.objects.filter(
-            codename__contains='vitalsignflow').values_list('id', flat=True)
-        ct_wound_condition = Permission.objects.filter(
-            codename__contains='woundcondition').values_list('id', flat=True)
+        ct_admission = Permission.objects.filter(codename__contains='admission').values_list('id', flat=True)
+        ct_allergy = Permission.objects.filter(codename__contains='allergy').values_list('id', flat=True)
+        ct_appointment = Permission.objects.filter(codename__contains='appointment').values_list('id', flat=True)
+        ct_cannula = Permission.objects.filter(codename__contains='cannula').values_list('id', flat=True)
+        ct_dischargechecklist = Permission.objects.filter(codename__contains='dischargechecklist').values_list('id', flat=True)
+        ct_dressing = Permission.objects.filter(codename__contains='dressing').values_list('id', flat=True)
+        ct_enteral_feeding_regime = Permission.objects.filter(codename__contains='enteralfeedingregime').values_list('id', flat=True)
+        ct_family = Permission.objects.filter(codename__contains='family').values_list('id', flat=True)
+        ct_hgt = Permission.objects.filter(codename__contains='hgt').values_list('id', flat=True)
+        ct_homeleave = Permission.objects.filter(codename__contains='applicationforhomeleave').values_list('id', flat=True)
+        ct_intake_output = Permission.objects.filter(codename__contains='intakeoutput').values_list('id', flat=True)
+        ct_investigation_report = Permission.objects.filter(codename__contains='investigationreport').values_list('id', flat=True)
+        ct_maintenance = Permission.objects.filter(codename__contains='maintenance').values_list('id', flat=True)
+        ct_medication_administration = Permission.objects.filter(codename__contains='medicationadministrationrecord').values_list('id', flat=True)
+        ct_medication_administration_template = Permission.objects.filter(codename__contains='medicationadministrationrecordtemplate').values_list('id', flat=True)
+        ct_medicationrecord = Permission.objects.filter(codename__contains='medicationrecord').values_list('id', flat=True)
+        ct_medicine = Permission.objects.filter(codename__contains='medicine').values_list('id', flat=True)
+        ct_miscellaneous_charges_slip = Permission.objects.filter(codename__contains='miscellaneouschargesslip').values_list('id', flat=True)
+        ct_multi_purpose = Permission.objects.filter(codename__contains='multipurpose').values_list('id', flat=True)
+        ct_nasogastric = Permission.objects.filter(codename__contains='nasogastric').values_list('id', flat=True)
+        ct_nursing = Permission.objects.filter(codename__contains='nursing').values_list('id', flat=True)
+        ct_physio_progress_note_sheet = Permission.objects.filter(codename__contains='physioprogressnotesheet').values_list('id', flat=True)
+        ct_physiotherapy_general_assessment = Permission.objects.filter(codename__contains='physiotherapygeneralassessment').values_list('id', flat=True)
+        ct_stool = Permission.objects.filter(codename__contains='stool').values_list('id', flat=True)
+        ct_urinary = Permission.objects.filter(codename__contains='urinary').values_list('id', flat=True)
+        ct_visiting_consultant = Permission.objects.filter(codename__contains='visitingconsultant').values_list('id', flat=True)
+        ct_vital_sign_flow = Permission.objects.filter(codename__contains='vitalsignflow').values_list('id', flat=True)
+        ct_wound_condition = Permission.objects.filter(codename__contains='woundcondition').values_list('id', flat=True)
 
         for a in ct_admission:
             user.user_permissions.add(a)
@@ -290,52 +201,32 @@ staff_signup = StaffSignUpView.as_view()
 
 
 @login_required
-#@method_decorator([login_required, patient_required], name='dispatch')
 def change_profile(request):
     schema_name = connection.schema_name
     patients = UserProfile.objects.filter(username=request.user.username)
     logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(
-        schema_name=schema_name).values_list('title', flat=True).first()
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Change Profile')
     icnumbers = UserProfile.objects.filter(full_name=request.user)
-    initial_icnumber = UserProfile.objects.filter(
-        full_name=request.user).values_list('ic_number', flat=True).first()
-    aform = ChangeAdmission(prefix='admission', initial={
-                            'icnumbers': "icnumbers"})
     form = ChangeUserProfile(prefix='profile')
     themes = request.session.get('theme')
 
     if request.method == 'POST':
-        #        aform = ChangeAdmission(request.POST or None, initial={'ic_number': initial_icnumber})
-        #       form = ChangeUserProfile(request.POST or None, prefix='profile', instance=request.user)
         form = ChangeUserProfile(request.POST or None, instance=request.user)
 
-#        if aform.is_valid() and form.is_valid():
         if form.is_valid():
-            #            admission = aform.save(commit=False)
-            #            admission.ic_number = aform.cleaned_data['ic_number']
-            #            admission.save()
-
             profile = form.save(commit=False)
-#           profile.first_name = form.cleaned_data['first_name']
-#           profile.last_name = form.cleaned_data['last_name']
-#           profile.full_name = profile.first_name + ' ' + profile.last_name
             profile.full_name = form.cleaned_data['full_name']
             profile.email = form.cleaned_data['email']
             profile.ic_number = form.cleaned_data['ic_number']
             profile.save()
 
-            messages.success(request, _(
-                'Your profile has been change successfully.'))
+            messages.success(request, _('Your profile has been change successfully.'))
             return HttpResponseRedirect('/account/')
-#            return HttpResponseRedirect(reverse('accounts'))
         else:
             messages.warning(request, form.errors)
 
     else:
-        #        aform = ChangeAdmission(initial={'ic_number': initial_icnumber})
-        #       form = ChangeUserProfile(prefix='profile', instance=request.user)
         form = ChangeUserProfile(instance=request.user)
 
     context = {
@@ -347,7 +238,6 @@ def change_profile(request):
         'icnumbers': icnumbers,
         'form': form,
         "themes": themes,
-        #        'aform': aform,
     }
 
     return render(request, 'account/change.html', context)
@@ -390,19 +280,10 @@ class PatientSignUpView(SignupView):
     def form_valid(self, form):
         self.user = form.save(self.request)
         try:
-            signals.user_signed_up.send(
-                sender=self.user.__class__, request=self.request, user=self.user, **{})
+            signals.user_signed_up.send(sender=self.user.__class__, request=self.request, user=self.user, **{})
             return redirect('patient:patientdata_list')
         except ImmediateHttpResponse as e:
             return e.response
-
-
-#   def clean(self):
-#       cleaned_data = super().clean()
-#       username = cleaned_data.get("username")
-#       if UserProfile.objects.filter(username=username):
-#           raise forms.ValidationError('Username already exists.')
-#       return self.cleaned_data
 
 
 patient_signup = PatientSignUpView.as_view()

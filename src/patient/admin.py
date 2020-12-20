@@ -315,6 +315,8 @@ class MedicationAdministrationRecordAdmin(admin.ModelAdmin):
         'medication_route',
         'medication_status',
         'medication_done',
+        'medication_stat_date',
+        'medication_stat_time',
         'given_by',
     ]
     autocomplete_fields = ['patient', ]

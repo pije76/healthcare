@@ -1,7 +1,5 @@
-from django import template
 from django.template.defaultfilters import register
-from django.urls import reverse, resolve, translate_url
-from django.utils import translation
+from django.urls import translate_url
 
 
 @register.simple_tag(takes_context=True)

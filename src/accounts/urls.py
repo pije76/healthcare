@@ -1,6 +1,4 @@
-from django.urls import include, path, path
-from django.views.generic import RedirectView
-from django.views.i18n import set_language
+from django.urls import path
 
 from .views import *
 

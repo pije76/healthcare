@@ -165,9 +165,8 @@ MedicationAdministrationRecord_ModelFormSet = modelformset_factory(
 class MedicationAdministrationRecordTemplate_ModelForm_Set(forms.ModelForm):
     class Meta:
         model = MedicationAdministrationRecordTemplate
-#        fields = '__all__'
         fields = [
-            'id',
+#            'id',
             'patient',
             'medication_date',
             'medication_time',
@@ -176,30 +175,18 @@ class MedicationAdministrationRecordTemplate_ModelForm_Set(forms.ModelForm):
             'medication_unit',
             'medication_tablet_capsule',
             'medication_frequency',
-            #            'medication_route',
-            #            'medication_status',
-            #            'medication_source',
-            #            'medication_done',
         ]
-#        exclude = ('id',)
         widgets = {
-            #            'id': forms.HiddenInput(),
             'patient': forms.HiddenInput(),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-#       if 'instance' in kwargs:
-#           medication_template = kwargs['instance']
-#       self.fields['patient']  = forms.CharField(max_length=30)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             CustomCheckbox('medication_done'),
         )
 
-#    id = forms.CharField()
-#    patient = forms.ChoiceField()
-#    patient = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control"}))
     medication_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
     medication_time = forms.TimeField(required=False, label="", input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
     medication_medicine = forms.ModelChoiceField(queryset=Medicine.objects.all(), required=False, label="", widget=forms.Select(attrs={'class': "form-control"}))
@@ -212,7 +199,6 @@ class MedicationAdministrationRecordTemplate_ModelForm_Set(forms.ModelForm):
     medication_status = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=SIGNATURE_CHOICES)
     medication_source = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=SOURCE_CHOICES)
     medication_done = forms.BooleanField(required=False, label="", initial=False, widget=forms.CheckboxInput(attrs={'class': "form-control", 'style': 'width:15px;height:15px;margin-left:10px;margin-top:10px;'}))
-#    medication_done = forms.TypedChoiceField(required=False, label="", initial=False, coerce=lambda x: x == 'True', choices=((False, 'No'), (True, 'Yes')), widget=forms.CheckboxInput(attrs={'class': "form-control", 'style': 'width:15px;height:15px;margin-left:10px;margin-top:10px;'}))
     given_by = forms.CharField(required=False, label="", widget=forms.HiddenInput(attrs={'class': "form-control", 'readonly': 'readonly'}))
 
 
@@ -236,6 +222,8 @@ class MedicationAdministrationRecordTemplateStat_Form_Set(BSModalForm):
     medication_medicine = forms.ModelChoiceField(queryset=Medicine.objects.all(), required=False, label="", widget=forms.Select(attrs={'class': "form-control"}))
     medication_done = forms.BooleanField(required=False, label="", initial=False, widget=forms.CheckboxInput(attrs={'class': "form-control", 'style': 'width:15px;height:15px;margin-left:10px;margin-top:10px;'}))
 #    medication_done = forms.TypedChoiceField(required=False, label="", initial=False, coerce=lambda x: x == 'True', choices=((False, 'No'), (True, 'Yes')), widget=forms.CheckboxInput(attrs={'class': "form-control", 'style': 'width:15px;height:15px;margin-left:10px;margin-top:10px;'}))
+    medication_stat_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
+    medication_stat_time = forms.TimeField(required=False, label="", input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
     given_by = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': "form-control", 'readonly': 'readonly'}))
 
 

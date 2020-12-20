@@ -38,7 +38,8 @@ def medication_administration_list(request, username):
 #   medicine_data = MedicationAdministrationRecord.objects.filter(patient=patientid)
     get_lastdate = MedicationAdministrationRecord.objects.filter(patient=patientid).order_by('-medication_date').exclude(medication_time__isnull=True).values_list('medication_date', flat=True).first()
     medicine_data = MedicationAdministrationRecord.objects.filter(patient=patientid).filter(medication_date=get_lastdate).exclude(medication_time__isnull=True)
-    medicine_stat = MedicationAdministrationRecord.objects.filter(patient=patientid).exclude(medication_time__isnull=True)
+    medicine_stat = MedicationAdministrationRecord.objects.filter(patient=patientid).exclude(medication_time__isnull=False)
+#    medicine_stat = MedicationAdministrationRecord.objects.filter(patient=patientid).values_list('medication_stat_date', flat=True).first()
     allergy_drug_data = Allergy.objects.filter(patient=patientid).values_list('allergy_drug', flat=True).first()
     allergy_food_data = Allergy.objects.filter(patient=patientid).values_list('allergy_food', flat=True).first()
     allergy_others_data = Allergy.objects.filter(patient=patientid).values_list('allergy_others', flat=True).first()
@@ -132,7 +133,7 @@ def medication_administration_create(request, username):
     if request.method == 'POST':
 
         form = MedicationAdministrationRecordTemplate_ModelForm_Set(request.POST or None)
-        formset = MedicationAdministrationRecordTemplate_FormSet(request.POST or None, prefix='formset')
+        formset = MedicationAdministrationRecordTemplate_ModelFormSet(request.POST or None, prefix='formset')
         stat_formset = MedicationAdministrationRecordTemplateStat_FormSet(request.POST or None, prefix='stat_formset')
         allergy_form = Allergy_Model_Form(request.POST or None)
 
@@ -168,8 +169,8 @@ def medication_administration_create(request, username):
             for itemstat in stat_formset:
                 marstat_save = MedicationAdministrationRecord()
                 marstat_save.patient = patients
-                marstat_save.medication_date = itemstat.cleaned_data['medication_date']
-                marstat_save.medication_time = itemstat.cleaned_data['medication_time']
+                marstat_save.medication_stat_date = itemstat.cleaned_data['medication_stat_date']
+                marstat_save.medication_stat_time = itemstat.cleaned_data['medication_stat_time']
                 marstat_save.medication_medicine = itemstat.cleaned_data['medication_medicine']
                 marstat_save.given_by = request.user
                 marstat_save.save()
@@ -207,7 +208,7 @@ def medication_administration_create(request, username):
 class MedicationAdministrationRecordUpdateView(BSModalUpdateView):
     model = MedicationAdministrationRecord
     template_name = 'patient/medication_administration/partial_edit.html'
-    form_class = MedicationAdministrationRecordTemplate_ModelFormSet
+    form_class = MedicationAdministrationRecordTemplate_ModelForm_Set
     page_title = _('Medication Administration Record Form')
     success_message = _(page_title + ' form has been save successfully.')
 

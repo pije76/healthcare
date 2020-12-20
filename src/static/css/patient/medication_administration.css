@@ -73,3 +73,7 @@
     padding-left: 35px;
     margin-top: 5px;
 }
+
+.form-group {
+  margin-bottom: 0;
+}

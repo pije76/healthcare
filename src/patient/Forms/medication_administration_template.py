@@ -43,9 +43,9 @@ class MedicationAdministrationRecordTemplate_ModelFormPopUp(BSModalModelForm):
 
 class MedicationAdministrationRecordTemplate_ModelForm(forms.ModelForm):
     class Meta:
-        model = MedicationAdministrationRecord
+        model = MedicationAdministrationRecordTemplate
         fields = [
-            'id',
+#            'id',
             'patient',
             'medication_date',
             'medication_time',
@@ -56,10 +56,11 @@ class MedicationAdministrationRecordTemplate_ModelForm(forms.ModelForm):
             'medication_frequency',
         ]
         widgets = {
-            'id': forms.HiddenInput(),
+#            'id': forms.HiddenInput(),
             'patient': forms.HiddenInput(),
         }
 
+#    id = forms.CharField(required=False, label="", widget=forms.Textarea(attrs={'class': "form-control", 'rows': 4}))
     medication_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
     medication_time = forms.TimeField(required=False, label="", input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
     medication_medicine = forms.ModelChoiceField(queryset=Medicine.objects.all(), required=False, label="", widget=forms.Select(attrs={'class': "form-control"}))
@@ -70,7 +71,7 @@ class MedicationAdministrationRecordTemplate_ModelForm(forms.ModelForm):
 
 
 MedicationAdministrationRecordTemplate_FormSet = modelformset_factory(
-    MedicationAdministrationRecord,
+    MedicationAdministrationRecordTemplate,
     form=MedicationAdministrationRecordTemplate_ModelForm,
     extra=0,
     max_num=0,

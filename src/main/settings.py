@@ -48,13 +48,7 @@ SHARED_APPS = (
     'django.contrib.admin',
     'django.contrib.staticfiles',
 
-    'accounts',  # Custom app that contains the new User Model. Must NOT exist in TENANT_APPS
-    'allauth',
-    'allauth.account',
-
     'post_office',
-    'phonenumber_field',
-
 )
 
 TENANT_APPS = (
@@ -68,12 +62,14 @@ TENANT_APPS = (
     'django.contrib.staticfiles',
     'django.forms',
 
+    'accounts',  # Custom app that contains the new User Model. Must NOT exist in TENANT_APPS
+    'allauth',
+    'allauth.account',
+
     'patient',
-    #    'patienttemplate',
     'staff',
     'data',
 
-    #    'polymorphic',
     'post_office',
     'phonenumber_field',
 
@@ -81,7 +77,6 @@ TENANT_APPS = (
     'bootstrap4',
     'weasyprint',
     'bootstrap_themes',
-    #    'pure_pagination',
     'crispy_forms',
     'widget_tweaks',
     'selectable',
@@ -92,7 +87,6 @@ TENANT_APPS = (
 
     'massadmin',
     'mptt',
-    #    'django_filters',
 )
 
 

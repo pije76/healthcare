@@ -1,10 +1,8 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.core.validators import RegexValidator
 from django.db.models import F
 from django.utils.safestring import mark_safe
-from django.core.exceptions import ValidationError
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MinValueValidator
 from django.db import connection
 
 from accounts.models import *
@@ -13,11 +11,10 @@ from staff.models import *
 from data.models import *
 from .validators import *
 
-from mptt.models import MPTTModel, TreeForeignKey
+from mptt.models import TreeForeignKey
 from decimal import Decimal
 
 import datetime
-import uuid
 
 
 def upload_path_admission(instance, filename):
@@ -105,7 +102,6 @@ class Admission(models.Model):
     special_information = models.CharField(max_length=255, blank=True, null=True)
     admission_by = models.CharField(max_length=255, blank=True, null=True)
 
-#   own_medication = models.BooleanField(default=False)
     own_medication = models.CharField(max_length=255, blank=True, null=True)
     medication_date = models.DateField(blank=True, null=True)
     medication_time = models.TimeField(blank=True, null=True)
@@ -443,7 +439,6 @@ class Maintenance(models.Model):
 
 class MedicationAdministrationRecordTemplate(models.Model):
     patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
-#   own_medication = models.BooleanField(default=False)
     own_medication = models.CharField(max_length=255, blank=True, null=True)
     medication_date = models.DateField(_('Date'), blank=True, null=True)
     medication_time = models.TimeField(_('Time'), blank=True, null=True)
@@ -455,26 +450,14 @@ class MedicationAdministrationRecordTemplate(models.Model):
 
     def __str__(self):
         return str(self.patient)
-#       return str(self.medication_time)
-#       return '%s: %s' % (self.medication_time, self.medication_medicine)
-#       return '%s %s: %s' % (self.medication_date, self.medication_time, self.medication_medicine)
 
     class Meta:
         verbose_name = _('Medication Administration Record (Template)')
         verbose_name_plural = _("Medication Administration Record (Template)")
-#       abstract = True
-#        proxy = True
 
 
-# class MedicationAdministrationRecord(MedicationAdministrationRecordTemplate):
 class MedicationAdministrationRecord(models.Model):
-    #    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
-#    patient = models.ForeignKey(UserProfile, related_name = 'medicationadministrationrecord_patient', on_delete=models.CASCADE, blank=False, null=True)
-#    allergy_drug = models.CharField(max_length=255, blank=True, null=True)
-#    allergy_food = models.CharField(max_length=255, blank=True, null=True)
-#    allergy_others = models.CharField(max_length=255, blank=True, null=True)
-#    medication_template = models.ForeignKey(MedicationAdministrationRecordTemplate, related_name = 'medicationadministrationrecord_template', on_delete=models.DO_NOTHING, blank=False, null=True)
     medication_date = models.DateField(_('Date'), blank=True, null=True)
     medication_time = models.TimeField(_('Time'), blank=True, null=True)
     medication_medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE, blank=True, null=True)
@@ -486,6 +469,8 @@ class MedicationAdministrationRecord(models.Model):
     medication_route = models.CharField(_('Route'), max_length=255, blank=True, null=True)
     medication_status = models.CharField(_('Status'), max_length=255, blank=True, null=True)
     medication_done = models.NullBooleanField(_('Done'), default=False)
+    medication_stat_date = models.DateField(_('Date'), blank=True, null=True)
+    medication_stat_time = models.TimeField(_('Time'), blank=True, null=True)
     given_by = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):

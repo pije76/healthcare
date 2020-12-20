@@ -2,8 +2,8 @@
 
 {% if user.is_superuser or user.is_staff %}
 <tr>
-    <td>{{ item.medication_date|date:"d-m-Y" }}</td>
-    <td>{{ item.medication_time|date:"H:i" }}</td>
+    <td>{{ item.medication_stat_date|date:"d-m-Y" }}</td>
+    <td>{{ item.medication_stat_time|date:"H:i" }}</td>
     <td>{{ item.medication_medicine }}</td>
     <td>{{ item.medication_done }}</td>
     <td>
@@ -17,8 +17,8 @@
 {% elif user.is_patient %}
 
 <tr>
-    <td>{{ item.medication_date|date:"d-m-Y" }}</td>
-    <td>{{ item.medication_time|date:"H:i" }}</td>
+    <td>{{ item.medication_stat_date|date:"d-m-Y" }}</td>
+    <td>{{ item.medication_stat_time|date:"H:i" }}</td>
     <td>{{ item.medication_medicine }}</td>
     <td>{{ item.medication_done }}</td>
 </tr>
