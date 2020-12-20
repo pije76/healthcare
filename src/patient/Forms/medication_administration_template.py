@@ -14,14 +14,14 @@ from bootstrap_modal_forms.forms import *
 default_desimal_mar = Decimal('0.0')
 
 
-class MedicationAdministrationRecordTemplate_ModelForm(BSModalModelForm):
+class MedicationAdministrationRecordTemplate_ModelFormPopUp(BSModalModelForm):
     class Meta:
         model = MedicationAdministrationRecordTemplate
         fields = [
             'patient',
             'medication_date',
             'medication_time',
-            'medication_drug_name',
+            'medication_medicine',
             'medication_dosage',
             'medication_unit',
             'medication_tablet_capsule',
@@ -32,24 +32,45 @@ class MedicationAdministrationRecordTemplate_ModelForm(BSModalModelForm):
             'patient': forms.HiddenInput(),
         }
 
-    medication_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS,
-                                      widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
-    medication_time = forms.TimeField(required=False, label="", input_formats=settings.TIME_INPUT_FORMATS,
-                                      widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
-    medication_drug_name = forms.ModelChoiceField(queryset=Medicine.objects.all(
-    ), required=False, label="", widget=forms.Select(attrs={'class': "form-control"}))
-    medication_dosage = forms.IntegerField(
-        required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
-    medication_unit = forms.ChoiceField(required=False, label="", widget=forms.Select(
-        attrs={'class': "form-control"}), choices=UNIT_CHOICES)
-    medication_tablet_capsule = forms.DecimalField(required=False, label="", initial=default_desimal_mar,
-                                                   min_value=0.0, widget=forms.NumberInput(attrs={'class': "form-control", 'step': 0.1}))
-    medication_frequency = forms.ChoiceField(required=False, label="", widget=forms.Select(
-        attrs={'class': "form-control"}), choices=MEDICATION_ADMINISTRATION_FREQUENCY_CHOICES)
+    medication_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
+    medication_time = forms.TimeField(required=False, label="", input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
+    medication_medicine = forms.ModelChoiceField(queryset=Medicine.objects.all(), required=False, label="", widget=forms.Select(attrs={'class': "form-control"}))
+    medication_dosage = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
+    medication_unit = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=UNIT_CHOICES)
+    medication_tablet_capsule = forms.DecimalField(required=False, label="", initial=default_desimal_mar, min_value=0.0, widget=forms.NumberInput(attrs={'class': "form-control", 'step': 0.1}))
+    medication_frequency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MEDICATION_ADMINISTRATION_FREQUENCY_CHOICES)
+
+
+class MedicationAdministrationRecordTemplate_ModelForm(forms.ModelForm):
+    class Meta:
+        model = MedicationAdministrationRecord
+        fields = [
+            'id',
+            'patient',
+            'medication_date',
+            'medication_time',
+            'medication_medicine',
+            'medication_dosage',
+            'medication_unit',
+            'medication_tablet_capsule',
+            'medication_frequency',
+        ]
+        widgets = {
+            'id': forms.HiddenInput(),
+            'patient': forms.HiddenInput(),
+        }
+
+    medication_date = forms.DateField(required=False, label="", initial=get_today, input_formats=settings.DATE_INPUT_FORMATS, widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
+    medication_time = forms.TimeField(required=False, label="", input_formats=settings.TIME_INPUT_FORMATS, widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
+    medication_medicine = forms.ModelChoiceField(queryset=Medicine.objects.all(), required=False, label="", widget=forms.Select(attrs={'class': "form-control"}))
+    medication_dosage = forms.IntegerField(required=False, label="", initial="0", min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
+    medication_unit = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=UNIT_CHOICES)
+    medication_tablet_capsule = forms.DecimalField(required=False, label="", initial=default_desimal_mar, min_value=0.0, widget=forms.NumberInput(attrs={'class': "form-control", 'step': 0.1}))
+    medication_frequency = forms.ChoiceField(required=False, label="", widget=forms.Select(attrs={'class': "form-control"}), choices=MEDICATION_ADMINISTRATION_FREQUENCY_CHOICES)
 
 
 MedicationAdministrationRecordTemplate_FormSet = modelformset_factory(
-    MedicationAdministrationRecordTemplate,
+    MedicationAdministrationRecord,
     form=MedicationAdministrationRecordTemplate_ModelForm,
     extra=0,
     max_num=0,

@@ -11,6 +11,7 @@
 {% block style %}
     <link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'css/patient/medication_administration.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/patient/enteral_feeding_regine.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block javascript %}
@@ -20,6 +21,7 @@
 {% block extrahead %}
     {{ form.media }}
     {{ formset.media }}
+    {{ stat_formset.media }}
 {% endblock %}
 
 {% block content %}
@@ -37,74 +39,120 @@
     <form method="post">
     {% csrf_token %}
     {{ formset.management_form }}
+    {{ stat_formset.management_form }}
 
         <div class="row">
+
             <div class="col-4 border text-center header_form">
                 <span id="name_title">{% trans "Date" %}:</span>
             </div>
+
             <div class="col-8 border text-center header_form">
                 <span id="name_title">{% trans "Allergy" %}:</span>
             </div>
+
             <div class="w-100"></div>
+
             <div class="col-4 border header_form_detail">
                 <span id="name_title">
                     {{ form.medication_date|as_crispy_field }}
                 </span>
             </div>
+
             <div class="col-8 border header_form_detail header_form_inline form-inline">
                 <span id="name_title">
                     {{ allergy_form }}
                 </span>
             </div>
+
         </div>
 
         <div class="row rounded form_table">
+            {{formset.prefix}} cek
 
             <table id="form_set" class="table table-bordered">
                 <thead class="thead_light">
                     <tr>
-                        <th class="text-center">{% trans "Time" %}</th>
-                        <th class="text-center" style="width:auto;">{% trans "Medicine" %}</th>
+                        <th class="text-center" style="width:15%;">{% trans "Time" %}</th>
+                        <th class="text-center" style="width:20%;">{% trans "Medicine" %}</th>
                         <th class="text-center" style="width:auto;">{% trans "Dosage" %}</th>
-                        <th class="text-center" style="width:10%;">{% trans "Unit" %}</th>
-                        <th class="text-center" style="width:auto;">{% trans "Tab/Cap/MLS" %}</th>
+                        <th class="text-center" style="width:15%;">{% trans "Unit" %}</th>
+                        <th class="text-center" style="width:1%;">{% trans "Tab/Cap/MLS" %}</th>
                         <th class="text-center">{% trans "Frequency" %}</th>
                         <th class="text-center" style="width:12%;">{% trans "Source" %}</th>
                         <th class="text-center" style="width:10%;">{% trans "Route" %}</th>
                         <th class="text-center" style="width:10%;">{% trans "Status" %}</th>
-                        <th class="text-center custom_checkbox">{% trans "Done" %}</th>
+                        <th class="text-center">{% trans "Done" %}</th>
+                        <th class="text-center" style="display:none;">{% trans "Given by" %}</th>
                         <th class="text-center">{% trans "Action" %}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for item in formset.forms %}
-                    {{ item.id|as_crispy_field }}
-                    {{ item.patient|as_crispy_field }}
-                    <p style="display:none;">{{ item.medication_template|as_crispy_field }}</p>
-                    <tr id="{{ item.prefix }}-row">
-                        <td>{{ item.medication_time|as_crispy_field }}</td>
-                        <td>{{ item.medication_drug_name|as_crispy_field }}</td>
-                        <td>{{ item.medication_dosage|as_crispy_field }}</td>
-                        <td>{{ item.medication_unit|as_crispy_field }}</td>
-                        <td>{{ item.medication_tablet_capsule|as_crispy_field }}</td>
-                        <td>{{ item.medication_frequency|as_crispy_field }}</td>
-                        <td>{{ item.medication_source|as_crispy_field }}</td>
-                        <td>{{ item.medication_route|as_crispy_field }}</td>
-                        <td>{{ item.medication_status|as_crispy_field }}</td>
-                        <td>{{ item.medication_done|as_crispy_field }}</td>
+                    {% comment %}
+                      {% endcomment %}
+                    {% for item in formset %}
+                    {{ item.patient }}
+                    <tr id="{{ formset.prefix }}-row">
+                        <td style="display:none;">{{ item.medication_date }}</td>
+                        <td>{{ item.medication_time }}</td>
+                        <td>{{ item.medication_medicine }}</td>
+                        <td>{{ item.medication_dosage }}</td>
+                        <td>{{ item.medication_unit }}</td>
+                        <td>{{ item.medication_tablet_capsule }}</td>
+                        <td>{{ item.medication_frequency }}</td>
+                        <td>{{ item.medication_source }}</td>
+                        <td>{{ item.medication_route }}</td>
+                        <td>{{ item.medication_status }}</td>
+                        <td>{{ item.medication_done }}</td>
+                        <td style="display:none;">{{ item.given_by }}</td>
                         <td></td>
                     </tr>
                     {% endfor %}
+
                 </tbody>
             </table>
+
+            <div class="row border rounded foot_table">
+
+                <div class="col-12 border header_form_detail">
+                    <span id="name_title">
+                        STAT Medication {{stat_formset.prefix}}
+                    </span>
+                </div>
+
+
+                <table id="form_set_stat" class="table table-bordered">
+                    <thead class="thead_light">
+                        <tr>
+                            <th class="text-center" style="width:15%;">{% trans "Date" %}</th>
+                            <th class="text-center" style="width:15%;">{% trans "Time" %}</th>
+                            <th class="text-center" style="width:20%;">{% trans "Medicine" %}</th>
+                            <th class="text-center" style="width:auto;">{% trans "Given by" %}</th>
+                            <th class="text-center">{% trans "Action" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for itemstat in stat_formset %}
+                        {{ itemstat.patient }}
+                        <tr id="{{ stat_formset.prefix }}-row">
+                            <td>{{ itemstat.medication_date }}</td>
+                            <td>{{ itemstat.medication_time }}</td>
+                            <td>{{ itemstat.medication_medicine }}</td>
+                            <td>{{ itemstat.given_by }}</td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
         </div>
 
         <div class="row">
-            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
             {% for item in profiles %}
             <a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
             {% endfor %}
+            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
         </div>
     </form>
 
@@ -132,20 +180,50 @@ $(document).ready(function()
         $('#form_set tbody tr').formset(
         {
             prefix: 'formset',
+            formCssClass: 'dynamic-formset',
             addCssClass: 'btn btn-success',
             addText: '<i class="fas fa-plus"></i>',
             deleteCssClass: 'btn btn-danger',
             deleteText: '<i class="fas fa-minus"></i>',
-            keepFieldValues: '#id_form-0-medication_date, #id_form-0-medication_time, #id_form-0-medication, #id_form-0-medication_status',
+            keepFieldValues: '#id_formset-0-medication_date, #id_formset-0-medication_time, #id_formset-0-medication, #id_formset-0-medication_status',
             added: function(row)
             {
-                $(row).find('[id$="medication_date"]').removeClass('datepickerinput').removeAttr('#id_form-0-medication_date').removeData('DateTimePicker')
+                $(row).find('[id$="medication_date"]').removeClass('datepickerinput').removeAttr('#id_formset-0-medication_date').removeData('DateTimePicker')
             .unbind().datetimepicker(
                 options={
                     "format": "DD-MM-YYYY",
                 });
 
-                $(row).find('[id$="medication_time"]').removeClass('timepickerinput').removeAttr('#id_form-0-medication_time').removeData('DateTimePicker')
+                $(row).find('[id$="medication_time"]').removeClass('timepickerinput').removeAttr('#id_formset-0-medication_time').removeData('DateTimePicker')
+            .unbind().datetimepicker(
+                options={
+                    "format": "HH:mm",
+                });
+            },
+        });
+    });
+
+    $(function()
+    {
+        $('#form_set_stat tbody tr').formset(
+        {
+            prefix: 'stat_formset',
+            formCssClass: 'dynamic-stat_formset',
+            addCssClass: 'btn btn-success',
+            addText: '<i class="fas fa-plus"></i>',
+            deleteCssClass: 'btn btn-danger',
+            deleteText: '<i class="fas fa-minus"></i>',
+            keepFieldValues: '#id_stat_formset-0-medication_date, #id_stat_formset-0-medication_time, #id_stat_formset-0-medication, #id_stat_formset-0-medication_status, #id_stat_formset-0-given_by',
+            added: function(row)
+            {
+                console.log($(row).find('[id$="medication_date"]'))
+                $(row).find('[id$="medication_date"]').removeClass('datepickerinput').removeAttr('#id_stat_formset-0-medication_date').removeData('DateTimePicker')
+            .unbind().datetimepicker(
+                options={
+                    "format": "DD-MM-YYYY",
+                });
+
+                $(row).find('[id$="medication_time"]').removeClass('timepickerinput').removeAttr('#id_stat_formset-0-medication_time').removeData('DateTimePicker')
             .unbind().datetimepicker(
                 options={
                     "format": "HH:mm",

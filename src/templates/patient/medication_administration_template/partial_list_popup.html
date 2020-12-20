@@ -1,0 +1,51 @@
+
+{% for item in patients %}
+
+    {% if user.is_superuser or user.is_staff %}
+
+        {% for item_pop in formset.forms %}
+
+            {% if item_pop.medication_time is not null %}
+
+            {{ item_pop.patient }}
+
+            <tr id="{{ item_pop.prefix }}-row">
+                <td style="display:none;">{{ item_pop.medication_date }}</td>
+                <td>{{ item_pop.medication_time }}</td>
+                <td>{{ item_pop.medication_medicine }}</td>
+                <td>{{ item_pop.medication_dosage }}</td>
+                <td>{{ item_pop.medication_unit }}</td>
+                <td>{{ item_pop.medication_tablet_capsule }}</td>
+                <td>{{ item_pop.medication_frequency }}</td>
+                <td>
+                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:medication_administration_template_edit' item.patient.username item.id %}" data-original-title="Edit" title="Edit" style="background-color:transparent;">
+                        <i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-danger trigger_modal" data-form-url="{% url 'patient:medication_administration_template_delete' item.patient.username item.id %}" data-original-title="Delete" title="Delete" style="background-color:#dc3545;">
+                        <i class="fas fa-minus" style="color: #fff; background-color: #dc3545; border-color: #dc3545;"></i>
+                    </button>
+                </td>
+            </tr>
+
+            {% endif %}
+
+        {% endfor %}
+
+    {% elif user.is_patient %}
+
+        {% if item.medication_time is not null %}
+
+            <tr>
+                    <td>{{ item.medication_time|date:"H:i" }}</td>
+                    <td>{{ item.medication_medicine }}</td>
+                    <td>{{ item.medication_dosage }}</td>
+                    <td>{{ item.medication_unit }}</td>
+                    <td>{{ item.medication_tablet_capsule }}</td>
+                    <td>{{ item.medication_frequency }}</td>
+            </tr>
+
+        {% endif %}
+
+    {% endif %}
+
+{% endfor %}

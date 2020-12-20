@@ -1,5 +1,5 @@
 {% for item in patients %}
-{% if user.is_superuser %}
+{% if user.is_superuser or user.is_staff %}
 <tr>
     <td>{{ item.patient }}</td>
     <td>{{ item.family_name }}</td>
@@ -17,7 +17,7 @@
     </td>
 </tr>
 
-{% elif user.is_staff or user.is_patient %}
+{% elif user.is_patient %}
 
 <tr>
     <td>{{ item.patient }}</td>

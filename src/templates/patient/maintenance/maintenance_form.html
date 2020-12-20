@@ -68,10 +68,10 @@
 
         <div class="row">
 
-            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
             {% for item in profiles %}
             <a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
             {% endfor %}
+            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 
         </div>
 
@@ -98,18 +98,29 @@ $(document).ready(function()
 //      addContainerClass: 'tambah_row',
         added: function(row)
         {
-            $(row).find('[id$="date"]').removeClass('datepickerinput').removeAttr('#id_form-0-date').removeData('DateTimePicker')
+            $(row).find('[id$="-date"]').removeClass('datepickerinput').removeData('DateTimePicker')
         .unbind().datetimepicker(
             options={
                 "format": "DD-MM-YYYY",
+                // 'data-target':""
             });
 
-            $(row).find('[id$="time"]').removeClass('timepickerinput').removeAttr('#id_form-0-time').removeData('DateTimePicker')
-        .unbind().datetimepicker(
-            options={
-                "format": "HH:mm",
-            });
-            },
+            // $(row).find('[id$="date"]').each(function (i, value)
+            // {
+            //     $(value).datetimepicker({
+            //         timepicker: false,
+            //         format: 'DD-MM-YYYY',
+            //         scrollInput: false,
+            //         dayOfWeekStart: 1
+            //     }
+            // );
+
+        //     $(row).find('[id$="time"]').removeClass('timepickerinput').removeAttr('#id_form-0-time').removeData('DateTimePicker')
+        // .unbind().datetimepicker(
+        //     options={
+        //         "format": "HH:mm",
+        //     });
+        },
     });
 });
 

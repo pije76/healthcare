@@ -91,21 +91,33 @@
 
                                 <table id="t_add_row_1" class="table table-striped table-bordered display">
                                     <thead class="thead_light">
-                                        {% if user.is_superuser %}
+                                        {% if user.is_superuser or user.is_staff %}
                                         <tr>
-                                            <th class="text-center row_medication_date">{% trans "Date" %}</th>
-                                            <th class="text-center">{% trans "Time" %}</th>
-                                            <th class="text-center">{% trans "Drug Name" %}</th>
-                                            <th class="text-center">{% trans "Status" %}</th>
+                                            <th class="text-center" style="width:15%;">{% trans "Date" %}</th>
+                                            <th class="text-center" style="width:15%;">{% trans "Time" %}</th>
+                                            <th class="text-center" style="width:20%;">{% trans "Medicine" %}</th>
+                                            <th class="text-center" style="width:auto;">{% trans "Dosage" %}</th>
+                                            <th class="text-center" style="width:15%;">{% trans "Unit" %}</th>
+                                            <th class="text-center" style="width:1%;">{% trans "Tab/Cap/MLS" %}</th>
+                                            <th class="text-center">{% trans "Frequency" %}</th>
+                                            <th class="text-center" style="width:12%;">{% trans "Source" %}</th>
+                                            <th class="text-center" style="width:10%;">{% trans "Route" %}</th>
+                                            <th class="text-center" style="width:10%;">{% trans "Status" %}</th>
                                             <th class="text-center">{% trans "Done" %}</th>
                                             <th class="text-center">{% trans "Action" %}</th>
                                         </tr>
-                                        {% elif user.is_staff or user.is_patient %}
+                                        {% elif user.is_patient %}
                                         <tr>
-                                            <th class="text-center row_medication_date">{% trans "Date" %}</th>
-                                            <th class="text-center">{% trans "Time" %}</th>
-                                            <th class="text-center">{% trans "Drug Name" %}</th>
-                                            <th class="text-center">{% trans "Status" %}</th>
+                                            <th class="text-center" style="width:15%;">{% trans "Date" %}</th>
+                                            <th class="text-center" style="width:15%;">{% trans "Time" %}</th>
+                                            <th class="text-center" style="width:20%;">{% trans "Medicine" %}</th>
+                                            <th class="text-center" style="width:auto;">{% trans "Dosage" %}</th>
+                                            <th class="text-center" style="width:15%;">{% trans "Unit" %}</th>
+                                            <th class="text-center" style="width:1%;">{% trans "Tab/Cap/MLS" %}</th>
+                                            <th class="text-center">{% trans "Frequency" %}</th>
+                                            <th class="text-center" style="width:12%;">{% trans "Source" %}</th>
+                                            <th class="text-center" style="width:10%;">{% trans "Route" %}</th>
+                                            <th class="text-center" style="width:10%;">{% trans "Status" %}</th>
                                             <th class="text-center">{% trans "Done" %}</th>
                                         </tr>
                                         {% endif %}
@@ -130,7 +142,7 @@
 
                             <table id="t_add_row_2" class="table table-striped table-bordered display">
                                 <thead class="thead_light">
-                                {% if user.is_superuser %}
+                                {% if user.is_superuser or user.is_staff %}
                                     <tr>
                                         <th class="text-center row_medication_date">{% trans "Date" %}</th>
                                         <th class="text-center">{% trans "Time" %}</th>
@@ -138,7 +150,7 @@
                                         <th class="text-center">{% trans "Done" %}</th>
                                         <th class="text-center" style="border: 1px solid #ddd" >{% trans "Action" %}</th>
                                     </tr>
-                                {% elif user.is_staff or user.is_patient %}
+                                {% elif user.is_patient %}
                                     <tr>
                                         <th class="text-center row_medication_date">{% trans "Date" %}</th>
                                         <th class="text-center">{% trans "Time" %}</th>

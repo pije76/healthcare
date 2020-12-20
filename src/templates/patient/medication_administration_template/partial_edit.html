@@ -1,80 +1,159 @@
+{% extends 'base.html' %}
+
 {% load crispy_forms_tags %}
 {% load i18n %}
 {% load static %}
 
-{% block extrahead %}
-    {{ form.media }}
+{% block headtitle %}
+    {{ page_title }} | {{ titles.title }}
+{% endblock %}
+
+{% block style %}
+    <link href="{% static 'css/patient/patient.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/patient/medication_administration_template.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block javascript %}
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/moment.min.js' %}"></script>
+    <script src="{% static 'js/jquery.formset.js' %}"></script>
     <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
 {% endblock %}
 
-<form method="post" action="">
-{% csrf_token %}
+{% block extrahead %}
+    {{ formset.media }}
+{% endblock %}
 
-    <div class="modal-header">
-        <h4 class="modal-title">{% trans "Edit Medication Record Template" %}</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+{% block content %}
+
+<div class="container">
+
+    <div class="row formtitle">
+        {{ page_title }}
     </div>
 
-    <div class="modal-body">
-        <div class="form-group">
-            {{ form.patient|as_crispy_field }}
-            {{ form.medication_date|as_crispy_field }}
-            {{ form.medication_time|as_crispy_field }}
-            {{ form.medication_drug_name|as_crispy_field }}
-            {{ form.medication_dosage|as_crispy_field }}
-            {{ form.medication_tablet_capsule|as_crispy_field }}
-            {{ form.medication_frequency|as_crispy_field }}
+    <p style="font-size:12px">{% include 'messages.html' %}</p>
+
+    <form method="post" action="">
+    {% csrf_token %}
+    {{ formset.management_form }}
+
+    <div class="row rounded form_table">
+
+        <table id="form_set" class="table table-bordered">
+            <thead class="thead_light">
+                <tr>
+                    <th class="text-center" style="display:none;">{% trans "ID" %}</th>
+                    <th class="text-center" style="display:none;">{% trans "Patient Name" %}</th>
+                    <th class="text-center">{% trans "Date" %}</th>
+                    <th class="text-center">{% trans "Time" %}</th>
+                    <th class="text-center">{% trans "Drug Name" %}</th>
+                    <th class="text-center">{% trans "Dosage" %}</th>
+                    <th class="text-center">{% trans "Unit" %}</th>
+                    <th class="text-center">{% trans "Tablet/Capsule" %}</th>
+                    <th class="text-center">{% trans "Frequency" %}</th>
+                    <th class="text-center">{% trans "Action" %}</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                    {% for item in formset.forms %}
+                    <tr id="{{ item.prefix }}-row">
+                        <td style="display:none;">{{ item.id|as_crispy_field }}</td>
+                        <td style="display:none;">{{ item.patient|as_crispy_field }}</td>
+                        <td>{{ item.medication_date|as_crispy_field }}</td>
+                        <td>{{ item.medication_time|as_crispy_field }}</td>
+                        <td>{{ item.medication_medicine|as_crispy_field }}</td>
+                        <td>{{ item.medication_dosage|as_crispy_field }}</td>
+                        <td>{{ item.medication_unit|as_crispy_field }}</td>
+                        <td>{{ item.medication_tablet_capsule|as_crispy_field }}</td>
+                        <td>{{ item.medication_frequency|as_crispy_field }}</td>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary"><i class="icon wb-plus" aria-hidden="true"></i>Submit</button>
+            {% for item in profiles %}
+                <a class="btn btn-danger" href="{% url 'patient:medication_administration_template_list' item.username %}">{% trans "Cancel" %}</a>
+            {% endfor %}
         </div>
-    </div>
 
-    <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-primary"><i class="icon wb-plus" aria-hidden="true"></i>Submit</button>
-    </div>
+    </form>
 
-</form>
+</div>
+
+{% endblock %}
 
 {% block jscript %}
-    <script type='text/javascript'>
-    $(document).ready(function()
+<script type='text/javascript'>
+$(document).ready(function()
+{
+    $('#form_set tbody tr').formset(
     {
+        prefix: 'formset',
+        addCssClass: 'btn btn-success',
+        addText: '<i class="fas fa-plus"></i>',
+        deleteCssClass: 'btn btn-danger',
+        deleteText: '<i class="fas fa-minus"></i>',
+        keepFieldValues: '#id_form-0-patient, #id_form-0-date_time, #id_form-0-nasogastric_tube_date, #id_form-0-urinary_catheter_date, #id_form-0-given_by',
+        added: function(row)
+        {
+            $(row).find('[id$="date_time"]').removeClass('datetimepickerinput').removeAttr('#id_form-0-date_time').removeData('DateTimePicker')
+            .unbind().datetimepicker(
+                options={
+                    "format": "DD-MM-YYYY HH:mm",
+                });
 
-        $.extend(true, $.fn.datetimepicker.defaults, {
-            icons: {
-                time: 'far fa-clock',
-                date: 'far fa-calendar',
-                up: 'fas fa-arrow-up',
-                down: 'fas fa-arrow-down',
-                previous: 'fas fa-chevron-left',
-                next: 'fas fa-chevron-right',
-                today: 'fas fa-calendar-check',
-                clear: 'far fa-trash-alt',
-                close: 'far fa-times-circle'
-            }
-        });
+            $(row).find('[id$="date"]').removeClass('datepickerinput').removeAttr('#id_form-0-nasogastric_tube_date').removeData('DateTimePicker')
+        .unbind().datetimepicker(
+            options={
+                "format": "DD-MM-YYYY",
+            });
 
-        $("#id_date_time_0").datetimepicker(
-            {
-//              format: 'L',
-                format:'DD-MM-YYYY',
-//              defaultDate: currentDate,
-                showTodayButton: true,
-                showClear: true,
-                showClose: true,
-            }
-        );
-        $("#id_date_time_1").datetimepicker(
-            {
-//              format: 'LT',
-                format: 'HH:mm'
-            }
-        );
+            $(row).find('[id$="medication_time"]').removeClass('datetimepickerinput').removeAttr('#id_form-0-medication_time').removeData('DateTimePicker')
+        .unbind().datetimepicker(
+            options={
+                "format": "HH:mm",
+            });
+
+            $(row).find('[id$="discharge_status"]').removeClass('form-check-label').removeAttr('[id$="discharge_status"]').removeData('[id$="discharge_status"]').unbind()
+        },
     });
-    </script>
+
+    $.extend(true, $.fn.datetimepicker.defaults, {
+        icons: {
+            time: 'far fa-clock',
+            date: 'far fa-calendar',
+            up: 'fas fa-arrow-up',
+            down: 'fas fa-arrow-down',
+            previous: 'fas fa-chevron-left',
+            next: 'fas fa-chevron-right',
+            today: 'fas fa-calendar-check',
+            clear: 'far fa-trash-alt',
+            close: 'far fa-times-circle'
+        }
+    });
+
+    $("#id_date_time_0").datetimepicker(
+    {
+//          format: 'L',
+            format:'DD-MM-YYYY',
+//          defaultDate: currentDate,
+            showTodayButton: true,
+            showClear: true,
+            showClose: true,
+        }
+    );
+    $("#id_date_time_1").datetimepicker(
+    {
+//      format: 'LT',
+        format: 'HH:mm'
+        }
+    );
+});
+</script>
 {% endblock %}

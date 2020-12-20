@@ -73,10 +73,10 @@
 
         <div class="row">
 
-            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
             {% for item in profiles %}
             <a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
             {% endfor %}
+            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 
         </div>
 
@@ -102,26 +102,18 @@ $(document).ready(function()
         var section_id = i;
     }
 
-    $('select[id$="-frequency"]').each(function()
+    $(document).on('change', 'select[id$="-frequency"]', function()
     {
-        $(this).siblings('select[id$="-frequency"]').change(function()
+        if($(this).val() == "BNO")
         {
-            alert("Test")
-            if($(this).val() == "BNO")
-            {
-                $("#id_form-0-consistency").attr("selected", true).val("-").addClass("consistency0");
-//          $('#id_form-'+ section_id + '-consistency').attr("selected", true).val("-");
-                $("#id_form-0-amount").attr("selected", true).val("-");
-//          $('#id_form-'+ section_id + '-amount').attr("selected", true).val("-");
-            }
-            else
-            {
-                $("#id_form-0-consistency").attr("selected", true).val("Normal").removeClass("consistency0");
-//          $('#id_form-'+ section_id + '-consistency').attr("selected", true).val("Normal");
-                $("#id_form-0-amount").attr("selected", true).val("Scanty");
-//          $('#id_form-'+ section_id + '-amount').attr("selected", true).val("Scanty");
-            }
-        });
+            $(this).closest('tr').find('[id$="-consistency"]').attr("selected", true).val("-").addClass("consistency0");
+            $(this).closest('tr').find('[id$="-amount"]').attr("selected", true).val("-").addClass("amount0");
+        }
+        else
+        {
+            $(this).closest('tr').find('[id$="-consistency"]').attr("selected", true).val("Normal").addClass("consistency0");
+            $(this).closest('tr').find('[id$="-amount"]').attr("selected", true).val("Scanty").addClass("amount0");
+        }
     });
 
     $('#form_set tbody tr').formset(

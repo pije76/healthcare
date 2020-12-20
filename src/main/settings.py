@@ -69,11 +69,11 @@ TENANT_APPS = (
     'django.forms',
 
     'patient',
-#    'patienttemplate',
+    #    'patienttemplate',
     'staff',
     'data',
 
-#    'polymorphic',
+    #    'polymorphic',
     'post_office',
     'phonenumber_field',
 
@@ -81,7 +81,7 @@ TENANT_APPS = (
     'bootstrap4',
     'weasyprint',
     'bootstrap_themes',
-#    'pure_pagination',
+    #    'pure_pagination',
     'crispy_forms',
     'widget_tweaks',
     'selectable',
@@ -92,7 +92,7 @@ TENANT_APPS = (
 
     'massadmin',
     'mptt',
-#    'django_filters',
+    #    'django_filters',
 )
 
 
@@ -238,30 +238,30 @@ if DEBUG:
         'debug_toolbar',
         'debug_permissions',
     )
-    INTERNAL_IPS = ('127.0.0.1', )
+    INTERNAL_IPS = ('127.0.0.1', '172.104.164.192')
     DEBUG_TOOLBAR_CONFIG = {
         'INTERCEPT_REDIRECTS': False,
     }
     TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            "debug": DEBUG,
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.template.context_processors.i18n',
-                'django.template.context_processors.media',
-                'django.template.context_processors.static',
-                'django.template.context_processors.tz',
-                'django.contrib.messages.context_processors.messages',
-            ],
-            "string_if_invalid": '<< MISSING VARIABLE "%s" >>' if DEBUG else "",
+        {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'DIRS': [os.path.join(BASE_DIR, 'templates')],
+            'APP_DIRS': True,
+            'OPTIONS': {
+                "debug": DEBUG,
+                'context_processors': [
+                    'django.template.context_processors.debug',
+                    'django.template.context_processors.request',
+                    'django.contrib.auth.context_processors.auth',
+                    'django.template.context_processors.i18n',
+                    'django.template.context_processors.media',
+                    'django.template.context_processors.static',
+                    'django.template.context_processors.tz',
+                    'django.contrib.messages.context_processors.messages',
+                ],
+                "string_if_invalid": '<< MISSING VARIABLE "%s" >>' if DEBUG else "",
+            },
         },
-    },
         #    {
         #        'BACKEND': 'accounts.pdf.PdftkEngine',
         #        'APP_DIRS': True,

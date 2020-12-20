@@ -44,7 +44,7 @@
             <table id="form_set" class="table table-bordered">
                 <thead class="thead_light">
                     <tr>
-                        <th class="text-center">{% trans "ID" %}</th>
+                        <th class="text-center" style="display:none;">{% trans "ID" %}</th>
                         <th class="text-center">{% trans "Date & Time" %}</th>
                         <th class="text-center" style="display:none;">{% trans "Patient Name" %}</th>
                         <th class="text-center">{% trans "Status" %}</th>
@@ -65,7 +65,7 @@
                 <tbody>
                     {% for item in formset.forms %}
                     <tr id="{{ item.prefix }}-row">
-                        <td>{{ item.id|as_crispy_field }}</td>
+                        <td style="display:none;">{{ item.id|as_crispy_field }}</td>
                         <td>{{ item.date_time|as_crispy_field }}</td>
                         <td style="display:none;">{{ item.patient|as_crispy_field }}</td>
                         <td>{{ item.discharge_status|as_crispy_field }}</td>

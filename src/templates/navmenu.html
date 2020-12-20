@@ -41,9 +41,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'patient:patientdata_list' %}"><i class="fas fa-hospital-user"></i>&nbsp;{% trans "Patient" %}</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'data:data_list' %}"><i class="fas fa-table"></i>&nbsp;{% trans "Data" %}</a>
-                    </li>
 
                     {% elif user.is_authenticated and user.is_patient %}
 
@@ -67,32 +64,32 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="themeMenu">
                             <li>
-                                <a type="submit" class="dropdown-item {% if themes == 'default' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='default' %}">
+                                <a type="submit" class="dropdown-item {% if themes == 'default' %}active{% else %}inactive{% endif %}" href="/set_theme/default/">
                                     <input type="hidden" name="theme" value="default">{% trans "Default" %}
                                 </a>
                             </li>
                             <li>
-                                <a type="submit" class="dropdown-item {% if themes == 'cosmo' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='cosmo' %}">
+                                <a type="submit" class="dropdown-item {% if themes == 'cosmo' %}active{% else %}inactive{% endif %}" href="/set_theme/cosmo/">
                                     <input type="hidden" name="theme" value="cosmo">{% trans "Cosmo" %}
                                 </a>
                             </li>
                             <li>
-                                <a type="submit" class="dropdown-item {% if themes == 'flatly' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='flatly' %}">
+                                <a type="submit" class="dropdown-item {% if themes == 'flatly' %}active{% else %}inactive{% endif %}" href="/set_theme/flatly/">
                                     <input type="hidden" name="theme" value="flatly">{% trans "Flatly" %}
                                 </a>
                             </li>
                             <li>
-                                <a type="submit" class="dropdown-item {% if themes == 'minty' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='minty' %}">
+                                <a type="submit" class="dropdown-item {% if themes == 'minty' %}active{% else %}inactive{% endif %}" href="/set_theme/minty/">
                                     <input type="hidden" name="theme" value="minty">{% trans "Minty" %}
                                 </a>
                             </li>
                             <li>
-                                <a type="submit" class="dropdown-item {% if themes == 'simplex' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='simplex' %}">
+                                <a type="submit" class="dropdown-item {% if themes == 'simplex' %}active{% else %}inactive{% endif %}" href="/set_theme/simplex/">
                                     <input type="hidden" name="theme" value="simplex">{% trans "Simplex" %}
                                 </a>
                             </li>
                             <li>
-                                <a type="submit" class="dropdown-item {% if themes == 'yeti' %}active{% else %}inactive{% endif %}" href="{% url 'set_theme' theme='yeti' %}">
+                                <a type="submit" class="dropdown-item {% if themes == 'yeti' %}active{% else %}inactive{% endif %}" href="/set_theme/yeti/">
                                     <input type="hidden" name="theme" value="yeti">{% trans "Yeti" %}
                                 </a>
                             </li>

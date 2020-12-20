@@ -182,7 +182,7 @@
             {{ form.medication_time|as_crispy_field }}
             </div>
             <div class="col-6 col">
-            {{ form.medication_drug_name|as_crispy_field }}
+            {{ form.medication_medicine|as_crispy_field }}
             </div>
             <div class="col-6 col">
             {{ form.medication_dosage|as_crispy_field }}
@@ -299,7 +299,7 @@
         $("#id_biohazard_infectious_disease_1").filter('[value="False"]').attr('checked', true)
         $("#id_biohazard_infectious_disease_others").prop("disabled", true);
         $("#id_medication_time").addClass("disabled_input");
-        $("#id_medication_drug_name").addClass("disabled_input");
+        $("#id_medication_medicine").addClass("disabled_input");
         $("#id_medication_dosage").addClass("disabled_input");
         $("#id_medication_unit").addClass("disabled_input");
         $("#id_medication_tablet_capsule").addClass("disabled_input");
@@ -658,7 +658,7 @@
                     $('.hapus_Own').addClass("disabled");
                     $('.tambah_Own').addClass("disabled");
                     $('#id_medication_time').addClass("disabled_input");
-                    $('#id_medication_drug_name').addClass("disabled_input");
+                    $('#id_medication_medicine').addClass("disabled_input");
                     $('#id_medication_dosage').addClass("disabled_input");
                     $('#id_medication_unit').addClass("disabled_input");
                     $('#id_medication_tablet_capsule').addClass("disabled_input");
@@ -669,7 +669,7 @@
                     $('.hapus_Own').removeClass("disabled");
                     $('.tambah_Own').removeClass("disabled");
                     $('#id_medication_time').removeClass("disabled_input");
-                    $('#id_medication_drug_name').removeClass("disabled_input");
+                    $('#id_medication_medicine').removeClass("disabled_input");
                     $('#id_medication_dosage').removeClass("disabled_input");
                     $('#id_medication_unit').removeClass("disabled_input");
                     $('#id_medication_tablet_capsule').removeClass("disabled_input");
@@ -683,7 +683,7 @@
                     $('.hapus_Own').removeClass("disabled");
                     $('.tambah_Own').removeClass("disabled");
                     $('#id_medication_time').removeClass("disabled_input");
-                    $('#id_medication_drug_name').removeClass("disabled_input");
+                    $('#id_medication_medicine').removeClass("disabled_input");
                     $('#id_medication_dosage').removeClass("disabled_input");
                     $('#id_medication_unit').removeClass("disabled_input");
                     $('#id_medication_tablet_capsule').removeClass("disabled_input");
@@ -694,7 +694,7 @@
                     $('.hapus_Own').addClass("disabled");
                     $('.tambah_Own').addClass("disabled");
                     $('#id_medication_time').addClass("disabled_input");
-                    $('#id_medication_drug_name').addClass("disabled_input");
+                    $('#id_medication_medicine').addClass("disabled_input");
                     $('#id_medication_dosage').addClass("disabled_input");
                     $('#id_medication_unit').addClass("disabled_input");
                     $('#id_medication_tablet_capsule').addClass("disabled_input");

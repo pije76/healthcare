@@ -18,7 +18,7 @@ class MedicationRecord_ModelForm(BSModalModelForm):
             'patient',
             'date',
             'time',
-            'medication_drug_name',
+            'medication_medicine',
             'dosage',
             'unit',
             'topup',
@@ -34,7 +34,7 @@ class MedicationRecord_ModelForm(BSModalModelForm):
                            widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
     time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS,
                            widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
-    medication_drug_name = forms.ModelChoiceField(queryset=Medicine.objects.all(
+    medication_medicine = forms.ModelChoiceField(queryset=Medicine.objects.all(
     ), required=False, label="", widget=forms.Select(attrs={'class': "form-control"}))
     dosage = forms.IntegerField(required=False, label="", initial="0",
                                 min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
@@ -58,7 +58,7 @@ class MedicationRecord_Form(BSModalForm):
                            widget=DatePickerInput(format="%d-%m-%Y", attrs={'class': "form-control"}))
     time = forms.TimeField(required=False, label="", initial=get_time, input_formats=settings.TIME_INPUT_FORMATS,
                            widget=TimePickerInput(format="%H:%M", attrs={'class': "form-control"}))
-    medication_drug_name = forms.ModelChoiceField(queryset=Medicine.objects.all(
+    medication_medicine = forms.ModelChoiceField(queryset=Medicine.objects.all(
     ), required=False, label="", widget=forms.Select(attrs={'class': "form-control"}))
     dosage = forms.IntegerField(required=False, label="", initial="0",
                                 min_value=0, widget=forms.NumberInput(attrs={'class': "form-control"}))
@@ -74,7 +74,7 @@ class MedicationRecord_Form(BSModalForm):
         attrs={'class': "form-control", 'readonly': 'readonly'}))
 
     def clean_medication(self):
-        return self.cleaned_data['medication_drug_name'].capitalize()
+        return self.cleaned_data['medication_medicine'].capitalize()
 
     def clean_topup(self):
         return self.cleaned_data['topup'].capitalize()

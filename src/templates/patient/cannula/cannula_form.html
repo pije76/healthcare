@@ -71,10 +71,10 @@
 
         <div class="row">
 
-            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
             {% for item in profiles %}
             <a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
             {% endfor %}
+            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 
         </div>
 
@@ -88,25 +88,12 @@
 <script type='text/javascript'>
 $(document).ready(function()
 {
-    $("#id_form-0-cannula_remove_by").hide();
-    $(".remove_by").hide();
-    $(".action").hide();
 
-    $("#id_form-1-cannula_remove_by").hide();
-    $(".remove_by").hide();
-    $(".action").hide();
-
-    $('#id_form-0-cannula_remove_date').on('dp.change', function(e)
+    $(document).on('dp.change', '[id$="-cannula_remove_date"]', function()
     {
-        $("#id_form-0-cannula_remove_by").show();
-        $(".remove_by").show();
-        $(".action").show();
-    });
-    $('#id_form-1-cannula_remove_date').on('dp.change', function(e)
-    {
-        $("#id_form-1-cannula_remove_by").show();
-        $(".remove_by").show();
-        $(".action").show();
+            $(this).closest('tr').find('[id$="-cannula_remove_by"]').show();
+            $(this).closest('tr').find('[class$="remove_by"]').show();
+            $(this).closest('tr').find('[class$="action"]').show();
     });
 
 });
@@ -115,13 +102,13 @@ $(document).ready(function()
     {
         $('#form_set tbody tr').formset(
         {
-//          prefix: 'formset',
+            prefix: 'form',
 //          prefix: '{{ formset.prefix }}',
             addCssClass: 'btn btn-success',
             addText: '<i class="fas fa-plus"></i>',
             deleteCssClass: 'btn btn-danger',
             deleteText: '<i class="fas fa-minus"></i>',
-            keepFieldValues: '#id_form-0-cannula_date, #id_form-0-cannula_size, #id_form-0-cannula_due_date, #id_form-0-cannula_remove_date, #id_form-0-cannula_remove_by',
+            keepFieldValues: '#id_form-0-cannula_date, #id_form-0-cannula_size, #id_form-0-cannula_due_date, #id_form-0-cannula_remove_date,#id_form-0-cannula_remove_by',
 //          addContainerClass: 'tambah_row',
             added: function(row)
             {
@@ -136,6 +123,13 @@ $(document).ready(function()
                 options={
                     "format": "HH:mm",
                 });
+
+             // $(row).find('[id$="timecannula_remove_date"]').on('dp.change', function(e)
+                    // {
+                    //     $(row).find('[id$="timecannula_remove_date"]').show();
+                    //     $(".remove_by").show();
+                    //     $(".action").show();
+                    // });
             },
         });
     });

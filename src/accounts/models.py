@@ -5,6 +5,8 @@ from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
 
+from customers.models import *
+
 from phonenumber_field.modelfields import PhoneNumberField
 from phonenumber_field.phonenumber import to_python
 
@@ -21,15 +23,22 @@ def validate_international_phonenumber(value):
 
 
 def upload_path_userprofile(instance, filename):
+    schema_name = connection.schema_name
+    name = Client.objects.filter(schema_name=schema_name).values_list('name', flat=True).first()
     #   return '{0}/{1}'.format('user_profile', filename)
     #   return 'user_{0}/{1}'.format(instance.user.id, filename)
     #   return "%s/%s" %(instance.user.username, filename)
-    return 'user_profile/{0}/{1}'.format(instance.full_name, filename)
+#    return 'user_profile/{0}/{1}'.format(instance.full_name, filename)
+    return '{0}/{1}/user_profile/{2}'.format(name, instance.full_name, filename)
 
 
 def upload_path_emergencycontact(instance, filename):
+    schema_name = connection.schema_name
+    name = Client.objects.filter(schema_name=schema_name).values_list('name', flat=True).first()
+
     #   return '{0}/{1}'.format('emergency_contact', filename)
-    return 'emergency_contact/{0}/{1}'.format(instance.patient, filename)
+#    return 'emergency_contact/{0}/{1}'.format(instance.patient, filename)
+    return '{0}/{1}/emergency_contact/{2}'.format(name, instance.patient, filename)
 
 
 # Create your models here.

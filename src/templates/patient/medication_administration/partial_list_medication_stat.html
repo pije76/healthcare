@@ -1,10 +1,10 @@
 {% for item in medicine_stat %}
 
-{% if user.is_superuser %}
+{% if user.is_superuser or user.is_staff %}
 <tr>
     <td>{{ item.medication_date|date:"d-m-Y" }}</td>
     <td>{{ item.medication_time|date:"H:i" }}</td>
-    <td>{{ item.medication_drug_name }}</td>
+    <td>{{ item.medication_medicine }}</td>
     <td>{{ item.medication_done }}</td>
     <td>
         <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:medication_administration_edit' item.patient.username item.id %}" data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
@@ -14,12 +14,12 @@
     </td>
 </tr>
 
-{% elif user.is_staff or user.is_patient %}
+{% elif user.is_patient %}
 
 <tr>
     <td>{{ item.medication_date|date:"d-m-Y" }}</td>
     <td>{{ item.medication_time|date:"H:i" }}</td>
-    <td>{{ item.medication_drug_name }}</td>
+    <td>{{ item.medication_medicine }}</td>
     <td>{{ item.medication_done }}</td>
 </tr>
 

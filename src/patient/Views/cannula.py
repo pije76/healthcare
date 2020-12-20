@@ -46,13 +46,11 @@ def cannula_list(request, username):
 def cannula_create(request, username):
     schema_name = connection.schema_name
     logos = Client.objects.filter(schema_name=schema_name)
-    titles = Client.objects.filter(
-        schema_name=schema_name).values_list('title', flat=True).first()
+    titles = Client.objects.filter(schema_name=schema_name).values_list('title', flat=True).first()
     page_title = _('Cannulation Chart')
     patients = get_object_or_404(UserProfile, username=username)
     profiles = UserProfile.objects.filter(username=username)
-    icnumbers = UserProfile.objects.filter(
-        username=username).values_list('ic_number', flat=True).first()
+    icnumbers = UserProfile.objects.filter(username=username).values_list('ic_number', flat=True).first()
 
     initial = [{
         'patient': item.full_name,

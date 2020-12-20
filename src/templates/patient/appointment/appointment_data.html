@@ -68,7 +68,7 @@
                         {% endfor %}
                             <table id="t_add_row" class="table table-striped table-bordered">
                                 <thead class="thead_light">
-                                    {% if user.is_superuser %}
+                                    {% if user.is_superuser or user.is_staff %}
                                     <tr>
                                         <th class="text-center">{% trans "Date" %}</th>
                                         <th class="text-center">{% trans "Time" %}</th>
@@ -78,7 +78,7 @@
                                         <th class="text-center">{% trans "Treatment/Order" %}</th>
                                         <th class="text-center">{% trans "Action" %}</th>
                                     </tr>
-                                    {% elif user.is_staff or user.is_patient %}
+                                    {% elif user.is_patient %}
                                     <tr>
                                         <th class="text-center">{% trans "Date" %}</th>
                                         <th class="text-center">{% trans "Time" %}</th>

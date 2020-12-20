@@ -59,7 +59,7 @@
                             <table id="t_add_row" class="table table-striped table-bordered">
                                 <thead class="thead_light">
 
-                                    {% if user.is_superuser %}
+                                    {% if user.is_superuser or user.is_staff %}
                                     <tr>
                                         <th class="text-center" rowspan="3">{% trans "Date" %}</th>
                                         <th class="text-center" rowspan="3">{% trans "Time" %}</th>
@@ -67,7 +67,7 @@
                                         <th class="text-center" colspan="5">{% trans "Output" %}</th>
                                         <th class="text-center" rowspan="3">{% trans "Action" %}</th>
                                     </tr>
-                                    {% elif user.is_staff or user.is_patient %}
+                                    {% elif user.is_patient %}
                                     <tr>
                                         <th class="text-center" rowspan="3">{% trans "Date" %}</th>
                                         <th class="text-center" rowspan="3">{% trans "Time" %}</th>
@@ -101,7 +101,7 @@
                                     {% include 'patient/intake_output/partial_list.html' %}
                                 </tbody>
                                 <tfoot>
-                                    {% if user.is_superuser %}
+                                    {% if user.is_superuser or user.is_staff %}
                                     <tr>
                                         <th colspan="2"></th>
                                         <th></th>
@@ -125,7 +125,7 @@
                                         <td colspan="2"><b>BALANCE :</b></td>
                                         <td><span id="total_balance"></span></td>
                                     </tr>
-                                    {% elif user.is_staff or user.is_patient %}
+                                    {% elif user.is_patient %}
                                     <tr>
                                         <th colspan="2"></th>
                                         <th></th>

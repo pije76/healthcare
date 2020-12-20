@@ -8,8 +8,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 # Create your models here.
 class Allergy(models.Model):
-    patient = models.ForeignKey(
-        UserProfile, on_delete=models.CASCADE, blank=False, null=True)
+    patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
     allergy_drug = models.CharField(max_length=255, blank=True, null=True)
     allergy_food = models.CharField(max_length=255, blank=True, null=True)
     allergy_others = models.CharField(max_length=255, blank=True, null=True)
@@ -35,10 +34,8 @@ class Medicine(models.Model):
 
 
 class MedicationReconcilationPatient(models.Model):
-    patient = models.ForeignKey(
-        UserProfile, on_delete=models.CASCADE, blank=False, null=True)
-    medication_reconcilation_patient = models.CharField(
-        max_length=255, blank=True, null=True)
+    patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, blank=False, null=True)
+    medication_reconcilation_patient = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return str(self.medication_reconcilation_patient)

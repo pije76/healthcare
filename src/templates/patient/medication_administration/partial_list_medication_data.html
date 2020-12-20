@@ -1,26 +1,33 @@
 {% for item in medicine_data %}
 
-{% if user.is_superuser %}
+{% if user.is_superuser or user.is_staff %}
 <tr>
     <td>{{ item.medication_date|date:"d-m-Y" }}</td>
     <td>{{ item.medication_time|date:"H:i" }}</td>
-    <td>{{ item.medication_drug_name }}</td>
+    <td>{{ item.medication_medicine }}</td>
+    <td>{{ item.medication_dosage }}</td>
+    <td>{{ item.medication_unit }}</td>
+    <td>{{ item.medication_tablet_capsule }}</td>
+    <td>{{ item.medication_frequency }}</td>
+    <td>{{ item.medication_route }}</td>
+    <td>{{ item.medication_source }}</td>
     <td>{{ item.medication_status }}</td>
-    <td>{{ item.medication_done }}</td>
+    <td>{{ item.medication_done|yesno:"Yes,No" }}</td>
     <td>
-        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:medication_administration_edit' item.patient.username item.id %}" data-original-title="Edit" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
+        <a href="{% url 'patient:medication_administration_edit' item.patient.username item.id %}" >
+            <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" title="Edit" style="background-color:transparent;"><i class="fas fa-pencil-alt" style="color: #b2b9bf"></i>
         </button>
         <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline trigger_modal" data-form-url="{% url 'patient:medication_administration_delete' item.patient.username item.id %}" data-original-title="Delete" title="Delete" style="background-color:transparent;"><i class="fas fa-trash-alt" style="color: #b2b9bf"></i>
         </button>
     </td>
 </tr>
 
-{% elif user.is_staff or user.is_patient %}
+{% elif user.is_patient %}
 
 <tr>
     <td>{{ item.medication_date|date:"d-m-Y" }}</td>
     <td>{{ item.medication_time|date:"H:i" }}</td>
-    <td>{{ item.medication_drug_name }}</td>
+    <td>{{ item.medication_medicine }}</td>
     <td>{{ item.medication_status }}</td>
     <td>{{ item.medication_done }}</td>
 </tr>

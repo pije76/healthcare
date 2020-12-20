@@ -35,10 +35,10 @@
 
     <form method="post">
     {% csrf_token %}
+    {{ formset.management_form }}
 
         <div class="row rounded form_table">
 
-            {{ formset.management_form }}
             <table id="form_set" class="table table-bordered">
                 <thead class="thead_light">
                     <tr>
@@ -56,7 +56,7 @@
                     {{ item.id|as_crispy_field }}{{ item.patient|as_crispy_field }}
                     <tr id="{{ item.prefix }}-row">
                         <td>{{ item.medication_time|as_crispy_field }}</td>
-                        <td>{{ item.medication_drug_name|as_crispy_field }}</td>
+                        <td>{{ item.medication_medicine|as_crispy_field }}</td>
                         <td>{{ item.medication_dosage|as_crispy_field }}</td>
                         <td>{{ item.medication_unit|as_crispy_field }}</td>
                         <td>{{ item.medication_tablet_capsule|as_crispy_field }}</td>
@@ -67,10 +67,10 @@
                 </tbody>
             </table>
 
-            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
             {% for item in profiles %}
             <a class="btn btn-danger kirim" href="{% url 'patient:patientdata_detail' item.username %}">{% trans "Cancel" %}</a>
             {% endfor %}
+            <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
 
         </div>
 

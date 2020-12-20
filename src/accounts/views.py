@@ -50,7 +50,6 @@ def set_theme(request, theme):
 #   previous = request.META.get('HTTP_REFERER', '')
     previous = request.META['HTTP_REFERER']
     themes = request.session.get('theme')
-#   print(themes)
 
 #   return redirect(previous)
 #   return HttpResponseRedirect(reverse(previous, kwargs={'theme': themes}))
@@ -80,7 +79,6 @@ def set_language_from_url(request, user_language):
 #   next_path = request.POST.get('user_language')
     next_path = strip_lang(request.path)
     previous = request.META.get('HTTP_REFERER', '')
-#   print(next_path)
 
 #   valid = False
 #   for item in settings.LANGUAGES:

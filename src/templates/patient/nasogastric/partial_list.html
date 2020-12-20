@@ -1,5 +1,5 @@
 {% for item in patients %}
-{% if user.is_superuser %}
+{% if user.is_superuser or user.is_staff %}
 <tr>
     <td>{{ item.nasogastric_tube_date|date:"d-m-Y" }}</td>
     <td>{{ item.nasogastric_tube_size }}</td>
@@ -16,7 +16,7 @@
 
 </tr>
 
-{% elif user.is_staff or user.is_patient %}
+{% elif user.is_patient %}
 
 <tr>
     <td>{{ item.nasogastric_tube_date|date:"d-m-Y" }}</td>

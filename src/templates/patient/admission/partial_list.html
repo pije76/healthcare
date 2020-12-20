@@ -1,4 +1,4 @@
-{% if user.is_superuser %}
+{% if user.is_superuser or user.is_staff %}
 {% load custom_tags %}
 
 <tr>
@@ -99,7 +99,7 @@
 {% endfor %}
 </tr>
 
-{% elif user.is_staff or user.is_patient %}
+{% elif user.is_patient %}
 
 <tr>
 {% for item1 in admissionform %}
